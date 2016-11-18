@@ -1,0 +1,26 @@
+#Items
+item.ingot_copper.name=Copper Ingot
+item.ingot_tin.name=Tin Ingot
+item.ingot_bronze.name=Bronze Ingot
+item.ingot_bronze_imbued.name=Imbued Bronze Ingot
+
+item.basic_wand_copper.name=Basic Wand
+item.basic_wand_tin.name=Basic Wand
+
+#Blocks
+tile.ore_copper.name=Copper Ore
+tile.ore_tin.name=Tin Ore
+
+tile.imbued_log.name=Imbued Log
+
+#Fancy Blocks
+tile.altar.name=Altar
+tile.totem_top.name=Totem
+tile.totem_middle.name=Totem
+tile.totem_bottom.name=Totem
+
+
+#Containers and Descriptions
+itemGroup.enhancedprogression=Enhanced Progression
+gui.altarmessage.name=Altar Tier Detected:
+gui.confirm.name=Right Click again to Confirm Crafting!

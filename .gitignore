@@ -1,0 +1,45 @@
+<<<<<<< HEAD
+/bin/
+
+*.class
+=======
+# General use .gitignore for Minecraft modding.
+
+# Directories
+/.gradle/
+/build/
+/eclipse
+/run/
+/out/
+/asm/
+/bin/
+/build/
+/config/
+crash-reports/
+/.idea/
+/.metadata/
+/libs/
+/saves/
+/resourcepacks/
+/logs/
+/mods/
+/screenshots/
+/classes/
+
+# File Extensions
+*.psd
+*.iml
+*.ipr
+*.iws
+*.classpath
+*.project
+
+# Specific files
+Thumbs.db
+usernamecache.json
+options.txt
+EnhancedProgression_Client.launch
+EnhancedProgression_Server.launch
+
+usercache.json
+>>>>>>> 03e860efcb429c4a89d5a2dc418cf60c67d46b7d
