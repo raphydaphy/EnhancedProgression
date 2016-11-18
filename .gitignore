@@ -1,12 +1,39 @@
-*.class
+# General use .gitignore for Minecraft modding.
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Directories
+/.gradle/
+/build/
+/eclipse
+/run/
+/out/
+/asm/
+/bin/
+/build/
+/config/
+crash-reports/
+/.idea/
+/.metadata/
+/libs/
+/saves/
+/resourcepacks/
+/logs/
+/mods/
+/screenshots/
+/classes/
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# File Extensions
+*.psd
+*.iml
+*.ipr
+*.iws
+*.classpath
+*.project
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Specific files
+Thumbs.db
+usernamecache.json
+options.txt
+EnhancedProgression_Client.launch
+EnhancedProgression_Server.launch
+
+usercache.json
