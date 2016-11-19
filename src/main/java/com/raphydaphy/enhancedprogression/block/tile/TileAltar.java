@@ -158,15 +158,9 @@ public class TileAltar extends TileSimpleInventory
 					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, currentOutput());
 					worldObj.spawnEntityInWorld(outputItem);
 					altarRecipe = null;
+					emptyAltar();
 					confirm = 0;
 					markDirty();
-					
-					for(int i = 0; i < getSizeInventory(); i++) {
-						ItemStack stack = itemHandler.getStackInSlot(i);
-						if(stack != null) {
-							itemHandler.setStackInSlot(i, null);
-						}
-					}
 				}
 			}
 			else if (!worldObj.isRemote)
@@ -193,6 +187,14 @@ public class TileAltar extends TileSimpleInventory
 
 		return null;
 		
+	}
+	
+	public void emptyAltar()
+	{
+		for(int i = 0; i < getSizeInventory(); i++)
+		{
+			itemHandler.setStackInSlot(i, null);
+		}
 	}
 	
 	@Override
