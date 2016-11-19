@@ -2,6 +2,7 @@ package com.raphydaphy.enhancedprogression.item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
 
@@ -11,6 +12,7 @@ import com.raphydaphy.enhancedprogression.init.ModBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +20,8 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -31,6 +35,9 @@ public class ItemBasicWand extends Item
 {
 	protected String name;
 
+	private int essenceStored = 0;
+	private int essenceCapacity = 0;
+	
 	private List<BlockPos> replaceBlock = new ArrayList<BlockPos>();
 	private boolean unfinished = false;
 	private int currentBlockId = 0;
@@ -39,6 +46,7 @@ public class ItemBasicWand extends Item
 	
 	public ItemBasicWand(String name) {
 		this.name = name;
+		this.setEssenceCapacity(1000);
 		setUnlocalizedName(name);
 		setRegistryName(name);
 		this.maxStackSize = 1;
@@ -49,6 +57,42 @@ public class ItemBasicWand extends Item
 		super.setCreativeTab(tab);
 		return this;
 	}
+	
+	public void setEssenceCapacity(int capacity)
+	{
+		essenceCapacity = capacity;
+	}
+	
+	public int getEssenceStored()
+	{
+		return essenceStored;
+	}
+	
+	public int getMaxEssence()
+	{
+		return essenceCapacity;
+	}
+	
+	public boolean useEssence(int amount)
+	{
+		if (getEssenceStored() - amount > 0)
+		{
+			essenceStored -= amount;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean addEssence(int amount)
+	{
+		if (getEssenceStored() + amount < getMaxEssence() + 1)
+		{
+			essenceStored += amount;
+			return true;
+		}
+		return false;
+	}
+	
 	private static Iterable<BlockPos.MutableBlockPos> WOOD_SEARCH_AREA = BlockPos.getAllInBoxMutable(new BlockPos(-5, -5, -5), new BlockPos(5, 25, 5));
 	
 	boolean checkPlatform(int xOff, int yOff, int zOff, Block block, BlockPos pos, World world) 
@@ -78,7 +122,9 @@ public class ItemBasicWand extends Item
 					curBlock = replaceBlock.get(currentBlockId);
 					world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
 					world.setBlockState(curBlock, ModBlocks.imbued_log.getDefaultState());
-				
+					
+					this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1));
+					
 					currentBlockId++;
 					delay = 10;
 				}
@@ -97,7 +143,33 @@ public class ItemBasicWand extends Item
 			}
 		}
     }
+	
+	public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        return stack.getTagCompound();
+    }
+	
+	
+	public boolean getShareTag()
+    {
+        return true;
+    }
 	 
+	public boolean updateItemStackNBT(NBTTagCompound nbt)
+    {
+        return false;
+    }
+	 
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    {
+		if (playerIn.isSneaking())
+		{
+			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored() + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
+		}
+		playerIn.swingArm(hand);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+    }
+	
 	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float par8, float par9, float par10) 
@@ -134,6 +206,13 @@ public class ItemBasicWand extends Item
 			unfinished = true;
 			player.setActiveHand(hand);
 			return EnumActionResult.SUCCESS;
+		}
+		else
+		{
+			if (player.isSneaking())
+			{
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored() + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
+			}
 		}
 		return EnumActionResult.PASS;
 	}

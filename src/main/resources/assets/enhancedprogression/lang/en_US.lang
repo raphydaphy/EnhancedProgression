@@ -34,3 +34,5 @@ gui.altarmessage.name=Altar Tier Detected:
 gui.confirm.name=Right Click again to Confirm Crafting!
 gui.norecipe.name=No valid recipe is stored in the altar!
 gui.wrongtier.name=Invalid Altar Tier! You need a Tier
+gui.checkessence.name=Storing
+gui.essence.name=Essence

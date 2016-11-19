@@ -5,6 +5,7 @@ public class ItemAdvancedWand extends ItemBasicWand
 
 	public ItemAdvancedWand() {
 		super("advanced_wand");
+		this.setEssenceCapacity(10000);
 	}
 	
 
