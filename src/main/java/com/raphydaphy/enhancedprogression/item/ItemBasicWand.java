@@ -1,5 +1,8 @@
 package com.raphydaphy.enhancedprogression.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
@@ -9,12 +12,16 @@ import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,6 +31,12 @@ public class ItemBasicWand extends Item
 {
 	protected String name;
 
+	private List<BlockPos> replaceBlock = new ArrayList<BlockPos>();
+	private boolean unfinished = false;
+	private int currentBlockId = 0;
+	private BlockPos curBlock;
+	private int delay = 0;
+	
 	public ItemBasicWand(String name) {
 		this.name = name;
 		setUnlocalizedName(name);
@@ -36,6 +49,12 @@ public class ItemBasicWand extends Item
 		super.setCreativeTab(tab);
 		return this;
 	}
+	private static Iterable<BlockPos.MutableBlockPos> WOOD_SEARCH_AREA = BlockPos.getAllInBoxMutable(new BlockPos(-5, -5, -5), new BlockPos(5, 25, 5));
+	
+	boolean checkPlatform(int xOff, int yOff, int zOff, Block block, BlockPos pos, World world) 
+	{	
+		return world.getBlockState(pos.add(xOff, yOff, zOff)).getBlock() == block;
+	}
 	
 	public void registerItemModel() {
 		EnhancedProgression.proxy.registerItemRenderer(this, 0, name);
@@ -47,13 +66,46 @@ public class ItemBasicWand extends Item
         return true;
     }
 	 
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity entityIn, int itemSlot, boolean isSelected)
+    {
+		if(unfinished)
+		{
+			if (isSelected)
+			{
+				if (delay == 0 && replaceBlock.size() > currentBlockId)
+				{
+					curBlock = replaceBlock.get(currentBlockId);
+					world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
+					world.setBlockState(curBlock, ModBlocks.imbued_log.getDefaultState());
+				
+					currentBlockId++;
+					delay = 10;
+				}
+				else if (replaceBlock.size() > currentBlockId)
+				{
+					delay--;
+				}
+				else
+				{
+					unfinished = false;
+				}
+			}
+			else
+			{
+				unfinished = false;
+			}
+		}
+    }
+	 
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float par8, float par9, float par10) {
+	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float par8, float par9, float par10) 
+	{
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block instanceof BlockAltar) {
-
+		if(block instanceof BlockAltar) 
+		{
 			boolean wanded;
 			wanded = ((BlockAltar) block).onUsedByWand(player, par1ItemStack, world, pos, side);
 			if(wanded && world.isRemote)
@@ -65,11 +117,40 @@ public class ItemBasicWand extends Item
 		}
 		else if(block instanceof BlockLog) 
 		{
-			world.setBlockState(pos, ModBlocks.imbued_log.getDefaultState());
-			player.swingArm(hand);
+			System.out.println("Starting new loop");
+			
+			replaceBlock.clear();
+			currentBlockId = 0;
+			delay = 0;
+			
+			for (BlockPos position : WOOD_SEARCH_AREA) 
+			{
+				if(checkPlatform(position.getX(), position.getY(), position.getZ(), block, pos, world))
+				{
+					BlockPos toReplace = pos.add(position.getX(), position.getY(), position.getZ());
+					replaceBlock.add(toReplace);
+				}
+			}
+			unfinished = true;
+			player.setActiveHand(hand);
 			return EnumActionResult.SUCCESS;
 		}
-
 		return EnumActionResult.PASS;
 	}
+	
+	 /**
+     * How long it takes to use or consume an item
+     */
+    public int getMaxItemUseDuration(ItemStack stack)
+    {
+        return 72000;
+    }
+
+    /**
+     * returns the action that specifies what animation to play when the items is being used
+     */
+    public EnumAction getItemUseAction(ItemStack stack)
+    {
+        return EnumAction.BOW;
+    }
 }

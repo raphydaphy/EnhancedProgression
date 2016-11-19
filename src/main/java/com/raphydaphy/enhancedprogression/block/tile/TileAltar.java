@@ -336,6 +336,17 @@ public class TileAltar extends TileSimpleInventory
 				GlStateManager.translate(-screenWidth, -screenHeight, 0);
 				GlStateManager.popMatrix();
 			}
+			else if (hasValidItems() && !hasValidRecipe())
+			{
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
+				GlStateManager.scale(2, 2, 2);
+				mc.getRenderItem().renderItemIntoGUI(currentOutput(), 0, 0);
+				mc.fontRendererObj.drawStringWithShadow("x", screenWidth, screenHeight, 0xFFFFFF);
+				GlStateManager.translate(-screenWidth, -screenHeight, 0);
+				GlStateManager.popMatrix();
+				
+			}
 			net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 		}
 	}
