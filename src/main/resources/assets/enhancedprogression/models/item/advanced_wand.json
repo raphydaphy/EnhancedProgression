@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "enhancedprogression:items/basic_wand_tin"
+        "layer0": "enhancedprogression:items/advanced_wand"
     },
     "display": {
         "firstperson_righthand": {

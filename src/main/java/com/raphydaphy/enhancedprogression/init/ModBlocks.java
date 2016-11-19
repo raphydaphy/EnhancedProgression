@@ -17,6 +17,7 @@ public class ModBlocks {
 	public static BlockOre ore_tin;
 	
 	public static BlockBase imbued_log;
+	public static BlockBase imbued_plank;
 	
 	public static BlockTotem totem_top;
 	public static BlockTotem totem_middle;
@@ -29,6 +30,7 @@ public class ModBlocks {
 		ore_tin = register(new BlockOre("ore_tin").setCreativeTab(EnhancedProgression.creativeTab));
 		
 		imbued_log = register(new BlockBase(Material.WOOD, "imbued_log").setCreativeTab(EnhancedProgression.creativeTab));
+		imbued_plank = register(new BlockBase(Material.WOOD, "imbued_plank").setCreativeTab(EnhancedProgression.creativeTab));
 		
 		totem_top = register(new BlockTotem("totem_top").setCreativeTab(EnhancedProgression.creativeTab));
 		totem_middle = register(new BlockTotem("totem_middle").setCreativeTab(EnhancedProgression.creativeTab));

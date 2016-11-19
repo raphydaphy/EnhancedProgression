@@ -150,10 +150,11 @@ public class TileAltar extends TileSimpleInventory
 				}
 			}
 			boolean clearTmp = false;
-			if(!worldObj.isRemote && confirm > 1) 
+			if(!worldObj.isRemote && confirm > 1 && disableTicks == 0) 
 			{
 				if (altarRecipe != null)
 				{
+					disableTicks = 400;
 					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, altarRecipe.getOutput());
 					worldObj.spawnEntityInWorld(outputItem);
 					altarRecipe = null;
@@ -193,11 +194,11 @@ public class TileAltar extends TileSimpleInventory
 	
 	public boolean addItem(ItemStack stack) 
 	{
-
 		boolean did = false;
 
 		for(int i = 0; i < getSizeInventory(); i++)
-			if(itemHandler.getStackInSlot(i) == null) {
+			if(itemHandler.getStackInSlot(i) == null && disableTicks == 0) 
+			{
 				did = true;
 				ItemStack stackToAdd = stack.copy();
 				stackToAdd.stackSize = 1;
@@ -226,7 +227,7 @@ public class TileAltar extends TileSimpleInventory
 			}
 		}
 		
-		if(!worldObj.isRemote) 
+		if(!worldObj.isRemote && confirm == 0 && disableTicks == 0) 
 		{
 			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)));
 			for(EntityItem item : items)
@@ -235,12 +236,17 @@ public class TileAltar extends TileSimpleInventory
 					ItemStack stack = item.getEntityItem();
 					if(addItem(stack) && stack.stackSize == 0)
 					{
+						System.out.println("Innocent item died");
 						item.setDead();
 					}
 				}
 			}
 		}
-
+		
+		else if(disableTicks > 0)
+		{
+			--disableTicks;
+		}
 	}
 	
 	public void renderHUD(Minecraft mc, ScaledResolution res) {

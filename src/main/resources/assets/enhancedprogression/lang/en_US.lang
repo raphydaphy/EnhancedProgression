@@ -4,14 +4,22 @@ item.ingot_tin.name=Tin Ingot
 item.ingot_bronze.name=Bronze Ingot
 item.ingot_bronze_imbued.name=Imbued Bronze Ingot
 
+item.imbued_stick.name=Imbued Stick
+
+item.upgrade_template_basic.name=Basic Wand Upgrade Template
+item.upgrade_template_advanced.name=Basic Wand Upgrade Template
+item.upgrade_template_master.name=Basic Wand Upgrade Template
+
 item.basic_wand_copper.name=Basic Wand
 item.basic_wand_tin.name=Basic Wand
+item.advanced_wand.name=Advanced Wand
 
 #Blocks
 tile.ore_copper.name=Copper Ore
 tile.ore_tin.name=Tin Ore
 
 tile.imbued_log.name=Imbued Log
+tile.imbued_plank.name=Imbued Plank
 
 #Fancy Blocks
 tile.altar.name=Altar
