@@ -6,6 +6,7 @@ import com.raphydaphy.enhancedprogression.init.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -24,7 +25,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void setActionText(String text)
 	{
-		Minecraft.getMinecraft().ingameGUI.setRecordPlaying(text, false);
+		Minecraft.getMinecraft().ingameGUI.setRecordPlaying(TextFormatting.BLUE + text, false);
 	}
 
 }

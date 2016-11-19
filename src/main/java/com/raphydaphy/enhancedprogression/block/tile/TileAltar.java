@@ -7,7 +7,7 @@ import com.raphydaphy.enhancedprogression.block.multiblock.Multiblock;
 import com.raphydaphy.enhancedprogression.block.multiblock.MultiblockSet;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import com.raphydaphy.enhancedprogression.nbt.AltarRecipe;
-import com.raphydaphy.enhancedprogression.nbt.VanillaPacketDispatcher;
+import com.raphydaphy.enhancedprogression.nbt.PacketManager;
 import com.raphydaphy.enhancedprogression.recipe.ModRecipes;
 
 import net.minecraft.block.Block;
@@ -152,7 +152,7 @@ public class TileAltar extends TileSimpleInventory
 					emptyAltar();
 					confirm = 0;
 					markDirty();
-					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
+					PacketManager.dispatchTE(worldObj, pos);
 				}
 			}
 			else if (!worldObj.isRemote && hasValidItems() && !hasValidRecipe())
@@ -202,7 +202,7 @@ public class TileAltar extends TileSimpleInventory
 		{
 			altarTier = 2;
 		}
-		VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
+		PacketManager.dispatchTE(worldObj, pos);
 		return altarTier;
 	}
 	
@@ -215,7 +215,7 @@ public class TileAltar extends TileSimpleInventory
 				return recipe.getAltarTier();
 			}
 		}
-		VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
+		PacketManager.dispatchTE(worldObj, pos);
 		return 0;
 	}
 	
@@ -264,7 +264,7 @@ public class TileAltar extends TileSimpleInventory
 
 		if(did)
 		{
-			VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
+			PacketManager.dispatchTE(worldObj, pos);
 		}
 
 		return true;
