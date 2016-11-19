@@ -136,7 +136,8 @@ public class TileAltar extends TileSimpleInventory
 		}
 		else 
 		{
-			if (altarRecipe != null)
+			
+			if (hasValidRecipe())
 			{
 				if (worldObj.isRemote)
 				{
@@ -151,12 +152,10 @@ public class TileAltar extends TileSimpleInventory
 			System.out.println(confirm);
 			if(!worldObj.isRemote && confirm > 1 && disableTicks == 0) 
 			{
-				System.out.println("get far");
-				if (altarRecipe != null)
+				if (hasValidRecipe())
 				{
-					System.out.println("get further");
 					disableTicks = 400;
-					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, altarRecipe.getOutput());
+					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, currentOutput());
 					worldObj.spawnEntityInWorld(outputItem);
 					altarRecipe = null;
 					confirm = 0;
@@ -170,16 +169,30 @@ public class TileAltar extends TileSimpleInventory
 					}
 				}
 			}
-			markDirty();
+			else if (!worldObj.isRemote)
+			{
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.norecipe.name")));
+			}
 		}
 	}
 	
-	public boolean hasValidRecipe() {
+	public boolean hasValidRecipe() 
+	{
 		for(AltarRecipe recipe : ModRecipes.altarRecipes)
 			if(recipe.matches(itemHandler))
 				return true;
 
 		return false;
+	}
+	
+	public ItemStack currentOutput()
+	{
+		for(AltarRecipe recipe : ModRecipes.altarRecipes)
+			if(recipe.matches(itemHandler))
+				return recipe.getOutput();
+
+		return null;
+		
 	}
 	
 	@Override
@@ -270,12 +283,12 @@ public class TileAltar extends TileSimpleInventory
 				angle += anglePer;
 			}
 			
-			if (altarRecipe != null)
+			if (hasValidRecipe())
 			{
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
 				GlStateManager.scale(2, 2, 2);
-				mc.getRenderItem().renderItemIntoGUI(altarRecipe.getOutput(), 0, 0);
+				mc.getRenderItem().renderItemIntoGUI(currentOutput(), 0, 0);
 				GlStateManager.translate(-screenWidth, -screenHeight, 0);
 				GlStateManager.popMatrix();
 			}
