@@ -154,13 +154,14 @@ public class TileAltar extends TileSimpleInventory
 			{
 				if (hasValidRecipe())
 				{
-					disableTicks = 400;
+					disableTicks = 50;
 					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, currentOutput().copy());
 					worldObj.spawnEntityInWorld(outputItem);
 					altarRecipe = null;
 					emptyAltar();
 					confirm = 0;
 					markDirty();
+					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
 				}
 			}
 			else if (!worldObj.isRemote)
@@ -223,7 +224,9 @@ public class TileAltar extends TileSimpleInventory
 			}
 
 		if(did)
+		{
 			VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
+		}
 
 		return true;
 	}

@@ -56,7 +56,7 @@ public class BlockAltar extends BlockBase {
 	}
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
-		return new AxisAlignedBB(0.0,0,0.0,1.0,0.75,1.0);
+		return new AxisAlignedBB(0.0,0,0.0,1.0,0.65,1.0);
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public class BlockAltar extends BlockBase {
 		TileSimpleInventory inv = (TileSimpleInventory) world.getTileEntity(pos);
 
 		InventoryHelper.dropInventory(inv, world, state, pos);
-
+		
 		super.breakBlock(world, pos, state);
 	}
 
