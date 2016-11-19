@@ -15,7 +15,8 @@ public class Events {
 	public static void onDrawScreenPost(RenderGameOverlayEvent.Post event) 
 	{
 		Minecraft mc = Minecraft.getMinecraft();
-		if(event.getType() == ElementType.ALL) {
+		if(event.getType() == ElementType.ALL) 
+		{
 			RayTraceResult pos = mc.objectMouseOver;
 
 			if(pos != null) 

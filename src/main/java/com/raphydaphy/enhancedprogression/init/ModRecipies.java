@@ -10,10 +10,12 @@ public class ModRecipies
 	public static void registerCrafting()
 	{
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ingot_bronze, 4), ModItems.ingot_tin, ModItems.ingot_copper, ModItems.ingot_copper, ModItems.ingot_copper);
+		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.imbued_plank, 4), ModBlocks.imbued_log);
 	
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.basic_wand_copper), "  C", " S ", "S  ", 'S', Items.STICK, 'C', ModItems.ingot_copper);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.basic_wand_tin), "  C", " S ", "S  ", 'S', Items.STICK, 'C', ModItems.ingot_tin);
 		GameRegistry.addShapedRecipe(new ItemStack(ModBlocks.altar), "D D", "DED", " D ", 'D', Items.DIAMOND, 'E', Blocks.ENCHANTING_TABLE);
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.imbued_stick, 4), "P", "P", 'P', ModBlocks.imbued_plank);
 	}
 	
 	public static void registerSmelting()

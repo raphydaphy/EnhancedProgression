@@ -31,7 +31,6 @@ public class TileAltar extends TileSimpleInventory
     AltarRecipe altarRecipe;
     
     private int confirm = 0;
-    private boolean clearOutput = false;
     private int disableTicks = 0;
     
 	@Override
@@ -149,19 +148,20 @@ public class TileAltar extends TileSimpleInventory
 					markDirty();
 				}
 			}
-			boolean clearTmp = false;
+			System.out.println(confirm);
 			if(!worldObj.isRemote && confirm > 1 && disableTicks == 0) 
 			{
+				System.out.println("get far");
 				if (altarRecipe != null)
 				{
+					System.out.println("get further");
 					disableTicks = 400;
 					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, altarRecipe.getOutput());
 					worldObj.spawnEntityInWorld(outputItem);
 					altarRecipe = null;
-					clearOutput = true;
-					clearTmp = true;
 					confirm = 0;
 					markDirty();
+					
 					for(int i = 0; i < getSizeInventory(); i++) {
 						ItemStack stack = itemHandler.getStackInSlot(i);
 						if(stack != null) {
@@ -170,7 +170,7 @@ public class TileAltar extends TileSimpleInventory
 					}
 				}
 			}
-			clearOutput = clearTmp;
+			markDirty();
 		}
 	}
 	
@@ -215,17 +215,6 @@ public class TileAltar extends TileSimpleInventory
 	@Override
 	public void update()
 	{
-		altarRecipe = null;
-		clearOutput = true;
-		for(AltarRecipe recipe_ : ModRecipes.altarRecipes) 
-		{
-			if(recipe_.matches(itemHandler)) 
-			{
-				altarRecipe = recipe_;
-				clearOutput = false;
-				break;
-			}
-		}
 		
 		if(!worldObj.isRemote && confirm == 0 && disableTicks == 0) 
 		{
@@ -236,7 +225,6 @@ public class TileAltar extends TileSimpleInventory
 					ItemStack stack = item.getEntityItem();
 					if(addItem(stack) && stack.stackSize == 0)
 					{
-						System.out.println("Innocent item died");
 						item.setDead();
 					}
 				}
@@ -263,14 +251,14 @@ public class TileAltar extends TileSimpleInventory
 				break;
 			amount++;
 		}
-		
 		// if any items are held in the altar
 		if(amount > 0) {
 			float anglePer = 360F / amount;
 				
 
 			net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
-			for(int i = 0; i < amount; i++) {
+			for(int i = 0; i < amount; i++) 
+			{
 				double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 8;
 				double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 8;
 				GlStateManager.pushMatrix();
@@ -282,7 +270,7 @@ public class TileAltar extends TileSimpleInventory
 				angle += anglePer;
 			}
 			
-			if (altarRecipe != null && clearOutput == false)
+			if (altarRecipe != null)
 			{
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
