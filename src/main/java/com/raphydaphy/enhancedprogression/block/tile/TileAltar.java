@@ -155,7 +155,7 @@ public class TileAltar extends TileSimpleInventory
 				if (hasValidRecipe())
 				{
 					disableTicks = 400;
-					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, currentOutput());
+					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, currentOutput().copy());
 					worldObj.spawnEntityInWorld(outputItem);
 					altarRecipe = null;
 					emptyAltar();

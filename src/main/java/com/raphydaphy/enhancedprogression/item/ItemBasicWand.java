@@ -4,8 +4,10 @@ import javax.annotation.Nonnull;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.block.BlockAltar;
+import com.raphydaphy.enhancedprogression.init.ModBlocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -45,24 +47,29 @@ public class ItemBasicWand extends Item
         return true;
     }
 	 
-	 @Nonnull
-		@Override
-		public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float par8, float par9, float par10) {
-			Block block = world.getBlockState(pos).getBlock();
+	@Nonnull
+	@Override
+	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float par8, float par9, float par10) {
+		Block block = world.getBlockState(pos).getBlock();
 
-			if(block instanceof BlockAltar) {
+		if(block instanceof BlockAltar) {
 
-				boolean wanded;
-				wanded = ((BlockAltar) block).onUsedByWand(player, par1ItemStack, world, pos, side);
-				if(wanded && world.isRemote)
-				{
-					player.swingArm(hand);
-				}
-				
-				return wanded ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
+			boolean wanded;
+			wanded = ((BlockAltar) block).onUsedByWand(player, par1ItemStack, world, pos, side);
+			if(wanded && world.isRemote)
+			{
+				player.swingArm(hand);
 			}
-
-			return EnumActionResult.PASS;
+			
+			return wanded ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
+		}
+		else if(block instanceof BlockLog) 
+		{
+			world.setBlockState(pos, ModBlocks.imbued_log.getDefaultState());
+			player.swingArm(hand);
+			return EnumActionResult.SUCCESS;
 		}
 
+		return EnumActionResult.PASS;
+	}
 }
