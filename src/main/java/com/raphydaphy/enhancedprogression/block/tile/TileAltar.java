@@ -121,22 +121,14 @@ public class TileAltar extends TileSimpleInventory
 			confirm = 0;
 			markDirty();
 			
-			if (hasValidPlatform())
-			{
-				altarTier = 2;
-			}
-			else
-			{
-				altarTier = 1;
-			}
+			
 			if (getWorld().isRemote)
 			{
-				EnhancedProgression.proxy.setActionText((I18n.format("gui.altarmessage.name") + " " + altarTier));
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.altarmessage.name") + " " + getAltarTier()));
 			}
 		}
 		else 
 		{
-			
 			if (hasValidRecipe())
 			{
 				if (worldObj.isRemote)
@@ -149,7 +141,6 @@ public class TileAltar extends TileSimpleInventory
 					markDirty();
 				}
 			}
-			System.out.println(confirm);
 			if(!worldObj.isRemote && confirm > 1 && disableTicks == 0) 
 			{
 				if (hasValidRecipe())
@@ -164,7 +155,11 @@ public class TileAltar extends TileSimpleInventory
 					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
 				}
 			}
-			else if (!worldObj.isRemote)
+			else if (!worldObj.isRemote && hasValidItems() && !hasValidRecipe())
+			{
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.wrongtier.name") + " " + getRequiredTier() + " " + I18n.format("tile.altar.name")));
+			}
+			else if (!worldObj.isRemote && !hasValidRecipe())
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.norecipe.name")));
 			}
@@ -174,10 +169,54 @@ public class TileAltar extends TileSimpleInventory
 	public boolean hasValidRecipe() 
 	{
 		for(AltarRecipe recipe : ModRecipes.altarRecipes)
+		{
 			if(recipe.matches(itemHandler))
-				return true;
+			{
+				if (getRequiredTier() <= getAltarTier())
+				{
+					return true;
+				}
+			}
+		}
 
 		return false;
+	}
+	
+	public boolean hasValidItems() 
+	{
+		for(AltarRecipe recipe : ModRecipes.altarRecipes)
+		{
+			if(recipe.matches(itemHandler))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	public int getAltarTier()
+	{
+		altarTier = 1;
+		if (hasValidPlatform())
+		{
+			altarTier = 2;
+		}
+		VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
+		return altarTier;
+	}
+	
+	public int getRequiredTier()
+	{
+		for(AltarRecipe recipe : ModRecipes.altarRecipes)
+		{
+			if(recipe.matches(itemHandler))
+			{
+				return recipe.getAltarTier();
+			}
+		}
+		VanillaPacketDispatcher.dispatchTEToNearbyPlayers(worldObj, pos);
+		return 0;
 	}
 	
 	public ItemStack currentOutput()
@@ -239,7 +278,7 @@ public class TileAltar extends TileSimpleInventory
 			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)));
 			for(EntityItem item : items)
 			{
-				if(!item.isDead && item.getEntityItem() != null) {
+				if(!item.isDead && item.getEntityItem  () != null) {
 					ItemStack stack = item.getEntityItem();
 					if(addItem(stack) && stack.stackSize == 0)
 					{

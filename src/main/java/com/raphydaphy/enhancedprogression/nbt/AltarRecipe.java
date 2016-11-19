@@ -13,12 +13,16 @@ public class AltarRecipe {
 
 	private final ItemStack output;
 	private final ImmutableList<Object> inputs;
+	private final int altarTier;
 
-	public AltarRecipe(ItemStack output, Object... inputs) {
+	public AltarRecipe(int pAltarTier, ItemStack output, Object... inputs) 
+	{
+		altarTier = pAltarTier;
 		this.output = output;
 
 		ImmutableList.Builder<Object> inputsToSet = ImmutableList.builder();
-		for(Object obj : inputs) {
+		for(Object obj : inputs) 
+		{
 			if(obj instanceof String || obj instanceof ItemStack)
 				inputsToSet.add(obj);
 			else throw new IllegalArgumentException("Invalid input");
@@ -37,12 +41,14 @@ public class AltarRecipe {
 
 			int stackIndex = -1, oredictIndex = -1;
 
-			for(int j = 0; j < inputsMissing.size(); j++) {
+			for(int j = 0; j < inputsMissing.size(); j++) 
+			{
 				Object input = inputsMissing.get(j);
 				if(input instanceof String) {
 					List<ItemStack> validStacks = OreDictionary.getOres((String) input);
 					boolean found = false;
-					for(ItemStack ostack : validStacks) {
+					for(ItemStack ostack : validStacks) 
+					{
 						ItemStack cstack = ostack.copy();
 						if(cstack.getItemDamage() == Short.MAX_VALUE)
 							cstack.setItemDamage(stack.getItemDamage());
@@ -73,16 +79,24 @@ public class AltarRecipe {
 		return inputsMissing.isEmpty();
 	}
 
-	private boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
+	private boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) 
+	{
 		return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
 	}
 
-	public List<Object> getInputs() {
+	public List<Object> getInputs() 
+	{
 		return inputs;
 	}
 
-	public ItemStack getOutput() {
+	public ItemStack getOutput() 
+	{
 		return output;
+	}
+	
+	public int getAltarTier()
+	{
+		return altarTier;
 	}
 
 }
