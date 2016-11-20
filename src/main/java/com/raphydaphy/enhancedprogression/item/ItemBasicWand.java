@@ -127,10 +127,21 @@ public class ItemBasicWand extends Item
 					
 					currentBlockId++;
 					delay = 10;
+					
+					if (ThreadLocalRandom.current().nextInt(1, 50 + 1) == 6)
+					{
+						if (canBreak())
+						{
+							world.playSound(null, curBlock,SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
+							stack.stackSize = 0;
+							unfinished = false;
+						}
+					}
 				}
 				else if (replaceBlock.size() > currentBlockId)
 				{
 					delay--;
+					
 				}
 				else
 				{
@@ -143,6 +154,11 @@ public class ItemBasicWand extends Item
 			}
 		}
     }
+	
+	public boolean canBreak()
+	{
+		return true;
+	}
 	
 	public NBTTagCompound getNBTShareTag(ItemStack stack)
     {

@@ -8,5 +8,11 @@ public class ItemAdvancedWand extends ItemBasicWand
 		this.setEssenceCapacity(10000);
 	}
 	
+	@Override
+	public boolean canBreak()
+	{
+		return false;
+	}
+	
 
 }
