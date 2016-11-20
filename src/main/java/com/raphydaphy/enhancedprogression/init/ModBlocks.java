@@ -3,6 +3,7 @@ package com.raphydaphy.enhancedprogression.init;
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.block.BlockAltar;
 import com.raphydaphy.enhancedprogression.block.BlockBase;
+import com.raphydaphy.enhancedprogression.block.BlockDeadLog;
 import com.raphydaphy.enhancedprogression.block.BlockOre;
 import com.raphydaphy.enhancedprogression.block.BlockTotem;
 
@@ -18,6 +19,7 @@ public class ModBlocks {
 	
 	public static BlockBase imbued_log;
 	public static BlockBase imbued_plank;
+	public static BlockDeadLog dead_log;
 	
 	public static BlockTotem totem_top;
 	public static BlockTotem totem_middle;
@@ -31,6 +33,7 @@ public class ModBlocks {
 		
 		imbued_log = register(new BlockBase(Material.WOOD, "imbued_log").setCreativeTab(EnhancedProgression.creativeTab));
 		imbued_plank = register(new BlockBase(Material.WOOD, "imbued_plank").setCreativeTab(EnhancedProgression.creativeTab));
+		//dead_log = registerBlock( BlockDeadLog.paging.getBlock(0),"dead_log");
 		
 		totem_top = register(new BlockTotem("totem_top").setCreativeTab(EnhancedProgression.creativeTab));
 		totem_middle = register(new BlockTotem("totem_middle").setCreativeTab(EnhancedProgression.creativeTab));
@@ -38,7 +41,7 @@ public class ModBlocks {
 		
 		altar = register(new BlockAltar(false, "altar").setCreativeTab(EnhancedProgression.creativeTab));
 	}
-
+	
 	private static <T extends Block> T register(T block, ItemBlock itemBlock) {
 		GameRegistry.register(block);
 		GameRegistry.register(itemBlock);
@@ -54,6 +57,10 @@ public class ModBlocks {
 		else if (block instanceof BlockTotem) {
 			((BlockTotem)block).registerItemModel(itemBlock);
 		}
+		
+		else if (block instanceof BlockDeadLog) {
+			((BlockDeadLog)block).registerItemModel(itemBlock);
+		}
 
 		
 		return block;
@@ -64,5 +71,4 @@ public class ModBlocks {
 		itemBlock.setRegistryName(block.getRegistryName());
 		return register(block, itemBlock);
 	}
-
 }

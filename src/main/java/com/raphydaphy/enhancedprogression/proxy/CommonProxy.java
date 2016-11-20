@@ -28,4 +28,6 @@ public class CommonProxy
 		
 		GameRegistry.registerTileEntity(TileAltar.class, "enhancedprogression:altar");
 	}
+	
+
 }

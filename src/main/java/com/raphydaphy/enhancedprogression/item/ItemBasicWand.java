@@ -113,11 +113,12 @@ public class ItemBasicWand extends Item
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entityIn, int itemSlot, boolean isSelected)
     {
+		
 		if(unfinished)
 		{
 			if (isSelected)
 			{
-				if (delay == 0 && replaceBlock.size() > currentBlockId)
+				if (delay == 0 && replaceBlock.size() > currentBlockId && !world.isRemote)
 				{
 					curBlock = replaceBlock.get(currentBlockId);
 					world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
@@ -138,12 +139,12 @@ public class ItemBasicWand extends Item
 						}
 					}
 				}
-				else if (replaceBlock.size() > currentBlockId)
+				else if (replaceBlock.size() > currentBlockId && !world.isRemote)
 				{
 					delay--;
 					
 				}
-				else
+				else if (!world.isRemote)
 				{
 					unfinished = false;
 				}
