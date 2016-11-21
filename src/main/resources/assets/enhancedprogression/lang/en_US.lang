@@ -20,6 +20,7 @@ tile.ore_tin.name=Tin Ore
 
 tile.imbued_log.name=Imbued Log
 tile.imbued_plank.name=Imbued Plank
+tile.dead_log.name=Dead Log
 
 #Fancy Blocks
 tile.altar.name=Altar

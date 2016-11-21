@@ -122,7 +122,7 @@ public class ItemBasicWand extends Item
 				{
 					curBlock = replaceBlock.get(currentBlockId);
 					world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
-					world.setBlockState(curBlock, ModBlocks.imbued_log.getDefaultState());
+					world.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
 					
 					this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1));
 					
