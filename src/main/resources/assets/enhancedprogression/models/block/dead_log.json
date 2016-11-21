@@ -1,0 +1,7 @@
+{
+	"parent": "block/cube_column",
+	"textures": {
+		"end": "enhancedprogression:blocks/dead_log_top",
+		"side": "enhancedprogression:blocks/dead_log_side"
+	}
+}

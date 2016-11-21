@@ -19,6 +19,7 @@ public class ModBlocks {
 	
 	public static BlockBase imbued_log;
 	public static BlockBase imbued_plank;
+	
 	public static BlockDeadLog dead_log;
 	
 	public static BlockTotem totem_top;
@@ -33,7 +34,8 @@ public class ModBlocks {
 		
 		imbued_log = register(new BlockBase(Material.WOOD, "imbued_log").setCreativeTab(EnhancedProgression.creativeTab));
 		imbued_plank = register(new BlockBase(Material.WOOD, "imbued_plank").setCreativeTab(EnhancedProgression.creativeTab));
-		//dead_log = registerBlock( BlockDeadLog.paging.getBlock(0),"dead_log");
+		
+		dead_log = register(new BlockDeadLog("dead_log"));
 		
 		totem_top = register(new BlockTotem("totem_top").setCreativeTab(EnhancedProgression.creativeTab));
 		totem_middle = register(new BlockTotem("totem_middle").setCreativeTab(EnhancedProgression.creativeTab));
@@ -58,7 +60,8 @@ public class ModBlocks {
 			((BlockTotem)block).registerItemModel(itemBlock);
 		}
 		
-		else if (block instanceof BlockDeadLog) {
+		else if (block instanceof BlockDeadLog)
+		{
 			((BlockDeadLog)block).registerItemModel(itemBlock);
 		}
 
@@ -71,4 +74,5 @@ public class ModBlocks {
 		itemBlock.setRegistryName(block.getRegistryName());
 		return register(block, itemBlock);
 	}
+	
 }

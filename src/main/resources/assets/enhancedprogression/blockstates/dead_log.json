@@ -1,0 +1,14 @@
+{
+	"forge_marker":1,
+    "variants": {
+    	"decay": {
+    		"1": {  "model": "enhancedprogression:dead_log" },
+    		"2": {  "model": "enhancedprogression:dead_log2" },
+    		"3": {  "model": "enhancedprogression:dead_log3" },
+    		"4": {  "model": "enhancedprogression:dead_log4" },
+    		"5": {  "model": "enhancedprogression:dead_log5" },
+    		"6": {  "model": "enhancedprogression:dead_log6" }
+    	},
+        "normal": { "model": "enhancedprogression:dead_log" }
+    }
+}
