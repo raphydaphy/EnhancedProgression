@@ -17,7 +17,7 @@ public class BlockDeadLog extends BlockBase
 	public BlockDeadLog(String name) 
 	{
 		super(Material.WOOD, name);
-		//this.setDefaultState(blockState.getBaseState().withProperty(DECAY, 1));
+		this.setDefaultState(blockState.getBaseState().withProperty(DECAY, 1));
 		setHardness(1.0f);
 		setCreativeTab(EnhancedProgression.creativeTab);
 		this.setTickRandomly(true);
@@ -25,7 +25,6 @@ public class BlockDeadLog extends BlockBase
 	
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
 	{
-		worldIn.setBlockState(pos, state.withProperty(DECAY, 0));
 		worldIn.scheduleBlockUpdate(pos, this, 10, 1);
 	}
 	
