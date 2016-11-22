@@ -16,11 +16,14 @@ public class ModRecipies
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.basic_wand_tin), "  C", " S ", "S  ", 'S', Items.STICK, 'C', ModItems.ingot_tin);
 		GameRegistry.addShapedRecipe(new ItemStack(ModBlocks.altar), "D D", "DED", " D ", 'D', Items.DIAMOND, 'E', Blocks.ENCHANTING_TABLE);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.imbued_stick, 4), "P", "P", 'P', ModBlocks.imbued_plank);
+		
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_lantern), "SCS", "CBC", "SCS", 'S', Items.STICK, 'C', Items.COAL, 'B', ModItems.ingot_bronze);
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_explosion), "SGS", "GBG", "SGS", 'S', Items.STICK, 'G', Items.GUNPOWDER, 'B', ModItems.ingot_bronze);
 	}
 	
 	public static void registerSmelting()
 	{
 		GameRegistry.addSmelting(ModBlocks.ore_copper, new ItemStack(ModItems.ingot_copper), 0.7f);
 		GameRegistry.addSmelting(ModBlocks.ore_tin, new ItemStack(ModItems.ingot_tin), 0.7f);
-	}
+	} 
 }

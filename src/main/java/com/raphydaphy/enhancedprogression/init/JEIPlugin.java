@@ -38,9 +38,12 @@ public class JEIPlugin implements IModPlugin
 		  registry.addDescription(new ItemStack(ModItems.ingot_bronze), "Bronze ingots are obtained in a mere crafting table and used to craft some basic items used to improve your bas");
 		  registry.addDescription(new ItemStack(ModItems.ingot_copper), "The most basic metal. Used to craft bronze and basic wands.");
 		  registry.addDescription(new ItemStack(ModItems.ingot_tin), "A simple metal used to craft bronze and basic wands.");
-		  registry.addDescription(new ItemStack(ModBlocks.totem_bottom), "Unimplemented at the moment. It looks kind of cool tho.");
-		  registry.addDescription(new ItemStack(ModBlocks.totem_top), "Unimplemented at the moment. It looks kind of cool tho.");
-		  registry.addDescription(new ItemStack(ModBlocks.totem_middle), "Unimplemented at the moment. It looks kind of cool tho.");
+		  registry.addDescription(new ItemStack(ModBlocks.totem_bottom), "Unimplemented.");
+		  registry.addDescription(new ItemStack(ModBlocks.totem_top), "Unimplemented.");
+		  registry.addDescription(new ItemStack(ModBlocks.totem_middle), "Unimplemented.");
+		  registry.addDescription(new ItemStack(ModItems.upgrade_template_basic), "Unimplemented.");
+		  registry.addDescription(new ItemStack(ModItems.spell_card_lantern), "This simple spell can place a torch at the cost of 5 essence. Used by either placing the spell card in your offhand with a wand in your main hand, or by infusing it with a wand in an altar to add it to the wands inventory. Note that only Advanced+ wands can be infused with spells and Basic wands require the spell to be in the offhand always.");
+		  registry.addDescription(new ItemStack(ModItems.spell_card_explosion), "For the cost of 50 essence, this spell will create an explosion on the block you aim it at. Due to the essence imbued into the explosion, this blast will not cause any terrain damage and will not hurt the person who casts the spell.");
 	}
 
 	@Override

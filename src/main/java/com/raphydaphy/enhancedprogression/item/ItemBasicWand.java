@@ -239,8 +239,28 @@ public class ItemBasicWand extends Item
 					if (useEssence(5))
 					{
 						BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
-						world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
-						return EnumActionResult.SUCCESS;
+						if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
+						{
+							world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
+							return EnumActionResult.SUCCESS;
+						}
+						else
+						{
+							EnhancedProgression.proxy.setActionText((I18n.format("gui.obstructed.name")));
+							return EnumActionResult.PASS;
+						}
+					}
+					else
+					{
+						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+						return EnumActionResult.PASS;
+					}
+				}
+				else if(!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_explosion)))
+				{
+					if (useEssence(50))
+					{
+						world.createExplosion(player, pos.getX(), pos.getY() + 2, pos.getZ(), 3, false);
 					}
 					else
 					{

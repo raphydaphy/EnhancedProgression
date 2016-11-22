@@ -18,6 +18,8 @@ public class ModItems {
 	public static ItemBase imbued_stick;
 	
 	public static ItemBase spell_card_lantern;
+	public static ItemBase spell_card_explosion;
+	
 	public static ItemBase upgrade_template_basic;
 	
 	public static ItemBasicWand basic_wand_copper;
@@ -33,6 +35,8 @@ public class ModItems {
 		imbued_stick = register(new ItemBase("imbued_stick").setCreativeTab(EnhancedProgression.creativeTab));
 		
 		spell_card_lantern = register(new ItemBase("spell_card_lantern").setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_explosion = register(new ItemBase("spell_card_explosion").setCreativeTab(EnhancedProgression.creativeTab));
+		
 		upgrade_template_basic = register(new ItemBase("upgrade_template_basic").setCreativeTab(EnhancedProgression.creativeTab));
 		
 		basic_wand_copper = register(new ItemBasicWand("basic_wand_copper").setCreativeTab(EnhancedProgression.creativeTab));
