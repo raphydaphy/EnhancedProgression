@@ -13,14 +13,19 @@ import com.raphydaphy.enhancedprogression.init.ModItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockOre;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -40,11 +45,17 @@ public class ItemBasicWand extends Item
 	private int essenceStored = 0;
 	private int essenceCapacity = 0;
 	
-	private List<BlockPos> replaceBlock = new ArrayList<BlockPos>();
 	private boolean unfinished = false;
+	private String task;
+	
+	// Logger
+	private List<BlockPos> replaceBlock = new ArrayList<BlockPos>();
 	private int currentBlockId = 0;
 	private BlockPos curBlock;
 	private int delay = 0;
+	
+	// Rapidfire
+	private int arrows = 0;
 	
 	public ItemBasicWand(String name) {
 		this.name = name;
@@ -120,35 +131,73 @@ public class ItemBasicWand extends Item
 		{
 			if (isSelected)
 			{
-				if (delay == 0 && replaceBlock.size() > currentBlockId && !world.isRemote)
+				if (task == "LOGGER")
 				{
-					curBlock = replaceBlock.get(currentBlockId);
-					world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
-					world.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
-					
-					this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1));
-					
-					currentBlockId++;
-					delay = 10;
-					
-					if (ThreadLocalRandom.current().nextInt(1, 50 + 1) == 6)
+					if (delay == 0 && replaceBlock.size() > currentBlockId && !world.isRemote)
 					{
-						if (canBreak())
+						curBlock = replaceBlock.get(currentBlockId);
+						world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
+						world.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
+						
+						this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1));
+						
+						currentBlockId++;
+						delay = 10;
+						
+						if (ThreadLocalRandom.current().nextInt(1, 50 + 1) == 6)
 						{
-							world.playSound(null, curBlock,SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
-							stack.stackSize = 0;
-							unfinished = false;
+							if (canBreak())
+							{
+								world.playSound(null, curBlock,SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
+								stack.stackSize = 0;
+								unfinished = false;
+							}
 						}
 					}
+					else if (replaceBlock.size() > currentBlockId && !world.isRemote)
+					{
+						delay--;
+						
+					}
+					else if (!world.isRemote)
+					{
+						unfinished = false;
+					}
 				}
-				else if (replaceBlock.size() > currentBlockId && !world.isRemote)
+				else if (task == "RAPIDFIRE")
 				{
-					delay--;
-					
-				}
-				else if (!world.isRemote)
-				{
-					unfinished = false;
+					if (delay == 0)
+                    {
+						if (useEssence(10 * arrows))
+						{
+							ItemStack itemstack = new ItemStack(Items.TIPPED_ARROW);
+							float arrowVelocity = 5;
+							int knockbackStrength = 1;
+							
+	                    	arrows++;
+	                    	delay = 5;
+	                    	
+	                    	ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
+							EntityArrow entityArrow = itemarrow.createArrow(world, itemstack, (EntityLivingBase) entityIn);
+							
+	                        entityArrow.setAim(entityIn, entityIn.rotationPitch, entityIn.rotationYaw, 0.0F, arrowVelocity, 1.0F);
+	                        entityArrow.setKnockbackStrength(knockbackStrength);
+	                        entityArrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
+	                        
+	                    	world.spawnEntityInWorld(entityArrow);
+	                    	world.playSound(null, entityIn.posX, entityIn.posY, entityIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1 * 0.5F);
+						}
+						else
+						{
+							EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+							unfinished = false;
+						}
+						
+                    }
+					else
+					{
+						delay --;
+					}
 				}
 			}
 			else
@@ -178,12 +227,35 @@ public class ItemBasicWand extends Item
     {
         return false;
     }
+	
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
+    {
+		unfinished = false;
+    }
 	 
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
 		if (playerIn.isSneaking())
 		{
 			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored() + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
+		}
+		else if(!worldIn.isRemote && ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
+		{
+			if (useEssence(100))
+			{
+				task = "RAPIDFIRE";
+				
+				delay = 0;
+				arrows = 0;
+				
+				unfinished = true;
+				
+                playerIn.setActiveHand(hand);
+			}
+			else
+			{
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+			}
 		}
 		playerIn.swingArm(hand);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
@@ -208,8 +280,6 @@ public class ItemBasicWand extends Item
 		}
 		else if(block instanceof BlockLog) 
 		{
-			System.out.println("Starting new loop");
-			
 			replaceBlock.clear();
 			currentBlockId = 0;
 			delay = 0;
@@ -222,7 +292,42 @@ public class ItemBasicWand extends Item
 					replaceBlock.add(toReplace);
 				}
 			}
+			task = "LOGGER";
 			unfinished = true;
+			player.setActiveHand(hand);
+			return EnumActionResult.SUCCESS;
+		}
+		else if(block instanceof BlockOre) 
+		{
+			if (!world.isRemote)
+			{
+				if (block == Blocks.EMERALD_ORE)
+				{
+					world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
+					addEssence(1000);
+				}
+			    else if (block == Blocks.DIAMOND_ORE)
+				{
+			    	world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
+					addEssence(1000);
+				}
+			    else if (block == Blocks.GOLD_ORE)
+				{
+			    	world.setBlockState(pos, Blocks.IRON_ORE.getDefaultState());
+					addEssence(500);
+				}
+			    else if (block == Blocks.IRON_ORE)
+				{
+			    	world.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
+					addEssence(200);
+				}
+			    else if (block == Blocks.COAL_ORE)
+				{
+			    	world.setBlockState(pos, Blocks.STONE.getDefaultState());
+					addEssence(100);
+				}
+			}
+			
 			player.setActiveHand(hand);
 			return EnumActionResult.SUCCESS;
 		}

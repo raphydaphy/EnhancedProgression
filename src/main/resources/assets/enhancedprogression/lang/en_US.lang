@@ -8,6 +8,7 @@ item.imbued_stick.name=Imbued Stick
 
 item.spell_card_lantern.name=Spell Card - Magic Lantern
 item.spell_card_explosion.name=Spell Card - Contained Explosion
+item.spell_card_rapidfire.name=Spell Card - Rapid Fire
 
 item.upgrade_template_basic.name=Basic Upgrade Template
 item.upgrade_template_advanced.name=Advanced Upgrade Template
