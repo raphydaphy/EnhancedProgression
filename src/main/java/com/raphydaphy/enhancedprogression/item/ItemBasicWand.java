@@ -234,7 +234,7 @@ public class ItemBasicWand extends Item
 			}
 			else
 			{
-				if(ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
+				if(!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
 				{
 					if (useEssence(5))
 					{
