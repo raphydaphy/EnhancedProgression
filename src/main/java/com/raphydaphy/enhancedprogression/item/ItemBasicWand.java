@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.block.BlockAltar;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
+import com.raphydaphy.enhancedprogression.init.ModItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
@@ -16,6 +17,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -229,6 +231,23 @@ public class ItemBasicWand extends Item
 			if (player.isSneaking())
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored() + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
+			}
+			else
+			{
+				if(ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
+				{
+					if (useEssence(5))
+					{
+						BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
+						world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
+						return EnumActionResult.SUCCESS;
+					}
+					else
+					{
+						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+						return EnumActionResult.PASS;
+					}
+				}
 			}
 		}
 		return EnumActionResult.PASS;

@@ -17,6 +17,9 @@ public class ModItems {
 	
 	public static ItemBase imbued_stick;
 	
+	public static ItemBase spell_card_lantern;
+	public static ItemBase upgrade_template_basic;
+	
 	public static ItemBasicWand basic_wand_copper;
 	public static ItemBasicWand basic_wand_tin;
 	public static ItemAdvancedWand advanced_wand;
@@ -28,6 +31,9 @@ public class ModItems {
 		ingot_bronze_imbued = register(new ItemBase("ingot_bronze_imbued").setCreativeTab(EnhancedProgression.creativeTab));
 		
 		imbued_stick = register(new ItemBase("imbued_stick").setCreativeTab(EnhancedProgression.creativeTab));
+		
+		spell_card_lantern = register(new ItemBase("spell_card_lantern").setCreativeTab(EnhancedProgression.creativeTab));
+		upgrade_template_basic = register(new ItemBase("upgrade_template_basic").setCreativeTab(EnhancedProgression.creativeTab));
 		
 		basic_wand_copper = register(new ItemBasicWand("basic_wand_copper").setCreativeTab(EnhancedProgression.creativeTab));
 		basic_wand_tin = register(new ItemBasicWand("basic_wand_tin").setCreativeTab(EnhancedProgression.creativeTab));
