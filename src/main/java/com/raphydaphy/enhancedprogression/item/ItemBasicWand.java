@@ -34,6 +34,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -101,9 +102,12 @@ public class ItemBasicWand extends Item
 		if (getEssenceStored() + amount < getMaxEssence() + 1)
 		{
 			essenceStored += amount;
-			return true;
 		}
-		return false;
+		else
+		{
+			essenceStored = getMaxEssence();
+		}
+		return true;
 	}
 	
 	private static Iterable<BlockPos.MutableBlockPos> WOOD_SEARCH_AREA = BlockPos.getAllInBoxMutable(new BlockPos(-5, -5, -5), new BlockPos(5, 25, 5));
@@ -116,6 +120,23 @@ public class ItemBasicWand extends Item
 	public void registerItemModel() {
 		EnhancedProgression.proxy.registerItemRenderer(this, 0, name);
 	}
+	
+	private EntityArrow fancySetAim(EntityArrow target, Entity entity, float pitch, float yaw, float velocity, float knockbackResistance, float xOff, float yOff, float zOff)
+    {
+        float x = -MathHelper.sin(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
+        float y = -MathHelper.sin(pitch * 0.017453292F);
+        float z = MathHelper.cos(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
+        target.setThrowableHeading((double)x - xOff, (double)y - yOff, (double)z - xOff, velocity, 0);
+        target.motionX += entity.motionX;
+        target.motionZ += entity.motionZ;
+
+        if (!entity.onGround)
+        {
+            target.motionY += entity.motionY;
+        }
+        
+        return target;
+    }
 	
 	 @SideOnly(Side.CLIENT)
     public boolean isFull3D()
@@ -170,22 +191,33 @@ public class ItemBasicWand extends Item
                     {
 						if (useEssence(10 * arrows))
 						{
-							ItemStack itemstack = new ItemStack(Items.TIPPED_ARROW);
-							float arrowVelocity = 5;
-							int knockbackStrength = 1;
-							
-	                    	arrows++;
-	                    	delay = 5;
-	                    	
-	                    	ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
-							EntityArrow entityArrow = itemarrow.createArrow(world, itemstack, (EntityLivingBase) entityIn);
-							
-	                        entityArrow.setAim(entityIn, entityIn.rotationPitch, entityIn.rotationYaw, 0.0F, arrowVelocity, 1.0F);
-	                        entityArrow.setKnockbackStrength(knockbackStrength);
-	                        entityArrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
-	                        
-	                    	world.spawnEntityInWorld(entityArrow);
-	                    	world.playSound(null, entityIn.posX, entityIn.posY, entityIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1 * 0.5F);
+							if (!world.isRemote)
+							{
+								arrows++;
+		                    	delay = 5;
+		                    	
+		                    	int xOff = ThreadLocalRandom.current().nextInt(-1,1 + 1);
+		                    	int yOff = ThreadLocalRandom.current().nextInt(-1,1 + 1);
+		                    	int zOff = ThreadLocalRandom.current().nextInt(-1,1 + 1);
+		                    	
+		                    	System.out.println(arrows);
+		                    	
+		                    	EntityLivingBase shooter = (EntityLivingBase) entityIn;
+		                    	shooter.posX += xOff;
+		                    	shooter.posY += yOff;
+		                    	shooter.posZ += zOff;
+		                    	
+								ItemStack itemstack = new ItemStack(Items.TIPPED_ARROW);
+		                    	ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
+								EntityArrow entityArrow = itemarrow.createArrow(world, itemstack, shooter);
+								
+		                        entityArrow = fancySetAim(entityArrow, shooter, entityIn.rotationPitch, entityIn.rotationYaw, 5.0F, 1.0F, xOff, yOff, zOff);
+		                        entityArrow.setKnockbackStrength(1);
+		                        entityArrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
+		                        
+		                    	world.spawnEntityInWorld(entityArrow);
+		                    	world.playSound(null, shooter.posX, shooter.posY, shooter.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1 * 0.5F);
+							}
 						}
 						else
 						{
