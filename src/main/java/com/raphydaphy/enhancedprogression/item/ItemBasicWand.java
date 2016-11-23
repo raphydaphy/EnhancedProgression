@@ -189,16 +189,16 @@ public class ItemBasicWand extends Item
 				{
 					if (delay == 0)
                     {
-						if (useEssence(10 * arrows))
+						if (useEssence(arrows))
 						{
 							if (!world.isRemote)
 							{
 								arrows++;
 		                    	delay = 5;
 		                    	
-		                    	int xOff = ThreadLocalRandom.current().nextInt(-1,1 + 1);
-		                    	int yOff = ThreadLocalRandom.current().nextInt(-1,1 + 1);
-		                    	int zOff = ThreadLocalRandom.current().nextInt(-1,1 + 1);
+		                    	int xOff = 0;
+		                    	int yOff = 0;
+		                    	int zOff = 0;
 		                    	
 		                    	System.out.println(arrows);
 		                    	

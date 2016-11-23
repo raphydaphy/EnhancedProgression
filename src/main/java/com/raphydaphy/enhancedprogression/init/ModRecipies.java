@@ -14,11 +14,14 @@ public class ModRecipies
 	
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.basic_wand_copper), "  C", " S ", "S  ", 'S', Items.STICK, 'C', ModItems.ingot_copper);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.basic_wand_tin), "  C", " S ", "S  ", 'S', Items.STICK, 'C', ModItems.ingot_tin);
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.advanced_wand), "  B", " S ", "S  ", 'S', ModItems.imbued_stick, 'B', ModItems.ingot_bronze_imbued);
+		
 		GameRegistry.addShapedRecipe(new ItemStack(ModBlocks.altar), "D D", "DED", " D ", 'D', Items.DIAMOND, 'E', Blocks.ENCHANTING_TABLE);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.imbued_stick, 4), "P", "P", 'P', ModBlocks.imbued_plank);
 		
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_lantern), "SCS", "CBC", "SCS", 'S', Items.STICK, 'C', Items.COAL, 'B', ModItems.ingot_bronze);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_explosion), "SGS", "GBG", "SGS", 'S', Items.STICK, 'G', Items.GUNPOWDER, 'B', ModItems.ingot_bronze);
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_rapidfire), "SAS", "ABA", "AGA", 'S', ModItems.imbued_stick, 'A', Items.ARROW, 'B', ModItems.ingot_bronze_imbued);
 	}
 	
 	public static void registerSmelting()
