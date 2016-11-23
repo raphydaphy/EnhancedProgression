@@ -9,6 +9,8 @@ item.imbued_stick.name=Imbued Stick
 item.spell_card_lantern.name=Spell Card - Magic Lantern
 item.spell_card_explosion.name=Spell Card - Contained Explosion
 item.spell_card_rapidfire.name=Spell Card - Rapid Fire
+item.spell_card_transmutation.name=Spell Card - Cryptic Transmutation
+item.spell_card_hunger.name=Spell Card - Hunger
 
 item.upgrade_template_basic.name=Basic Upgrade Template
 item.upgrade_template_advanced.name=Advanced Upgrade Template
@@ -42,3 +44,4 @@ gui.checkessence.name=Storing
 gui.essence.name=Essence
 gui.notenoughessence.name=Not Enough Essence!
 gui.obstructed.name=Location Obstructed!
+gui.invalidblock.name=Invalid Block!

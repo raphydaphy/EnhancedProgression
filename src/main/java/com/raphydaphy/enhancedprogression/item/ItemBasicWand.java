@@ -32,10 +32,12 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,6 +50,12 @@ public class ItemBasicWand extends Item
 	
 	private boolean unfinished = false;
 	private String task;
+	
+	// Particles
+	private EnumParticleTypes particleType = EnumParticleTypes.END_ROD;
+	private int particles = 0;
+	private int particleRadius = 0;
+	private BlockPos particlePos;
 	
 	// Logger
 	private List<BlockPos> replaceBlock = new ArrayList<BlockPos>();
@@ -89,7 +97,7 @@ public class ItemBasicWand extends Item
 	
 	public boolean useEssence(int amount)
 	{
-		if (getEssenceStored() - amount > 0)
+		if (getEssenceStored() - amount >= 0)
 		{
 			essenceStored -= amount;
 			return true;
@@ -159,7 +167,7 @@ public class ItemBasicWand extends Item
 						curBlock = replaceBlock.get(currentBlockId);
 						world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
 						world.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
-						
+						spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, curBlock, 7, 1);
 						this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1));
 						
 						currentBlockId++;
@@ -231,6 +239,18 @@ public class ItemBasicWand extends Item
 						delay --;
 					}
 				}
+				else if (task == "PARTICLES")
+				{
+					if (particles > 0)
+					{
+						particles--;
+						spawnParticles(particleType, world, true, particlePos, particles, particleRadius);
+					}
+					else
+					{
+						unfinished = true;
+					}
+				}
 			}
 			else
 			{
@@ -238,6 +258,14 @@ public class ItemBasicWand extends Item
 			}
 		}
     }
+
+	public static void spawnParticles(EnumParticleTypes particleType, World world, boolean forceSpawn, BlockPos pos, int count, double radius) {
+		spawnParticlesServer(particleType, world, forceSpawn, pos.getX(), pos.getY(), pos.getZ(), count, radius);
+	}
+	
+	public static void spawnParticlesServer(EnumParticleTypes particleType, World world, boolean forceSpawn, double x, double y, double z, int count, double radius) {
+		FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension()).spawnParticle(particleType, forceSpawn, x, y, z, count, radius, radius, radius, 0.005D);
+	}
 	
 	public boolean canBreak()
 	{
@@ -262,7 +290,10 @@ public class ItemBasicWand extends Item
 	
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
     {
-		unfinished = false;
+		if (task != "PARTICLES")
+		{
+			unfinished = false;
+		}
     }
 	 
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
@@ -331,6 +362,15 @@ public class ItemBasicWand extends Item
 		}
 		else if(block instanceof BlockOre) 
 		{
+			System.out.println(world.isRemote);
+			
+			task = "PARTICLES";
+			particleType = EnumParticleTypes.DAMAGE_INDICATOR;
+			particles = 2;
+			particleRadius = 1;
+			particlePos = new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ());
+			unfinished = true;
+			
 			if (!world.isRemote)
 			{
 				if (block == Blocks.EMERALD_ORE)
@@ -371,13 +411,48 @@ public class ItemBasicWand extends Item
 			}
 			else
 			{
-				if(!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
+				if(!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_transmutation)))
+				{
+					if (block == Blocks.DIAMOND_BLOCK)
+					{
+						if (useEssence(1000))
+						{
+							task = "PARTICLES";
+							particleType = EnumParticleTypes.END_ROD;
+							particles = 7;
+							particleRadius = 1;
+							particlePos = new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ());
+							unfinished = true;
+							
+							world.setBlockState(pos, ModBlocks.altar.getDefaultState());
+							return EnumActionResult.SUCCESS;
+						}
+						else
+						{
+							EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+							return EnumActionResult.FAIL;
+						}
+					}
+					else
+					{
+						EnhancedProgression.proxy.setActionText((I18n.format("gui.invalidblock.name")));
+						return EnumActionResult.FAIL;
+					}
+				}
+				else if(!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
 				{
 					if (useEssence(5))
 					{
 						BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
 						if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
 						{
+							task = "PARTICLES";
+							particleType = EnumParticleTypes.FLAME;
+							particles = 7;
+							particleRadius = 1;
+							particlePos = new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ());
+							unfinished = true;
+							
 							world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
 							return EnumActionResult.SUCCESS;
 						}
@@ -406,6 +481,7 @@ public class ItemBasicWand extends Item
 					}
 				}
 			}
+		
 		}
 		return EnumActionResult.PASS;
 	}
