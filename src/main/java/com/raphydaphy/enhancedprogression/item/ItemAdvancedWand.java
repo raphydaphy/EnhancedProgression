@@ -5,7 +5,6 @@ public class ItemAdvancedWand extends ItemBasicWand
 
 	public ItemAdvancedWand() {
 		super("advanced_wand");
-		this.setEssenceCapacity(10000);
 	}
 	
 	@Override
@@ -20,5 +19,10 @@ public class ItemAdvancedWand extends ItemBasicWand
 		return 2;
 	}
 	
+	@Override
+	public int getMaxEssence()
+	{
+		return 10000;
+	}
 
 }

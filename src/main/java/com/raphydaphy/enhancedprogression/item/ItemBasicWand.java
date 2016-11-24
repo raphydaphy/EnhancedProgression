@@ -45,34 +45,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemBasicWand extends Item
 {
 	protected String name;
-
-	private int essenceStored = 0;
-	private int essenceCapacity = 0;
-	
-	private boolean unfinished = false;
-	private String task;
-	
-	// Particles
-	private EnumParticleTypes particleType = EnumParticleTypes.END_ROD;
-	private int particles = 0;
-	private int particleRadius = 0;
-	private BlockPos particlePos;
 	
 	// Logger
 	private List<BlockPos> replaceBlock = new ArrayList<BlockPos>();
-	private int currentBlockId = 0;
 	private BlockPos curBlock;
-	private int delay = 0;
-	
-	// Rapidfire
-	private int arrows = 0;
 	
 	public ItemBasicWand(String name) {
 		this.name = name;
-		this.setEssenceCapacity(1000);
 		setUnlocalizedName(name);
 		setRegistryName(name);
-		this.maxStackSize = 1;
+		this.maxStackSize = 1;		
 	}
 	
 	@Override
@@ -86,42 +68,41 @@ public class ItemBasicWand extends Item
 		return 1;
 	}
 	
-	public void setEssenceCapacity(int capacity)
+	public int getEssenceStored(ItemStack stack)
 	{
-		essenceCapacity = capacity;
-	}
-	
-	public int getEssenceStored()
-	{
-		return essenceStored;
+		NBTTagCompound compoundTmp = stack.getTagCompound();
+		return compoundTmp.getInteger("essenceStored");
 	}
 	
 	public int getMaxEssence()
 	{
-		return essenceCapacity;
+		return 1000;
 	}
 	
-	public boolean useEssence(int amount)
+	public boolean useEssence(int amount, ItemStack stack)
 	{
-		if (getEssenceStored() - amount >= 0)
+		NBTTagCompound compoundTmp = stack.getTagCompound();
+		if (getEssenceStored(stack) - amount >= 0)
 		{
-			essenceStored -= amount;
+			compoundTmp.setInteger("essenceStored", compoundTmp.getInteger("essenceStored") - amount);
 			return true;
 		}
+		stack.setTagCompound(compoundTmp);
 		return false;
 	}
 	
-	public boolean addEssence(int amount)
+	public void addEssence(int amount, ItemStack stack)
 	{
-		if (getEssenceStored() + amount < getMaxEssence() + 1)
+		NBTTagCompound compoundTmp = stack.getTagCompound();
+		if (getEssenceStored(stack) + amount < getMaxEssence() + 1)
 		{
-			essenceStored += amount;
+			compoundTmp.setInteger("essenceStored", compoundTmp.getInteger("essenceStored") + amount);
 		}
 		else
 		{
-			essenceStored = getMaxEssence();
+			compoundTmp.setInteger("essenceStored", getMaxEssence());
 		}
-		return true;
+		stack.setTagCompound(compoundTmp);
 	}
 	
 	private static Iterable<BlockPos.MutableBlockPos> WOOD_SEARCH_AREA = BlockPos.getAllInBoxMutable(new BlockPos(-5, -5, -5), new BlockPos(5, 25, 5));
@@ -161,109 +142,125 @@ public class ItemBasicWand extends Item
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entityIn, int itemSlot, boolean isSelected)
     {
-		
-		if(unfinished)
+		if (stack.getTagCompound() == null)
 		{
-			if (isSelected)
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		NBTTagCompound compound = stack.getTagCompound();
+		if (compound.getString("particleAction") != "" && compound.getString("particleAction") != null)
+		{
+			if (compound.getInteger("particleCount") > 0)
 			{
-				if (task == "LOGGER")
+				compound.setInteger("particleCount", compound.getInteger("particleCount") - 1);
+				
+				double x = compound.getDouble("posX");
+				double y = compound.getDouble("posY");
+				double z = compound.getDouble("posZ");
+				
+				switch(compound.getString("particleAction"))
 				{
-					if (delay == 0 && replaceBlock.size() > currentBlockId && !world.isRemote)
-					{
-						curBlock = replaceBlock.get(currentBlockId);
-						world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
-						world.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
-						spawnParticles(EnumParticleTypes.SPELL_WITCH, world, true, curBlock, 7, 1);
-						this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1));
-						
-						currentBlockId++;
-						delay = 10;
-						
-						if (ThreadLocalRandom.current().nextInt(1, 5000 + 1) == 555)
-						{
-							if (canBreak())
-							{
-								world.playSound(null, curBlock,SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
-								stack.stackSize = 0;
-								unfinished = false;
-							}
-						}
-					}
-					else if (replaceBlock.size() > currentBlockId && !world.isRemote)
-					{
-						delay--;
-						
-					}
-					else if (!world.isRemote)
-					{
-						unfinished = false;
-						task = "";
-					}
-				}
-				else if (task == "RAPIDFIRE")
-				{
-					if (delay == 0)
-                    {
-						if (useEssence(arrows))
-						{
-							if (!world.isRemote)
-							{
-								arrows++;
-		                    	delay = 5;
-		                    	
-		                    	int xOff = 0;
-		                    	int yOff = 0;
-		                    	int zOff = 0;
-		                    	
-		                    	EntityLivingBase shooter = (EntityLivingBase) entityIn;
-		                    	shooter.posX += xOff;
-		                    	shooter.posY += yOff;
-		                    	shooter.posZ += zOff;
-		                    	
-								ItemStack itemstack = new ItemStack(Items.TIPPED_ARROW);
-		                    	ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
-								EntityArrow entityArrow = itemarrow.createArrow(world, itemstack, shooter);
-								
-		                        entityArrow = fancySetAim(entityArrow, shooter, entityIn.rotationPitch, entityIn.rotationYaw, 5.0F, 1.0F, xOff, yOff, zOff);
-		                        entityArrow.setKnockbackStrength(1);
-		                        entityArrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
-		                        
-		                    	world.spawnEntityInWorld(entityArrow);
-		                    	world.playSound(null, shooter.posX, shooter.posY, shooter.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1 * 0.5F);
-							}
-						}
-						else
-						{
-							EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-							unfinished = false;
-						}
-						
-                    }
-					else
-					{
-						delay --;
-					}
-				}
-				else if (task == "PARTICLES")
-				{
-					if (particles > 0)
-					{
-						particles--;
-						spawnParticles(particleType, world, true, particlePos, particles, particleRadius);
-					}
-					else
-					{
-						unfinished = false;
-						task = "";
-					}
+				case "ORE EXTRACT":
+					spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, new BlockPos(x, y, z), 2, 1);
+					break;
+				case "TRANSMUTE DIAMOND":
+					spawnParticles(EnumParticleTypes.END_ROD, world, true, new BlockPos(x, y, z), 2, 1);
+					break;
+				case "PLACE TORCH":
+					spawnParticles(EnumParticleTypes.FLAME, world, true, new BlockPos(x, y, z), 2, 1);
+					break;
 				}
 			}
 			else
 			{
-				unfinished = false;
-				task = "";
+				compound.setString("particleAction", "");
 			}
 		}
+		
+		
+		if(compound.getString("tickSpell") != "" && compound.getString("tickSpell") != null && isSelected)
+		{
+			int delay = compound.getInteger("delay");
+			switch (compound.getString("tickSpell"))
+			{
+			case "LOGGER":
+				if (delay == 0 && replaceBlock.size() > compound.getInteger("currentBlockId") && !world.isRemote)
+				{
+					curBlock = replaceBlock.get(compound.getInteger("currentBlockId"));
+					world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
+					world.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
+					spawnParticles(EnumParticleTypes.SPELL_WITCH, world, true, curBlock, 7, 1);
+					this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1), stack);
+					
+					compound.setInteger("currentBlockId", compound.getInteger("currentBlockId") + 1);
+					delay = 10;
+					
+					if (ThreadLocalRandom.current().nextInt(1, 5000 + 1) == 555)
+					{
+						if (canBreak())
+						{
+							world.playSound(null, curBlock,SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
+							stack.stackSize = 0;
+							compound.setString("tickSpell", "");
+						}
+					}
+				}
+				else if (replaceBlock.size() > compound.getInteger("currentBlockId") && !world.isRemote)
+				{
+					delay--;
+					
+				}
+				else if (!world.isRemote)
+				{
+					compound.setString("tickSpell", "");
+				}
+				break;
+			case "RAPIDFIRE":
+				if (delay == 0)
+                {
+					if (useEssence(compound.getInteger("arrows"),stack))
+					{
+						if (!world.isRemote)
+						{
+							compound.setInteger("arrows", compound.getInteger("arrows") + 1);
+	                    	compound.setInteger("delay",5);
+	                    	
+	                    	int xOff = 0;
+	                    	int yOff = 0;
+	                    	int zOff = 0;
+	                    	
+	                    	EntityLivingBase shooter = (EntityLivingBase) entityIn;
+	                    	shooter.posX += xOff;
+	                    	shooter.posY += yOff;
+	                    	shooter.posZ += zOff;
+	                    	
+							ItemStack itemstack = new ItemStack(Items.TIPPED_ARROW);
+	                    	ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
+							EntityArrow entityArrow = itemarrow.createArrow(world, itemstack, shooter);
+							
+	                        entityArrow = fancySetAim(entityArrow, shooter, entityIn.rotationPitch, entityIn.rotationYaw, 5.0F, 1.0F, xOff, yOff, zOff);
+	                        entityArrow.setKnockbackStrength(1);
+	                        entityArrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
+	                        
+	                    	world.spawnEntityInWorld(entityArrow);
+	                    	world.playSound(null, shooter.posX, shooter.posY, shooter.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1 * 0.5F);
+						}
+					}
+					else
+					{
+						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+						compound.setString("tickSpell", "");
+					}
+					
+                }
+				else
+				{
+					delay --;
+				}
+				break;
+			}
+			compound.setInteger("delay",delay);
+		}
+		stack.setTagCompound(compound);
     }
 
 	public static void spawnParticles(EnumParticleTypes particleType, World world, boolean forceSpawn, BlockPos pos, int count, double radius) {
@@ -297,30 +294,29 @@ public class ItemBasicWand extends Item
 	
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
     {
-		if (task != "PARTICLES")
-		{
-			unfinished = false;
-		}
+		NBTTagCompound compound = stack.getTagCompound();
+		compound.setString("tickSpell", "");
+		compound.setString("spell", "");
+		stack.setTagCompound(compound);
     }
 	 
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
+		NBTTagCompound compound = itemStackIn.getTagCompound();
 		if (playerIn.isSneaking())
 		{
-			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored() + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
+			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored(itemStackIn) + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
 		}
 		else if(!worldIn.isRemote && ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
 		{
-			if (useEssence(100))
+			if (useEssence(100, itemStackIn))
 			{
-				task = "RAPIDFIRE";
-				
-				delay = 0;
-				arrows = 0;
-				
-				unfinished = true;
+				compound.setInteger("arrows", 0);
+				compound.setInteger("delay 0", 0);
+				compound.setString("tickSpell", "RAPIDFIRE");
 				
                 playerIn.setActiveHand(hand);
+                itemStackIn.setTagCompound(compound);
                 return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 			}
 			else
@@ -333,8 +329,10 @@ public class ItemBasicWand extends Item
 		{
 			if (playerIn.canEat(false))
 			{
-				task = "HUNGER";
+				compound.setString("spell", "HUNGER");
+				
 				playerIn.setActiveHand(hand);
+				itemStackIn.setTagCompound(compound);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 			}
 		}
@@ -346,7 +344,8 @@ public class ItemBasicWand extends Item
 	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float par8, float par9, float par10) 
 	{
 		Block block = world.getBlockState(pos).getBlock();
-
+		NBTTagCompound compound = par1ItemStack.getTagCompound();
+		
 		if(block instanceof BlockAltar) 
 		{
 			boolean wanded;
@@ -361,8 +360,8 @@ public class ItemBasicWand extends Item
 		else if(block instanceof BlockLog) 
 		{
 			replaceBlock.clear();
-			currentBlockId = 0;
-			delay = 0;
+			compound.setInteger("currentBlockId", 0);
+			compound.setInteger("delay", 0);
 			
 			for (BlockPos position : WOOD_SEARCH_AREA) 
 			{
@@ -372,21 +371,21 @@ public class ItemBasicWand extends Item
 					replaceBlock.add(toReplace);
 				}
 			}
-			task = "LOGGER";
-			unfinished = true;
+			compound.setString("tickSpell", "LOGGER");
 			player.setActiveHand(hand);
+			par1ItemStack.setTagCompound(compound);
 			return EnumActionResult.SUCCESS;
 		}
 		else if(block instanceof BlockOre && !player.isSneaking()) 
 		{
 			if (getWandTier() > 1)
 			{
-				task = "PARTICLES";
-				particleType = EnumParticleTypes.DAMAGE_INDICATOR;
-				particles = 2;
-				particleRadius = 1;
-				particlePos = new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ());
-				unfinished = true;
+				compound.setString("particleAction", "ORE EXTRACT");
+				compound.setInteger("particleCount", 2);
+				compound.setDouble("posX", pos.getX());
+				compound.setDouble("posY", pos.getY());
+				compound.setDouble("posZ", pos.getZ());
+				
 				player.swingArm(hand);
 				world.playSound(null, pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
 				
@@ -395,31 +394,33 @@ public class ItemBasicWand extends Item
 					if (block == Blocks.EMERALD_ORE)
 					{
 						world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
-						addEssence(1000);
+						addEssence(1000, par1ItemStack);
 					}
 				    else if (block == Blocks.DIAMOND_ORE)
 					{
 				    	world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
-						addEssence(1000);
+						addEssence(1000, par1ItemStack);
 					}
 				    else if (block == Blocks.GOLD_ORE)
 					{
 				    	world.setBlockState(pos, Blocks.IRON_ORE.getDefaultState());
-						addEssence(500);
+						addEssence(500, par1ItemStack);
 					}
 				    else if (block == Blocks.IRON_ORE)
 					{
 				    	world.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
-						addEssence(200);
+						addEssence(200, par1ItemStack);
 					}
 				    else if (block == Blocks.COAL_ORE)
 					{
 				    	world.setBlockState(pos, Blocks.STONE.getDefaultState());
-						addEssence(100);
+						addEssence(100, par1ItemStack);
 					}
 				}
 				
 				player.setActiveHand(hand);
+				par1ItemStack.setTagCompound(compound);
+				
 				return EnumActionResult.SUCCESS;
 			}
 			else
@@ -432,7 +433,7 @@ public class ItemBasicWand extends Item
 		{
 			if (player.isSneaking())
 			{
-				EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored() + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored(par1ItemStack) + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
 				return EnumActionResult.SUCCESS;
 			}
 			else
@@ -441,18 +442,19 @@ public class ItemBasicWand extends Item
 				{
 					if (block == Blocks.DIAMOND_BLOCK)
 					{
-						if (useEssence(1000))
+						if (useEssence(1000, par1ItemStack))
 						{
-							task = "PARTICLES";
-							particleType = EnumParticleTypes.END_ROD;
-							particles = 7;
-							particleRadius = 1;
-							particlePos = new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ());
-							unfinished = true;
+							compound.setString("particleAction", "TRANSMUTE DIAMOND");
+							compound.setInteger("particleCount", 7);
+							compound.setDouble("posX", pos.getX());
+							compound.setDouble("posY", pos.getY() + 1.2);
+							compound.setDouble("posZ", pos.getZ());
 							
 							world.playSound(null, pos,SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 1);
 							player.swingArm(hand);
 							world.setBlockState(pos, ModBlocks.altar.getDefaultState());
+							
+							par1ItemStack.setTagCompound(compound);
 							return EnumActionResult.SUCCESS;
 						}
 						else
@@ -469,50 +471,56 @@ public class ItemBasicWand extends Item
 				}
 				else if(!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
 				{
-					if (useEssence(5))
+					if (useEssence(5, par1ItemStack))
 					{
 						BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
 						if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
 						{
-							task = "PARTICLES";
-							particleType = EnumParticleTypes.FLAME;
-							particles = 7;
-							particleRadius = 1;
-							particlePos = new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ());
-							unfinished = true;
+							compound.setString("particleAction", "PLACE TORCH");
+							compound.setInteger("particleCount", 7);
+							compound.setDouble("posX", pos.getX());
+							compound.setDouble("posY", pos.getY() + 1.2);
+							compound.setDouble("posZ", pos.getZ());
 							
 							world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
 							player.swingArm(hand);
+							
+							par1ItemStack.setTagCompound(compound);
 							return EnumActionResult.SUCCESS;
 						}
 						else
 						{
 							EnhancedProgression.proxy.setActionText((I18n.format("gui.obstructed.name")));
+							par1ItemStack.setTagCompound(compound);
 							return EnumActionResult.PASS;
 						}
 					}
 					else
 					{
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+						par1ItemStack.setTagCompound(compound);
 						return EnumActionResult.PASS;
 					}
 				}
 				else if(!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_explosion)))
 				{
-					if (useEssence(50))
+					if (useEssence(50, par1ItemStack))
 					{
 						world.createExplosion(player, pos.getX(), pos.getY() + 2, pos.getZ(), 3, false);
+						par1ItemStack.setTagCompound(compound);
 						return EnumActionResult.SUCCESS;
 					}
 					else
 					{
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+						par1ItemStack.setTagCompound(compound);
 						return EnumActionResult.FAIL;
 					}
 				}
 			}
 		
 		}
+		par1ItemStack.setTagCompound(compound);
 		return EnumActionResult.PASS;
 	}
 	
@@ -521,7 +529,8 @@ public class ItemBasicWand extends Item
      */
     public int getMaxItemUseDuration(ItemStack stack)
     {
-    	if (task == "HUNGER")
+    	NBTTagCompound compoundTmp = stack.getTagCompound();
+    	if (compoundTmp.getString("spell") == "HUNGER")
     	{
     		return 32;
     	}
@@ -537,11 +546,12 @@ public class ItemBasicWand extends Item
     @Nullable
     public EnumAction getItemUseAction(ItemStack stack)
     {
-    	if (task == "LOGGER" || task == "RAPIDFIRE")
+    	NBTTagCompound compoundTmp = stack.getTagCompound();
+    	if (compoundTmp.getString("tickSpell") == "LOGGER" || compoundTmp.getString("tickSpell") == "RAPIDFIRE")
     	{
     		return EnumAction.BOW;
     	}
-    	else if (task == "HUNGER")
+    	else if (compoundTmp.getString("spell") == "HUNGER")
     	{
     		return EnumAction.EAT;
     	}
@@ -551,12 +561,13 @@ public class ItemBasicWand extends Item
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
-    	if (task=="HUNGER")
+    	NBTTagCompound compound = stack.getTagCompound();
+    	if (compound.getString("spell")=="HUNGER")
     	{
     		if (entityLiving instanceof EntityPlayer)
             {
                 EntityPlayer entityplayer = (EntityPlayer)entityLiving;
-                if (useEssence(250))
+                if (useEssence(250, stack))
     			{
     				entityplayer.getFoodStats().addStats(20, 20);
     				return stack;
