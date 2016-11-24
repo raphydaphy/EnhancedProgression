@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.block.BlockAltar;
@@ -202,7 +201,6 @@ public class ItemBasicWand extends Item
 				else if (replaceBlock.size() > ItemNBTHelper.getInt(stack, "currentBlockId", 0) && !world.isRemote)
 				{
 					delay--;
-					
 				}
 				else if (!world.isRemote)
 				{
@@ -292,10 +290,9 @@ public class ItemBasicWand extends Item
         return true;
     }
 	
-	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
 	{
-		System.out.println("stopped");
+		System.out.println("WHY ISNT IT BEING CALLED ;( ;( ;( ;( ;(");
 		ItemNBTHelper.setString(stack, "tickSpell", "");
 		ItemNBTHelper.setString(stack, "spell", "");
     }
@@ -386,7 +383,7 @@ public class ItemBasicWand extends Item
 				ItemNBTHelper.setDouble(stack, "posY", pos.getY());
 				ItemNBTHelper.setDouble(stack, "posZ", pos.getZ());
 				
-				player.swingArm(hand);
+				player.setActiveHand(hand);
 				world.playSound(null, pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
 				
 				if (!world.isRemote)
@@ -530,10 +527,6 @@ public class ItemBasicWand extends Item
     	}
     }
 
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
-    @Nullable
     public EnumAction getItemUseAction(ItemStack stack)
     {
     	if (ItemNBTHelper.getString(stack, "spell", "") == "HUNGER")
@@ -543,7 +536,6 @@ public class ItemBasicWand extends Item
     	return EnumAction.BOW;
     }
     
-    @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
     	if (ItemNBTHelper.getString(stack, "spell", "")=="HUNGER")
