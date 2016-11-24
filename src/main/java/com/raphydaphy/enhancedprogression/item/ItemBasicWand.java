@@ -179,7 +179,7 @@ public class ItemBasicWand extends Item
 						currentBlockId++;
 						delay = 10;
 						
-						if (ThreadLocalRandom.current().nextInt(1, 50 + 1) == 6)
+						if (ThreadLocalRandom.current().nextInt(1, 5000 + 1) == 555)
 						{
 							if (canBreak())
 							{

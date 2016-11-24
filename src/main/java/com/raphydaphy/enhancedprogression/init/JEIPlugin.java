@@ -28,7 +28,7 @@ public class JEIPlugin implements IModPlugin
 	@Override
 	public void register(IModRegistry registry) 
 	{
-		  registry.addDescription(new ItemStack(ModBlocks.altar), "Used to craft Imbued items, an altar is a multiblock structure centered around the altar block itself.");
+		  registry.addDescription(new ItemStack(ModBlocks.altar), "Used to craft Imbued items, an altar is a multiblock structure centered around the altar block itself. To obtain an altar in survival, rightclick a diamond block with a wand equipped with a Cryptic Transmutation spell. This will consume 1000 essence and turn the diamond block into an altar.");
 		  registry.addDescription(new ItemStack(ModBlocks.imbued_log), "Crafted with three gold nuggets, one log and two imbued bronze ingots in a tier 2+ altar, Imbued Logs are used for higher tier crafting recipes.");
 		  registry.addDescription(new ItemStack(ModItems.ingot_bronze_imbued), "Crafted with four gold, four bronze and four iron ingots in an altar of any tier, Imbued Bronze Ingots are the first item craftable in an altar and are used for higher tier altar and crafting recipes.");
 		  registry.addDescription(new ItemStack(ModItems.basic_wand_tin), "The Basic Wand is a fragile wand constructed in a simple crafting table. Due to the poor quality of the materials used to craft it, it can snap at a moments notice. However, if you are willing to use such a wand, you can right click on a tree to fill it with essence. Shift + Rightclicking at any time will tell you how much essence you currently have stored in the wand, and rightclicking on an altar will start crafting an item if the correct items are in the inventory. Shift + Rightclick on an altar to see what tier it is.");
@@ -45,6 +45,8 @@ public class JEIPlugin implements IModPlugin
 		  registry.addDescription(new ItemStack(ModItems.spell_card_lantern), "This simple spell can place a torch at the cost of 5 essence. Used by either placing the spell card in your offhand with a wand in your main hand, or by infusing it with a wand in an altar to add it to the wands inventory. Note that only Advanced+ wands can be infused with spells and Basic wands require the spell to be in the offhand always.");
 		  registry.addDescription(new ItemStack(ModItems.spell_card_explosion), "For the cost of 50 essence, this spell will create an explosion on the block you aim it at. Due to the essence imbued into the explosion, this blast will not cause any terrain damage and will not hurt the person who casts the spell.");
 		  registry.addDescription(new ItemStack(ModItems.spell_card_explosion), "For 100 essence, this spell will shoot arrows in a straight line from your cursor for one essence per arrow. With each arrow shot in a row, the cost incrases by one, so by the 50th arrow it would cost 50 essence. The arrows will continue to shoot until you stop holding rightclick or until you run out of essence, whichever happens first.");
+		  registry.addDescription(new ItemStack(ModItems.spell_card_hunger), "If you ever find yourself out of food and hungry, this spell will restore your hunger and saturation levels to full, but will do so at the expense of 500 essence.");
+		  registry.addDescription(new ItemStack(ModItems.spell_card_transmutation), "One of the first arts any good magician must learn is that of transmutation - turning objects into other objects. This spell, if used correctly, will turn a diamond block into an altar at the cost of 1000 essence.");
 	}
 
 	@Override
