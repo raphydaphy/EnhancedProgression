@@ -30,20 +30,20 @@ public class ModItems {
 	public static ItemAdvancedWand advanced_wand;
 
 	public static void init() {
-		ingot_copper = register(new ItemBase("ingot_copper").setCreativeTab(EnhancedProgression.creativeTab));
-		ingot_tin = register(new ItemBase("ingot_tin").setCreativeTab(EnhancedProgression.creativeTab));
-		ingot_bronze = register(new ItemBase("ingot_bronze").setCreativeTab(EnhancedProgression.creativeTab));
-		ingot_bronze_imbued = register(new ItemBase("ingot_bronze_imbued").setCreativeTab(EnhancedProgression.creativeTab));
+		ingot_copper = register(new ItemBase("ingot_copper" ,64).setCreativeTab(EnhancedProgression.creativeTab));
+		ingot_tin = register(new ItemBase("ingot_tin", 64).setCreativeTab(EnhancedProgression.creativeTab));
+		ingot_bronze = register(new ItemBase("ingot_bronze", 64).setCreativeTab(EnhancedProgression.creativeTab));
+		ingot_bronze_imbued = register(new ItemBase("ingot_bronze_imbued", 64).setCreativeTab(EnhancedProgression.creativeTab));
 		
-		imbued_stick = register(new ItemBase("imbued_stick").setCreativeTab(EnhancedProgression.creativeTab));
+		imbued_stick = register(new ItemBase("imbued_stick", 64).setCreativeTab(EnhancedProgression.creativeTab));
 		
-		spell_card_lantern = register(new ItemBase("spell_card_lantern").setCreativeTab(EnhancedProgression.creativeTab));
-		spell_card_explosion = register(new ItemBase("spell_card_explosion").setCreativeTab(EnhancedProgression.creativeTab));
-		spell_card_rapidfire = register(new ItemBase("spell_card_rapidfire").setCreativeTab(EnhancedProgression.creativeTab));
-		spell_card_hunger = register(new ItemBase("spell_card_hunger").setCreativeTab(EnhancedProgression.creativeTab));
-		spell_card_transmutation = register(new ItemBase("spell_card_transmutation").setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_lantern = register(new ItemBase("spell_card_lantern", 1).setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_explosion = register(new ItemBase("spell_card_explosion", 1).setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_rapidfire = register(new ItemBase("spell_card_rapidfire", 1).setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_hunger = register(new ItemBase("spell_card_hunger", 1).setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_transmutation = register(new ItemBase("spell_card_transmutation", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		
-		upgrade_template_basic = register(new ItemBase("upgrade_template_basic").setCreativeTab(EnhancedProgression.creativeTab));
+		upgrade_template_basic = register(new ItemBase("upgrade_template_basic", 16).setCreativeTab(EnhancedProgression.creativeTab));
 		
 		basic_wand_copper = register(new ItemBasicWand("basic_wand_copper").setCreativeTab(EnhancedProgression.creativeTab));
 		basic_wand_tin = register(new ItemBasicWand("basic_wand_tin").setCreativeTab(EnhancedProgression.creativeTab));

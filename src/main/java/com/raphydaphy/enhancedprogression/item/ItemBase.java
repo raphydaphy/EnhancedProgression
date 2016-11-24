@@ -9,10 +9,11 @@ public class ItemBase extends Item {
 
 	protected String name;
 
-	public ItemBase(String name) {
+	public ItemBase(String name, int maxStack) {
 		this.name = name;
 		setUnlocalizedName(name);
 		setRegistryName(name);
+		this.maxStackSize = maxStack;
 	}
 
 	public void registerItemModel() {
