@@ -545,7 +545,7 @@ public class ItemBasicWand extends Item
                 EntityPlayer entityplayer = (EntityPlayer)entityLiving;
                 if (useEssence(250))
     			{
-    				entityplayer.heal(10);
+    				entityplayer.getFoodStats().addStats(20, 20);
     				return stack;
     			}
     			else
