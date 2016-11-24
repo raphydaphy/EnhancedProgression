@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.block.BlockAltar;
@@ -167,7 +168,7 @@ public class ItemBasicWand extends Item
 						curBlock = replaceBlock.get(currentBlockId);
 						world.playSound(null, curBlock,SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
 						world.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
-						spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, curBlock, 7, 1);
+						spawnParticles(EnumParticleTypes.SPELL_WITCH, world, true, curBlock, 7, 1);
 						this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1));
 						
 						currentBlockId++;
@@ -191,6 +192,7 @@ public class ItemBasicWand extends Item
 					else if (!world.isRemote)
 					{
 						unfinished = false;
+						task = "";
 					}
 				}
 				else if (task == "RAPIDFIRE")
@@ -207,8 +209,6 @@ public class ItemBasicWand extends Item
 		                    	int xOff = 0;
 		                    	int yOff = 0;
 		                    	int zOff = 0;
-		                    	
-		                    	System.out.println(arrows);
 		                    	
 		                    	EntityLivingBase shooter = (EntityLivingBase) entityIn;
 		                    	shooter.posX += xOff;
@@ -248,13 +248,15 @@ public class ItemBasicWand extends Item
 					}
 					else
 					{
-						unfinished = true;
+						unfinished = false;
+						task = "";
 					}
 				}
 			}
 			else
 			{
 				unfinished = false;
+				task = "";
 			}
 		}
     }
@@ -314,14 +316,24 @@ public class ItemBasicWand extends Item
 				unfinished = true;
 				
                 playerIn.setActiveHand(hand);
+                return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 			}
 			else
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+				return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
 			}
 		}
-		playerIn.swingArm(hand);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+		else if(!worldIn.isRemote && ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_hunger)))
+		{
+			if (playerIn.canEat(false))
+			{
+				task = "HUNGER";
+				playerIn.setActiveHand(hand);
+				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+			}
+		}
+        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
     }
 	
 	@Nonnull
@@ -360,16 +372,16 @@ public class ItemBasicWand extends Item
 			player.setActiveHand(hand);
 			return EnumActionResult.SUCCESS;
 		}
-		else if(block instanceof BlockOre) 
+		else if(block instanceof BlockOre && !player.isSneaking()) 
 		{
-			System.out.println(world.isRemote);
-			
 			task = "PARTICLES";
 			particleType = EnumParticleTypes.DAMAGE_INDICATOR;
 			particles = 2;
 			particleRadius = 1;
 			particlePos = new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ());
 			unfinished = true;
+			player.swingArm(hand);
+			world.playSound(null, pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
 			
 			if (!world.isRemote)
 			{
@@ -408,6 +420,7 @@ public class ItemBasicWand extends Item
 			if (player.isSneaking())
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored() + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
+				return EnumActionResult.SUCCESS;
 			}
 			else
 			{
@@ -424,6 +437,8 @@ public class ItemBasicWand extends Item
 							particlePos = new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ());
 							unfinished = true;
 							
+							world.playSound(null, pos,SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 1);
+							player.swingArm(hand);
 							world.setBlockState(pos, ModBlocks.altar.getDefaultState());
 							return EnumActionResult.SUCCESS;
 						}
@@ -454,6 +469,7 @@ public class ItemBasicWand extends Item
 							unfinished = true;
 							
 							world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
+							player.swingArm(hand);
 							return EnumActionResult.SUCCESS;
 						}
 						else
@@ -473,11 +489,12 @@ public class ItemBasicWand extends Item
 					if (useEssence(50))
 					{
 						world.createExplosion(player, pos.getX(), pos.getY() + 2, pos.getZ(), 3, false);
+						return EnumActionResult.SUCCESS;
 					}
 					else
 					{
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-						return EnumActionResult.PASS;
+						return EnumActionResult.FAIL;
 					}
 				}
 			}
@@ -491,14 +508,54 @@ public class ItemBasicWand extends Item
      */
     public int getMaxItemUseDuration(ItemStack stack)
     {
-        return 72000;
+    	if (task == "HUNGER")
+    	{
+    		return 32;
+    	}
+    	else
+    	{
+    		return 72000;
+    	}
     }
 
     /**
      * returns the action that specifies what animation to play when the items is being used
      */
+    @Nullable
     public EnumAction getItemUseAction(ItemStack stack)
     {
-        return EnumAction.BOW;
+    	if (task == "LOGGER" || task == "RAPIDFIRE")
+    	{
+    		return EnumAction.BOW;
+    	}
+    	else if (task == "HUNGER")
+    	{
+    		return EnumAction.EAT;
+    	}
+		return EnumAction.NONE;
+    }
+    
+    @Override
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
+    {
+    	if (task=="HUNGER")
+    	{
+    		if (entityLiving instanceof EntityPlayer)
+            {
+                EntityPlayer entityplayer = (EntityPlayer)entityLiving;
+                if (useEssence(250))
+    			{
+    				entityplayer.heal(10);
+    				return stack;
+    			}
+    			else
+    			{
+    				EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+    				return stack;
+    			}
+            }
+    		
+    	}
+        return stack;
     }
 }
