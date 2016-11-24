@@ -14,5 +14,11 @@ public class ItemAdvancedWand extends ItemBasicWand
 		return false;
 	}
 	
+	@Override
+	public int getWandTier()
+	{
+		return 2;
+	}
+	
 
 }

@@ -45,3 +45,4 @@ gui.essence.name=Essence
 gui.notenoughessence.name=Not Enough Essence!
 gui.obstructed.name=Location Obstructed!
 gui.invalidblock.name=Invalid Block!
+gui.betterwandneeded.name=Wand too fragile! A higher tier wand is required.

@@ -81,6 +81,11 @@ public class ItemBasicWand extends Item
 		return this;
 	}
 	
+	public int getWandTier()
+	{
+		return 1;
+	}
+	
 	public void setEssenceCapacity(int capacity)
 	{
 		essenceCapacity = capacity;
@@ -374,46 +379,54 @@ public class ItemBasicWand extends Item
 		}
 		else if(block instanceof BlockOre && !player.isSneaking()) 
 		{
-			task = "PARTICLES";
-			particleType = EnumParticleTypes.DAMAGE_INDICATOR;
-			particles = 2;
-			particleRadius = 1;
-			particlePos = new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ());
-			unfinished = true;
-			player.swingArm(hand);
-			world.playSound(null, pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
-			
-			if (!world.isRemote)
+			if (getWandTier() > 1)
 			{
-				if (block == Blocks.EMERALD_ORE)
+				task = "PARTICLES";
+				particleType = EnumParticleTypes.DAMAGE_INDICATOR;
+				particles = 2;
+				particleRadius = 1;
+				particlePos = new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ());
+				unfinished = true;
+				player.swingArm(hand);
+				world.playSound(null, pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
+				
+				if (!world.isRemote)
 				{
-					world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
-					addEssence(1000);
+					if (block == Blocks.EMERALD_ORE)
+					{
+						world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
+						addEssence(1000);
+					}
+				    else if (block == Blocks.DIAMOND_ORE)
+					{
+				    	world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
+						addEssence(1000);
+					}
+				    else if (block == Blocks.GOLD_ORE)
+					{
+				    	world.setBlockState(pos, Blocks.IRON_ORE.getDefaultState());
+						addEssence(500);
+					}
+				    else if (block == Blocks.IRON_ORE)
+					{
+				    	world.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
+						addEssence(200);
+					}
+				    else if (block == Blocks.COAL_ORE)
+					{
+				    	world.setBlockState(pos, Blocks.STONE.getDefaultState());
+						addEssence(100);
+					}
 				}
-			    else if (block == Blocks.DIAMOND_ORE)
-				{
-			    	world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
-					addEssence(1000);
-				}
-			    else if (block == Blocks.GOLD_ORE)
-				{
-			    	world.setBlockState(pos, Blocks.IRON_ORE.getDefaultState());
-					addEssence(500);
-				}
-			    else if (block == Blocks.IRON_ORE)
-				{
-			    	world.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
-					addEssence(200);
-				}
-			    else if (block == Blocks.COAL_ORE)
-				{
-			    	world.setBlockState(pos, Blocks.STONE.getDefaultState());
-					addEssence(100);
-				}
+				
+				player.setActiveHand(hand);
+				return EnumActionResult.SUCCESS;
 			}
-			
-			player.setActiveHand(hand);
-			return EnumActionResult.SUCCESS;
+			else
+			{
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.betterwandneeded.name")));
+				return EnumActionResult.FAIL;
+			}
 		}
 		else
 		{
