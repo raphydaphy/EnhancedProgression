@@ -194,14 +194,11 @@ public class ItemBasicWand extends Item
 					compound.setInteger("currentBlockId", compound.getInteger("currentBlockId") + 1);
 					delay = 10;
 					
-					if (ThreadLocalRandom.current().nextInt(1, 5000 + 1) == 555)
+					if (ThreadLocalRandom.current().nextInt(1, 1000 + 1) == 555 && canBreak())
 					{
-						if (canBreak())
-						{
-							world.playSound(null, curBlock,SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
-							stack.stackSize = 0;
-							compound.setString("tickSpell", "");
-						}
+						world.playSound(null, curBlock,SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
+						stack.stackSize = 0;
+						compound.setString("tickSpell", "");
 					}
 				}
 				else if (replaceBlock.size() > compound.getInteger("currentBlockId") && !world.isRemote)
@@ -222,7 +219,7 @@ public class ItemBasicWand extends Item
 						if (!world.isRemote)
 						{
 							compound.setInteger("arrows", compound.getInteger("arrows") + 1);
-	                    	compound.setInteger("delay",5);
+	                    	delay = 5;
 	                    	
 	                    	int xOff = 0;
 	                    	int yOff = 0;
@@ -260,6 +257,10 @@ public class ItemBasicWand extends Item
 			}
 			compound.setInteger("delay",delay);
 		}
+		else
+		{
+			compound.setString("tickSpell", "");
+		}
 		stack.setTagCompound(compound);
     }
 
@@ -292,8 +293,10 @@ public class ItemBasicWand extends Item
         return false;
     }
 	
+	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
-    {
+	{
+		System.out.println("stoppd");
 		NBTTagCompound compound = stack.getTagCompound();
 		compound.setString("tickSpell", "");
 		compound.setString("spell", "");
@@ -309,7 +312,7 @@ public class ItemBasicWand extends Item
 		}
 		else if(!worldIn.isRemote && ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
 		{
-			if (useEssence(100, itemStackIn))
+			if (useEssence(100, itemStackIn) && compound.getString("tickSpell") != "RAPIDFIRE")
 			{
 				compound.setInteger("arrows", 0);
 				compound.setInteger("delay 0", 0);
@@ -319,7 +322,7 @@ public class ItemBasicWand extends Item
                 itemStackIn.setTagCompound(compound);
                 return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 			}
-			else
+			else if (getEssenceStored(itemStackIn) < 100)
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 				return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
@@ -359,22 +362,26 @@ public class ItemBasicWand extends Item
 		}
 		else if(block instanceof BlockLog) 
 		{
-			replaceBlock.clear();
-			compound.setInteger("currentBlockId", 0);
-			compound.setInteger("delay", 0);
-			
-			for (BlockPos position : WOOD_SEARCH_AREA) 
+			if (compound.getString("tickSpell") != "LOGGER")
 			{
-				if(checkPlatform(position.getX(), position.getY(), position.getZ(), block, pos, world))
+				replaceBlock.clear();
+				compound.setInteger("currentBlockId", 0);
+				compound.setInteger("delay", 0);
+				
+				for (BlockPos position : WOOD_SEARCH_AREA) 
 				{
-					BlockPos toReplace = pos.add(position.getX(), position.getY(), position.getZ());
-					replaceBlock.add(toReplace);
+					if(checkPlatform(position.getX(), position.getY(), position.getZ(), block, pos, world))
+					{
+						BlockPos toReplace = pos.add(position.getX(), position.getY(), position.getZ());
+						replaceBlock.add(toReplace);
+					}
 				}
+				compound.setString("tickSpell", "LOGGER");
+				player.setActiveHand(hand);
+				par1ItemStack.setTagCompound(compound);
+				return EnumActionResult.SUCCESS;
 			}
-			compound.setString("tickSpell", "LOGGER");
-			player.setActiveHand(hand);
-			par1ItemStack.setTagCompound(compound);
-			return EnumActionResult.SUCCESS;
+			
 		}
 		else if(block instanceof BlockOre && !player.isSneaking()) 
 		{
@@ -547,15 +554,13 @@ public class ItemBasicWand extends Item
     public EnumAction getItemUseAction(ItemStack stack)
     {
     	NBTTagCompound compoundTmp = stack.getTagCompound();
-    	if (compoundTmp.getString("tickSpell") == "LOGGER" || compoundTmp.getString("tickSpell") == "RAPIDFIRE")
+    	if (compoundTmp.getString("spell") == "HUNGER")
     	{
-    		return EnumAction.BOW;
-    	}
-    	else if (compoundTmp.getString("spell") == "HUNGER")
-    	{
+    		System.out.println("nom nom nom");
     		return EnumAction.EAT;
     	}
-		return EnumAction.NONE;
+    	System.out.println("woot woot bows");
+    	return EnumAction.BOW;
     }
     
     @Override
@@ -570,6 +575,8 @@ public class ItemBasicWand extends Item
                 if (useEssence(250, stack))
     			{
     				entityplayer.getFoodStats().addStats(20, 20);
+    				compound.setString("spell", "");
+    				stack.setTagCompound(compound);
     				return stack;
     			}
     			else
