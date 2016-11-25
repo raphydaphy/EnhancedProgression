@@ -1,14 +1,20 @@
 package com.raphydaphy.enhancedprogression.item;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
+import com.raphydaphy.enhancedprogression.block.BlockAltar;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import com.raphydaphy.enhancedprogression.init.ModItems;
 import com.raphydaphy.enhancedprogression.nbt.NBTLib;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOre;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -40,6 +46,8 @@ public class ItemWand extends Item
 	protected int wandTier;
 	protected int maxEssence;
 	protected boolean canBreak;
+	
+	private List<BlockPos> replaceBlock = new ArrayList<BlockPos>();
 	
 	public ItemWand(String name, int wandTier, int maxEssence, boolean canBreak)
 	{
@@ -159,7 +167,42 @@ public class ItemWand extends Item
 	{
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block instanceof BlockOre && !player.isSneaking() && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_enhanced_extraction))) 
+		if (block instanceof BlockAltar)
+		{
+			boolean wanded;
+			wanded = ((BlockAltar) block).onUsedByWand(player, stack, world, pos, side);
+			if (wanded && world.isRemote)
+			{
+				player.swingArm(hand);
+			}
+
+			return wanded ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
+		}
+		else if (block instanceof BlockLog)
+		{
+			if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == false && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_vital_extraction)))
+			{
+				replaceBlock.clear();
+				
+				for (BlockPos position : WOOD_SEARCH_AREA)
+				{
+					if (checkPlatform(position.getX(), position.getY(), position.getZ(), block, pos, world))
+					{
+						BlockPos toReplace = pos.add(position.getX(), position.getY(), position.getZ());
+						replaceBlock.add(toReplace);
+					}
+				}
+
+				player.setActiveHand(hand);
+				NBTLib.setInt(player.getHeldItemOffhand(), "currentBlockId", 0);
+				NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay", 0);
+				NBTLib.setInt(player.getHeldItemOffhand(), "essenceStored", getEssenceStored(stack));
+				NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", true);
+				return EnumActionResult.SUCCESS;
+			}
+
+		}
+		else if(block instanceof BlockOre && !player.isSneaking() && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_enhanced_extraction))) 
 		{
 			spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ()), 3, 1);
 			player.swingArm(hand);
@@ -269,7 +312,37 @@ public class ItemWand extends Item
 	{
 		if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == true)
 		{
-			if(ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
+			if(ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_vital_extraction)))
+			{
+				if (NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) == 0 && replaceBlock.size() > NBTLib.getInt(player.getHeldItemOffhand(), "currentBlockId", 0)
+						&& !player.worldObj.isRemote)
+				{
+					BlockPos curBlock = replaceBlock.get(NBTLib.getInt(player.getHeldItemOffhand(), "currentBlockId", 0));
+					player.worldObj.playSound(null, curBlock, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
+					player.worldObj.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
+					spawnParticles(EnumParticleTypes.SPELL_WITCH, player.worldObj, true, curBlock, 7, 1);
+					this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1), player.getHeldItemOffhand());
+	
+					NBTLib.setInt(player.getHeldItemOffhand(), "currentBlockId", NBTLib.getInt(player.getHeldItemOffhand(), "currentBlockId", 0) + 1);
+					NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay", 10);
+	
+					if (ThreadLocalRandom.current().nextInt(1, 1000 + 1) == 555 && canBreak)
+					{
+						player.worldObj.playSound(null, curBlock, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
+						stack.stackSize = 0;
+						NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", false);
+					}
+				}
+				else if (replaceBlock.size() > NBTLib.getInt(player.getHeldItemOffhand(), "currentBlockId", 0) && !player.worldObj.isRemote)
+				{
+					NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay", NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) - 1);
+				}
+				else if (!player.worldObj.isRemote)
+				{
+					NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", false);
+				}
+			}
+			else if(ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
 			{
 				if (NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) == 0)
 	            {
@@ -309,6 +382,10 @@ public class ItemWand extends Item
 	
 	public int getMaxItemUseDuration(ItemStack stack)
     {
+		if (NBTLib.getBoolean(stack, "hungerSpellActive", false))
+    	{
+    		return 32;
+    	}
     	return 72000;
     }
 	
@@ -322,6 +399,10 @@ public class ItemWand extends Item
     @Nullable
     public EnumAction getItemUseAction(ItemStack stack)
     {
+    	if (NBTLib.getBoolean(stack, "hungerSpellActive", false))
+    	{
+    		return EnumAction.EAT;
+    	}
 		return EnumAction.BOW;
     }
     
