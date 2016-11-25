@@ -2,8 +2,8 @@
 {
   "modid": "enhancedprogression",
   "name": "Enhanced Progression",
-  "description": "Enhanced Progression is a magic/tech mod that adds new rituals, machines and gameplay to Survival Minecraft.",
-  "version": "0.4.1",
+  "description": "Enhanced Progression is a magic/tech mod that adds new rituals, spells and gameplay to Survival Minecraft.",
+  "version": "0.5.0",
   "mcversion": "1.10.2",
   "url": "https://minecraft.curseforge.com/projects/enhanced-progression",
   "updateUrl": "",

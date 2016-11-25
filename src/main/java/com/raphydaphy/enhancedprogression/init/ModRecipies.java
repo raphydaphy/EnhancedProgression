@@ -1,5 +1,6 @@
 package com.raphydaphy.enhancedprogression.init;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -21,6 +22,8 @@ public class ModRecipies
 
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.imbued_stick, 4), "P", "P", 'P', ModBlocks.imbued_plank);
 
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_vital_extraction), "SLS", "LBL", "SLS", 'S',
+				Items.STICK, 'L', Blocks.LOG, 'B', ModItems.ingot_bronze);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_lantern), "SCS", "CBC", "SCS", 'S', Items.STICK,
 				'C', Items.COAL, 'B', ModItems.ingot_bronze);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_explosion), "SGS", "GBG", "SGS", 'S',
@@ -31,6 +34,8 @@ public class ModRecipies
 				Items.STICK, 'B', Items.BLAZE_POWDER, 'I', ModItems.ingot_bronze);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_hunger), "SRS", "RBR", "SRS", 'S',
 				ModItems.imbued_stick, 'R', Items.ROTTEN_FLESH, 'B', ModItems.ingot_bronze_imbued);
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS", 'S',
+				ModItems.imbued_stick, 'D', Items.DIAMOND, 'B', ModItems.ingot_bronze_imbued);
 	}
 
 	public static void registerSmelting()

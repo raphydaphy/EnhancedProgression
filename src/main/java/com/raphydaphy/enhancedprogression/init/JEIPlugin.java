@@ -35,9 +35,9 @@ public class JEIPlugin implements IModPlugin
 		registry.addDescription(new ItemStack(ModItems.ingot_bronze_imbued),
 				"Crafted with four gold, four bronze and four iron ingots in an altar of any tier, Imbued Bronze Ingots are the first item craftable in an altar and are used for higher tier altar and crafting recipes.");
 		registry.addDescription(new ItemStack(ModItems.basic_wand_tin),
-				"The Basic Wand is a fragile wand constructed in a simple crafting table. Due to the poor quality of the materials used to craft it, it can snap at a moments notice. However, if you are willing to use such a wand, you can right click on a tree to fill it with essence. Shift + Rightclicking at any time will tell you how much essence you currently have stored in the wand, and rightclicking on an altar will start crafting an item if the correct items are in the inventory. Shift + Rightclick on an altar to see what tier it is.");
+				"This simple wand can be used to perform basic spells and activate altar crafting. To fill the wand with essence, right-click on a tree with a Vital Extraction spell in your offhand, and wait until the entire tree turns into dead logs. Shift+rightclick to check your current essence level, and rightclick on the ground with any spell card in your offhand to use it.");
 		registry.addDescription(new ItemStack(ModItems.basic_wand_copper),
-				"The Basic Wand is a fragile wand constructed in a simple crafting table. Due to the poor quality of the materials used to craft it, it can snap at a moments notice. However, if you are willing to use such a wand, you can right click on a tree to fill it with essence. Shift + Rightclicking at any time will tell you how much essence you currently have stored in the wand, and rightclicking on an altar will start crafting an item if the correct items are in the inventory. Shift + Rightclick on an altar to see what tier it is.");
+				"This simple wand can be used to perform basic spells and activate altar crafting. To fill the wand with essence, right-click on a tree with a Vital Extraction spell in your offhand, and wait until the entire tree turns into dead logs. Shift+rightclick to check your current essence level, and rightclick on the ground with any spell card in your offhand to use it.");
 		registry.addDescription(new ItemStack(ModItems.advanced_wand),
 				"By infusing your wand with Imbued Bronze, you unlock more power and capacity. The Advanced Wand cannot break when extracting essence, and can store 10000 essence instead of a mere 1000 in the Basic Wand.");
 		registry.addDescription(new ItemStack(ModItems.imbued_stick),
@@ -52,6 +52,8 @@ public class JEIPlugin implements IModPlugin
 		registry.addDescription(new ItemStack(ModBlocks.totem_top), "Unimplemented.");
 		registry.addDescription(new ItemStack(ModBlocks.totem_middle), "Unimplemented.");
 		registry.addDescription(new ItemStack(ModItems.upgrade_template_basic), "Unimplemented.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_vital_extraction),
+				"In order to cast any spells, you will need essence, which is initially collected from logs using this spell. Simply put this spell card in your offhand and rightclick on a tree while holding a wand and it will begin to fill with essence. Shift+rightclick with your wand to check how much you have ammased in your wand.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_lantern),
 				"This simple spell can place a torch at the cost of 5 essence. Used by either placing the spell card in your offhand with a wand in your main hand, or by infusing it with a wand in an altar to add it to the wands inventory. Note that only Advanced+ wands can be infused with spells and Basic wands require the spell to be in the offhand always.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_explosion),
@@ -62,6 +64,8 @@ public class JEIPlugin implements IModPlugin
 				"If you ever find yourself out of food and hungry, this spell will restore your hunger and saturation levels to full, but will do so at the expense of 500 essence.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_transmutation),
 				"One of the first arts any good magician must learn is that of transmutation - turning objects into other objects. This spell, if used correctly, will turn a diamond block into an altar at the cost of 1000 essence.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_enhanced_extraction),
+				"Once you have a tier 2 altar setup, you will want to be able to collect more essence than you can get from trees in order to cast the more powerful spells crafted with imbued items. The Enhanced Extraction spell, when placed in your offhand, allows you to extract essence from ores in your world. Simply rightclick with a wand while this spell is equipped and watch the magic happen.");
 	}
 
 	@Override
