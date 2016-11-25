@@ -289,13 +289,6 @@ public class ItemBasicWand extends Item
     {
         return true;
     }
-	
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
-	{
-		System.out.println("WHY ISNT IT BEING CALLED ;( ;( ;( ;( ;(");
-		ItemNBTHelper.setString(stack, "tickSpell", "");
-		ItemNBTHelper.setString(stack, "spell", "");
-    }
 	 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
@@ -367,8 +360,10 @@ public class ItemBasicWand extends Item
 						replaceBlock.add(toReplace);
 					}
 				}
-				ItemNBTHelper.setString(stack, "tickSpell", "LOGGER");
+				
 				player.setActiveHand(hand);
+				System.out.println(world.isRemote);
+				ItemNBTHelper.setString(stack, "tickSpell", "LOGGER");
 				return EnumActionResult.SUCCESS;
 			}
 			
@@ -414,8 +409,6 @@ public class ItemBasicWand extends Item
 						addEssence(100, stack);
 					}
 				}
-				
-				player.setActiveHand(hand);
 				return EnumActionResult.SUCCESS;
 			}
 			else
@@ -512,9 +505,18 @@ public class ItemBasicWand extends Item
 		return EnumActionResult.PASS;
 	}
 	
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
+	{
+		System.out.println("WHY ISNT IT BEING CALLED ;( ;( ;( ;( ;(");
+		ItemNBTHelper.setString(stack, "tickSpell", "");
+		ItemNBTHelper.setString(stack, "spell", "");
+    }
+	
+	
 	 /**
      * How long it takes to use or consume an item
      */
+	@Override
     public int getMaxItemUseDuration(ItemStack stack)
     {
     	if (ItemNBTHelper.getString(stack, "spell", "") == "HUNGER")
