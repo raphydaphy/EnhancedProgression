@@ -4,6 +4,7 @@ import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.item.ItemAdvancedWand;
 import com.raphydaphy.enhancedprogression.item.ItemBase;
 import com.raphydaphy.enhancedprogression.item.ItemBasicWand;
+import com.raphydaphy.enhancedprogression.item.ItemWand;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -29,6 +30,8 @@ public class ModItems
 	public static ItemBasicWand basic_wand_copper;
 	public static ItemBasicWand basic_wand_tin;
 	public static ItemAdvancedWand advanced_wand;
+	
+	public static ItemWand wand;
 
 	public static void init()
 	{
@@ -59,6 +62,9 @@ public class ModItems
 		basic_wand_tin = register(new ItemBasicWand("basic_wand_tin").setCreativeTab(EnhancedProgression.creativeTab));
 		advanced_wand = (ItemAdvancedWand) register(
 				new ItemAdvancedWand().setCreativeTab(EnhancedProgression.creativeTab));
+		
+		wand = (ItemWand) register(
+				new ItemWand("wand").setCreativeTab(EnhancedProgression.creativeTab));
 	}
 
 	private static <T extends Item> T register(T item)
@@ -75,6 +81,10 @@ public class ModItems
 		else if (item instanceof ItemAdvancedWand)
 		{
 			((ItemAdvancedWand) item).registerItemModel();
+		}
+		else if (item instanceof ItemWand)
+		{
+			((ItemWand) item).registerItemModel();
 		}
 		return item;
 	}
