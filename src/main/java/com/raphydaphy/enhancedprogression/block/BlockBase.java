@@ -12,11 +12,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockBase extends Block {
+public class BlockBase extends Block
+{
 
 	protected String name;
-	 
-	public BlockBase(Material material, String name) {
+
+	public BlockBase(Material material, String name)
+	{
 		super(material);
 
 		this.name = name;
@@ -25,14 +27,18 @@ public class BlockBase extends Block {
 		setRegistryName(name);
 	}
 
-	public void registerItemModel(ItemBlock itemBlock) {
+	public void registerItemModel(ItemBlock itemBlock)
+	{
 		EnhancedProgression.proxy.registerItemRenderer(itemBlock, 0, name);
 	}
-	
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) { }
-	
+
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+	{
+	}
+
 	@Override
-	public BlockBase setCreativeTab(CreativeTabs tab) {
+	public BlockBase setCreativeTab(CreativeTabs tab)
+	{
 		super.setCreativeTab(tab);
 		return this;
 	}

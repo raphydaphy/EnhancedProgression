@@ -16,16 +16,16 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MINECRAFT_VERSION)
-public class EnhancedProgression 
+public class EnhancedProgression
 {
 	@Instance
 	public static EnhancedProgression Instance;
-	
+
 	public static final EPCreativeTab creativeTab = new EPCreativeTab();
-	
+
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static CommonProxy proxy;
-	
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -33,21 +33,20 @@ public class EnhancedProgression
 		MinecraftForge.EVENT_BUS.register(Events.class);
 		proxy.preInit();
 	}
-	
+
 	@EventHandler
 	public void init(FMLInitializationEvent event)
-	{	
+	{
 		System.out.println("Initializing Enhanced Progression...");
 		ModRecipies.registerCrafting();
 		ModRecipies.registerSmelting();
-		
+
 	}
-	
+
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		System.out.println("Enhanced Progression Loaded Successfully :D");
 	}
-	
-	
+
 }

@@ -10,24 +10,32 @@ import com.raphydaphy.enhancedprogression.recipe.AltarRecipes;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class CommonProxy 
+public class CommonProxy
 {
-	
-	public void registerItemRenderer(Item item, int meta, String id) { }
-	public void setActionText(String text) { }
-	public void init() { }
+
+	public void registerItemRenderer(Item item, int meta, String id)
+	{
+	}
+
+	public void setActionText(String text)
+	{
+	}
+
+	public void init()
+	{
+	}
+
 	public void preInit()
 	{
 		ModItems.init();
 		ModBlocks.init();
-		
+
 		ModMultiblocks.init();
 		ModAchievements.init();
-		
+
 		AltarRecipes.init();
-		
+
 		GameRegistry.registerTileEntity(TileAltar.class, "enhancedprogression:altar");
 	}
-	
 
 }

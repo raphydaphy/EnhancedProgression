@@ -29,36 +29,44 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.VanillaDoubleChestItemHandler;
 
-public class InventoryHelper {
+public class InventoryHelper
+{
 
-	public static IItemHandler getInventory(World world, BlockPos pos, EnumFacing side) {
+	public static IItemHandler getInventory(World world, BlockPos pos, EnumFacing side)
+	{
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te == null)
+		if (te == null)
 			return null;
 
-		if(te instanceof TileEntityChest) {
+		if (te instanceof TileEntityChest)
+		{
 			IItemHandler doubleChest = VanillaDoubleChestItemHandler.get((TileEntityChest) te);
-			if(doubleChest != VanillaDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
+			if (doubleChest != VanillaDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
 				return doubleChest;
 		}
 
-		IItemHandler ret = te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) ?
-				te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) : null;
+		IItemHandler ret = te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)
+				? te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) : null;
 
-				if(ret == null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
-					ret = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		if (ret == null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
+			ret = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-				return ret;
+		return ret;
 	}
 
-	public static void dropInventory(TileSimpleInventory inv, World world, IBlockState state, BlockPos pos) {
-		if(inv != null) {
-			for(int j1 = 0; j1 < inv.getSizeInventory(); ++j1) {
+	public static void dropInventory(TileSimpleInventory inv, World world, IBlockState state, BlockPos pos)
+	{
+		if (inv != null)
+		{
+			for (int j1 = 0; j1 < inv.getSizeInventory(); ++j1)
+			{
 				ItemStack itemstack = inv.getItemHandler().getStackInSlot(j1);
 
-				if(itemstack != null) {
-					net.minecraft.inventory.InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+				if (itemstack != null)
+				{
+					net.minecraft.inventory.InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(),
+							itemstack);
 				}
 			}
 
@@ -66,10 +74,13 @@ public class InventoryHelper {
 		}
 	}
 
-	public static void withdrawFromInventory(TileSimpleInventory inv, EntityPlayer player) {
-		for(int i = inv.getSizeInventory() - 1; i >= 0; i--) {
+	public static void withdrawFromInventory(TileSimpleInventory inv, EntityPlayer player)
+	{
+		for (int i = inv.getSizeInventory() - 1; i >= 0; i--)
+		{
 			ItemStack stackAt = inv.getItemHandler().getStackInSlot(i);
-			if(stackAt != null) {
+			if (stackAt != null)
+			{
 				ItemStack copy = stackAt.copy();
 				ItemHandlerHelper.giveItemToPlayer(player, copy);
 				inv.getItemHandler().setStackInSlot(i, null);

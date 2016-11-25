@@ -23,52 +23,62 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * A component of a multiblock, the normal one
- * is just a block.
+ * A component of a multiblock, the normal one is just a block.
  */
-public class MultiblockComponent {
+public class MultiblockComponent
+{
 
 	protected BlockPos relPos;
 	protected final IBlockState state;
 	protected final TileEntity tileEntity;
 	private final boolean doFancyRender;
 
-	public MultiblockComponent(BlockPos relPos, IBlockState state) {
+	public MultiblockComponent(BlockPos relPos, IBlockState state)
+	{
 		this(relPos, state, null);
 	}
 
-	public MultiblockComponent(BlockPos relPos, IBlockState state, boolean doFancyRender) {
+	public MultiblockComponent(BlockPos relPos, IBlockState state, boolean doFancyRender)
+	{
 		this(relPos, state, doFancyRender, null);
 	}
 
-	public MultiblockComponent(BlockPos relPos, IBlockState state, TileEntity tileEntity) {
+	public MultiblockComponent(BlockPos relPos, IBlockState state, TileEntity tileEntity)
+	{
 		this(relPos, state, state.getBlock().hasTileEntity(state) == (tileEntity != null), tileEntity);
 	}
 
-	public MultiblockComponent(BlockPos relPos, IBlockState state, boolean doFancyRender, TileEntity tileEntity) {
+	public MultiblockComponent(BlockPos relPos, IBlockState state, boolean doFancyRender, TileEntity tileEntity)
+	{
 		this.relPos = relPos;
 		this.state = state;
 		this.tileEntity = tileEntity;
 		this.doFancyRender = doFancyRender;
 	}
 
-	public BlockPos getRelativePosition() {
+	public BlockPos getRelativePosition()
+	{
 		return relPos;
 	}
 
-	public IBlockState getBlockState() {
+	public IBlockState getBlockState()
+	{
 		return state;
 	}
 
-	public boolean matches(World world, BlockPos pos) {
+	public boolean matches(World world, BlockPos pos)
+	{
 		return world.getBlockState(pos) == state;
 	}
 
-	public ItemStack[] getMaterials() {
-		return new ItemStack[] { new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)) };
+	public ItemStack[] getMaterials()
+	{
+		return new ItemStack[]
+		{ new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)) };
 	}
 
-	public void rotate(double angle) {
+	public void rotate(double angle)
+	{
 		double x = relPos.getX();
 		double z = relPos.getZ();
 		double sin = Math.sin(angle);
@@ -79,16 +89,19 @@ public class MultiblockComponent {
 		relPos = new BlockPos((int) Math.round(xn), relPos.getY(), (int) Math.round(zn));
 	}
 
-	public MultiblockComponent copy() {
+	public MultiblockComponent copy()
+	{
 		return new MultiblockComponent(relPos, state, tileEntity);
 	}
 
-	public TileEntity getTileEntity() {
+	public TileEntity getTileEntity()
+	{
 		return tileEntity;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public boolean shouldDoFancyRender() {
+	public boolean shouldDoFancyRender()
+	{
 		return doFancyRender;
 	}
 

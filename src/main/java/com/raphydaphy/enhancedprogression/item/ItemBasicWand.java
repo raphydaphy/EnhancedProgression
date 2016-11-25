@@ -99,7 +99,8 @@ public class ItemBasicWand extends Item
 		if (getEssenceStored(stack) + amount < getMaxEssence() + 1)
 		{
 			compoundTmp.setInteger("essenceStored", compoundTmp.getInteger("essenceStored") + amount);
-		} else
+		}
+		else
 		{
 			compoundTmp.setInteger("essenceStored", getMaxEssence());
 		}
@@ -170,7 +171,8 @@ public class ItemBasicWand extends Item
 					spawnParticles(EnumParticleTypes.FLAME, world, true, new BlockPos(x, y, z), 2, 1);
 					break;
 				}
-			} else
+			}
+			else
 			{
 				ItemNBTHelper.setString(stack, "particleAction", "");
 			}
@@ -200,10 +202,12 @@ public class ItemBasicWand extends Item
 						stack.stackSize = 0;
 						ItemNBTHelper.setString(stack, "tickSpell", "");
 					}
-				} else if (replaceBlock.size() > ItemNBTHelper.getInt(stack, "currentBlockId", 0) && !world.isRemote)
+				}
+				else if (replaceBlock.size() > ItemNBTHelper.getInt(stack, "currentBlockId", 0) && !world.isRemote)
 				{
 					delay--;
-				} else if (!world.isRemote)
+				}
+				else if (!world.isRemote)
 				{
 					ItemNBTHelper.setString(stack, "tickSpell", "");
 				}
@@ -242,20 +246,23 @@ public class ItemBasicWand extends Item
 									SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F,
 									1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1 * 0.5F);
 						}
-					} else
+					}
+					else
 					{
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 						ItemNBTHelper.setString(stack, "tickSpell", "");
 					}
 
-				} else
+				}
+				else
 				{
 					delay--;
 				}
 				break;
 			}
 			ItemNBTHelper.setInt(stack, "delay", delay);
-		} else
+		}
+		else
 		{
 			ItemNBTHelper.setString(stack, "tickSpell", "");
 		}
@@ -305,7 +312,8 @@ public class ItemBasicWand extends Item
 		{
 			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 					+ getEssenceStored(stack) + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
-		} else if (!worldIn.isRemote
+		}
+		else if (!worldIn.isRemote
 				&& ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
 		{
 			if (useEssence(100, stack) && ItemNBTHelper.getString(stack, "tickSpell", "") != "RAPIDFIRE")
@@ -316,12 +324,14 @@ public class ItemBasicWand extends Item
 
 				playerIn.setActiveHand(hand);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
-			} else if (getEssenceStored(stack) < 100)
+			}
+			else if (getEssenceStored(stack) < 100)
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 			}
-		} else if (!worldIn.isRemote
+		}
+		else if (!worldIn.isRemote
 				&& ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_hunger)))
 		{
 			if (playerIn.canEat(false))
@@ -352,7 +362,8 @@ public class ItemBasicWand extends Item
 			}
 
 			return wanded ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
-		} else if (block instanceof BlockLog)
+		}
+		else if (block instanceof BlockLog)
 		{
 			if (ItemNBTHelper.getString(stack, "tickSpell", "") != "LOGGER")
 			{
@@ -375,7 +386,8 @@ public class ItemBasicWand extends Item
 				return EnumActionResult.SUCCESS;
 			}
 
-		} else if (block instanceof BlockOre && !player.isSneaking())
+		}
+		else if (block instanceof BlockOre && !player.isSneaking())
 		{
 			if (getWandTier() > 1)
 			{
@@ -394,38 +406,45 @@ public class ItemBasicWand extends Item
 					{
 						world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
 						addEssence(500, stack);
-					} else if (block == Blocks.DIAMOND_ORE)
+					}
+					else if (block == Blocks.DIAMOND_ORE)
 					{
 						world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
 						addEssence(400, stack);
-					} else if (block == Blocks.GOLD_ORE)
+					}
+					else if (block == Blocks.GOLD_ORE)
 					{
 						world.setBlockState(pos, Blocks.IRON_ORE.getDefaultState());
 						addEssence(300, stack);
-					} else if (block == Blocks.IRON_ORE)
+					}
+					else if (block == Blocks.IRON_ORE)
 					{
 						world.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
 						addEssence(200, stack);
-					} else if (block == Blocks.COAL_ORE)
+					}
+					else if (block == Blocks.COAL_ORE)
 					{
 						world.setBlockState(pos, Blocks.STONE.getDefaultState());
 						addEssence(100, stack);
 					}
 				}
 				return EnumActionResult.SUCCESS;
-			} else
+			}
+			else
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.betterwandneeded.name")));
 				return EnumActionResult.FAIL;
 			}
-		} else
+		}
+		else
 		{
 			if (player.isSneaking())
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 						+ getEssenceStored(stack) + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
 				return EnumActionResult.SUCCESS;
-			} else
+			}
+			else
 			{
 				if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(),
 						new ItemStack(ModItems.spell_card_transmutation)))
@@ -445,17 +464,20 @@ public class ItemBasicWand extends Item
 							world.setBlockState(pos, ModBlocks.altar.getDefaultState());
 
 							return EnumActionResult.SUCCESS;
-						} else
+						}
+						else
 						{
 							EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 							return EnumActionResult.FAIL;
 						}
-					} else
+					}
+					else
 					{
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.invalidblock.name")));
 						return EnumActionResult.FAIL;
 					}
-				} else if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(),
+				}
+				else if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(),
 						new ItemStack(ModItems.spell_card_lantern)))
 				{
 					if (useEssence(5, stack))
@@ -473,24 +495,28 @@ public class ItemBasicWand extends Item
 							player.swingArm(hand);
 
 							return EnumActionResult.SUCCESS;
-						} else
+						}
+						else
 						{
 							EnhancedProgression.proxy.setActionText((I18n.format("gui.obstructed.name")));
 							return EnumActionResult.PASS;
 						}
-					} else
+					}
+					else
 					{
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 						return EnumActionResult.PASS;
 					}
-				} else if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(),
+				}
+				else if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(),
 						new ItemStack(ModItems.spell_card_explosion)))
 				{
 					if (useEssence(50, stack))
 					{
 						world.createExplosion(player, pos.getX(), pos.getY() + 2, pos.getZ(), 3, false);
 						return EnumActionResult.SUCCESS;
-					} else
+					}
+					else
 					{
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 						return EnumActionResult.FAIL;
@@ -518,7 +544,8 @@ public class ItemBasicWand extends Item
 		if (ItemNBTHelper.getString(stack, "spell", "") == "HUNGER")
 		{
 			return 32;
-		} else
+		}
+		else
 		{
 			return 72000;
 		}
@@ -547,7 +574,8 @@ public class ItemBasicWand extends Item
 					entityplayer.getFoodStats().addStats(20, 20);
 					ItemNBTHelper.setString(stack, "spell", "");
 					return stack;
-				} else
+				}
+				else
 				{
 					EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 					return stack;

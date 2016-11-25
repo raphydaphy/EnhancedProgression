@@ -9,22 +9,23 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class Events {
+public class Events
+{
 
 	@SubscribeEvent
-	public static void onDrawScreenPost(RenderGameOverlayEvent.Post event) 
+	public static void onDrawScreenPost(RenderGameOverlayEvent.Post event)
 	{
 		Minecraft mc = Minecraft.getMinecraft();
-		if(event.getType() == ElementType.ALL) 
+		if (event.getType() == ElementType.ALL)
 		{
 			RayTraceResult pos = mc.objectMouseOver;
 
-			if(pos != null) 
+			if (pos != null)
 			{
-				TileEntity tile = pos.typeOfHit == RayTraceResult.Type.BLOCK ? mc.theWorld.getTileEntity(pos.getBlockPos()) : null;
+				TileEntity tile = pos.typeOfHit == RayTraceResult.Type.BLOCK
+						? mc.theWorld.getTileEntity(pos.getBlockPos()) : null;
 
-				
-				if(tile != null && tile instanceof TileAltar)
+				if (tile != null && tile instanceof TileAltar)
 				{
 					((TileAltar) tile).renderHUD(mc, event.getResolution());
 				}

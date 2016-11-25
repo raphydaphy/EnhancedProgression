@@ -26,74 +26,89 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockAltar extends BlockBase {
+public class BlockAltar extends BlockBase
+{
 	protected String name;
 
-	public BlockAltar(boolean isLit, String name) {
+	public BlockAltar(boolean isLit, String name)
+	{
 		super(Material.ROCK, name);
 		setUnlocalizedName(name);
 		this.setHardness(3.0F);
 		this.name = name;
 	}
-	
-	public boolean onUsedByWand(EntityPlayer player, ItemStack stack, World world, BlockPos pos, EnumFacing side) {
+
+	public boolean onUsedByWand(EntityPlayer player, ItemStack stack, World world, BlockPos pos, EnumFacing side)
+	{
 		((TileAltar) world.getTileEntity(pos)).onWanded(player, stack);
 		return true;
 	}
 
-
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state)
+	{
 		return false;
 	}
 
-	public void registerItemModel(ItemBlock itemBlock) {
+	public void registerItemModel(ItemBlock itemBlock)
+	{
 		EnhancedProgression.proxy.registerItemRenderer(itemBlock, 0, name);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
-	public void initModel(){
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(),"inventory"));
+	public void initModel()
+	{
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
+				new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
+
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
-		return new AxisAlignedBB(0.0,0,0.0,1.0,0.65,1.0);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		return new AxisAlignedBB(0.0, 0, 0.0, 1.0, 0.65, 1.0);
 	}
-	
+
 	@Override
-	public boolean isFullCube(IBlockState state){
+	public boolean isFullCube(IBlockState state)
+	{
 		return false;
 	}
-	
+
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer){
-		if (layer == BlockRenderLayer.CUTOUT){
+	public boolean canRenderInLayer(BlockRenderLayer layer)
+	{
+		if (layer == BlockRenderLayer.CUTOUT)
+		{
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
-	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state)
+	{
 		TileSimpleInventory inv = (TileSimpleInventory) world.getTileEntity(pos);
 
 		InventoryHelper.dropInventory(inv, world, state, pos);
-		
+
 		super.breakBlock(world, pos, state);
 	}
 
 	@Override
-	public boolean hasTileEntity(IBlockState state) {
+	public boolean hasTileEntity(IBlockState state)
+	{
 		return true;
 	}
 
 	@Nonnull
 	@Override
-	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state)
+	{
 		return new TileAltar();
 	}
 
 	@Override
-	public BlockAltar setCreativeTab(CreativeTabs tab) {
+	public BlockAltar setCreativeTab(CreativeTabs tab)
+	{
 		super.setCreativeTab(tab);
 		return this;
 	}

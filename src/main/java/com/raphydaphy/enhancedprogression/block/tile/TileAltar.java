@@ -27,107 +27,111 @@ import net.minecraft.util.math.BlockPos.MutableBlockPos;
 
 public class TileAltar extends TileSimpleInventory
 {
-    public int altarTier = 1;
-    AltarRecipe altarRecipe;
-    
-    private int confirm = 0;
-    private int disableTicks = 0;
-    
+	public int altarTier = 1;
+	AltarRecipe altarRecipe;
+
+	private int confirm = 0;
+	private int disableTicks = 0;
+
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		// TODO Auto-generated method stub
 		return 16;
 	}
-	private static Iterable<BlockPos.MutableBlockPos> QUARTZ_BLOCKS = BlockPos.getAllInBoxMutable(new BlockPos(-2, 0, -2), new BlockPos(2, 0, 2));
-	private static final BlockPos[] CLAY_BLOCKS = {
-            new BlockPos(-3, 0, -3), new BlockPos(-3, 0, -2),
-            new BlockPos(-3, 0, -1), new BlockPos(-2, 0, -3),
-            new BlockPos(-3, 0, 0), new BlockPos(-3, 0, 1),
-            new BlockPos(-3, 0, 2), new BlockPos(-3, 0, 3),
-            new BlockPos(-2, 0, 3), new BlockPos(-1, 0, 3),
-            new BlockPos(0, 0, 3), new BlockPos(1, 0, 3),
-            new BlockPos(2, 0, 3), new BlockPos(3, 0, 3),
-            new BlockPos(3, 0, 2), new BlockPos(3, 0, 1),
-            new BlockPos(3, 0, 0), new BlockPos(3, 0, -1),
-            new BlockPos(3, 0, -2), new BlockPos(3, 0, -3),
-            new BlockPos(2, 0, -3), new BlockPos(1, 0, -3),
-            new BlockPos(0, 0, -3), new BlockPos(-1, 0, -3)
-         
+
+	private static Iterable<BlockPos.MutableBlockPos> QUARTZ_BLOCKS = BlockPos
+			.getAllInBoxMutable(new BlockPos(-2, 0, -2), new BlockPos(2, 0, 2));
+	private static final BlockPos[] CLAY_BLOCKS =
+	{ new BlockPos(-3, 0, -3), new BlockPos(-3, 0, -2), new BlockPos(-3, 0, -1), new BlockPos(-2, 0, -3),
+			new BlockPos(-3, 0, 0), new BlockPos(-3, 0, 1), new BlockPos(-3, 0, 2), new BlockPos(-3, 0, 3),
+			new BlockPos(-2, 0, 3), new BlockPos(-1, 0, 3), new BlockPos(0, 0, 3), new BlockPos(1, 0, 3),
+			new BlockPos(2, 0, 3), new BlockPos(3, 0, 3), new BlockPos(3, 0, 2), new BlockPos(3, 0, 1),
+			new BlockPos(3, 0, 0), new BlockPos(3, 0, -1), new BlockPos(3, 0, -2), new BlockPos(3, 0, -3),
+			new BlockPos(2, 0, -3), new BlockPos(1, 0, -3), new BlockPos(0, 0, -3), new BlockPos(-1, 0, -3)
+
 	};
-	
+
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-	    super.readFromNBT(compound);
-	    confirm = compound.getInteger("confirm");
+	public void readFromNBT(NBTTagCompound compound)
+	{
+		super.readFromNBT(compound);
+		confirm = compound.getInteger("confirm");
 	}
-	
+
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-	    super.writeToNBT(compound);
-	    compound.setInteger("confirm", confirm);
-	    return compound;
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
+	{
+		super.writeToNBT(compound);
+		compound.setInteger("confirm", confirm);
+		return compound;
 	}
-	
-	public static MultiblockSet makeMultiblockSet() {
+
+	public static MultiblockSet makeMultiblockSet()
+	{
 		Multiblock mb = new Multiblock();
 
-		for(BlockPos relativePos : QUARTZ_BLOCKS)
+		for (BlockPos relativePos : QUARTZ_BLOCKS)
 		{
-			mb.addComponent(relativePos, Blocks.QUARTZ_BLOCK.getDefaultState().withProperty(BlockQuartz.VARIANT, BlockQuartz.EnumType.CHISELED));
+			mb.addComponent(relativePos, Blocks.QUARTZ_BLOCK.getDefaultState().withProperty(BlockQuartz.VARIANT,
+					BlockQuartz.EnumType.CHISELED));
 		}
-		for(BlockPos relativePos : CLAY_BLOCKS)
+		for (BlockPos relativePos : CLAY_BLOCKS)
 		{
 			mb.addComponent(relativePos, Blocks.HARDENED_CLAY.getDefaultState());
 		}
-		
 
 		mb.addComponent(new BlockPos(0, 1, 0), ModBlocks.altar.getDefaultState());
 		mb.setRenderOffset(new BlockPos(0, 1, 0));
 
 		return mb.makeSet();
 	}
-	
-	boolean hasValidPlatform() 
+
+	boolean hasValidPlatform()
 	{
-		return checkAllIterable(QUARTZ_BLOCKS, Blocks.QUARTZ_BLOCK) && checkAllArray(CLAY_BLOCKS, Blocks.HARDENED_CLAY); 
+		return checkAllIterable(QUARTZ_BLOCKS, Blocks.QUARTZ_BLOCK) && checkAllArray(CLAY_BLOCKS, Blocks.HARDENED_CLAY);
 	}
-	
-	boolean checkAllArray(BlockPos[] relPositions, Block block) {
-		for (BlockPos position : relPositions) {
-			if(!checkPlatform(position.getX(), position.getZ(), block))
+
+	boolean checkAllArray(BlockPos[] relPositions, Block block)
+	{
+		for (BlockPos position : relPositions)
+		{
+			if (!checkPlatform(position.getX(), position.getZ(), block))
 				return false;
 		}
 
 		return true;
 	}
-	
-	boolean checkAllIterable(Iterable<MutableBlockPos> relPositions, Block block) {
-		for (BlockPos position : relPositions) {
-			if(!checkPlatform(position.getX(), position.getZ(), block))
+
+	boolean checkAllIterable(Iterable<MutableBlockPos> relPositions, Block block)
+	{
+		for (BlockPos position : relPositions)
+		{
+			if (!checkPlatform(position.getX(), position.getZ(), block))
 				return false;
 		}
 
 		return true;
 	}
-	
-	boolean checkPlatform(int xOff, int zOff, Block block) {
+
+	boolean checkPlatform(int xOff, int zOff, Block block)
+	{
 		return worldObj.getBlockState(pos.add(xOff, -1, zOff)).getBlock() == block;
 	}
-	
-	public void onWanded(EntityPlayer player, ItemStack wand) 
+
+	public void onWanded(EntityPlayer player, ItemStack wand)
 	{
-		if(player.isSneaking()) 
+		if (player.isSneaking())
 		{
 			confirm = 0;
 			markDirty();
-			
-			
+
 			if (getWorld().isRemote)
 			{
 				EnhancedProgression.proxy.setActionText((I18n.format("gui.altarmessage.name") + " " + getAltarTier()));
 			}
 		}
-		else 
+		else
 		{
 			if (hasValidRecipe())
 			{
@@ -141,12 +145,13 @@ public class TileAltar extends TileSimpleInventory
 					markDirty();
 				}
 			}
-			if(!worldObj.isRemote && confirm > 1 && disableTicks == 0) 
+			if (!worldObj.isRemote && confirm > 1 && disableTicks == 0)
 			{
 				if (hasValidRecipe())
 				{
 					disableTicks = 50;
-					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5, getPos().getZ() + 0.5, currentOutput().copy());
+					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5,
+							getPos().getZ() + 0.5, currentOutput().copy());
 					worldObj.spawnEntityInWorld(outputItem);
 					altarRecipe = null;
 					emptyAltar();
@@ -157,7 +162,8 @@ public class TileAltar extends TileSimpleInventory
 			}
 			else if (!worldObj.isRemote && hasValidItems() && !hasValidRecipe())
 			{
-				EnhancedProgression.proxy.setActionText((I18n.format("gui.wrongtier.name") + " " + getRequiredTier() + " " + I18n.format("tile.altar.name")));
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.wrongtier.name") + " " + getRequiredTier()
+						+ " " + I18n.format("tile.altar.name")));
 			}
 			else if (!worldObj.isRemote && !hasValidRecipe())
 			{
@@ -165,12 +171,12 @@ public class TileAltar extends TileSimpleInventory
 			}
 		}
 	}
-	
-	public boolean hasValidRecipe() 
+
+	public boolean hasValidRecipe()
 	{
-		for(AltarRecipe recipe : ModRecipes.altarRecipes)
+		for (AltarRecipe recipe : ModRecipes.altarRecipes)
 		{
-			if(recipe.matches(itemHandler))
+			if (recipe.matches(itemHandler))
 			{
 				if (getRequiredTier() <= getAltarTier())
 				{
@@ -181,12 +187,12 @@ public class TileAltar extends TileSimpleInventory
 
 		return false;
 	}
-	
-	public boolean hasValidItems() 
+
+	public boolean hasValidItems()
 	{
-		for(AltarRecipe recipe : ModRecipes.altarRecipes)
+		for (AltarRecipe recipe : ModRecipes.altarRecipes)
 		{
-			if(recipe.matches(itemHandler))
+			if (recipe.matches(itemHandler))
 			{
 				return true;
 			}
@@ -194,7 +200,7 @@ public class TileAltar extends TileSimpleInventory
 
 		return false;
 	}
-	
+
 	public int getAltarTier()
 	{
 		altarTier = 1;
@@ -205,12 +211,12 @@ public class TileAltar extends TileSimpleInventory
 		PacketManager.dispatchTE(worldObj, pos);
 		return altarTier;
 	}
-	
+
 	public int getRequiredTier()
 	{
-		for(AltarRecipe recipe : ModRecipes.altarRecipes)
+		for (AltarRecipe recipe : ModRecipes.altarRecipes)
 		{
-			if(recipe.matches(itemHandler))
+			if (recipe.matches(itemHandler))
 			{
 				return recipe.getAltarTier();
 			}
@@ -218,41 +224,44 @@ public class TileAltar extends TileSimpleInventory
 		PacketManager.dispatchTE(worldObj, pos);
 		return 0;
 	}
-	
+
 	public ItemStack currentOutput()
 	{
-		for(AltarRecipe recipe : ModRecipes.altarRecipes)
-			if(recipe.matches(itemHandler))
+		for (AltarRecipe recipe : ModRecipes.altarRecipes)
+			if (recipe.matches(itemHandler))
 				return recipe.getOutput();
 
 		return null;
-		
+
 	}
-	
+
 	public void emptyAltar()
 	{
-		for(int i = 0; i < getSizeInventory(); i++)
+		for (int i = 0; i < getSizeInventory(); i++)
 		{
 			itemHandler.setStackInSlot(i, null);
 		}
 	}
-	
+
 	@Override
-	protected SimpleItemStackHandler createItemHandler() {
-		return new SimpleItemStackHandler(this, false) {
+	protected SimpleItemStackHandler createItemHandler()
+	{
+		return new SimpleItemStackHandler(this, false)
+		{
 			@Override
-			protected int getStackLimit(int slot, ItemStack stack) {
+			protected int getStackLimit(int slot, ItemStack stack)
+			{
 				return 1;
 			}
 		};
 	}
-	
-	public boolean addItem(ItemStack stack) 
+
+	public boolean addItem(ItemStack stack)
 	{
 		boolean did = false;
 
-		for(int i = 0; i < getSizeInventory(); i++)
-			if(itemHandler.getStackInSlot(i) == null && disableTicks == 0) 
+		for (int i = 0; i < getSizeInventory(); i++)
+			if (itemHandler.getStackInSlot(i) == null && disableTicks == 0)
 			{
 				did = true;
 				ItemStack stackToAdd = stack.copy();
@@ -262,59 +271,64 @@ public class TileAltar extends TileSimpleInventory
 				break;
 			}
 
-		if(did)
+		if (did)
 		{
 			PacketManager.dispatchTE(worldObj, pos);
 		}
 
 		return true;
 	}
+
 	@Override
 	public void update()
 	{
-		
-		if(!worldObj.isRemote && confirm == 0 && disableTicks == 0) 
+
+		if (!worldObj.isRemote && confirm == 0 && disableTicks == 0)
 		{
-			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)));
-			for(EntityItem item : items)
+			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class,
+					new AxisAlignedBB(pos, pos.add(1, 1, 1)));
+			for (EntityItem item : items)
 			{
-				if(!item.isDead && item.getEntityItem  () != null) {
+				if (!item.isDead && item.getEntityItem() != null)
+				{
 					ItemStack stack = item.getEntityItem();
-					if(addItem(stack) && stack.stackSize == 0)
+					if (addItem(stack) && stack.stackSize == 0)
 					{
 						item.setDead();
 					}
 				}
 			}
 		}
-		
-		else if(disableTicks > 0)
+
+		else if (disableTicks > 0)
 		{
 			--disableTicks;
 		}
 	}
-	
-	public void renderHUD(Minecraft mc, ScaledResolution res) {
+
+	public void renderHUD(Minecraft mc, ScaledResolution res)
+	{
 		int screenWidth = res.getScaledWidth() / 2;
-		int screenHeight = res.getScaledHeight() /2;
+		int screenHeight = res.getScaledHeight() / 2;
 
 		float angle = -90;
 		int radius = 33;
 		int amount = 0;
-		
+
 		// count the amount of items stored in the altar
-		for(int i = 0; i < getSizeInventory(); i++) {
-			if(itemHandler.getStackInSlot(i) == null)
+		for (int i = 0; i < getSizeInventory(); i++)
+		{
+			if (itemHandler.getStackInSlot(i) == null)
 				break;
 			amount++;
 		}
 		// if any items are held in the altar
-		if(amount > 0) {
+		if (amount > 0)
+		{
 			float anglePer = 360F / amount;
-				
 
 			net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
-			for(int i = 0; i < amount; i++) 
+			for (int i = 0; i < amount; i++)
 			{
 				double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 8;
 				double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 8;
@@ -326,7 +340,7 @@ public class TileAltar extends TileSimpleInventory
 
 				angle += anglePer;
 			}
-			
+
 			if (hasValidRecipe())
 			{
 				GlStateManager.pushMatrix();
@@ -345,7 +359,7 @@ public class TileAltar extends TileSimpleInventory
 				mc.fontRendererObj.drawStringWithShadow("x", screenWidth, screenHeight, 0xFFFFFF);
 				GlStateManager.translate(-screenWidth, -screenHeight, 0);
 				GlStateManager.popMatrix();
-				
+
 			}
 			net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 		}

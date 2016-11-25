@@ -23,19 +23,23 @@ import net.minecraft.util.EnumFacing;
 /**
  * A set of Multiblock objects for various rotations.
  */
-public class MultiblockSet {
+public class MultiblockSet
+{
 
 	private final Map<EnumFacing, Multiblock> mbs;
 
-	public MultiblockSet(Multiblock mb) {
+	public MultiblockSet(Multiblock mb)
+	{
 		mbs = Collections.unmodifiableMap(mb.createRotations());
 	}
 
-	public Multiblock getForEntity(Entity e) {
+	public Multiblock getForEntity(Entity e)
+	{
 		return getForFacing(e.getHorizontalFacing());
 	}
 
-	public Multiblock getForFacing(EnumFacing facing) {
+	public Multiblock getForFacing(EnumFacing facing)
+	{
 		return mbs.get(facing);
 	}
 
