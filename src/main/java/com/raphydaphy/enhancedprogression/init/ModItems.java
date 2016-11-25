@@ -1,9 +1,7 @@
 package com.raphydaphy.enhancedprogression.init;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
-import com.raphydaphy.enhancedprogression.item.ItemAdvancedWand;
 import com.raphydaphy.enhancedprogression.item.ItemBase;
-import com.raphydaphy.enhancedprogression.item.ItemBasicWand;
 import com.raphydaphy.enhancedprogression.item.ItemWand;
 
 import net.minecraft.item.Item;
@@ -24,13 +22,15 @@ public class ModItems
 	public static ItemBase spell_card_rapidfire;
 	public static ItemBase spell_card_hunger;
 	public static ItemBase spell_card_transmutation;
+	public static ItemBase spell_card_vital_extraction;
+	public static ItemBase spell_card_enhanced_extraction;
 
 	public static ItemBase upgrade_template_basic;
 
-	public static ItemBasicWand basic_wand_copper;
-	public static ItemBasicWand basic_wand_tin;
-	public static ItemAdvancedWand advanced_wand;
-	
+	public static ItemWand basic_wand_copper;
+	public static ItemWand basic_wand_tin;
+	public static ItemWand advanced_wand;
+
 	public static ItemWand wand;
 
 	public static void init()
@@ -53,18 +53,21 @@ public class ModItems
 				new ItemBase("spell_card_hunger", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		spell_card_transmutation = register(
 				new ItemBase("spell_card_transmutation", 1).setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_vital_extraction = register(
+				new ItemBase("spell_card_vital_extraction", 1).setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_enhanced_extraction = register(
+				new ItemBase("spell_card_enhanced_extraction", 1).setCreativeTab(EnhancedProgression.creativeTab));
 
 		upgrade_template_basic = register(
 				new ItemBase("upgrade_template_basic", 16).setCreativeTab(EnhancedProgression.creativeTab));
 
 		basic_wand_copper = register(
-				new ItemBasicWand("basic_wand_copper").setCreativeTab(EnhancedProgression.creativeTab));
-		basic_wand_tin = register(new ItemBasicWand("basic_wand_tin").setCreativeTab(EnhancedProgression.creativeTab));
-		advanced_wand = (ItemAdvancedWand) register(
-				new ItemAdvancedWand().setCreativeTab(EnhancedProgression.creativeTab));
-		
-		wand = (ItemWand) register(
-				new ItemWand("wand").setCreativeTab(EnhancedProgression.creativeTab));
+				new ItemWand("basic_wand_copper", 1, 1000, true).setCreativeTab(EnhancedProgression.creativeTab));
+		basic_wand_tin = register(
+				new ItemWand("basic_wand_tin", 1, 1000, true).setCreativeTab(EnhancedProgression.creativeTab));
+		advanced_wand = (ItemWand) register(
+				new ItemWand("advanced_wand", 2, 10000, false).setCreativeTab(EnhancedProgression.creativeTab));
+
 	}
 
 	private static <T extends Item> T register(T item)
@@ -73,14 +76,6 @@ public class ModItems
 		if (item instanceof ItemBase)
 		{
 			((ItemBase) item).registerItemModel();
-		}
-		else if (item instanceof ItemBasicWand)
-		{
-			((ItemBasicWand) item).registerItemModel();
-		}
-		else if (item instanceof ItemAdvancedWand)
-		{
-			((ItemAdvancedWand) item).registerItemModel();
 		}
 		else if (item instanceof ItemWand)
 		{

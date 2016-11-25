@@ -37,12 +37,19 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class ItemWand extends Item
 {
 	protected String name;
-	public ItemWand(String name)
+	protected int wandTier;
+	protected int maxEssence;
+	protected boolean canBreak;
+	
+	public ItemWand(String name, int wandTier, int maxEssence, boolean canBreak)
 	{
 		this.name = name;
 		setUnlocalizedName(name);
 		setRegistryName(name);
 		this.maxStackSize = 1;
+		this.maxEssence = maxEssence;
+		this.wandTier = wandTier;
+		this.canBreak = canBreak;
 	}
 	
 	@Override
@@ -57,19 +64,9 @@ public class ItemWand extends Item
 		EnhancedProgression.proxy.registerItemRenderer(this, 0, name);
 	}
 	
-	public int getWandTier()
-	{
-		return 2;
-	}
-	
 	public int getEssenceStored(ItemStack stack)
 	{
 		return NBTLib.getInt(stack, "essenceStored", 0);
-	}
-	
-	public int getMaxEssence()
-	{
-		return 100000;
 	}
 	
 	public boolean useEssence(int amount, ItemStack stack)
@@ -84,13 +81,13 @@ public class ItemWand extends Item
 	
 	public boolean addEssence(int amount, ItemStack stack)
 	{
-		if (getEssenceStored(stack) + amount < getMaxEssence() + 1)
+		if (getEssenceStored(stack) + amount < maxEssence + 1)
 		{
 			NBTLib.setInt(stack, "essenceStored", NBTLib.getInt(stack, "essenceStored", 0) + amount);
 		}
 		else
 		{
-			NBTLib.setInt(stack, "essenceStored",getMaxEssence());
+			NBTLib.setInt(stack, "essenceStored",maxEssence);
 		}
 		return true;
 	}
@@ -124,7 +121,7 @@ public class ItemWand extends Item
     {
 		if (player.isSneaking())
 		{
-			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored(stack) + "/" + getMaxEssence() + " " + (I18n.format("gui.essence.name"))));
+			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " " + getEssenceStored(stack) + "/" + maxEssence + " " + (I18n.format("gui.essence.name"))));
 		}
 		else if(!worldIn.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
 		{
@@ -162,50 +159,42 @@ public class ItemWand extends Item
 	{
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block instanceof BlockOre && !player.isSneaking()) 
+		if(block instanceof BlockOre && !player.isSneaking() && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_enhanced_extraction))) 
 		{
-			if (getWandTier() > 1)
+			spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ()), 3, 1);
+			player.swingArm(hand);
+			world.playSound(null, pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
+			
+			if (!world.isRemote)
 			{
-				spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ()), 3, 1);
-				player.swingArm(hand);
-				world.playSound(null, pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
-				
-				if (!world.isRemote)
+				if (block == Blocks.EMERALD_ORE)
 				{
-					if (block == Blocks.EMERALD_ORE)
-					{
-						world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
-						addEssence(1000, stack);
-					}
-				    else if (block == Blocks.DIAMOND_ORE)
-					{
-				    	world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
-						addEssence(500, stack);
-					}
-				    else if (block == Blocks.GOLD_ORE)
-					{
-				    	world.setBlockState(pos, Blocks.IRON_ORE.getDefaultState());
-						addEssence(300, stack);
-					}
-				    else if (block == Blocks.IRON_ORE)
-					{
-				    	world.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
-						addEssence(200, stack);
-					}
-				    else if (block == Blocks.COAL_ORE)
-					{
-				    	world.setBlockState(pos, Blocks.STONE.getDefaultState());
-						addEssence(100, stack);
-					}
+					world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
+					addEssence(1000, stack);
+				}
+			    else if (block == Blocks.DIAMOND_ORE)
+				{
+			    	world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
+					addEssence(500, stack);
+				}
+			    else if (block == Blocks.GOLD_ORE)
+				{
+			    	world.setBlockState(pos, Blocks.IRON_ORE.getDefaultState());
+					addEssence(300, stack);
+				}
+			    else if (block == Blocks.IRON_ORE)
+				{
+			    	world.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
+					addEssence(200, stack);
+				}
+			    else if (block == Blocks.COAL_ORE)
+				{
+			    	world.setBlockState(pos, Blocks.STONE.getDefaultState());
+					addEssence(100, stack);
 				}
 				
 				player.swingArm(hand);
 				return EnumActionResult.SUCCESS;
-			}
-			else
-			{
-				EnhancedProgression.proxy.setActionText((I18n.format("gui.betterwandneeded.name")));
-				return EnumActionResult.FAIL;
 			}
 		}
 		else if (!player.isSneaking())
@@ -335,5 +324,13 @@ public class ItemWand extends Item
     {
 		return EnumAction.BOW;
     }
+    
+    private static Iterable<BlockPos.MutableBlockPos> WOOD_SEARCH_AREA = BlockPos
+			.getAllInBoxMutable(new BlockPos(-5, -5, -5), new BlockPos(5, 25, 5));
+
+	boolean checkPlatform(int xOff, int yOff, int zOff, Block block, BlockPos pos, World world)
+	{
+		return world.getBlockState(pos.add(xOff, yOff, zOff)).getBlock() == block;
+	}
 
 }

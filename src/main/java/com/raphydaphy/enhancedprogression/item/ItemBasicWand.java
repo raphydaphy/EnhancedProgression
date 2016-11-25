@@ -10,7 +10,7 @@ import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.block.BlockAltar;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import com.raphydaphy.enhancedprogression.init.ModItems;
-import com.raphydaphy.enhancedprogression.nbt.ItemNBTHelper;
+import com.raphydaphy.enhancedprogression.nbt.NBTLib;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
@@ -148,18 +148,18 @@ public class ItemBasicWand extends Item
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entityIn, int itemSlot, boolean isSelected)
 	{
-		ItemNBTHelper.detectNBT(stack);
-		if (ItemNBTHelper.getString(stack, "particleAction", "") != "")
+		NBTLib.detectNBT(stack);
+		if (NBTLib.getString(stack, "particleAction", "") != "")
 		{
-			if (ItemNBTHelper.getInt(stack, "particleCount", 0) > 0)
+			if (NBTLib.getInt(stack, "particleCount", 0) > 0)
 			{
-				ItemNBTHelper.setInt(stack, "particleCount", ItemNBTHelper.getInt(stack, "particleCount", 0) - 1);
+				NBTLib.setInt(stack, "particleCount", NBTLib.getInt(stack, "particleCount", 0) - 1);
 
-				double x = ItemNBTHelper.getInt(stack, "posX", 0);
-				double y = ItemNBTHelper.getInt(stack, "posY", 0);
-				double z = ItemNBTHelper.getInt(stack, "posZ", 0);
+				double x = NBTLib.getInt(stack, "posX", 0);
+				double y = NBTLib.getInt(stack, "posY", 0);
+				double z = NBTLib.getInt(stack, "posZ", 0);
 
-				switch (ItemNBTHelper.getString(stack, "particleAction", ""))
+				switch (NBTLib.getString(stack, "particleAction", ""))
 				{
 				case "ORE EXTRACT":
 					spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, new BlockPos(x, y, z), 2, 1);
@@ -174,52 +174,52 @@ public class ItemBasicWand extends Item
 			}
 			else
 			{
-				ItemNBTHelper.setString(stack, "particleAction", "");
+				NBTLib.setString(stack, "particleAction", "");
 			}
 		}
 
-		if (ItemNBTHelper.getString(stack, "tickSpell", "") != "" && isSelected)
+		if (NBTLib.getString(stack, "tickSpell", "") != "" && isSelected)
 		{
-			int delay = ItemNBTHelper.getInt(stack, "delay", 0);
-			switch (ItemNBTHelper.getString(stack, "tickSpell", ""))
+			int delay = NBTLib.getInt(stack, "delay", 0);
+			switch (NBTLib.getString(stack, "tickSpell", ""))
 			{
 			case "LOGGER":
-				if (delay == 0 && replaceBlock.size() > ItemNBTHelper.getInt(stack, "currentBlockId", 0)
+				if (delay == 0 && replaceBlock.size() > NBTLib.getInt(stack, "currentBlockId", 0)
 						&& !world.isRemote)
 				{
-					curBlock = replaceBlock.get(ItemNBTHelper.getInt(stack, "currentBlockId", 0));
+					curBlock = replaceBlock.get(NBTLib.getInt(stack, "currentBlockId", 0));
 					world.playSound(null, curBlock, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
 					world.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
 					spawnParticles(EnumParticleTypes.SPELL_WITCH, world, true, curBlock, 7, 1);
 					this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1), stack);
 
-					ItemNBTHelper.setInt(stack, "currentBlockId", ItemNBTHelper.getInt(stack, "currentBlockId", 0) + 1);
+					NBTLib.setInt(stack, "currentBlockId", NBTLib.getInt(stack, "currentBlockId", 0) + 1);
 					delay = 10;
 
 					if (ThreadLocalRandom.current().nextInt(1, 1000 + 1) == 555 && canBreak())
 					{
 						world.playSound(null, curBlock, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1);
 						stack.stackSize = 0;
-						ItemNBTHelper.setString(stack, "tickSpell", "");
+						NBTLib.setString(stack, "tickSpell", "");
 					}
 				}
-				else if (replaceBlock.size() > ItemNBTHelper.getInt(stack, "currentBlockId", 0) && !world.isRemote)
+				else if (replaceBlock.size() > NBTLib.getInt(stack, "currentBlockId", 0) && !world.isRemote)
 				{
 					delay--;
 				}
 				else if (!world.isRemote)
 				{
-					ItemNBTHelper.setString(stack, "tickSpell", "");
+					NBTLib.setString(stack, "tickSpell", "");
 				}
 				break;
 			case "RAPIDFIRE":
 				if (delay == 0)
 				{
-					if (useEssence(ItemNBTHelper.getInt(stack, "arrows", 0), stack))
+					if (useEssence(NBTLib.getInt(stack, "arrows", 0), stack))
 					{
 						if (!world.isRemote)
 						{
-							ItemNBTHelper.setInt(stack, "arrows", ItemNBTHelper.getInt(stack, "arrows", 0) + 1);
+							NBTLib.setInt(stack, "arrows", NBTLib.getInt(stack, "arrows", 0) + 1);
 							delay = 5;
 
 							int xOff = 0;
@@ -250,7 +250,7 @@ public class ItemBasicWand extends Item
 					else
 					{
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-						ItemNBTHelper.setString(stack, "tickSpell", "");
+						NBTLib.setString(stack, "tickSpell", "");
 					}
 
 				}
@@ -260,11 +260,11 @@ public class ItemBasicWand extends Item
 				}
 				break;
 			}
-			ItemNBTHelper.setInt(stack, "delay", delay);
+			NBTLib.setInt(stack, "delay", delay);
 		}
 		else
 		{
-			ItemNBTHelper.setString(stack, "tickSpell", "");
+			NBTLib.setString(stack, "tickSpell", "");
 		}
 	}
 
@@ -316,13 +316,14 @@ public class ItemBasicWand extends Item
 		else if (!worldIn.isRemote
 				&& ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
 		{
-			if (useEssence(100, stack) && ItemNBTHelper.getString(stack, "tickSpell", "") != "RAPIDFIRE")
+			if (useEssence(100, stack) && NBTLib.getString(stack, "tickSpell", "") != "RAPIDFIRE")
 			{
-				ItemNBTHelper.setInt(stack, "arrows", 0);
-				ItemNBTHelper.setInt(stack, "delay", 0);
-				ItemNBTHelper.setString(stack, "tickSpell", "RAPIDFIRE");
+				NBTLib.setInt(stack, "arrows", 0);
+				NBTLib.setInt(stack, "delay", 0);
+				NBTLib.setString(stack, "tickSpell", "RAPIDFIRE");
 
 				playerIn.setActiveHand(hand);
+				System.out.println("rapid" + worldIn.isRemote);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 			}
 			else if (getEssenceStored(stack) < 100)
@@ -336,9 +337,10 @@ public class ItemBasicWand extends Item
 		{
 			if (playerIn.canEat(false))
 			{
-				ItemNBTHelper.setString(stack, "spell", "HUNGER");
+				NBTLib.setString(stack, "spell", "HUNGER");
 
 				playerIn.setActiveHand(hand);
+				System.out.println("hunger" + worldIn.isRemote);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 			}
 		}
@@ -365,11 +367,11 @@ public class ItemBasicWand extends Item
 		}
 		else if (block instanceof BlockLog)
 		{
-			if (ItemNBTHelper.getString(stack, "tickSpell", "") != "LOGGER")
+			if (NBTLib.getString(stack, "tickSpell", "") != "LOGGER")
 			{
 				replaceBlock.clear();
-				ItemNBTHelper.setInt(stack, "currentBlockId", 0);
-				ItemNBTHelper.setInt(stack, "delay", 0);
+				NBTLib.setInt(stack, "currentBlockId", 0);
+				NBTLib.setInt(stack, "delay", 0);
 
 				for (BlockPos position : WOOD_SEARCH_AREA)
 				{
@@ -381,8 +383,8 @@ public class ItemBasicWand extends Item
 				}
 
 				player.setActiveHand(hand);
-				System.out.println(world.isRemote);
-				ItemNBTHelper.setString(stack, "tickSpell", "LOGGER");
+				System.out.println("LOGS" + world.isRemote);
+				NBTLib.setString(stack, "tickSpell", "LOGGER");
 				return EnumActionResult.SUCCESS;
 			}
 
@@ -391,13 +393,14 @@ public class ItemBasicWand extends Item
 		{
 			if (getWandTier() > 1)
 			{
-				ItemNBTHelper.setString(stack, "particleAction", "ORE EXTRACT");
-				ItemNBTHelper.setInt(stack, "particleCount", 2);
-				ItemNBTHelper.setDouble(stack, "posX", pos.getX());
-				ItemNBTHelper.setDouble(stack, "posY", pos.getY());
-				ItemNBTHelper.setDouble(stack, "posZ", pos.getZ());
+				NBTLib.setString(stack, "particleAction", "ORE EXTRACT");
+				NBTLib.setInt(stack, "particleCount", 2);
+				NBTLib.setDouble(stack, "posX", pos.getX());
+				NBTLib.setDouble(stack, "posY", pos.getY());
+				NBTLib.setDouble(stack, "posZ", pos.getZ());
 
 				player.setActiveHand(hand);
+				System.out.println("ores" + world.isRemote);
 				world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
 
 				if (!world.isRemote)
@@ -453,11 +456,11 @@ public class ItemBasicWand extends Item
 					{
 						if (useEssence(1000, stack))
 						{
-							ItemNBTHelper.setString(stack, "particleAction", "TRANSMUTE DIAMOND");
-							ItemNBTHelper.setInt(stack, "particleCount", 7);
-							ItemNBTHelper.setDouble(stack, "posX", pos.getX());
-							ItemNBTHelper.setDouble(stack, "posY", pos.getY() + 1.2);
-							ItemNBTHelper.setDouble(stack, "posZ", pos.getZ());
+							NBTLib.setString(stack, "particleAction", "TRANSMUTE DIAMOND");
+							NBTLib.setInt(stack, "particleCount", 7);
+							NBTLib.setDouble(stack, "posX", pos.getX());
+							NBTLib.setDouble(stack, "posY", pos.getY() + 1.2);
+							NBTLib.setDouble(stack, "posZ", pos.getZ());
 
 							world.playSound(null, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 1);
 							player.swingArm(hand);
@@ -485,11 +488,11 @@ public class ItemBasicWand extends Item
 						BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
 						if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
 						{
-							ItemNBTHelper.setString(stack, "particleAction", "PLACE TORCH");
-							ItemNBTHelper.setInt(stack, "particleCount", 7);
-							ItemNBTHelper.setDouble(stack, "posX", pos.getX());
-							ItemNBTHelper.setDouble(stack, "posY", pos.getY() + 1.2);
-							ItemNBTHelper.setDouble(stack, "posZ", pos.getZ());
+							NBTLib.setString(stack, "particleAction", "PLACE TORCH");
+							NBTLib.setInt(stack, "particleCount", 7);
+							NBTLib.setDouble(stack, "posX", pos.getX());
+							NBTLib.setDouble(stack, "posY", pos.getY() + 1.2);
+							NBTLib.setDouble(stack, "posZ", pos.getZ());
 
 							world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
 							player.swingArm(hand);
@@ -530,9 +533,8 @@ public class ItemBasicWand extends Item
 
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
 	{
-		System.out.println("WHY ISNT IT BEING CALLED ;( ;( ;( ;( ;(");
-		ItemNBTHelper.setString(stack, "tickSpell", "");
-		ItemNBTHelper.setString(stack, "spell", "");
+		NBTLib.setString(stack, "tickSpell", "");
+		NBTLib.setString(stack, "spell", "");
 	}
 
 	/**
@@ -541,7 +543,7 @@ public class ItemBasicWand extends Item
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack)
 	{
-		if (ItemNBTHelper.getString(stack, "spell", "") == "HUNGER")
+		if (NBTLib.getString(stack, "spell", "") == "HUNGER")
 		{
 			return 32;
 		}
@@ -554,7 +556,7 @@ public class ItemBasicWand extends Item
 	@Override
 	public EnumAction getItemUseAction(ItemStack stack)
 	{
-		if (ItemNBTHelper.getString(stack, "spell", "") == "HUNGER")
+		if (NBTLib.getString(stack, "spell", "") == "HUNGER")
 		{
 			return EnumAction.EAT;
 		}
@@ -564,7 +566,7 @@ public class ItemBasicWand extends Item
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
 	{
-		if (ItemNBTHelper.getString(stack, "spell", "") == "HUNGER")
+		if (NBTLib.getString(stack, "spell", "") == "HUNGER")
 		{
 			if (entityLiving instanceof EntityPlayer)
 			{
@@ -572,7 +574,7 @@ public class ItemBasicWand extends Item
 				if (useEssence(250, stack))
 				{
 					entityplayer.getFoodStats().addStats(20, 20);
-					ItemNBTHelper.setString(stack, "spell", "");
+					NBTLib.setString(stack, "spell", "");
 					return stack;
 				}
 				else
