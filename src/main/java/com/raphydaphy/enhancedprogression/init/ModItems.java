@@ -61,12 +61,13 @@ public class ModItems
 		upgrade_template_basic = register(
 				new ItemBase("upgrade_template_basic", 16).setCreativeTab(EnhancedProgression.creativeTab));
 
-		basic_wand_copper = register(
-				new ItemWand("basic_wand_copper", 1, 1000, true).setCreativeTab(EnhancedProgression.creativeTab));
-		basic_wand_tin = register(
-				new ItemWand("basic_wand_tin", 1, 1000, true).setCreativeTab(EnhancedProgression.creativeTab));
+		basic_wand_copper = register(new ItemWand("basic_wand_copper", 1, ConfigHandler.wandSettings.basicWandStorage,
+				ConfigHandler.wandSettings.canBasicWandBreak).setCreativeTab(EnhancedProgression.creativeTab));
+		basic_wand_tin = register(new ItemWand("basic_wand_tin", 1, ConfigHandler.wandSettings.basicWandStorage,
+				ConfigHandler.wandSettings.canBasicWandBreak).setCreativeTab(EnhancedProgression.creativeTab));
 		advanced_wand = (ItemWand) register(
-				new ItemWand("advanced_wand", 2, 10000, false).setCreativeTab(EnhancedProgression.creativeTab));
+				new ItemWand("advanced_wand", 2, ConfigHandler.wandSettings.advancedWandStorage, false)
+						.setCreativeTab(EnhancedProgression.creativeTab));
 
 	}
 

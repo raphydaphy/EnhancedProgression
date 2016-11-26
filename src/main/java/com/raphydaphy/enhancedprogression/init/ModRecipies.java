@@ -28,30 +28,53 @@ public class ModRecipies
 				"ingotCopper");
 		addOreDictRecipe(new ItemStack(ModItems.basic_wand_tin), "  C", " S ", "S  ", 'S', "stickWood", 'C',
 				"ingotTin");
-
-		addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern), "SCS", "CBC", "SCS", 'S', "stickWood", 'C',
-				"dustCoal", 'B', "ingotBronze");
-		addOreDictRecipe(new ItemStack(ModItems.spell_card_vital_extraction), "SLS", "LBL", "SLS", 'S', "stickWood",
-				'L', "logWood", 'B', "ingotBronze");
-		addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
-				"gunpowder", 'B', "ingotBronze");
-		addOreDictRecipe(new ItemStack(ModItems.spell_card_transmutation), "SPS", "PBP", "SPS", 'S', "stickWood", 'P',
-				"powderBlaze", 'B', "ingotBronze");
+		if (ConfigHandler.crafting.enableMagicLantern)
+		{
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern), "SCS", "CBC", "SCS", 'S', "stickWood", 'C',
+					"dustCoal", 'B', "ingotBronze");
+		}
+		if (ConfigHandler.crafting.enableVitalExtraction)
+		{
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_vital_extraction), "SLS", "LBL", "SLS", 'S', "stickWood",
+					'L', "logWood", 'B', "ingotBronze");
+		}
+		if (ConfigHandler.crafting.enableContainedExplosion)
+		{
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
+					"gunpowder", 'B', "ingotBronze");
+		}
+		if (ConfigHandler.crafting.enableCrypticTransmutation)
+		{
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_transmutation), "SPS", "PBP", "SPS", 'S', "stickWood",
+					'P', "powderBlaze", 'B', "ingotBronze");
+		}
 
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.advanced_wand), "  B", " S ", "S  ", 'S',
 				ModItems.imbued_stick, 'B', ModItems.ingot_bronze_imbued);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ingot_bronze, 4), ModItems.ingot_tin,
-				ModItems.ingot_copper, ModItems.ingot_copper, ModItems.ingot_copper);
+		if (ConfigHandler.crafting.enableBronzeCrafting)
+		{
+			GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ingot_bronze, 4), ModItems.ingot_tin,
+					ModItems.ingot_copper, ModItems.ingot_copper, ModItems.ingot_copper);
+		}
 		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.imbued_plank, 4), ModBlocks.imbued_log);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.imbued_stick, 4), "P", "P", 'P', ModBlocks.imbued_plank);
 
-		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_rapidfire), "SAS", "ABA", "SAS", 'S',
-				ModItems.imbued_stick, 'A', Items.ARROW, 'B', ModItems.ingot_bronze_imbued);
-		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_hunger), "SRS", "RBR", "SRS", 'S',
-				ModItems.imbued_stick, 'R', Items.ROTTEN_FLESH, 'B', ModItems.ingot_bronze_imbued);
-		GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS", 'S',
-				ModItems.imbued_stick, 'D', Items.DIAMOND, 'B', ModItems.ingot_bronze_imbued);
+		if (ConfigHandler.crafting.enableRapidfire)
+		{
+			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_rapidfire), "SAS", "ABA", "SAS", 'S',
+					ModItems.imbued_stick, 'A', Items.ARROW, 'B', ModItems.ingot_bronze_imbued);
+		}
+		if (ConfigHandler.crafting.enableHunger)
+		{
+			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_hunger), "SRS", "RBR", "SRS", 'S',
+					ModItems.imbued_stick, 'R', Items.ROTTEN_FLESH, 'B', ModItems.ingot_bronze_imbued);
+		}
+		if (ConfigHandler.crafting.enableEnhancedExtraction)
+		{
+			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS",
+					'S', ModItems.imbued_stick, 'D', Items.DIAMOND, 'B', ModItems.ingot_bronze_imbued);
+		}
 	}
 
 	public static void registerSmelting()

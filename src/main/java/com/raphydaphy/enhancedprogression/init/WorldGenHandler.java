@@ -44,7 +44,10 @@ public class WorldGenHandler implements IWorldGenerator {
             int quisqueY = rand.nextInt(60);
             BlockPos quisquePos = new BlockPos(firstBlockXCoord, quisqueY, firstBlockZCoord);
             //The 8 as the second parameter sets the maximum vein size
-            (new WorldGenMinable(ModBlocks.ore_copper.getDefaultState(), 7)).generate(world, rand, quisquePos);
+            if (ConfigHandler.world.enableCopperGen)
+            {
+            	(new WorldGenMinable(ModBlocks.ore_copper.getDefaultState(), 7)).generate(world, rand, quisquePos);
+            }
         }
     }
   //The actual generation method.
@@ -57,7 +60,10 @@ public class WorldGenHandler implements IWorldGenerator {
             int quisqueY = rand.nextInt(50);
             BlockPos quisquePos = new BlockPos(firstBlockXCoord, quisqueY, firstBlockZCoord);
             //The 5 as the second parameter sets the maximum vein size
-            (new WorldGenMinable(ModBlocks.ore_tin.getDefaultState(), 5)).generate(world, rand, quisquePos);
+            if (ConfigHandler.world.enableTinGen)
+            {
+            	(new WorldGenMinable(ModBlocks.ore_tin.getDefaultState(), 5)).generate(world, rand, quisquePos);
+            }
         }
     }
 }
