@@ -5,6 +5,7 @@ import com.raphydaphy.enhancedprogression.block.tile.TileAltar;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import com.raphydaphy.enhancedprogression.init.ModItems;
 import com.raphydaphy.enhancedprogression.init.ModMultiblocks;
+import com.raphydaphy.enhancedprogression.init.WorldGenHandler;
 import com.raphydaphy.enhancedprogression.recipe.AltarRecipes;
 
 import net.minecraft.item.Item;
@@ -36,6 +37,7 @@ public class CommonProxy
 		AltarRecipes.init();
 
 		GameRegistry.registerTileEntity(TileAltar.class, "enhancedprogression:altar");
+		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
 	}
 
 }
