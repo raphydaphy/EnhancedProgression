@@ -13,8 +13,8 @@ public class ModRecipies
 	{
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(output, recipe));
 	}
-
-	public static void registerCrafting()
+	
+	public static void registerOreDict()
 	{
 		OreDictionary.registerOre("dustCoal", Items.COAL);
 		OreDictionary.registerOre("dustCoal", new ItemStack(Items.COAL, 1, 1));
@@ -22,8 +22,11 @@ public class ModRecipies
 
 		OreDictionary.registerOre("ingotCopper", ModItems.ingot_copper);
 		OreDictionary.registerOre("ingotTin", ModItems.ingot_tin);
-		OreDictionary.registerOre("ingotBronze", ModItems.ingot_copper);
+		OreDictionary.registerOre("ingotBronze", ModItems.ingot_bronze);
+	}
 
+	public static void registerCrafting()
+	{
 		addOreDictRecipe(new ItemStack(ModItems.basic_wand_copper), "  C", " S ", "S  ", 'S', "stickWood", 'C',
 				"ingotCopper");
 		addOreDictRecipe(new ItemStack(ModItems.basic_wand_tin), "  C", " S ", "S  ", 'S', "stickWood", 'C',

@@ -41,7 +41,9 @@ public class AltarRecipe
 		{
 			ItemStack stack = inv.getStackInSlot(i);
 			if (stack == null)
+			{
 				break;
+			}
 
 			int stackIndex = -1, oredictIndex = -1;
 
@@ -56,7 +58,9 @@ public class AltarRecipe
 					{
 						ItemStack cstack = ostack.copy();
 						if (cstack.getItemDamage() == Short.MAX_VALUE)
+						{
 							cstack.setItemDamage(stack.getItemDamage());
+						}
 
 						if (stack.isItemEqual(cstack))
 						{
@@ -67,7 +71,9 @@ public class AltarRecipe
 					}
 
 					if (found)
+					{
 						break;
+					}
 				}
 				else if (input instanceof ItemStack && simpleAreStacksEqual((ItemStack) input, stack))
 				{

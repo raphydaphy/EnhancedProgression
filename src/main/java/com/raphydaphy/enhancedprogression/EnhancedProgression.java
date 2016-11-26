@@ -5,6 +5,7 @@ import com.raphydaphy.enhancedprogression.init.Events;
 import com.raphydaphy.enhancedprogression.init.ModRecipies;
 import com.raphydaphy.enhancedprogression.init.Reference;
 import com.raphydaphy.enhancedprogression.proxy.CommonProxy;
+import com.raphydaphy.enhancedprogression.recipe.AltarRecipes;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -40,7 +41,6 @@ public class EnhancedProgression
 		System.out.println("Initializing Enhanced Progression...");
 		ModRecipies.registerCrafting();
 		ModRecipies.registerSmelting();
-
 	}
 
 	@EventHandler

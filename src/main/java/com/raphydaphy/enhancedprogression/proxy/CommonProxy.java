@@ -5,6 +5,7 @@ import com.raphydaphy.enhancedprogression.block.tile.TileAltar;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import com.raphydaphy.enhancedprogression.init.ModItems;
 import com.raphydaphy.enhancedprogression.init.ModMultiblocks;
+import com.raphydaphy.enhancedprogression.init.ModRecipies;
 import com.raphydaphy.enhancedprogression.init.WorldGenHandler;
 import com.raphydaphy.enhancedprogression.recipe.AltarRecipes;
 
@@ -33,7 +34,8 @@ public class CommonProxy
 
 		ModMultiblocks.init();
 		ModAchievements.init();
-
+		
+		ModRecipies.registerOreDict();
 		AltarRecipes.init();
 
 		GameRegistry.registerTileEntity(TileAltar.class, "enhancedprogression:altar");
