@@ -22,6 +22,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -158,6 +159,21 @@ public class ItemWand extends Item
 			}
 		}
 		else if (!worldIn.isRemote
+				&& ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_fireball)))
+		{
+			if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == false)
+			{
+				NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", true);
+				player.setActiveHand(hand);
+				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+			}
+			else
+			{
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+			}
+		}
+		else if (!worldIn.isRemote
 				&& ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_hunger)))
 		{
 			if (player.canEat(false))
@@ -281,29 +297,28 @@ public class ItemWand extends Item
 					return EnumActionResult.FAIL;
 				}
 			}
-			else if (!world.isRemote
-					&& ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
+			else if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
 			{
-				if (useEssence(5, stack))
+				BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
+				if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
 				{
-					BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
-					if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
+					if (useEssence(5, stack))
 					{
-						spawnParticles(EnumParticleTypes.FLAME, world, true,
-								new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ()), 15, 1);
+						
+						spawnParticles(EnumParticleTypes.FLAME, world, true,new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ()), 15, 1);
 						world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
 						player.swingArm(hand);
 						return EnumActionResult.SUCCESS;
 					}
 					else
 					{
-						EnhancedProgression.proxy.setActionText((I18n.format("gui.obstructed.name")));
+						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 						return EnumActionResult.PASS;
 					}
 				}
 				else
 				{
-					EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+					EnhancedProgression.proxy.setActionText((I18n.format("gui.obstructed.name")));
 					return EnumActionResult.PASS;
 				}
 			}
@@ -421,11 +436,30 @@ public class ItemWand extends Item
 		return 72000;
 	}
 
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft)
 	{
-		NBTLib.setInt(stack, "essenceStored", NBTLib.getInt(entityLiving.getHeldItemOffhand(), "essenceStored", 0));
-		NBTLib.setInt(entityLiving.getHeldItemOffhand(), "essenceStored", 0);
-		NBTLib.setBoolean(entityLiving.getHeldItemOffhand(), "isActive", false);
+		if (ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_fireball)) && !worldIn.isRemote)
+		{
+			if (useEssence(40, stack))
+			{
+				EntityLargeFireball bigBall = new EntityLargeFireball(worldIn);
+				bigBall.setPosition(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+				bigBall.motionX = player.getLookVec().xCoord;
+				bigBall.motionY = player.getLookVec().yCoord;
+				bigBall.motionZ = player.getLookVec().zCoord;
+				worldIn.spawnEntityInWorld(bigBall);
+			}
+			else
+			{
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+			}
+		}
+		if (NBTLib.getInt(player.getHeldItemOffhand(), "essenceStored", 0) > 0)
+		{
+			NBTLib.setInt(stack, "essenceStored", NBTLib.getInt(player.getHeldItemOffhand(), "essenceStored", 0));
+			NBTLib.setInt(player.getHeldItemOffhand(), "essenceStored", 0);
+		}
+		NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", false);
 	}
 
 	@Nullable

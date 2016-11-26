@@ -19,6 +19,7 @@ public class ModItems
 
 	public static ItemBase spell_card_lantern;
 	public static ItemBase spell_card_explosion;
+	public static ItemBase spell_card_fireball;
 	public static ItemBase spell_card_rapidfire;
 	public static ItemBase spell_card_hunger;
 	public static ItemBase spell_card_transmutation;
@@ -47,6 +48,8 @@ public class ModItems
 				new ItemBase("spell_card_lantern", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		spell_card_explosion = register(
 				new ItemBase("spell_card_explosion", 1).setCreativeTab(EnhancedProgression.creativeTab));
+		spell_card_fireball = register(
+				new ItemBase("spell_card_fireball", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		spell_card_rapidfire = register(
 				new ItemBase("spell_card_rapidfire", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		spell_card_hunger = register(

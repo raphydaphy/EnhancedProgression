@@ -19,6 +19,7 @@ public class ModRecipies
 		OreDictionary.registerOre("dustCoal", Items.COAL);
 		OreDictionary.registerOre("dustCoal", new ItemStack(Items.COAL, 1, 1));
 		OreDictionary.registerOre("powderBlaze", Items.BLAZE_POWDER);
+		OreDictionary.registerOre("fireCharge", Items.FIRE_CHARGE);
 
 		OreDictionary.registerOre("ingotCopper", ModItems.ingot_copper);
 		OreDictionary.registerOre("ingotTin", ModItems.ingot_tin);
@@ -45,6 +46,11 @@ public class ModRecipies
 		{
 			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
 					"gunpowder", 'B', "ingotBronze");
+		}
+		if (ConfigHandler.crafting.enableRadiantFireball)
+		{
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball), "SFS", "FBF", "SFS", 'S', "stickWood", 'F',
+					"fireCharge", 'B', "ingotBronze");
 		}
 		if (ConfigHandler.crafting.enableCrypticTransmutation)
 		{

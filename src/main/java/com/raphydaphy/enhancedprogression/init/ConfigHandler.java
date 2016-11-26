@@ -27,6 +27,9 @@ public class ConfigHandler
         @Config.Comment({"Enable Contained Explosion Spell Crafting.", "Default: true"})
         public boolean enableContainedExplosion = true;
         
+        @Config.Comment({"Enable Radiant Fireball Spell Crafting.", "Default: true"})
+        public boolean enableRadiantFireball = true;
+        
         @Config.Comment({"Enable Cryptic Transmutation Spell Crafting.", "Default: true"})
         public boolean enableCrypticTransmutation = true;
         
