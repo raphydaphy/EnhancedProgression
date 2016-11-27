@@ -82,7 +82,7 @@ public class ModItems
 		advanced_wand = (ItemWand) register(
 				new ItemWand("advanced_wand", 2, ConfigHandler.wandSettings.advancedWandStorage, false)
 						.setCreativeTab(EnhancedProgression.creativeTab));
-		advanced_wand = (ItemWand) register(
+		master_wand = (ItemWand) register(
 				new ItemWand("master_wand", 3, ConfigHandler.wandSettings.masterWandStorage, false)
 						.setCreativeTab(EnhancedProgression.creativeTab));
 

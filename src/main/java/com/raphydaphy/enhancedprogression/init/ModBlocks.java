@@ -20,6 +20,9 @@ public class ModBlocks
 
 	public static BlockBase imbued_log;
 	public static BlockBase imbued_plank;
+	
+	public static BlockBase fluxed_log;
+	public static BlockBase fluxed_plank;
 
 	public static BlockDeadLog dead_log;
 
@@ -38,6 +41,11 @@ public class ModBlocks
 				new BlockBase(Material.WOOD, "imbued_log").setCreativeTab(EnhancedProgression.creativeTab));
 		imbued_plank = register(
 				new BlockBase(Material.WOOD, "imbued_plank").setCreativeTab(EnhancedProgression.creativeTab));
+		
+		fluxed_log = register(
+				new BlockBase(Material.WOOD, "fluxed_log").setCreativeTab(EnhancedProgression.creativeTab));
+		fluxed_plank = register(
+				new BlockBase(Material.WOOD, "fluxed_plank").setCreativeTab(EnhancedProgression.creativeTab));
 
 		dead_log = register(new BlockDeadLog("dead_log"));
 

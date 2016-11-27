@@ -71,6 +71,9 @@ public class ModRecipies
 		}
 		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.imbued_plank, 4), ModBlocks.imbued_log);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.imbued_stick, 4), "P", "P", 'P', ModBlocks.imbued_plank);
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.fluxed_plank, 4), ModBlocks.fluxed_log);
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.fluxed_stick, 4), "P", "P", 'P', ModBlocks.fluxed_plank);
 
 		if (ConfigHandler.crafting.enableRapidfire)
 		{
