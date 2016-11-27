@@ -40,7 +40,7 @@ public class JEIPlugin implements IModPlugin
 				"This simple wand can be used to perform basic spells and activate altar crafting. To fill the wand with essence, right-click on a tree with a Vital Extraction spell in your offhand, and wait until the entire tree turns into dead logs. Shift+rightclick to check your current essence level, and rightclick on the ground with any spell card in your offhand to use it.");
 		registry.addDescription(new ItemStack(ModItems.advanced_wand),
 				"By infusing your wand with Imbued Bronze, you unlock more power and capacity. The Advanced Wand cannot break when extracting essence, and can store 10000 essence instead of a mere 1000 in the Basic Wand.");
-		registry.addDescription(new ItemStack(ModItems.upgrade_template_basic), "Only the true master of magic can wield this wand. Crafted with the most expensive items in the mod, the Master Wand can store 100000 essence and is able to cast every spell known to man.");
+		registry.addDescription(new ItemStack(ModItems.master_wand), "Only the true master of magic can wield this wand. Crafted with the most expensive items in the mod, the Master Wand can store 100000 essence and is able to cast every spell known to man.");
 		registry.addDescription(new ItemStack(ModItems.imbued_stick),
 				"Imbued Sticks are a crafting regent item used for spell cards, higher tier wands and other Advanced tier Enhanced Progression tech.");
 		registry.addDescription(new ItemStack(ModItems.ingot_bronze),
@@ -53,6 +53,10 @@ public class JEIPlugin implements IModPlugin
 		registry.addDescription(new ItemStack(ModBlocks.totem_top), "Unimplemented.");
 		registry.addDescription(new ItemStack(ModBlocks.totem_middle), "Unimplemented.");
 		registry.addDescription(new ItemStack(ModItems.upgrade_template_basic), "Unimplemented.");
+		registry.addDescription(new ItemStack(ModItems.ingot_fluxed), "This powerful alloy is created in a Tier 3 altar using four nether stars, four imbued bronze ingots and four diamonds. Used to craft the most highest tier items in the mod.");
+		registry.addDescription(new ItemStack(ModBlocks.fluxed_plank), "Crafted in a regular crafting table using fluxed logs, this powerful item is among the most valuable items in the mod.");
+		registry.addDescription(new ItemStack(ModBlocks.fluxed_log), "A powerful item, crafted in a tier 3 altar using an imbued log, two fluxed ingots and three diamonds. Used to craft fluxed planks.");
+		registry.addDescription(new ItemStack(ModItems.fluxed_stick), "This powerful item is used to craft the Master Wand, and other high tier spells and items. Crafted with two fluxed logs in a regular crafting table.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_vital_extraction),
 				"In order to cast any spells, you will need essence, which is initially collected from logs using this spell. Simply put this spell card in your offhand and rightclick on a tree while holding a wand and it will begin to fill with essence. Shift+rightclick with your wand to check how much you have ammased in your wand.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_lantern),
