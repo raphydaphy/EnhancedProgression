@@ -14,7 +14,7 @@ public class EPCreativeTab extends CreativeTabs
 	@Override
 	public Item getTabIconItem()
 	{
-		return ModItems.ingot_copper;
+		return ModItems.advanced_wand;
 	}
 
 }

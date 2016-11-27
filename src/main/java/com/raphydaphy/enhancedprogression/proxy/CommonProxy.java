@@ -4,7 +4,6 @@ import com.raphydaphy.enhancedprogression.achievement.ModAchievements;
 import com.raphydaphy.enhancedprogression.block.tile.TileAltar;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import com.raphydaphy.enhancedprogression.init.ModItems;
-import com.raphydaphy.enhancedprogression.init.ModMultiblocks;
 import com.raphydaphy.enhancedprogression.init.ModRecipies;
 import com.raphydaphy.enhancedprogression.init.WorldGenHandler;
 import com.raphydaphy.enhancedprogression.recipe.AltarRecipes;
@@ -32,7 +31,6 @@ public class CommonProxy
 		ModItems.init();
 		ModBlocks.init();
 
-		ModMultiblocks.init();
 		ModAchievements.init();
 		
 		ModRecipies.registerOreDict();

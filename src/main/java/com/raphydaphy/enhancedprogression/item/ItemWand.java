@@ -183,6 +183,38 @@ public class ItemWand extends Item
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 			}
 		}
+		else if (ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_flight)))
+		{
+			EntityPlayer entityplayer = (EntityPlayer) player;
+			if (entityplayer.capabilities.allowFlying == false)
+			{
+				if (useEssence(2500, stack))
+				{
+					entityplayer.capabilities.allowFlying = true;
+					spawnParticles(EnumParticleTypes.END_ROD, worldIn, true, player.getPosition(), 100, 2);
+					spawnParticles(EnumParticleTypes.ENCHANTMENT_TABLE, worldIn, true, player.getPosition(), 100, 2);
+					spawnParticles(EnumParticleTypes.SPELL_WITCH, worldIn, true, player.getPosition(), 100, 2);
+					worldIn.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
+					entityplayer.swingArm(hand);
+					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+				}
+				else
+				{
+					EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+					return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+				}
+			}
+			else
+			{
+				entityplayer.capabilities.allowFlying = false;
+				spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, player.getPosition(), 100, 2);
+				spawnParticles(EnumParticleTypes.PORTAL, worldIn, true, player.getPosition(), 100, 2);
+				worldIn.playSound(player, player.getPosition(), SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.AMBIENT, 1, 1);
+				entityplayer.swingArm(hand);
+				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+			}
+			
+		}
 		return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 	}
 
@@ -339,6 +371,20 @@ public class ItemWand extends Item
 		}
 		return EnumActionResult.PASS;
 	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity player, int itemSlot, boolean isSelected)
+    {
+		if (!isSelected)
+		{
+			EntityLivingBase entityIn = (EntityLivingBase) player;
+			if (NBTLib.getBoolean(entityIn.getHeldItemOffhand(), "isActive", false) == true)
+			{
+				NBTLib.setBoolean(entityIn.getHeldItemOffhand(), "isActive", false);
+			}
+			
+		}
+    }
 
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
@@ -440,13 +486,13 @@ public class ItemWand extends Item
 	{
 		if (ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_fireball)) && !worldIn.isRemote)
 		{
-			if (useEssence(40, stack))
+			if (useEssence(25, stack))
 			{
-				EntityLargeFireball bigBall = new EntityLargeFireball(worldIn);
-				bigBall.setPosition(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
-				bigBall.motionX = player.getLookVec().xCoord;
-				bigBall.motionY = player.getLookVec().yCoord;
-				bigBall.motionZ = player.getLookVec().zCoord;
+				EntityLargeFireball bigBall = new EntityLargeFireball(worldIn, player, player.getLookVec().xCoord, player.getLookVec().yCoord, player.getLookVec().zCoord);
+				bigBall.accelerationX = player.getLookVec().xCoord;
+				bigBall.accelerationY = player.getLookVec().yCoord;
+				bigBall.accelerationZ = player.getLookVec().zCoord;
+				bigBall.explosionPower = 4;
 				worldIn.spawnEntityInWorld(bigBall);
 			}
 			else

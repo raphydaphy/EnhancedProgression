@@ -60,6 +60,9 @@ public class ModRecipies
 
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.advanced_wand), "  B", " S ", "S  ", 'S',
 				ModItems.imbued_stick, 'B', ModItems.ingot_bronze_imbued);
+		
+		GameRegistry.addShapedRecipe(new ItemStack(ModItems.master_wand), "  I", " S ", "S  ", 'S',
+				ModItems.fluxed_stick, 'I', ModItems.ingot_fluxed);
 
 		if (ConfigHandler.crafting.enableBronzeCrafting)
 		{
@@ -83,6 +86,11 @@ public class ModRecipies
 		{
 			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS",
 					'S', ModItems.imbued_stick, 'D', Items.DIAMOND, 'B', ModItems.ingot_bronze_imbued);
+		}
+		if (ConfigHandler.crafting.enableElevatedMomentum)
+		{
+			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_flight), "SFS", "FIF", "SFS",
+					'S', ModItems.fluxed_stick, 'F', Items.FEATHER, 'I', ModItems.ingot_fluxed);
 		}
 	}
 

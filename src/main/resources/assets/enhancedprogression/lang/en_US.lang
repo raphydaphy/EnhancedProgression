@@ -2,9 +2,12 @@
 item.ingot_copper.name=Copper Ingot
 item.ingot_tin.name=Tin Ingot
 item.ingot_bronze.name=Bronze Ingot
+
 item.ingot_bronze_imbued.name=Imbued Bronze Ingot
+item.ingot_fluxed.name=Fluxed Ingot
 
 item.imbued_stick.name=Imbued Stick
+item.fluxed_stick.name=Fluxed Stick
 
 item.spell_card_vital_extraction.name=Spell Card - Vital Extraction
 item.spell_card_lantern.name=Spell Card - Magic Lantern
@@ -14,6 +17,7 @@ item.spell_card_rapidfire.name=Spell Card - Rapid Fire
 item.spell_card_transmutation.name=Spell Card - Cryptic Transmutation
 item.spell_card_hunger.name=Spell Card - Hunger
 item.spell_card_enhanced_extraction.name=Spell Card - Enhanced Extraction
+item.spell_card_flight.name=Spell Card - Elevated Momentum
 
 item.upgrade_template_basic.name=Basic Upgrade Template
 item.upgrade_template_advanced.name=Advanced Upgrade Template
@@ -22,6 +26,7 @@ item.upgrade_template_master.name=Master Upgrade Template
 item.basic_wand_copper.name=Basic Wand
 item.basic_wand_tin.name=Basic Wand
 item.advanced_wand.name=Advanced Wand
+item.master_wand.name=Master Wand
 
 #Blocks
 tile.ore_copper.name=Copper Ore

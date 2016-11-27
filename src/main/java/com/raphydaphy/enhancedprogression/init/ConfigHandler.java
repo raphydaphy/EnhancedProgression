@@ -38,6 +38,9 @@ public class ConfigHandler
         
         @Config.Comment({"Enable Hunger Spell Crafting.", "Default: true"})
         public boolean enableHunger = true;
+        
+        @Config.Comment({"Enable Elevated Momentum Crafting.", "Default: true"})
+        public boolean enableElevatedMomentum = true;
     }
 
     public static class WandSettings {
@@ -49,6 +52,9 @@ public class ConfigHandler
         
         @Config.Comment({"How much essence the advanced wand should store when full.", "Default: 10000"})
         public int advancedWandStorage = 10000;
+        
+        @Config.Comment({"How much essence the master wand should store when full.", "Default: 10000"})
+        public int masterWandStorage = 100000;
     }
 
     public static class World {

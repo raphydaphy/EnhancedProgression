@@ -3,15 +3,12 @@ package com.raphydaphy.enhancedprogression.block.tile;
 import java.util.List;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
-import com.raphydaphy.enhancedprogression.block.multiblock.Multiblock;
-import com.raphydaphy.enhancedprogression.block.multiblock.MultiblockSet;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import com.raphydaphy.enhancedprogression.nbt.AltarRecipe;
 import com.raphydaphy.enhancedprogression.nbt.PacketManager;
 import com.raphydaphy.enhancedprogression.recipe.ModRecipes;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockQuartz;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -42,7 +39,8 @@ public class TileAltar extends TileSimpleInventory
 
 	private static Iterable<BlockPos.MutableBlockPos> QUARTZ_BLOCKS = BlockPos
 			.getAllInBoxMutable(new BlockPos(-2, 0, -2), new BlockPos(2, 0, 2));
-	private static final BlockPos[] CLAY_BLOCKS =
+	
+	private static final BlockPos[] OBSIDIAN_BLOCKS =
 	{ new BlockPos(-3, 0, -3), new BlockPos(-3, 0, -2), new BlockPos(-3, 0, -1), new BlockPos(-2, 0, -3),
 			new BlockPos(-3, 0, 0), new BlockPos(-3, 0, 1), new BlockPos(-3, 0, 2), new BlockPos(-3, 0, 3),
 			new BlockPos(-2, 0, 3), new BlockPos(-1, 0, 3), new BlockPos(0, 0, 3), new BlockPos(1, 0, 3),
@@ -51,6 +49,16 @@ public class TileAltar extends TileSimpleInventory
 			new BlockPos(2, 0, -3), new BlockPos(1, 0, -3), new BlockPos(0, 0, -3), new BlockPos(-1, 0, -3)
 
 	};
+	
+	private static final BlockPos[] IMBUED_LOG_BLOCKS =
+		{ new BlockPos(-4, 0, -3), new BlockPos(-4, 0, -2),  new BlockPos(-4, 0, -1),  new BlockPos(-4, 0, 0),
+			new BlockPos(-4, 0, 1), new BlockPos(-4, 0, 2), new BlockPos(-4, 0, 3),
+		  new BlockPos(-4, 0, 4), new BlockPos(-3, 0, 4), new BlockPos(-2, 0, 4), new BlockPos(-1, 0, 4), 
+		  	new BlockPos(0, 0, 4), new BlockPos(1, 0, 4), new BlockPos(2, 0, 4), new BlockPos(3, 0, 4), 
+		  new BlockPos(4, 0, 4), new BlockPos(4, 0, 3), new BlockPos(4, 0, 2), new BlockPos(4, 0, 1), 
+		  	new BlockPos(4, 0, 0), new BlockPos(4, 0, -1), new BlockPos(4, 0, -2), new BlockPos(4, 0, -3), 
+		  new BlockPos(4, 0, -4)
+		};
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound)
@@ -66,30 +74,28 @@ public class TileAltar extends TileSimpleInventory
 		compound.setInteger("confirm", confirm);
 		return compound;
 	}
-
-	public static MultiblockSet makeMultiblockSet()
+	
+	private int getAltarTier()
 	{
-		Multiblock mb = new Multiblock();
-
-		for (BlockPos relativePos : QUARTZ_BLOCKS)
+		boolean quartzValid = checkAllIterable(QUARTZ_BLOCKS, Blocks.QUARTZ_BLOCK);
+		boolean obsidianValid = checkAllArray(OBSIDIAN_BLOCKS, Blocks.OBSIDIAN);
+		boolean imbuedValid = checkAllArray(IMBUED_LOG_BLOCKS, ModBlocks.imbued_log);
+		
+		if (quartzValid && obsidianValid && imbuedValid)
 		{
-			mb.addComponent(relativePos, Blocks.QUARTZ_BLOCK.getDefaultState().withProperty(BlockQuartz.VARIANT,
-					BlockQuartz.EnumType.CHISELED));
+			altarTier = 3;
+			PacketManager.dispatchTE(worldObj, pos);
+			return 3;
 		}
-		for (BlockPos relativePos : CLAY_BLOCKS)
+		else if (quartzValid && obsidianValid)
 		{
-			mb.addComponent(relativePos, Blocks.HARDENED_CLAY.getDefaultState());
+			altarTier = 2;
+			PacketManager.dispatchTE(worldObj, pos);
+			return 2;
 		}
-
-		mb.addComponent(new BlockPos(0, 1, 0), ModBlocks.altar.getDefaultState());
-		mb.setRenderOffset(new BlockPos(0, 1, 0));
-
-		return mb.makeSet();
-	}
-
-	boolean hasValidPlatform()
-	{
-		return checkAllIterable(QUARTZ_BLOCKS, Blocks.QUARTZ_BLOCK) && checkAllArray(CLAY_BLOCKS, Blocks.HARDENED_CLAY);
+		altarTier = 1;
+		PacketManager.dispatchTE(worldObj, pos);
+		return 1;
 	}
 
 	boolean checkAllArray(BlockPos[] relPositions, Block block)
@@ -199,17 +205,6 @@ public class TileAltar extends TileSimpleInventory
 		}
 
 		return false;
-	}
-
-	public int getAltarTier()
-	{
-		altarTier = 1;
-		if (hasValidPlatform())
-		{
-			altarTier = 2;
-		}
-		PacketManager.dispatchTE(worldObj, pos);
-		return altarTier;
 	}
 
 	public int getRequiredTier()

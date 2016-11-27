@@ -156,15 +156,6 @@ public class Multiblock
 		return ret;
 	}
 
-	/**
-	 * Makes a MultiblockSet from this Multiblock and its rotations using
-	 * createRotations().
-	 */
-	public MultiblockSet makeSet()
-	{
-		return new MultiblockSet(this);
-	}
-
 	public int getXSize()
 	{
 		return Math.abs(minPos.getX()) + Math.abs(maxPos.getX()) + 1;
