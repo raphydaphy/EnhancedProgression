@@ -59,6 +59,14 @@ achievement.enhancedprogression:pickup_imbued_bronze=Shiny!
 achievement.enhancedprogression:pickup_imbued_bronze.desc=Use an Altar to craft Imbued Bronze Ingots.
 achievement.enhancedprogression:pickup_imbued_log=Leveling Up
 achievement.enhancedprogression:pickup_imbued_log.desc=Craft Imbued Logs in a Tier 2 Altar.
+achievement.enhancedprogression:craft_advanced_wand=Unbreakable!
+achievement.enhancedprogression:craft_advanced_wand.desc=Craft the Advanced Wand.
+achievement.enhancedprogression:craft_enhanced_extraction=Better Extraction
+achievement.enhancedprogression:craft_enhanced_extraction.desc=Craft the Enhanced Extraction spell to extract Essence from ore.
+achievement.enhancedprogression:craft_rapidfire=Better than Bows!
+achievement.enhancedprogression:craft_rapidfire.desc=Craft the Rapidfire spell and never need a bow again.
+achievement.enhancedprogression:craft_hunger=Imbued Food?
+achievement.enhancedprogression:craft_hunger.desc=Craft the Hunger spell to eliminate starving forever.
 
 #Containers and Descriptions
 itemGroup.enhancedprogression=Enhanced Progression

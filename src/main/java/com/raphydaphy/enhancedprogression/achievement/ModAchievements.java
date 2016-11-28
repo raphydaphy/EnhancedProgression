@@ -22,6 +22,10 @@ public final class ModAchievements
 	public static Achievement craft_cryptic_transmutation;
 	public static Achievement pickup_imbued_bronze;
 	public static Achievement pickup_imbued_log;
+	public static Achievement craft_advanced_wand;
+	public static Achievement craft_enhanced_extraction;
+	public static Achievement craft_rapidfire;
+	public static Achievement craft_hunger;
 	
 	public static void init()
 	{
@@ -48,6 +52,18 @@ public final class ModAchievements
 		
 		pickup_imbued_log = new AchievementMod(AchievementNames.PICKUP_IMBUED_LOG, 0, 2, ModBlocks.imbued_log,
 				pickup_imbued_bronze);
+		
+		craft_advanced_wand = new AchievementMod(AchievementNames.CRAFT_ADVANCED_WAND, 2, 4, ModItems.advanced_wand,
+				pickup_imbued_log);
+		
+		craft_enhanced_extraction = new AchievementMod(AchievementNames.CRAFT_ENHANCED_EXTRACTION, -2, 4, ModItems.spell_card_enhanced_extraction,
+				pickup_imbued_log);
+		
+		craft_rapidfire = new AchievementMod(AchievementNames.CRAFT_RAPIDFIRE, 2, 6, ModItems.spell_card_rapidfire,
+				pickup_imbued_log);
+		
+		craft_hunger = new AchievementMod(AchievementNames.CRAFT_HUNGER, -2, 6, ModItems.spell_card_hunger,
+				pickup_imbued_log);
 		
 		page_index = AchievementPage.getAchievementPages().size();
 		enhanced_progression_page = new AchievementPage(Reference.NAME,

@@ -11,5 +11,9 @@ public final class AchievementNames
 	public static final String CRAFT_CRYPTIC_TRANSMUTATION = "craft_cryptic_transmutation";
 	public static final String PICKUP_IMBUED_BRONZE = "pickup_imbued_bronze";
 	public static final String PICKUP_IMBUED_LOG = "pickup_imbued_log";
+	public static final String CRAFT_ADVANCED_WAND = "craft_advanced_wand";
+	public static final String CRAFT_ENHANCED_EXTRACTION = "craft_enhanced_extraction";
+	public static final String CRAFT_RAPIDFIRE = "craft_rapidfire";
+	public static final String CRAFT_HUNGER = "craft_hunger";
 
 }

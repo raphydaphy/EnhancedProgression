@@ -68,11 +68,25 @@ public class ItemWand extends Item implements ICraftAchievement
 	@Override
 	public Achievement getAchievementOnCraft(ItemStack stack, EntityPlayer player, IInventory matrix) 
 	{
-		if (this.name == "basic_wand_copper" || this.name == "basic_wand_tin")
+		switch(this.name)
 		{
-			return ModAchievements.craft_basic_wand;
+			case "basic_wand_copper":
+			{
+				return ModAchievements.craft_basic_wand;
+			}
+			case "basic_wand_tin":
+			{
+				return ModAchievements.craft_basic_wand;
+			}
+			case "advanced_wand":
+			{
+				return ModAchievements.craft_advanced_wand;
+			}
+			default:
+			{
+				return null;
+			}
 		}
-		return null;
 	}
 	
 	@Override
