@@ -63,6 +63,10 @@ public class ItemBase extends Item implements ICraftAchievement, IPickupAchievem
 			{
 				return ModAchievements.craft_cryptic_transmutation;
 			}
+			case "spell_card_flight":
+			{
+				return ModAchievements.craft_elevated_momentum;
+			}
 			default:
 			{
 				return null;
@@ -78,6 +82,10 @@ public class ItemBase extends Item implements ICraftAchievement, IPickupAchievem
 			case "ingot_bronze_imbued":
 			{
 				return ModAchievements.pickup_imbued_bronze;
+			}
+			case "ingot_fluxed":
+			{
+				return ModAchievements.pickup_fluxed_ingot;
 			}
 			default:
 			{

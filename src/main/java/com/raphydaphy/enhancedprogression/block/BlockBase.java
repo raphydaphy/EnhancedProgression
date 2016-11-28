@@ -57,6 +57,10 @@ public class BlockBase extends Block implements IPickupAchievement
 			{
 				return ModAchievements.pickup_imbued_log;
 			}
+			case "fluxed_log":
+			{
+				return ModAchievements.pickup_fluxed_log;
+			}	
 			default:
 			{
 				return null;

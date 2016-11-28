@@ -82,6 +82,10 @@ public class ItemWand extends Item implements ICraftAchievement
 			{
 				return ModAchievements.craft_advanced_wand;
 			}
+			case "master_wand":
+			{
+				return ModAchievements.craft_master_wand;
+			}
 			default:
 			{
 				return null;
