@@ -16,17 +16,24 @@ public final class ModAchievements
 	public static Achievement craft_basic_wand;
 	public static Achievement craft_vital_extraction;
 	public static Achievement craft_magic_lantern;
-	public static Achievement use_altar;
+	public static Achievement craft_contained_explosion;
+	public static Achievement craft_radiant_fireball;
 
 	public static void init()
 	{
 		craft_basic_wand = new AchievementMod(AchievementNames.CRAFT_BASIC_WAND, 0, 0, ModItems.basic_wand_copper,
 				craft_basic_wand);
 		
-		craft_vital_extraction = new AchievementMod(AchievementNames.CRAFT_VITAL_EXTRACTION, 2, 2, ModItems.spell_card_vital_extraction,
+		craft_vital_extraction = new AchievementMod(AchievementNames.CRAFT_VITAL_EXTRACTION, -1, -2, ModItems.spell_card_vital_extraction,
 				craft_basic_wand);
 		
-		craft_magic_lantern = new AchievementMod(AchievementNames.CRAFT_MAGIC_LANTERN, 2, -2, ModItems.spell_card_lantern,
+		craft_magic_lantern = new AchievementMod(AchievementNames.CRAFT_MAGIC_LANTERN, 1, -2, ModItems.spell_card_lantern,
+				craft_basic_wand);
+		
+		craft_contained_explosion = new AchievementMod(AchievementNames.CRAFT_CONTAINED_EXPLOSION, -1, -3, ModItems.spell_card_explosion,
+				craft_basic_wand);
+		
+		craft_radiant_fireball = new AchievementMod(AchievementNames.CRAFT_RADIANT_FIREBALL, 1, -3, ModItems.spell_card_fireball,
 				craft_basic_wand);
 		
 		page_index = AchievementPage.getAchievementPages().size();

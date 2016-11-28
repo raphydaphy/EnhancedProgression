@@ -42,6 +42,18 @@ tile.totem_top.name=Totem
 tile.totem_middle.name=Totem
 tile.totem_bottom.name=Totem
 
+#Achievements
+achievement.enhancedprogression:craft_basic_wand=A Spark of Life!
+achievement.enhancedprogression:craft_basic_wand.desc=Craft a Basic Wand.
+achievement.enhancedprogression:craft_vital_extraction=Essence Extraction!
+achievement.enhancedprogression:crafT_vital_extraction.desc=Craft the Vital Extraction spell to begin extracting Essence.
+achievement.enhancedprogression:craft_magic_lantern=The First Tiny Shimmer
+achievement.enhancedprogression:craft_magic_lantern.desc=Craft the Magic Lantern spell.
+achievement.enhancedprogression:craft_contained_explosion=Better than TNT!
+achievement.enhancedprogression:craft_contained_explosion.desc=Craft the Conntained Explosion spell.
+achievement.enhancedprogression:craft_radiant_fireball=Next Level Blasting
+achievement.enhancedprogression:craft_radiant_fireball.desc=Craft the Radiant Fireball spell and blow the world to pieces.
+
 #Containers and Descriptions
 itemGroup.enhancedprogression=Enhanced Progression
 gui.altarmessage.name=Altar Tier Detected:

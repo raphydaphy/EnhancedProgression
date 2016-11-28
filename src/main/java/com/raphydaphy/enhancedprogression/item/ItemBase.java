@@ -51,7 +51,11 @@ public class ItemBase extends Item implements ICraftAchievement
 			}
 			case "spell_card_explosion":
 			{
-				return null;
+				return ModAchievements.craft_contained_explosion;
+			}
+			case "spell_card_fireball":
+			{
+				return ModAchievements.craft_radiant_fireball;
 			}
 			default:
 			{
