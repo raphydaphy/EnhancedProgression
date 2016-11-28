@@ -1,11 +1,17 @@
 package com.raphydaphy.enhancedprogression.item;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
+import com.raphydaphy.enhancedprogression.achievement.ICraftAchievement;
+import com.raphydaphy.enhancedprogression.achievement.ModAchievements;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
 
-public class ItemBase extends Item
+public class ItemBase extends Item implements ICraftAchievement
 {
 
 	protected String name;
@@ -28,6 +34,30 @@ public class ItemBase extends Item
 	{
 		super.setCreativeTab(tab);
 		return this;
+	}
+	
+	@Override
+	public Achievement getAchievementOnCraft(ItemStack stack, EntityPlayer player, IInventory matrix) 
+	{
+		switch(this.name)
+		{
+			case "spell_card_vital_extraction":
+			{
+				return ModAchievements.craft_vital_extraction;
+			}
+			case "spell_card_lantern":
+			{
+				return ModAchievements.craft_magic_lantern;
+			}
+			case "spell_card_explosion":
+			{
+				return null;
+			}
+			default:
+			{
+				return null;
+			}
+		}
 	}
 
 }

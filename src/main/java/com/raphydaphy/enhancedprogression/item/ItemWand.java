@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
+import com.raphydaphy.enhancedprogression.achievement.ICraftAchievement;
+import com.raphydaphy.enhancedprogression.achievement.ModAchievements;
 import com.raphydaphy.enhancedprogression.block.BlockAltar;
 import com.raphydaphy.enhancedprogression.init.ModBlocks;
 import com.raphydaphy.enhancedprogression.init.ModItems;
@@ -26,10 +28,12 @@ import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -41,7 +45,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-public class ItemWand extends Item
+public class ItemWand extends Item implements ICraftAchievement
 {
 	protected String name;
 	protected int wandTier;
@@ -60,7 +64,17 @@ public class ItemWand extends Item
 		this.wandTier = wandTier;
 		this.canBreak = canBreak;
 	}
-
+	
+	@Override
+	public Achievement getAchievementOnCraft(ItemStack stack, EntityPlayer player, IInventory matrix) 
+	{
+		if (this.name == "basic_wand_copper" || this.name == "basic_wand_tin")
+		{
+			return ModAchievements.craft_basic_wand;
+		}
+		return null;
+	}
+	
 	@Override
 	public ItemWand setCreativeTab(CreativeTabs tab)
 	{
