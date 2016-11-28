@@ -2,16 +2,18 @@ package com.raphydaphy.enhancedprogression.item;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.achievement.ICraftAchievement;
+import com.raphydaphy.enhancedprogression.achievement.IPickupAchievement;
 import com.raphydaphy.enhancedprogression.achievement.ModAchievements;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 
-public class ItemBase extends Item implements ICraftAchievement
+public class ItemBase extends Item implements ICraftAchievement, IPickupAchievement
 {
 
 	protected String name;
@@ -56,6 +58,26 @@ public class ItemBase extends Item implements ICraftAchievement
 			case "spell_card_fireball":
 			{
 				return ModAchievements.craft_radiant_fireball;
+			}
+			case "spell_card_transmutation":
+			{
+				return ModAchievements.craft_cryptic_transmutation;
+			}
+			default:
+			{
+				return null;
+			}
+		}
+	}
+
+	@Override
+	public Achievement getAchievementOnPickup(ItemStack stack, EntityPlayer player, EntityItem item) 
+	{
+		switch(this.name)
+		{
+			case "ingot_bronze_imbued":
+			{
+				return ModAchievements.pickup_imbued_bronze;
 			}
 			default:
 			{

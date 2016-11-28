@@ -46,13 +46,19 @@ tile.totem_bottom.name=Totem
 achievement.enhancedprogression:craft_basic_wand=A Spark of Life!
 achievement.enhancedprogression:craft_basic_wand.desc=Craft a Basic Wand.
 achievement.enhancedprogression:craft_vital_extraction=Essence Extraction!
-achievement.enhancedprogression:crafT_vital_extraction.desc=Craft the Vital Extraction spell to begin extracting Essence.
+achievement.enhancedprogression:craft_vital_extraction.desc=Craft the Vital Extraction spell to begin extracting Essence.
 achievement.enhancedprogression:craft_magic_lantern=The First Tiny Shimmer
 achievement.enhancedprogression:craft_magic_lantern.desc=Craft the Magic Lantern spell.
 achievement.enhancedprogression:craft_contained_explosion=Better than TNT!
 achievement.enhancedprogression:craft_contained_explosion.desc=Craft the Conntained Explosion spell.
 achievement.enhancedprogression:craft_radiant_fireball=Next Level Blasting
 achievement.enhancedprogression:craft_radiant_fireball.desc=Craft the Radiant Fireball spell and blow the world to pieces.
+achievement.enhancedprogression:craft_cryptic_transmutation=Harsh Enlightenment
+achievement.enhancedprogression:craft_cryptic_transmutation.desc=Craft the Cryptic Transmutation spell.
+achievement.enhancedprogression:pickup_imbued_bronze=Shiny!
+achievement.enhancedprogression:pickup_imbued_bronze.desc=Use an Altar to craft Imbued Bronze Ingots.
+achievement.enhancedprogression:pickup_imbued_log=Leveling Up
+achievement.enhancedprogression:pickup_imbued_log.desc=Craft Imbued Logs in a Tier 2 Altar.
 
 #Containers and Descriptions
 itemGroup.enhancedprogression=Enhanced Progression

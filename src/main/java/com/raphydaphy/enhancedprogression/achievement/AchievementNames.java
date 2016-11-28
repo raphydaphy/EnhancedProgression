@@ -8,6 +8,8 @@ public final class AchievementNames
 	public static final String CRAFT_MAGIC_LANTERN = "craft_magic_lantern";
 	public static final String CRAFT_CONTAINED_EXPLOSION = "craft_contained_explosion";
 	public static final String CRAFT_RADIANT_FIREBALL = "craft_radiant_fireball";
-	public static final String USE_ALTAR = "use_altar";
+	public static final String CRAFT_CRYPTIC_TRANSMUTATION = "craft_cryptic_transmutation";
+	public static final String PICKUP_IMBUED_BRONZE = "pickup_imbued_bronze";
+	public static final String PICKUP_IMBUED_LOG = "pickup_imbued_log";
 
 }
