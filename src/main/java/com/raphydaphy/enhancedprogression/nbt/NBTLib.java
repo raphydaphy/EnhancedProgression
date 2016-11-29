@@ -1,6 +1,6 @@
 /* 
- * vazkii made this but 
- * its under WTFPL
+ * vazkii made this...
+ * but its under WTFPL
  * so im gonna steal it
  * thx vazkii <3
  */

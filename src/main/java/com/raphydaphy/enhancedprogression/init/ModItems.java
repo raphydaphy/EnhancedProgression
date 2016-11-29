@@ -29,6 +29,7 @@ public class ModItems
 	public static ItemBase spell_card_vital_extraction;
 	public static ItemBase spell_card_enhanced_extraction;
 	public static ItemBase spell_card_flight;
+	public static ItemBase spell_card_forcefield;
 
 	public static ItemBase upgrade_template_basic;
 
@@ -44,15 +45,12 @@ public class ModItems
 		ingot_copper = register(new ItemBase("ingot_copper", 64).setCreativeTab(EnhancedProgression.creativeTab));
 		ingot_tin = register(new ItemBase("ingot_tin", 64).setCreativeTab(EnhancedProgression.creativeTab));
 		ingot_bronze = register(new ItemBase("ingot_bronze", 64).setCreativeTab(EnhancedProgression.creativeTab));
-		
 		ingot_bronze_imbued = register(
 				new ItemBase("ingot_bronze_imbued", 64).setCreativeTab(EnhancedProgression.creativeTab));
 		ingot_fluxed = register(
 				new ItemBase("ingot_fluxed", 64).setCreativeTab(EnhancedProgression.creativeTab));
-		
 		fluxed_stick = register(new ItemBase("fluxed_stick", 64).setCreativeTab(EnhancedProgression.creativeTab));
 		imbued_stick = register(new ItemBase("imbued_stick", 64).setCreativeTab(EnhancedProgression.creativeTab));
-
 		spell_card_lantern = register(
 				new ItemBase("spell_card_lantern", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		spell_card_explosion = register(
@@ -71,10 +69,10 @@ public class ModItems
 				new ItemBase("spell_card_enhanced_extraction", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		spell_card_flight = register(
 				new ItemBase("spell_card_flight", 1).setCreativeTab(EnhancedProgression.creativeTab));
-
+		spell_card_forcefield = register(
+				new ItemBase("spell_card_forcefield", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		upgrade_template_basic = register(
 				new ItemBase("upgrade_template_basic", 16).setCreativeTab(EnhancedProgression.creativeTab));
-
 		basic_wand_copper = register(new ItemWand("basic_wand_copper", 1, ConfigHandler.wandSettings.basicWandStorage,
 				ConfigHandler.wandSettings.canBasicWandBreak).setCreativeTab(EnhancedProgression.creativeTab));
 		basic_wand_tin = register(new ItemWand("basic_wand_tin", 1, ConfigHandler.wandSettings.basicWandStorage,
