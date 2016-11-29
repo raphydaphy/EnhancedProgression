@@ -198,7 +198,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				if (useEssence(5000, stack))
 				{
 					NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", true);
-					spawnParticles(EnumParticleTypes.CRIT_MAGIC, worldIn, true, player.getPosition(), 100, 2);
+					spawnParticles(EnumParticleTypes.PORTAL, worldIn, true, player.getPosition(), 100, 2);
 					spawnParticles(EnumParticleTypes.FLAME, worldIn, true, player.getPosition(), 100, 2);
 					player.setEntityInvulnerable(true);
 					player.setActiveHand(hand);
@@ -487,7 +487,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				if (useEssence(50, stack))
 				{
 					NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", true);
-					spawnParticles(EnumParticleTypes.CRIT_MAGIC, player.worldObj, true, player.getPosition(), 100, 2);
+					spawnParticles(EnumParticleTypes.PORTAL, player.worldObj, true, player.getPosition(), 100, 2);
 					spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, player.getPosition(), 100, 2);
 					player.setEntityInvulnerable(true);
 				}
