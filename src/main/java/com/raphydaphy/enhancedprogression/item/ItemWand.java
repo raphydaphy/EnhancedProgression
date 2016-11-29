@@ -45,6 +45,17 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+/*
+ * Main class to controll all wands
+ * For basic wand, wandTier = 1
+ * For advanced, wandTier = 2
+ * For master, wandTier = 3
+ * maxEssence is 1k, 10k and 100k respectivly
+ * canBreak is used when the logger spell is active
+ * If the wand can break, it has a 1 in 1000 chance
+ * Of doing so while harvesting a log.
+ * Name is the same as the registry name and json
+ */
 public class ItemWand extends Item implements ICraftAchievement
 {
 	protected String name;
@@ -109,7 +120,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	{
 		return NBTLib.getInt(stack, "essenceStored", 0);
 	}
-
+	
 	public boolean useEssence(int amount, ItemStack stack)
 	{
 		if (getEssenceStored(stack) - amount >= 0)
@@ -608,7 +619,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	@Nullable
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
-	{		
+	{
 		if (NBTLib.getBoolean(stack, "hungerSpellActive", false) == true)		
 		{		
 		if (entityLiving instanceof EntityPlayer)		
