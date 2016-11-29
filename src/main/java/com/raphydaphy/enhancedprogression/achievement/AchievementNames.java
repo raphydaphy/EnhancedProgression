@@ -19,5 +19,6 @@ public final class AchievementNames
 	public static final String PICKUP_FLUXED_LOG = "pickup_fluxed_log";
 	public static final String CRAFT_MASTER_WAND = "craft_master_wand";
 	public static final String CRAFT_ELEVATED_MOMENTUM = "craft_elevated_momentum";
+	public static final String CRAFT_UNABRIDGED_IMMORTALITY = "craft_unabridged_immortality";
 
 }

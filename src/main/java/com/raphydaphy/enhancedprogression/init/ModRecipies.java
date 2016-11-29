@@ -95,6 +95,12 @@ public class ModRecipies
 			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_flight), "SFS", "FIF", "SFS",
 					'S', ModItems.fluxed_stick, 'F', Items.FEATHER, 'I', ModItems.ingot_fluxed);
 		}
+		if (ConfigHandler.crafting.enableUnabridgedImmortality)
+		{
+			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_forcefield), "SHS", "HIH", "SHS",
+					'S', ModItems.fluxed_stick, 'F', Items.SHIELD, 'I', ModItems.ingot_fluxed);
+		}
+		
 	}
 
 	public static void registerSmelting()

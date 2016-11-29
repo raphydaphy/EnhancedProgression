@@ -67,6 +67,10 @@ public class ItemBase extends Item implements ICraftAchievement, IPickupAchievem
 			{
 				return ModAchievements.craft_elevated_momentum;
 			}
+			case "spell_card_forcefield":
+			{
+				return ModAchievements.craft_unabridged_immortality;
+			}
 			default:
 			{
 				return null;

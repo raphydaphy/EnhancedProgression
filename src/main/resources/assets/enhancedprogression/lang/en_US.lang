@@ -18,6 +18,7 @@ item.spell_card_transmutation.name=Spell Card - Cryptic Transmutation
 item.spell_card_hunger.name=Spell Card - Hunger
 item.spell_card_enhanced_extraction.name=Spell Card - Enhanced Extraction
 item.spell_card_flight.name=Spell Card - Elevated Momentum
+item.spell_card_forcefield.name=Spell Card - Unabridged Immortality
 
 item.upgrade_template_basic.name=Basic Upgrade Template
 item.upgrade_template_advanced.name=Advanced Upgrade Template
@@ -75,6 +76,8 @@ achievement.enhancedprogression:craft_master_wand=Essence Master
 achievement.enhancedprogression:craft_master_wand.desc=Craft the Master Wand.
 achievement.enhancedprogression:craft_elevated_momentum=F*** Gravity
 achievement.enhancedprogression:craft_elevated_momentum.desc=Craft the Elevated Momentum spell to obliterate the laws of gravity.
+achievement.enhancedprogression:craft_unabridged_immortality=Like A God
+achievement.enhancedprogression:craft_unabridged_immortality.desc=Craft the Unabridged Immortality Spell!
 
 #Containers and Descriptions
 itemGroup.enhancedprogression=Enhanced Progression

@@ -520,6 +520,7 @@ public class ItemWand extends Item implements ICraftAchievement
 									5.0F, 1.0F);
 							entityArrow.setKnockbackStrength(1);
 							entityArrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+							entityArrow.setIsCritical(true);
 
 							player.worldObj.spawnEntityInWorld(entityArrow);
 							player.worldObj.playSound(null, player.posX, player.posY, player.posZ,

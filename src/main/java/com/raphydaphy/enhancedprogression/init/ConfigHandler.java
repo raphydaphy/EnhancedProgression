@@ -39,8 +39,11 @@ public class ConfigHandler
         @Config.Comment({"Enable Hunger Spell Crafting.", "Default: true"})
         public boolean enableHunger = true;
         
-        @Config.Comment({"Enable Elevated Momentum Crafting.", "Default: true"})
+        @Config.Comment({"Enable Elevated Momentum Spell Crafting.", "Default: true"})
         public boolean enableElevatedMomentum = true;
+        
+        @Config.Comment({"Enable Unabridged Immortality Spell Crafting. Disabled because its broken", "Default: false"})
+        public boolean enableUnabridgedImmortality = false;
     }
 
     public static class WandSettings {

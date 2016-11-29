@@ -30,6 +30,7 @@ public final class ModAchievements
 	public static Achievement pickup_fluxed_log;
 	public static Achievement craft_master_wand;
 	public static Achievement craft_elevated_momentum;
+	public static Achievement craft_unabridged_immortality;
 	
 	public static void init()
 	{
@@ -70,16 +71,19 @@ public final class ModAchievements
 				pickup_imbued_log);
 		
 		pickup_fluxed_ingot = new AchievementMod(AchievementNames.PICKUP_FLUXED_INGOT, -4, 4, ModItems.ingot_fluxed,
-				craft_advanced_wand);
+				craft_advanced_wand).setSpecial();
 		
 		pickup_fluxed_log = new AchievementMod(AchievementNames.PICKUP_FLUXED_LOG, -6, 4, ModBlocks.fluxed_log,
-				pickup_fluxed_ingot);
+				pickup_fluxed_ingot).setSpecial();
 		
 		craft_master_wand = new AchievementMod(AchievementNames.CRAFT_MASTER_WAND, -8, 6, ModItems.master_wand,
-				pickup_fluxed_log);
+				pickup_fluxed_log).setSpecial();
 		
 		craft_elevated_momentum = new AchievementMod(AchievementNames.CRAFT_ELEVATED_MOMENTUM, -4, 6, ModItems.spell_card_flight,
-				pickup_fluxed_log);
+				pickup_fluxed_log).setSpecial();
+		
+		craft_unabridged_immortality = new AchievementMod(AchievementNames.CRAFT_UNABRIDGED_IMMORTALITY, -6, 8, ModItems.spell_card_forcefield,
+				pickup_fluxed_log).setSpecial();
 		
 		page_index = AchievementPage.getAchievementPages().size();
 		enhanced_progression_page = new AchievementPage(Reference.NAME,
