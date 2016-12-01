@@ -387,7 +387,6 @@ public class ItemWand extends Item implements ICraftAchievement
 						replaceBlock.add(toReplace);
 					}
 				}
-
 				player.setActiveHand(hand);
 				NBTLib.setInt(player.getHeldItemOffhand(), "currentBlockId", 0);
 				NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay", 0);

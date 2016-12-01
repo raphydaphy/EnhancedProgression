@@ -9,6 +9,8 @@ item.ingot_fluxed.name=Fluxed Ingot
 item.imbued_stick.name=Imbued Stick
 item.fluxed_stick.name=Fluxed Stick
 
+item.spell_bag.name=Spell Bag
+
 item.spell_card_vital_extraction.name=Spell Card - Vital Extraction
 item.spell_card_lantern.name=Spell Card - Magic Lantern
 item.spell_card_explosion.name=Spell Card - Contained Explosion
@@ -35,6 +37,8 @@ tile.ore_tin.name=Tin Ore
 
 tile.imbued_log.name=Imbued Log
 tile.imbued_plank.name=Imbued Plank
+tile.fluxed_log.name=Fluxed Log
+tile.fluxed_plank.name=Fluxed Plank
 tile.dead_log.name=Dead Log
 
 #Fancy Blocks

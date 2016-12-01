@@ -2,6 +2,7 @@ package com.raphydaphy.enhancedprogression.init;
 
 import com.raphydaphy.enhancedprogression.EnhancedProgression;
 import com.raphydaphy.enhancedprogression.item.ItemBase;
+import com.raphydaphy.enhancedprogression.item.ItemSpellBag;
 import com.raphydaphy.enhancedprogression.item.ItemWand;
 
 import net.minecraft.item.Item;
@@ -19,14 +20,16 @@ public class ModItems
 	
 	public static ItemBase ingot_fluxed;
 	public static ItemBase fluxed_stick;
+	
+	public static ItemSpellBag spell_bag;
 
+	public static ItemBase spell_card_vital_extraction;
 	public static ItemBase spell_card_lantern;
 	public static ItemBase spell_card_explosion;
 	public static ItemBase spell_card_fireball;
 	public static ItemBase spell_card_rapidfire;
-	public static ItemBase spell_card_hunger;
 	public static ItemBase spell_card_transmutation;
-	public static ItemBase spell_card_vital_extraction;
+	public static ItemBase spell_card_hunger;
 	public static ItemBase spell_card_enhanced_extraction;
 	public static ItemBase spell_card_flight;
 	public static ItemBase spell_card_forcefield;
@@ -51,6 +54,8 @@ public class ModItems
 				new ItemBase("ingot_fluxed", 64).setCreativeTab(EnhancedProgression.creativeTab));
 		fluxed_stick = register(new ItemBase("fluxed_stick", 64).setCreativeTab(EnhancedProgression.creativeTab));
 		imbued_stick = register(new ItemBase("imbued_stick", 64).setCreativeTab(EnhancedProgression.creativeTab));
+		spell_bag = register(
+				new ItemSpellBag().setCreativeTab(EnhancedProgression.creativeTab));
 		spell_card_lantern = register(
 				new ItemBase("spell_card_lantern", 1).setCreativeTab(EnhancedProgression.creativeTab));
 		spell_card_explosion = register(
