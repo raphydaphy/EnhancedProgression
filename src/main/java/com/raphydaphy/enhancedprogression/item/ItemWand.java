@@ -46,7 +46,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /*
- * Main class to controll all wands
+ * Main class to control all wands
  * For basic wand, wandTier = 1
  * For advanced, wandTier = 2
  * For master, wandTier = 3
@@ -58,13 +58,21 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
  */
 public class ItemWand extends Item implements ICraftAchievement
 {
+	// these variables are the same across each instance of the wand
 	protected String name;
 	protected int wandTier;
 	protected int maxEssence;
 	protected boolean canBreak;
-
+	
+	// stores the current blocks beind destroyed with the vital extraction spell
+	// may break in multiplayer, this needs to be moved to nbt or something
 	private List<BlockPos> replaceBlock = new ArrayList<BlockPos>();
 
+	/*
+	 * Constructor for the wand
+	 * All the variables set here are the same 
+	 * across every ItemStack of that instance
+	 */
 	public ItemWand(String name, int wandTier, int maxEssence, boolean canBreak)
 	{
 		this.name = name;
@@ -76,6 +84,10 @@ public class ItemWand extends Item implements ICraftAchievement
 		this.canBreak = canBreak;
 	}
 	
+	/*
+	 * Gives the player an achievement when they craft a wand
+	 * Used for the master, advanced and basic wand crafting
+	 */
 	@Override
 	public Achievement getAchievementOnCraft(ItemStack stack, EntityPlayer player, IInventory matrix) 
 	{
@@ -104,6 +116,10 @@ public class ItemWand extends Item implements ICraftAchievement
 		}
 	}
 	
+	/*
+	 * Puts the current wand instance into the creative tab
+	 * Used with all instances of the wand item
+	 */
 	@Override
 	public ItemWand setCreativeTab(CreativeTabs tab)
 	{
@@ -111,16 +127,31 @@ public class ItemWand extends Item implements ICraftAchievement
 		return this;
 	}
 
+	/*
+	 * Client side only
+	 * Used to register the item texture
+	 * Also used for the wand custom holding json
+	 * Called when the wand is initialized in ModItems
+	 * 
+	 */
 	public void registerItemModel()
 	{
 		EnhancedProgression.proxy.registerItemRenderer(this, 0, name);
 	}
 
+	/*
+	 * Gets the stored essence integer from NBT
+	 * Essence is stored per ItemStack instance
+	 */
 	public int getEssenceStored(ItemStack stack)
 	{
 		return NBTLib.getInt(stack, "essenceStored", 0);
 	}
 	
+	/*
+	 * Removes essence from the wand
+	 * Ran locally on only the instances that need essence removed
+	 */
 	public boolean useEssence(int amount, ItemStack stack)
 	{
 		if (getEssenceStored(stack) - amount >= 0)
@@ -131,6 +162,11 @@ public class ItemWand extends Item implements ICraftAchievement
 		return false;
 	}
 
+	/*
+	 * Opposite of useEssence
+	 * Used to add more essence into the wand
+	 * Uses wand NBT to access essence values
+	 */
 	public boolean addEssence(int amount, ItemStack stack)
 	{
 		if (getEssenceStored(stack) + amount < maxEssence + 1)
@@ -144,12 +180,21 @@ public class ItemWand extends Item implements ICraftAchievement
 		return true;
 	}
 
+	/*
+	 * Spawns particles based on paramaters used
+	 * Can crash people in multiplayer (needs fixing)
+	 */
 	public static void spawnParticles(EnumParticleTypes particleType, World world, boolean forceSpawn, BlockPos pos,
 			int count, double radius)
 	{
 		spawnParticlesServer(particleType, world, forceSpawn, pos.getX(), pos.getY(), pos.getZ(), count, radius);
 	}
-
+	
+	/*
+	 * Spawns particles server-side only
+	 * Sometimes causes Null Pointer Exceptions
+	 * Only crashes in multiplayer. Needs fixing.
+	 */
 	public static void spawnParticlesServer(EnumParticleTypes particleType, World world, boolean forceSpawn, double x,
 			double y, double z, int count, double radius)
 	{
@@ -157,6 +202,12 @@ public class ItemWand extends Item implements ICraftAchievement
 				.spawnParticle(particleType, forceSpawn, x, y, z, count, radius, radius, radius, 0.005D);
 	}
 
+	/*
+	 * slightly de-obscated version of the setAim method
+	 * setAim is found in the EntityArrow class
+	 * Used to set a different landing position than the start pos raytrace
+	 * Now removed because rapidfire spell dosent use it anymore
+	 */
 	private EntityArrow fancySetAim(EntityArrow target, Entity entity, float pitch, float yaw, float velocity,
 			float knockbackResistance)
 	{
@@ -174,7 +225,17 @@ public class ItemWand extends Item implements ICraftAchievement
 
 		return target;
 	}
-
+	
+	/*
+	 * Called whenever the wand is right-clicked in the air
+	 * Used for the following spells and actions:
+	 * - Checking essence stored on shift-rightclick
+	 * - Forcefield spell on rightclick (not sneaking)
+	 * - Fireball spell on rightclick (not sneaking)
+	 * - Flight spell on rightclick (not sneaking)
+	 * - Activates hunger spell animation on rightclick
+	 * - Rapidfire spell on rightclick (not sneaking)
+	 */
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player, EnumHand hand)
 	{
 		if (player.isSneaking())
@@ -282,6 +343,17 @@ public class ItemWand extends Item implements ICraftAchievement
 		return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 	}
 
+	/*
+	 * Called when the wand is right-clicked onto a block (not in air)
+	 * Used for the following spells and actions:
+	 * - Activating altar crafting (not sneaking)
+	 * - Checking altar level on shift+rightclick
+	 * - Vital Extraction spell when rightclicking log
+	 * - Enhanced Extraction when rightclicking ore
+	 * - Transmmutation spell when rightclicking diamond blocks
+	 * - Magic Lantern spell on any block (not sneaking)
+	 * - Explosion spell on any block (not sneaking)
+	 */
 	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
@@ -436,6 +508,10 @@ public class ItemWand extends Item implements ICraftAchievement
 		return EnumActionResult.PASS;
 	}
 	
+	/*
+	 * Called once a tick when any wand instance is in a players inventory
+	 * Used to de-activate spells when the wand is taken out of the selected slot
+	 */
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity player, int itemSlot, boolean isSelected)
     {
@@ -450,6 +526,14 @@ public class ItemWand extends Item implements ICraftAchievement
 		}
     }
 
+	/*
+	 * Called once a tick while a player is holding right click
+	 * Only called if a wand instance is in the active slot
+	 * Used for the following spells:
+	 * - Vital extraction to process nearby wood into dead wood
+	 * - Forcefield spell to consume 50 essence per tick
+	 * - Rapidfire spell to continue firing arrows with essence
+	 */
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
 	{
@@ -555,6 +639,13 @@ public class ItemWand extends Item implements ICraftAchievement
 		}
 	}
 
+	/*
+	 * Gets the amount of time it takes to call onItemUseFinish
+	 * Countdown starts when the player starts holding rightclick
+	 * 32 is used whenever the hunger spell is active
+	 * 32 is the same value as all food items use in vanilla
+	 * 72000 is the same as bows and used for everything else
+	 */
 	public int getMaxItemUseDuration(ItemStack stack)
 	{
 		if (NBTLib.getBoolean(stack, "hungerSpellActive", false))
@@ -564,6 +655,14 @@ public class ItemWand extends Item implements ICraftAchievement
 		return 72000;
 	}
 
+	/*
+	 * Called when the player stops holding rightclick
+	 * Only called when a wand instance is selected
+	 * Used for the following spells
+	 * - Forcefield spell to de-activate the forcefield (not working)
+	 * - Fireball spell to shoot a fireball with essence cost
+	 * - All spells that require rightclick to be held, to calculate essence
+	 */
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft)
 	{
 		if (player.getHeldItemOffhand().getItem() instanceof ItemBase)
@@ -598,6 +697,11 @@ public class ItemWand extends Item implements ICraftAchievement
 		}
 	}
 
+	/*
+	 * Gets the animation played when rightclick is held with the wand
+	 * Uses the bow animation unless the hunger spell is active
+	 * If hunger spell is active it uses the eating animation
+	 */
 	@Nullable
 	public EnumAction getItemUseAction(ItemStack stack)
 	{
@@ -608,14 +712,26 @@ public class ItemWand extends Item implements ICraftAchievement
 		return EnumAction.BOW;
 	}
 
+	/*
+	 * Creates a 10x30x10 area to search for logs
+	 * Used by the vital extraction spell as search area
+	 */
 	private static Iterable<BlockPos.MutableBlockPos> WOOD_SEARCH_AREA = BlockPos
 			.getAllInBoxMutable(new BlockPos(-5, -5, -5), new BlockPos(5, 25, 5));
 
+	/*
+	 * Checks if the given coordinates is a specific block
+	 */
 	boolean checkPlatform(int xOff, int yOff, int zOff, Block block, BlockPos pos, World world)
 	{
 		return world.getBlockState(pos.add(xOff, yOff, zOff)).getBlock() == block;
 	}
 
+	/*
+	 * Called when the value from getItemMaxUseDuration reaches 0
+	 * Value starts counting down when onItemRightClick is called
+	 * Used for the hunger spell to feed the player when they finish eating
+	 */
 	@Nullable
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
