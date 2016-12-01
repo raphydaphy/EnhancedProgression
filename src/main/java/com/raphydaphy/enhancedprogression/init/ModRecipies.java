@@ -1,5 +1,7 @@
 package com.raphydaphy.enhancedprogression.init;
 
+import com.raphydaphy.enhancedprogression.recipe.RecipeSpellBag;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -74,7 +76,9 @@ public class ModRecipies
 		
 		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.fluxed_plank, 4), ModBlocks.fluxed_log);
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.fluxed_stick, 4), "P", "P", 'P', ModBlocks.fluxed_plank);
-
+		
+		CraftingManager.getInstance().addRecipe(new RecipeSpellBag());
+		
 		if (ConfigHandler.crafting.enableRapidfire)
 		{
 			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_rapidfire), "SAS", "ABA", "SAS", 'S',
