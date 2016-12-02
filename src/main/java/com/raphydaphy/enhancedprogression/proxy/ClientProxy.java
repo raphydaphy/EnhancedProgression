@@ -21,7 +21,7 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void setActionText(String text)
 	{
-		Minecraft.getMinecraft().ingameGUI.setRecordPlaying(TextFormatting.BLUE + text, false);
+		Minecraft.getMinecraft().ingameGUI.setRecordPlaying(TextFormatting.GOLD + text, false);
 	}
 
 }

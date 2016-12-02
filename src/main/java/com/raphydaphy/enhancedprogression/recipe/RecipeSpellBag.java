@@ -14,18 +14,45 @@ public class RecipeSpellBag implements IRecipe
 	
 	public int getSpellID(ItemStack spell)
 	{
-		switch(spell.getUnlocalizedName())
+		if (spell.getItem() == ModItems.spell_card_vital_extraction)
 		{
-			case "spell_card_vital_extraction": return 80;
-			case "spell_card_lantern": return 81;
-			case "spell_card_explosion": return 82;
-			case "spell_card_fireball": return 83;
-			case "spell_card_rapidfire": return 84;
-			case "spell_card_transmutation": return 85;
-			case "spell_card_hunger": return 86;
-			case "spell_card_enhanced_extraction": return 87;
-			case "spell_card_flight": return 88;
-			case "spell_card_forcefield": return 89;
+			return 80;
+		}
+		else if (spell.getItem() == ModItems.spell_card_lantern)
+		{
+			return 81;
+		}
+		else if (spell.getItem() == ModItems.spell_card_explosion)
+		{
+			return 82;
+		}
+		else if (spell.getItem() == ModItems.spell_card_fireball)
+		{
+			return 83;
+		}
+		else if (spell.getItem() == ModItems.spell_card_rapidfire)
+		{
+			return 84;
+		}
+		else if (spell.getItem() == ModItems.spell_card_transmutation)
+		{
+			return 85;
+		}
+		else if (spell.getItem() == ModItems.spell_card_hunger)
+		{
+			return 86;
+		}
+		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction)
+		{
+			return 87;
+		}
+		else if (spell.getItem() == ModItems.spell_card_flight)
+		{
+			return 88;
+		}
+		else if (spell.getItem() == ModItems.spell_card_forcefield)
+		{
+			return 89;
 		}
 		return 0;
 	}
@@ -78,7 +105,14 @@ public class RecipeSpellBag implements IRecipe
             			}
             		}
             		int[] curSpells = resultItem.getTagCompound().getIntArray("spells");
-            		curSpells[curSpells.length + 1] = getSpellID(itemstackSpell);
+            		for(int i=0; i < curSpells.length; i++)
+            		{
+            		    if(curSpells[i] == 0)
+            		    {
+            		    	curSpells[i] = getSpellID(itemstackSpell);
+            		    	break;
+            		    }
+            		}
             		resultItem.getTagCompound().setIntArray("spells", curSpells);
             		return true;
                 }
@@ -96,7 +130,7 @@ public class RecipeSpellBag implements IRecipe
 	@Override
 	public int getRecipeSize() 
 	{
-		return 0;
+		return 10;
 	}
 
 	@Override
@@ -108,7 +142,15 @@ public class RecipeSpellBag implements IRecipe
 	@Override
 	public ItemStack[] getRemainingItems(InventoryCrafting inv) 
 	{
-		return null;
+		 ItemStack[] aitemstack = new ItemStack[inv.getSizeInventory()];
+
+	        for (int i = 0; i < aitemstack.length; ++i)
+	        {
+	            ItemStack itemstack = inv.getStackInSlot(i);
+	            aitemstack[i] = net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack);
+	        }
+
+	        return aitemstack;
 	}
 
 }

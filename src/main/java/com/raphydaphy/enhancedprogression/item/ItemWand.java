@@ -85,6 +85,61 @@ public class ItemWand extends Item implements ICraftAchievement
 	}
 	
 	/*
+	 * Gets the currently selected spell based on the offhand item
+	 * Used to check what spell the wand should perform on rightclick
+	 */
+	public int getActiveSpell(ItemStack offhand)
+	{
+		if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_vital_extraction)))
+		{
+			return 80;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_lantern)))
+		{
+			return 81;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_explosion)))
+		{
+			return 82;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_fireball)))
+		{
+			return 83;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_rapidfire)))
+		{
+			return 84;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_transmutation)))
+		{
+			return 85;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_hunger)))
+		{
+			return 86;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_enhanced_extraction)))
+		{
+			return 87;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_flight)))
+		{
+			return 88;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_forcefield)))
+		{
+			return 89;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_bag)))
+		{
+			if (offhand.hasTagCompound())
+			{
+				return offhand.getTagCompound().getInteger("selectedSpell");
+			}
+		}
+		return 0;
+	}
+	/*
 	 * Gives the player an achievement when they craft a wand
 	 * Used for the master, advanced and basic wand crafting
 	 */
