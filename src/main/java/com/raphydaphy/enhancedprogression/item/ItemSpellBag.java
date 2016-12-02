@@ -91,7 +91,6 @@ public class ItemSpellBag extends Item
 								if (spellArray[i + 1] != 0)
 								{
 									bag.getTagCompound().setInteger("selectedSpell", spellArray[i + 1]);
-									
 								}
 								else
 								{
@@ -120,6 +119,6 @@ public class ItemSpellBag extends Item
 			EnhancedProgression.proxy.setActionText((I18n.format("gui.nospells.name")));
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, bag);
 		}
-		return new ActionResult<ItemStack>(EnumActionResult.FAIL, bag);
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, bag);
 	}
 }

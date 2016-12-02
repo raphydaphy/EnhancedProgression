@@ -298,8 +298,7 @@ public class ItemWand extends Item implements ICraftAchievement
 			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 					+ getEssenceStored(stack) + "/" + maxEssence + " " + (I18n.format("gui.essence.name"))));
 		}
-		else if (!worldIn.isRemote
-				&& ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
+		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 84)
 		{
 			if (useEssence(100, stack))
 			{
@@ -317,8 +316,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 			}
 		}
-		else if (!worldIn.isRemote
-				&& ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_forcefield)))
+		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 89)
 		{
 			if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == false)
 			{
@@ -338,8 +336,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 			}
 		}
-		else if (!worldIn.isRemote
-				&& ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_fireball)))
+		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 83)
 		{
 			if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == false)
 			{
@@ -353,8 +350,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 			}
 		}
-		else if (!worldIn.isRemote
-				&& ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_hunger)))
+		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 86)
 		{
 			if (player.canEat(false))
 			{
@@ -363,7 +359,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 			}
 		}
-		else if (ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_flight)))
+		else if (getActiveSpell(player.getHeldItemOffhand()) == 88)
 		{
 			EntityPlayer entityplayer = (EntityPlayer) player;
 			if (entityplayer.capabilities.allowFlying == false)
@@ -429,8 +425,8 @@ public class ItemWand extends Item implements ICraftAchievement
 		}
 		else if (block instanceof BlockLog)
 		{
-			if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == false && ItemStack
-					.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_vital_extraction)))
+			if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == false &&
+				 getActiveSpell(player.getHeldItemOffhand()) == 80)
 			{
 				replaceBlock.clear();
 
@@ -451,8 +447,8 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 
 		}
-		else if (block instanceof BlockOre && !player.isSneaking() && ItemStack
-				.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_enhanced_extraction)))
+		else if (block instanceof BlockOre && !player.isSneaking() && 
+				getActiveSpell(player.getHeldItemOffhand()) == 87)
 		{
 			spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,
 					new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ()), 3, 1);
@@ -493,8 +489,7 @@ public class ItemWand extends Item implements ICraftAchievement
 		}
 		else if (!player.isSneaking())
 		{
-			if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(),
-					new ItemStack(ModItems.spell_card_transmutation)))
+			if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 85)
 			{
 				if (block == Blocks.DIAMOND_BLOCK)
 				{
@@ -519,7 +514,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					return EnumActionResult.FAIL;
 				}
 			}
-			else if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_lantern)))
+			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 81)
 			{
 				BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
 				if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
@@ -544,8 +539,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					return EnumActionResult.PASS;
 				}
 			}
-			else if (!world.isRemote && ItemStack.areItemsEqual(player.getHeldItemOffhand(),
-					new ItemStack(ModItems.spell_card_explosion)))
+			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 82)
 			{
 				if (useEssence(50, stack))
 				{
@@ -593,8 +587,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	{
 		if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == true)
 		{
-			if (ItemStack.areItemsEqual(player.getHeldItemOffhand(),
-					new ItemStack(ModItems.spell_card_vital_extraction)))
+			if (getActiveSpell(player.getHeldItemOffhand()) == 80)
 			{
 				if (NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) == 0
 						&& replaceBlock.size() > NBTLib.getInt(player.getHeldItemOffhand(), "currentBlockId", 0)
@@ -630,8 +623,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", false);
 				}
 			}
-			else if (!player.worldObj.isRemote
-					&& ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_forcefield)))
+			else if (!player.worldObj.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 89)
 			{
 				if (useEssence(50, stack))
 				{
@@ -647,7 +639,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 				}
 			}
-			else if (ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_rapidfire)))
+			else if (getActiveSpell(player.getHeldItemOffhand()) == 84)
 			{
 				if (NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) == 0)
 				{
@@ -721,7 +713,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	{
 		if (player.getHeldItemOffhand().getItem() instanceof ItemBase)
 		{
-			if (ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_fireball)) && !worldIn.isRemote)
+			if (getActiveSpell(player.getHeldItemOffhand()) == 83 && !worldIn.isRemote)
 			{
 				if (useEssence(25, stack))
 				{
@@ -737,7 +729,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 				}
 			}
-			else if (ItemStack.areItemsEqual(player.getHeldItemOffhand(), new ItemStack(ModItems.spell_card_forcefield)) && !worldIn.isRemote)
+			else if (getActiveSpell(player.getHeldItemOffhand()) == 89 && !worldIn.isRemote)
 			{
 				player.setEntityInvulnerable(false);
 			}
