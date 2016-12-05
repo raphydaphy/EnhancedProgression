@@ -92,42 +92,52 @@ public class ItemWand extends Item implements ICraftAchievement
 	{
 		if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_vital_extraction)))
 		{
+			// ID of the vital extraction spell
 			return 80;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_lantern)))
 		{
+			// ID of the magic lantern spell
 			return 81;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_explosion)))
 		{
+			// ID of the explosion spell
 			return 82;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_fireball)))
 		{
+			// ID of the radiant fireball spell
 			return 83;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_rapidfire)))
 		{
+			// ID of the rapidfire spell
 			return 84;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_transmutation)))
 		{
+			// ID of the cryptic transmutation spell
 			return 85;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_hunger)))
 		{
+			// ID of the hunger spell
 			return 86;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_enhanced_extraction)))
 		{
+			// ID of the enhanced extraction spell
 			return 87;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_flight)))
 		{
+			// ID of the flight spell
 			return 88;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_forcefield)))
 		{
+			// ID of the forcefield spell
 			return 89;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_bag)))
@@ -136,6 +146,11 @@ public class ItemWand extends Item implements ICraftAchievement
 			{
 				return offhand.getTagCompound().getInteger("selectedSpell");
 			}
+		}
+		else if (offhand.getItem() == ModItems.spell_card_rapidfire)
+		{
+			System.out.println("okitworked :D :D");
+			return 84;
 		}
 		return 0;
 	}
@@ -224,12 +239,16 @@ public class ItemWand extends Item implements ICraftAchievement
 	 */
 	public boolean addEssence(int amount, ItemStack stack)
 	{
+		// Checks if the amount of essence to add will not cause the wand to go over the capacity
 		if (getEssenceStored(stack) + amount < maxEssence + 1)
 		{
+			// add the amount of essence normally
 			NBTLib.setInt(stack, "essenceStored", NBTLib.getInt(stack, "essenceStored", 0) + amount);
 		}
+		// If the user tried to add too much essence
 		else
 		{
+			// fill the wand to its capacity, but don't go over
 			NBTLib.setInt(stack, "essenceStored", maxEssence);
 		}
 		return true;
@@ -242,6 +261,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	public static void spawnParticles(EnumParticleTypes particleType, World world, boolean forceSpawn, BlockPos pos,
 			int count, double radius)
 	{
+		// simply runs the main particle spawning method without so many arguments
 		spawnParticlesServer(particleType, world, forceSpawn, pos.getX(), pos.getY(), pos.getZ(), count, radius);
 	}
 	
@@ -253,6 +273,9 @@ public class ItemWand extends Item implements ICraftAchievement
 	public static void spawnParticlesServer(EnumParticleTypes particleType, World world, boolean forceSpawn, double x,
 			double y, double z, int count, double radius)
 	{
+		// spawns some particles through the server instance
+		// this prevents NullPointerExceptions but also seems to cause them sometimes
+		// TODO: Fix crashes
 		FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension())
 				.spawnParticle(particleType, forceSpawn, x, y, z, count, radius, radius, radius, 0.005D);
 	}
@@ -293,6 +316,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	 */
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player, EnumHand hand)
 	{
+		System.out.println(getActiveSpell(player.getHeldItemMainhand()));
 		if (player.isSneaking())
 		{
 			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
@@ -376,7 +400,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 				else
 				{
-					EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+					EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name"))); 
 					return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 				}
 			}
@@ -412,6 +436,8 @@ public class ItemWand extends Item implements ICraftAchievement
 	{
 		Block block = world.getBlockState(pos).getBlock();
 
+		// If the player right-clicks on an altar
+		// Used for all altar crafting recipes
 		if (block instanceof BlockAltar)
 		{
 			boolean wanded;
@@ -423,6 +449,8 @@ public class ItemWand extends Item implements ICraftAchievement
 
 			return wanded ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
 		}
+		// If the player right-clicks on a log
+		// Used for the Vital Extraction spell
 		else if (block instanceof BlockLog)
 		{
 			if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == false &&
@@ -447,11 +475,15 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 
 		}
+		// If the player right-clicks on a ore block
+		// Used for Enhancced Extraction spell
 		else if (block instanceof BlockOre && !player.isSneaking() && 
 				getActiveSpell(player.getHeldItemOffhand()) == 87)
 		{
-			spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,
-					new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ()), 3, 1);
+			// This line causes anyone who isnt running the server (in LAN/singleplayer)
+			// to crash with NullPointerExceptions. However, it works for every
+			// other time when particles are spawned on a non-server host instance.
+			spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, player.worldObj, true, pos, 3, 1);
 			player.swingArm(hand);
 			world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
 
@@ -487,10 +519,13 @@ public class ItemWand extends Item implements ICraftAchievement
 				return EnumActionResult.SUCCESS;
 			}
 		}
+		// For spells that don't use a specific block class
 		else if (!player.isSneaking())
 		{
 			if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 85)
 			{
+				// Checks if player right-clicks a diamond block
+				// Used for the Cryptic Transmutation spell to make an altar
 				if (block == Blocks.DIAMOND_BLOCK)
 				{
 					if (useEssence(1000, stack))
@@ -514,6 +549,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					return EnumActionResult.FAIL;
 				}
 			}
+			// If the Magic Lantern spell is used on a blocks
 			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 81)
 			{
 				BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
@@ -521,7 +557,6 @@ public class ItemWand extends Item implements ICraftAchievement
 				{
 					if (useEssence(5, stack))
 					{
-						
 						spawnParticles(EnumParticleTypes.FLAME, world, true,new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ()), 15, 1);
 						world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
 						player.swingArm(hand);
@@ -539,6 +574,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					return EnumActionResult.PASS;
 				}
 			}
+			// If the Contained Explosion spell is used
 			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 82)
 			{
 				if (useEssence(50, stack))
@@ -585,6 +621,9 @@ public class ItemWand extends Item implements ICraftAchievement
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
 	{
+		// ever since spell bags were added,
+		// this hasn't been called properly
+		// even when using normal spells (not bag)
 		if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == true)
 		{
 			if (getActiveSpell(player.getHeldItemOffhand()) == 80)
@@ -641,6 +680,7 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 			else if (getActiveSpell(player.getHeldItemOffhand()) == 84)
 			{
+				System.out.println("84 called");
 				if (NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) == 0)
 				{
 					if (useEssence(NBTLib.getInt(player.getHeldItemOffhand(), "arrowCount", 0),
@@ -671,6 +711,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					}
 					else
 					{
+						System.out.println("deactivated");
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 						NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", false);
 					}
@@ -679,7 +720,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				else
 				{
 					NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay",
-							NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) - 1);
+					NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) - 1);
 				}
 			}
 		}
@@ -711,7 +752,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	 */
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft)
 	{
-		if (player.getHeldItemOffhand().getItem() instanceof ItemBase)
+		if (player.getHeldItemOffhand().getItem() instanceof ItemBase || player.getHeldItemMainhand().getItem() instanceof ItemSpellBag)
 		{
 			if (getActiveSpell(player.getHeldItemOffhand()) == 83 && !worldIn.isRemote)
 			{
