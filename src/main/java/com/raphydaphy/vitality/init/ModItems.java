@@ -102,6 +102,10 @@ public class ModItems
 		{
 			((ItemWand) item).registerItemModel();
 		}
+		else if (item instanceof ItemSpellBag)
+		{
+			((ItemSpellBag) item).registerItemModel();
+		}
 		return item;
 	}
 
