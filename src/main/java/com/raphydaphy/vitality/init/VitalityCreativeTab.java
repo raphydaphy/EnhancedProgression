@@ -3,10 +3,10 @@ package com.raphydaphy.vitality.init;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class EPCreativeTab extends CreativeTabs
+public class VitalityCreativeTab extends CreativeTabs
 {
 
-	public EPCreativeTab()
+	public VitalityCreativeTab()
 	{
 		super(Reference.MOD_ID);
 	}

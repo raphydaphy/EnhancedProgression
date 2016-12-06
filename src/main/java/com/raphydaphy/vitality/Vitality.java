@@ -1,6 +1,6 @@
 package com.raphydaphy.vitality;
 
-import com.raphydaphy.vitality.init.EPCreativeTab;
+import com.raphydaphy.vitality.init.VitalityCreativeTab;
 import com.raphydaphy.vitality.init.Events;
 import com.raphydaphy.vitality.init.ModRecipies;
 import com.raphydaphy.vitality.init.Reference;
@@ -21,7 +21,7 @@ public class Vitality
 	@Instance
 	public static Vitality Instance;
 
-	public static final EPCreativeTab creativeTab = new EPCreativeTab();
+	public static final VitalityCreativeTab creativeTab = new VitalityCreativeTab();
 
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static CommonProxy proxy;

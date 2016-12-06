@@ -15,7 +15,7 @@ public class AchievementMod extends Achievement
 
 	public AchievementMod(String name, int x, int y, ItemStack icon, Achievement parent)
 	{
-		super("achievement.enhancedprogression:" + name, "enhancedprogression:" + name, x, y, icon, parent);
+		super("achievement.vitality:" + name, "vitality:" + name, x, y, icon, parent);
 		achievements.add(this);
 		registerStat();
 	}

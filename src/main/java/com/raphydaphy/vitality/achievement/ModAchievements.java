@@ -11,7 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 public final class ModAchievements
 {
 
-	public static AchievementPage enhanced_progression_page;
+	public static AchievementPage vitality_page;
 	public static int page_index;
 
 	public static Achievement craft_basic_wand;
@@ -86,9 +86,9 @@ public final class ModAchievements
 				pickup_fluxed_log).setSpecial();
 		
 		page_index = AchievementPage.getAchievementPages().size();
-		enhanced_progression_page = new AchievementPage(Reference.NAME,
+		vitality_page = new AchievementPage(Reference.NAME,
 				AchievementMod.achievements.toArray(new Achievement[AchievementMod.achievements.size()]));
-		AchievementPage.registerAchievementPage(enhanced_progression_page);
+		AchievementPage.registerAchievementPage(vitality_page);
 
 		MinecraftForge.EVENT_BUS.register(AchievementTriggerer.class);
 	}

@@ -42,7 +42,7 @@ public class JEIPlugin implements IModPlugin
 				"By infusing your wand with Imbued Bronze, you unlock more power and capacity. The Advanced Wand cannot break when extracting essence, and can store 10000 essence instead of a mere 1000 in the Basic Wand.");
 		registry.addDescription(new ItemStack(ModItems.master_wand), "Only the true master of magic can wield this wand. Crafted with the most expensive items in the mod, the Master Wand can store 100000 essence and is able to cast every spell known to man.");
 		registry.addDescription(new ItemStack(ModItems.imbued_stick),
-				"Imbued Sticks are a crafting regent item used for spell cards, higher tier wands and other Advanced tier Enhanced Progression tech.");
+				"Imbued Sticks are a crafting regent item used for spell cards, higher tier wands and other Advanced tier Vitality tech.");
 		registry.addDescription(new ItemStack(ModItems.ingot_bronze),
 				"Bronze ingots are obtained in a mere crafting table and used to craft some basic items used to improve your bas");
 		registry.addDescription(new ItemStack(ModItems.ingot_copper),
@@ -69,10 +69,11 @@ public class JEIPlugin implements IModPlugin
 		registry.addDescription(new ItemStack(ModItems.spell_card_hunger),
 				"If you ever find yourself out of food and hungry, this spell will restore your hunger and saturation levels to full, but will do so at the expense of 500 essence.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_transmutation),
-				"One of the first arts any good magician must learn is that of transmutation - turning objects into other objects. This spell, if used correctly, will turn a diamond block into an altar at the cost of 1000 essence.");
+				"One of the first arts any good magician must learn is that of transmutation - turning objects into other objects. This spell, if used correctly, will turn a diamond block into an altar at the cost of 1000 essence. This can also be used to create spell bags from bookshelfs for 500 essence.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_enhanced_extraction),
 				"Once you have a tier 2 altar setup, you will want to be able to collect more essence than you can get from trees in order to cast the more powerful spells crafted with imbued items. The Enhanced Extraction spell, when placed in your offhand, allows you to extract essence from ores in your world. Simply rightclick with a wand while this spell is equipped and watch the magic happen.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_flight), "For 2500 essence, this spell grants you with the ability to fly until your next death, or until you use the spell again. Using the spell a second time once you are already able to fly will disable the ability until you use the spell again.");
+		registry.addDescription(new ItemStack(ModItems.spell_bag), "Crafted by right-clicking a bookshelf with a wand while the Cryptic Transmutation spell is active, this item can be crafted together with any spell in a normal crafting table to add it to the bag. Then just shift+rightclick while holding the bag to switch the active spell, and put it in your offhand to use it.");
 	}
 
 	@Override
