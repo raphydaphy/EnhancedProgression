@@ -29,7 +29,7 @@ public class Vitality
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		System.out.println("Setting up prerequisites");
+		System.out.println("Setting up vital prerequisites");
 		MinecraftForge.EVENT_BUS.register(Events.class);
 		proxy.preInit();
 	}
@@ -37,7 +37,7 @@ public class Vitality
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		System.out.println("Initializing Enhanced Progression...");
+		System.out.println("Initializing Vitality...");
 		ModRecipies.registerCrafting();
 		ModRecipies.registerSmelting();
 	}
@@ -45,7 +45,7 @@ public class Vitality
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		System.out.println("Enhanced Progression Loaded Successfully :D");
+		System.out.println("Vitality Loaded Successfully :D");
 	}
 
 }
