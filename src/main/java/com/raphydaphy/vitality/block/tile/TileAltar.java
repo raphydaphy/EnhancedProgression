@@ -5,7 +5,7 @@ import java.util.List;
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.nbt.AltarRecipe;
-import com.raphydaphy.vitality.nbt.PacketManager;
+import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.ModRecipes;
 
 import net.minecraft.block.Block;

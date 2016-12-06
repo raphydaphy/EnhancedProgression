@@ -1,9 +1,9 @@
 package com.raphydaphy.vitality;
 
-import com.raphydaphy.vitality.init.VitalityCreativeTab;
 import com.raphydaphy.vitality.init.Events;
 import com.raphydaphy.vitality.init.ModRecipies;
 import com.raphydaphy.vitality.init.Reference;
+import com.raphydaphy.vitality.init.VitalityCreativeTab;
 import com.raphydaphy.vitality.proxy.CommonProxy;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -40,6 +40,8 @@ public class Vitality
 		System.out.println("Initializing Vitality...");
 		ModRecipies.registerCrafting();
 		ModRecipies.registerSmelting();
+		
+		proxy.init();
 	}
 
 	@EventHandler

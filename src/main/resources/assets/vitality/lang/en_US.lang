@@ -85,6 +85,8 @@ achievement.vitality:craft_unabridged_immortality.desc=Craft the Unabridged Immo
 
 #Containers and Descriptions
 itemGroup.vitality=Vitality
+key.categories.vitality=Vitality
+key.pickSpell=Spell Picker GUI
 gui.altarmessage.name=Altar Tier Detected:
 gui.confirm.name=Right Click again to Confirm Crafting!
 gui.norecipe.name=No valid recipe is stored in the altar!

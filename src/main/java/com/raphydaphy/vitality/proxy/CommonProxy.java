@@ -6,6 +6,7 @@ import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.ModRecipies;
 import com.raphydaphy.vitality.init.WorldGenHandler;
+import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.AltarRecipes;
 
 import net.minecraft.item.Item;
@@ -32,6 +33,7 @@ public class CommonProxy
 		ModBlocks.init();
 
 		ModAchievements.init();
+		PacketManager.registerMessages("vitality");
 		
 		ModRecipies.registerOreDict();
 		AltarRecipes.init();

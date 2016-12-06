@@ -1,5 +1,6 @@
 package com.raphydaphy.vitality.proxy;
 
+import com.raphydaphy.vitality.init.KeyBindings;
 import com.raphydaphy.vitality.init.Reference;
 
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,12 @@ public class ClientProxy extends CommonProxy
 	public void setActionText(String text)
 	{
 		Minecraft.getMinecraft().ingameGUI.setRecordPlaying(TextFormatting.GOLD + text, false);
+	}
+	
+	@Override
+	public void init()
+	{
+        KeyBindings.init();
 	}
 
 }
