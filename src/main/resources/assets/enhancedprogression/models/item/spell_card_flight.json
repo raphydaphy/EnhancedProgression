@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "enhancedprogression:items/spell_card_flight"
-    }
-}

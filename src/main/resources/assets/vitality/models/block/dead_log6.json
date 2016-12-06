@@ -1,0 +1,7 @@
+{
+	"parent": "block/cube_column",
+	"textures": {
+		"end": "vitality:blocks/dead_log_top6",
+		"side": "vitality:blocks/dead_log_side6"
+	}
+}

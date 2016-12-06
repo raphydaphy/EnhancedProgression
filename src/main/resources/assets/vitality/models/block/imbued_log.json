@@ -1,0 +1,7 @@
+{
+	"parent": "block/cube_column",
+	"textures": {
+		"end": "vitality:blocks/imbued_log_top",
+		"side": "vitality:blocks/imbued_log"
+	}
+}

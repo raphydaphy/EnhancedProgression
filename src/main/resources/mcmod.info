@@ -1,11 +1,11 @@
 [
 {
-  "modid": "enhancedprogression",
-  "name": "Enhanced Progression",
-  "description": "Enhanced Progression is a magic/tech mod that adds new rituals, spells and gameplay to Survival Minecraft.",
-  "version": "1.2.0",
+  "modid": "vitality",
+  "name": "Vitality",
+  "description": "Vitality is a magic/tech mod that adds new rituals, spells and gameplay to Survival Minecraft.",
+  "version": "1.3.0",
   "mcversion": "1.10.2",
-  "url": "https://minecraft.curseforge.com/projects/enhanced-progression",
+  "url": "https://minecraft.curseforge.com/projects/vitality",
   "updateUrl": "",
   "authorList": ["raphydaphy", "Crowley723"],
   "credits": "Code by raphydaphy & Textures by Crowley723. Altar model by Cleverpanda & Totem model by wiresegal. Mod logo by TheCodedOne.",
