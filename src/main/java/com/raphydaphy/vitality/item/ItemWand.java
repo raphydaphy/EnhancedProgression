@@ -349,7 +349,6 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 				else
 				{
-					System.out.println("um wot..");
 					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 					return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 				}
@@ -386,6 +385,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					spawnParticles(EnumParticleTypes.SPELL_WITCH, worldIn, true, player.getPosition(), 100, 2);
 					worldIn.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
 					entityplayer.swingArm(hand);
+					player.getCooldownTracker().setCooldown(this, 100);
 					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 				}
 				else
@@ -401,6 +401,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				spawnParticles(EnumParticleTypes.PORTAL, worldIn, true, player.getPosition(), 100, 2);
 				worldIn.playSound(player, player.getPosition(), SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.AMBIENT, 1, 1);
 				entityplayer.swingArm(hand);
+				player.getCooldownTracker().setCooldown(this, 100);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 			}
 			
@@ -506,6 +507,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 
 				player.swingArm(hand);
+				player.getCooldownTracker().setCooldown(this, 10);
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -524,6 +526,7 @@ public class ItemWand extends Item implements ICraftAchievement
 								new BlockPos(pos.getX(), pos.getY() + 1.2, pos.getZ()), 20, 1);
 						world.playSound(null, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 1);
 						player.swingArm(hand);
+						player.getCooldownTracker().setCooldown(this, 100);
 						world.setBlockState(pos, ModBlocks.altar.getDefaultState());
 						return EnumActionResult.SUCCESS;
 					}
@@ -541,6 +544,7 @@ public class ItemWand extends Item implements ICraftAchievement
 						spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 50, 1);
 						world.playSound(null, pos, SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.BLOCKS, 1, 1);
 						player.swingArm(hand);
+						player.getCooldownTracker().setCooldown(this, 100);
 						net.minecraft.inventory.InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(),
 								new ItemStack(ModItems.spell_bag));
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -569,6 +573,7 @@ public class ItemWand extends Item implements ICraftAchievement
 						spawnParticles(EnumParticleTypes.FLAME, world, true,new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ()), 15, 1);
 						world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
 						player.swingArm(hand);
+						player.getCooldownTracker().setCooldown(this, 20);
 						return EnumActionResult.SUCCESS;
 					}
 					else
@@ -589,6 +594,8 @@ public class ItemWand extends Item implements ICraftAchievement
 				if (useEssence(50, stack))
 				{
 					world.createExplosion(player, pos.getX(), pos.getY() + 2, pos.getZ(), 3, false);
+					player.swingArm(hand);
+					player.getCooldownTracker().setCooldown(this, 25);
 					return EnumActionResult.SUCCESS;
 				}
 				else
@@ -763,13 +770,15 @@ public class ItemWand extends Item implements ICraftAchievement
 	 * - All spells that require rightclick to be held, to calculate essence
 	 */
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft)
-	{
+	{		
 		if (player.getHeldItemOffhand().getItem() instanceof ItemBase || player.getHeldItemMainhand().getItem() instanceof ItemSpellBag)
 		{
+			EntityPlayer playerIn = (EntityPlayer) player;
 			if (getActiveSpell(player.getHeldItemOffhand()) == 83 && !worldIn.isRemote)
 			{
 				if (useEssence(25, stack))
 				{
+					playerIn.getCooldownTracker().setCooldown(this, 50);
 					EntityLargeFireball bigBall = new EntityLargeFireball(worldIn, player, player.getLookVec().xCoord, player.getLookVec().yCoord, player.getLookVec().zCoord);
 					bigBall.accelerationX = player.getLookVec().xCoord;
 					bigBall.accelerationY = player.getLookVec().yCoord;
@@ -779,12 +788,12 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 				else
 				{
-					System.out.println(getEssenceStored(stack));
 					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 				}
 			}
 			else if (getActiveSpell(player.getHeldItemOffhand()) == 89 && !worldIn.isRemote)
 			{
+				playerIn.getCooldownTracker().setCooldown(this, 10000);
 				player.setEntityInvulnerable(false);
 			}
 			
@@ -844,12 +853,12 @@ public class ItemWand extends Item implements ICraftAchievement
 				if (useEssence(500, stack))		
 				{
 					entityplayer.getFoodStats().addStats(20, 20);		
+					entityplayer.getCooldownTracker().setCooldown(this, 100);
 					NBTLib.setBoolean(stack, "hungerSpellActive", false);		
 					return stack;
 				}		
 				else
 				{
-					System.out.println("boom son");
 					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));		
 					return stack;		
 				}
