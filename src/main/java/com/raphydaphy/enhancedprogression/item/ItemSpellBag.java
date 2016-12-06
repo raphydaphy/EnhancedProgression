@@ -75,49 +75,52 @@ public class ItemSpellBag extends Item
 	 */
 	public ActionResult<ItemStack> onItemRightClick(ItemStack bag, World worldIn, EntityPlayer player, EnumHand hand)
 	{
-		if (player.isSneaking() && player.getHeldItemMainhand().getItem() == ModItems.spell_bag)
+		if (player.getHeldItemMainhand() != null)
 		{
-			if (bag.hasTagCompound())
+			if (player.isSneaking() && player.getHeldItemMainhand().getItem() == ModItems.spell_bag)
 			{
-				if (bag.getTagCompound().getInteger("selectedSpell") != 0)
+				if (bag.hasTagCompound())
 				{
-					int[] spellArray = bag.getTagCompound().getIntArray("spells");
-					for (int i = 0; i < spellArray.length; i++)
+					if (bag.getTagCompound().getInteger("selectedSpell") != 0)
 					{
-						if (spellArray[i] != 0)
+						int[] spellArray = bag.getTagCompound().getIntArray("spells");
+						for (int i = 0; i < spellArray.length; i++)
 						{
-							if (spellArray[i] == bag.getTagCompound().getInteger("selectedSpell"))
+							if (spellArray[i] != 0)
 							{
-								if (spellArray[i + 1] != 0)
+								if (spellArray[i] == bag.getTagCompound().getInteger("selectedSpell"))
 								{
-									bag.getTagCompound().setInteger("selectedSpell", spellArray[i + 1]);
+									if (spellArray[i + 1] != 0)
+									{
+										bag.getTagCompound().setInteger("selectedSpell", spellArray[i + 1]);
+									}
+									else
+									{
+										bag.getTagCompound().setInteger("selectedSpell", spellArray[0]);
+									}
+									EnhancedProgression.proxy.setActionText((I18n.format("gui.setspell.name")) + " " + getSpellNameFromID(bag.getTagCompound().getInteger("selectedSpell")));
+									player.swingArm(hand);
+									return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, bag);	
 								}
-								else
-								{
-									bag.getTagCompound().setInteger("selectedSpell", spellArray[0]);
-								}
-								EnhancedProgression.proxy.setActionText((I18n.format("gui.setspell.name")) + " " + getSpellNameFromID(bag.getTagCompound().getInteger("selectedSpell")));
-								player.swingArm(hand);
-								return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, bag);	
+							}
+							else
+							{
+								break;
 							}
 						}
-						else
-						{
-							break;
-						}
+					}
+					else
+					{
+						int[] spellArray = bag.getTagCompound().getIntArray("spells");
+						bag.getTagCompound().setInteger("selectedSpell", spellArray[0]);
+						EnhancedProgression.proxy.setActionText((I18n.format("gui.setspell.name")) + " " + getSpellNameFromID(bag.getTagCompound().getInteger("selectedSpell")));
+						player.swingArm(hand);
+						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, bag);
 					}
 				}
-				else
-				{
-					int[] spellArray = bag.getTagCompound().getIntArray("spells");
-					bag.getTagCompound().setInteger("selectedSpell", spellArray[0]);
-					EnhancedProgression.proxy.setActionText((I18n.format("gui.setspell.name")) + " " + getSpellNameFromID(bag.getTagCompound().getInteger("selectedSpell")));
-					player.swingArm(hand);
-					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, bag);
-				}
+				EnhancedProgression.proxy.setActionText((I18n.format("gui.nospells.name")));
+				return new ActionResult<ItemStack>(EnumActionResult.FAIL, bag);
 			}
-			EnhancedProgression.proxy.setActionText((I18n.format("gui.nospells.name")));
-			return new ActionResult<ItemStack>(EnumActionResult.FAIL, bag);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, bag);
 	}

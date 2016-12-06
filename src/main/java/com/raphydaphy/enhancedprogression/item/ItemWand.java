@@ -147,11 +147,6 @@ public class ItemWand extends Item implements ICraftAchievement
 				return offhand.getTagCompound().getInteger("selectedSpell");
 			}
 		}
-		else if (offhand.getItem() == ModItems.spell_card_rapidfire)
-		{
-			System.out.println("okitworked :D :D");
-			return 84;
-		}
 		return 0;
 	}
 	/*
@@ -316,7 +311,6 @@ public class ItemWand extends Item implements ICraftAchievement
 	 */
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player, EnumHand hand)
 	{
-		System.out.println(getActiveSpell(player.getHeldItemMainhand()));
 		if (player.isSneaking())
 		{
 			EnhancedProgression.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
@@ -599,14 +593,20 @@ public class ItemWand extends Item implements ICraftAchievement
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity player, int itemSlot, boolean isSelected)
     {
-		if (!isSelected)
+		if (player instanceof EntityLivingBase)
 		{
 			EntityLivingBase entityIn = (EntityLivingBase) player;
-			if (NBTLib.getBoolean(entityIn.getHeldItemOffhand(), "isActive", false) == true)
+			if (entityIn.getHeldItemMainhand() != null)
 			{
-				NBTLib.setBoolean(entityIn.getHeldItemOffhand(), "isActive", false);
+				if (!(entityIn.getHeldItemMainhand().getItem() instanceof ItemWand))
+				{
+					if (NBTLib.getBoolean(entityIn.getHeldItemOffhand(), "isActive", false) == true)
+					{
+						System.out.println("OMG IT GOT DESTROYED");
+						NBTLib.setBoolean(entityIn.getHeldItemOffhand(), "isActive", false);
+					}
+				}
 			}
-			
 		}
     }
 
@@ -680,7 +680,6 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 			else if (getActiveSpell(player.getHeldItemOffhand()) == 84)
 			{
-				System.out.println("84 called");
 				if (NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) == 0)
 				{
 					if (useEssence(NBTLib.getInt(player.getHeldItemOffhand(), "arrowCount", 0),
@@ -701,7 +700,7 @@ public class ItemWand extends Item implements ICraftAchievement
 									5.0F, 1.0F);
 							entityArrow.setKnockbackStrength(1);
 							entityArrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
-							entityArrow.setIsCritical(true);
+							//entityArrow.setIsCritical(true);
 
 							player.worldObj.spawnEntityInWorld(entityArrow);
 							player.worldObj.playSound(null, player.posX, player.posY, player.posZ,
@@ -711,7 +710,6 @@ public class ItemWand extends Item implements ICraftAchievement
 					}
 					else
 					{
-						System.out.println("deactivated");
 						EnhancedProgression.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 						NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", false);
 					}
