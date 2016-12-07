@@ -38,7 +38,7 @@ public class CommonProxy
 		ModRecipies.registerOreDict();
 		AltarRecipes.init();
 
-		GameRegistry.registerTileEntity(TileAltar.class, "enhancedprogression:altar");
+		GameRegistry.registerTileEntity(TileAltar.class, "vitality:altar");
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
 	}
 

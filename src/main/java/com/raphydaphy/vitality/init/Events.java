@@ -1,8 +1,9 @@
 package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.block.tile.TileAltar;
-import com.raphydaphy.vitality.network.PacketManager;
-import com.raphydaphy.vitality.network.PacketSendKey;
+import com.raphydaphy.vitality.gui.GuiSpellSelect;
+import com.raphydaphy.vitality.item.ItemSpellBag;
+import com.raphydaphy.vitality.item.ItemWand;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
@@ -11,6 +12,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Events
 {
@@ -36,14 +39,22 @@ public class Events
 		}
 	}
 	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) 
 	{
         if (KeyBindings.pickSpell.isPressed()) 
         {
-            // Someone pressed the key. We send a message
-        	System.out.println("it was pressed");
-            PacketManager.INSTANCE.sendToServer(new PacketSendKey());
+        	Minecraft mc = Minecraft.getMinecraft();
+        	if (mc.thePlayer.getHeldItemMainhand() != null &&
+        		mc.thePlayer.getHeldItemOffhand() != null)
+        	{
+	        	if (mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand && 
+	        		mc.thePlayer.getHeldItemOffhand().getItem() instanceof ItemSpellBag)
+	        	{
+	        		mc.displayGuiScreen(new GuiSpellSelect());
+	        	}
+        	}
         }
     }
 }

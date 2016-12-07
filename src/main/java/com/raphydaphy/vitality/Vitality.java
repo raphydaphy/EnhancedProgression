@@ -30,7 +30,7 @@ public class Vitality
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		System.out.println("Setting up vital prerequisites");
-		MinecraftForge.EVENT_BUS.register(Events.class);
+		MinecraftForge.EVENT_BUS.register(new Events());
 		proxy.preInit();
 	}
 

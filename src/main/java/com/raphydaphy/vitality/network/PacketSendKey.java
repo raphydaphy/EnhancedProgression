@@ -5,6 +5,8 @@
 
 package com.raphydaphy.vitality.network;
 
+import com.raphydaphy.vitality.item.ItemSpellBag;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -62,7 +64,10 @@ public class PacketSendKey implements IMessage
             EntityPlayerMP playerEntity = ctx.getServerHandler().playerEntity;
             World world = playerEntity.worldObj;
             Block block = world.getBlockState(message.blockPos).getBlock();
-            playerEntity.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "Hit block: " + block.getRegistryName()));
+            if (playerEntity.getHeldItemOffhand().getItem() instanceof ItemSpellBag)
+            {
+            	// um hi
+            }
         }
     }
 }

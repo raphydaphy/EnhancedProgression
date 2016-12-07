@@ -35,7 +35,7 @@ public class ItemSpellBag extends Item
 	 * at the moment, this just gives a string
 	 * so for other languages it will be wrong
 	 */
-	public String getSpellNameFromID(int spellID)
+	public static String getSpellNameFromID(int spellID)
 	{
 		switch (spellID)
 		{
@@ -56,7 +56,7 @@ public class ItemSpellBag extends Item
 		case 87:
 			return "Enhanced Extraction";
 		case 88:
-			return "Ëlevated Momentum";
+			return "Elevated Momentum";
 		case 89:
 			return "Unabridged Immortality";
 		}
