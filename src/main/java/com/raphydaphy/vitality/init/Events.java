@@ -51,7 +51,7 @@ public class Events
         	{
 	        	if (mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand && 
 	        		mc.thePlayer.getHeldItemOffhand().getItem() instanceof ItemSpellBag)
-	        	{
+	        	{ 
 	        		//mc.displayGuiScreen(new GuiSpellSelect());
 	        	}
         	}
