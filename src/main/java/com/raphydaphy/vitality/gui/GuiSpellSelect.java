@@ -107,7 +107,15 @@ public class GuiSpellSelect extends GuiScreen
 			// if any spells are held in the bag
 			if (amount > 0)
 			{
-				float anglePer = 360F / amount;
+				float anglePer;
+				if (NBTLib.getInt(bagStack, "selectedSpell", 0) != 0)
+				{
+					anglePer = 360F / (amount - 1);
+				}
+				else
+				{
+					anglePer = 360F / amount;
+				}
 	
 				net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
 				GlStateManager.pushMatrix();
@@ -115,54 +123,56 @@ public class GuiSpellSelect extends GuiScreen
 				GlStateManager.popMatrix();
 				for (int curItem = 0; curItem < amount; curItem++)
 				{
-					boolean mouseInSector = angleMouse > angle && angleMouse < angle + anglePer;
-					mouseInSector = false;
-					if (mouseInSector)
+					if (spellArray[curItem] == NBTLib.getInt(bagStack, "selectedSpell", 0))
 					{
-						double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 13.6;
-						double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 13.6;
 						GlStateManager.pushMatrix();
-						GlStateManager.translate(xPos, yPos, 0);
-						GlStateManager.scale(1.7, 1.7, 1.7);
-						if (getSpellStackFromID(spellArray[curItem]) != null)
+						GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
+						GlStateManager.scale(2, 2, 2);
+						if (getSpellStackFromID(NBTLib.getInt(bagStack, "selectedSpell", 0)) != null)
 						{
-							mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(spellArray[curItem]), 0, 0);
-							if (mx > xPos && mx < xPos + 27.2 && my > yPos && my < yPos + 27.2)
-							{
-								System.out.println("mouse touching #" + curItem);
-							}
+							mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(NBTLib.getInt(bagStack, "selectedSpell", 0)), 0, 0);
 						}
-						GlStateManager.translate(-xPos, -yPos, 0);
+						GlStateManager.translate(-screenWidth, -screenHeight, 0);
 						GlStateManager.popMatrix();
 					}
 					else
 					{
-						double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 12;
-						double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 12;
-						GlStateManager.pushMatrix();
-						GlStateManager.translate(xPos, yPos, 0);
-						GlStateManager.scale(1.5, 1.5, 1.5);
-						if (getSpellStackFromID(spellArray[curItem]) != null)
+						// for debug
+						boolean mouseInSector = false;
+						if (mouseInSector)
 						{
-							mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(spellArray[curItem]), 0, 0);
+							double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 13.6;
+							double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 13.6;
+							GlStateManager.pushMatrix();
+							GlStateManager.translate(xPos, yPos, 0);
+							GlStateManager.scale(1.7, 1.7, 1.7);
+							if (getSpellStackFromID(spellArray[curItem]) != null)
+							{
+								mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(spellArray[curItem]), 0, 0);
+								if (mx > xPos && mx < xPos + 27.2 && my > yPos && my < yPos + 27.2)
+								{
+									System.out.println("mouse touching #" + curItem);
+								}
+							}
+							GlStateManager.translate(-xPos, -yPos, 0);
+							GlStateManager.popMatrix();
 						}
-						GlStateManager.translate(-xPos, -yPos, 0);
-						GlStateManager.popMatrix();
+						else
+						{
+							double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 12;
+							double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 12;
+							GlStateManager.pushMatrix();
+							GlStateManager.translate(xPos, yPos, 0);
+							GlStateManager.scale(1.5, 1.5, 1.5);
+							if (getSpellStackFromID(spellArray[curItem]) != null)
+							{
+								mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(spellArray[curItem]), 0, 0);
+							}
+							GlStateManager.translate(-xPos, -yPos, 0);
+							GlStateManager.popMatrix();
+						}
+						angle += anglePer;
 					}
-					angle += anglePer;
-				}
-	
-				if (NBTLib.getInt(bagStack, "selectedSpell", 0) != 0)
-				{
-					GlStateManager.pushMatrix();
-					GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
-					GlStateManager.scale(2, 2, 2);
-					if (getSpellStackFromID(NBTLib.getInt(bagStack, "selectedSpell", 0)) != null)
-					{
-						mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(NBTLib.getInt(bagStack, "selectedSpell", 0)), 0, 0);
-					}
-					GlStateManager.translate(-screenWidth, -screenHeight, 0);
-					GlStateManager.popMatrix();
 				}
 				net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 			}
@@ -192,7 +202,7 @@ public class GuiSpellSelect extends GuiScreen
 				PacketManager.INSTANCE.sendToServer(new PacketSendKey());
 			}
 		}
-
+		
 		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
 		for(KeyBinding k : set)
 			KeyBinding.setKeyBindState(k.getKeyCode(), isKeyDown(k));
