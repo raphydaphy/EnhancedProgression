@@ -6,11 +6,14 @@ import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.ModRecipies;
 import com.raphydaphy.vitality.init.WorldGenHandler;
+import com.raphydaphy.vitality.network.MessageChangeSpell;
+import com.raphydaphy.vitality.network.MessageChangeSpell.ChangeSpellHandler;
 import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.AltarRecipes;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class CommonProxy
 {
@@ -33,7 +36,7 @@ public class CommonProxy
 		ModBlocks.init();
 
 		ModAchievements.init();
-		PacketManager.registerMessages("vitality");
+		PacketManager.INSTANCE.registerMessage(ChangeSpellHandler.class, MessageChangeSpell.class, 80, Side.SERVER);
 		
 		ModRecipies.registerOreDict();
 		AltarRecipes.init();

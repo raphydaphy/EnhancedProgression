@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector2f;
 
 import com.google.common.collect.ImmutableSet;
 import com.raphydaphy.vitality.init.KeyBindings;
@@ -12,8 +11,8 @@ import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.item.ItemSpellBag;
 import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.nbt.NBTLib;
+import com.raphydaphy.vitality.network.MessageChangeSpell;
 import com.raphydaphy.vitality.network.PacketManager;
-import com.raphydaphy.vitality.network.PacketSendKey;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -52,8 +51,6 @@ public class GuiSpellSelect extends GuiScreen
 		return null;
 	}
 
-	int timeIn;
-	int slotSelected = -1;
 	
 	int[] spellArray;
 	int spellArrayLength;
@@ -183,8 +180,9 @@ public class GuiSpellSelect extends GuiScreen
 		
 		if (activeSector != -1)
 		{
-			NBTLib.setInt(Minecraft.getMinecraft().thePlayer.getHeldItemOffhand(), "selectedSpell", spellArray[activeSector]);
-			PacketManager.INSTANCE.sendToServer(new PacketSendKey(activeSector));
+			//NBTLib.setInt(Minecraft.getMinecraft().thePlayer.getHeldItemOffhand(), "selectedSpell", spellArray[activeSector]);
+			//PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(activeSector));
+			PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(activeSector));
 		}
 	}
 
@@ -194,19 +192,15 @@ public class GuiSpellSelect extends GuiScreen
 		if(!isKeyDown(KeyBindings.pickSpell))
 		{
 			mc.displayGuiScreen(null);
-		
-			/* idk what this code is doing lol
-			if(slotSelected != -1) 
-			{
-				PacketManager.INSTANCE.sendToServer(new PacketSendKey());
-			}*/
 		}
 		
 		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
 		for(KeyBinding k : set)
+		{
 			KeyBinding.setKeyBindState(k.getKeyCode(), isKeyDown(k));
+		}
 
-		timeIn++;
+		//timeIn++;
 	}
 
 	public boolean isKeyDown(KeyBinding keybind) {
