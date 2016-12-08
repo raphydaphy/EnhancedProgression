@@ -31,6 +31,7 @@ public class Vitality
 	{
 		System.out.println("Setting up vital prerequisites");
 		MinecraftForge.EVENT_BUS.register(new Events());
+		MinecraftForge.EVENT_BUS.register(Events.class);
 		proxy.preInit();
 	}
 
@@ -49,5 +50,4 @@ public class Vitality
 	{
 		System.out.println("Vitality Loaded Successfully :D");
 	}
-
 }

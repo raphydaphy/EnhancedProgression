@@ -90,11 +90,18 @@ public class ItemSpellBag extends Item
 							{
 								if (spellArray[i] == bag.getTagCompound().getInteger("selectedSpell"))
 								{
-									if (spellArray[i + 1] != 0)
+									try
 									{
-										bag.getTagCompound().setInteger("selectedSpell", spellArray[i + 1]);
+										if (spellArray[i + 1] != 0)
+										{
+											bag.getTagCompound().setInteger("selectedSpell", spellArray[i + 1]);
+										}
+										else
+										{
+											bag.getTagCompound().setInteger("selectedSpell", spellArray[0]);
+										}
 									}
-									else
+									catch (ArrayIndexOutOfBoundsException e)
 									{
 										bag.getTagCompound().setInteger("selectedSpell", spellArray[0]);
 									}

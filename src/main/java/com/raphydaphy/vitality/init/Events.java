@@ -43,16 +43,16 @@ public class Events
 	@SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) 
 	{
-        if (KeyBindings.pickSpell.isPressed()) 
-        {
-        	Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getMinecraft();
+        if (KeyBindings.pickSpell.isPressed() && mc.inGameHasFocus) 
+        {	
         	if (mc.thePlayer.getHeldItemMainhand() != null &&
         		mc.thePlayer.getHeldItemOffhand() != null)
         	{
 	        	if (mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand && 
 	        		mc.thePlayer.getHeldItemOffhand().getItem() instanceof ItemSpellBag)
-	        	{ 
-	        		//mc.displayGuiScreen(new GuiSpellSelect());
+	        	{
+	        		mc.displayGuiScreen(new GuiSpellSelect());
 	        	}
         	}
         }

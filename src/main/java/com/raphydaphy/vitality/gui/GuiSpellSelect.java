@@ -1,13 +1,9 @@
 package com.raphydaphy.vitality.gui;
 
-import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 
 import com.google.common.collect.ImmutableSet;
@@ -22,27 +18,12 @@ import com.raphydaphy.vitality.network.PacketSendKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiSpellSelect extends GuiScreen 
 {
-
-	private static final ResourceLocation[] spellTextures = new ResourceLocation[] {
-			new ResourceLocation("vitality:textures/items/spell_card_vital_extraction"),
-			new ResourceLocation("vitality:textures/items/spell_card_lantern"),
-			new ResourceLocation("vitality:textures/items/spell_card_explosion"),
-			new ResourceLocation("vitality:textures/items/spell_card_fireball"),
-			new ResourceLocation("vitality:textures/items/spell_card_rapidfire"),
-			new ResourceLocation("vitality:textures/items/spell_card_transmutation"),
-			new ResourceLocation("vitality:textures/items/spell_card_hunger"),
-			new ResourceLocation("vitality:textures/items/spell_card_enhanced_extraction"),
-			new ResourceLocation("vitality:textures/items/spell_card_flight"),
-			new ResourceLocation("vitality:textures/items/spell_card_forcefield")
-	};
-	
 	public ItemStack getSpellStackFromID(int spellID)
 	{
 		switch (spellID)
@@ -71,273 +52,143 @@ public class GuiSpellSelect extends GuiScreen
 		return null;
 	}
 
-	int timeIn = 0;
+	int timeIn;
 	int slotSelected = -1;
 	int[] spellArray;
 	int spellArrayLength;
-	int segments = 0;
 	
-	ItemStack[] realSpellArray;
 	ItemStack wandStack;
 	ItemStack bagStack;
 
 	@Override
-	public void drawScreen(int mx, int my, float partialTicks) {
+	public void drawScreen(int mx, int my, float partialTicks) 
+	{
 		super.drawScreen(mx, my, partialTicks);
-
-		GlStateManager.pushMatrix();
-		GlStateManager.disableTexture2D();
-
-		int x = width / 2;
-		int y = height / 2;
-		int maxRadius = 80;
-
-		boolean mouseIn = true;
-		float angle = mouseAngle(x, y, mx, my);
-
-		int highlight = 5;
-
-		wandStack = Minecraft.getMinecraft().thePlayer.getHeldItemMainhand();
+		
+		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		wandStack = player.getHeldItemMainhand();
+		bagStack = player.getHeldItemOffhand();
+		if (!(bagStack.getItem() instanceof ItemSpellBag))
+		{
+			bagStack = null;
+		}
 		if (!(wandStack.getItem() instanceof ItemWand))
 		{
 			wandStack = null;
 		}
 		
-		bagStack = Minecraft.getMinecraft().thePlayer.getHeldItemOffhand();
-		if (!(bagStack.getItem() instanceof ItemSpellBag))
+		try
 		{
-			bagStack = null;
+			spellArray = bagStack.getTagCompound().getIntArray("spells");
 		}
-		
-		GlStateManager.enableBlend();
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		
-		realSpellArray = new ItemStack[10];
-		spellArray = bagStack.getTagCompound().getIntArray("spells");
-		for (int i = 0; i < spellArray.length; i++)
+		catch (NullPointerException e)
 		{
-			if (spellArray[i] != 0)
+			spellArray = null;
+		}
+		if (spellArray != null)
+		{
+			spellArrayLength = 0;
+			for (int i = 0; i < spellArray.length; i++)
 			{
-				segments++;
-				spellArrayLength++;
-				/*
-				for (int counter = 0; i < realSpellArray.length; 
+				if (spellArray[i] != 0)
 				{
-					getSpellStackFromID(spellArray[counter);
+					spellArrayLength++;
 				}
-				*/
 			}
-		}
-		
-		int curRenderID = 0;
-		float totalDeg = 0;
-		float degPer = 360F / segments;
-
-		List<int[]> stringPositions = new ArrayList();
-
-		for(int seg = 0; seg < segments; seg++) {
-			boolean mouseInSector = mouseIn && angle > totalDeg && angle < totalDeg + degPer;
-			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
-
-			GL11.glBegin(GL11.GL_TRIANGLE_FAN);
-
-			float gs = 0.25F;
-			if(seg % 2 == 0)
-				gs += 0.1F;
-			float r = gs;
-			float g = gs;
-			float b = gs;
-			float a = 0.4F;
+	
+			float angle = -90;
+			int radius = 75;
+			int amount = spellArrayLength;
 			
-			if(mouseInSector) 
-			{
-				if(wandStack != null && bagStack != null) 
-				{
-					Color color = Color.CYAN;
-					r = color.getRed() / 255F;
-					g = color.getGreen() / 255F;
-					b = color.getBlue() / 255F;
-				}
-			}
-
-			GlStateManager.color(r, g, b, a);
-			GL11.glVertex2i(x, y);
-			stringPositions.clear();
-			for(float i = degPer; i >= 0; i--) 
-			{
-				float rad = (float) ((i + totalDeg) / 180F * Math.PI);
-				double xp = x + Math.cos(rad) * radius;
-				double yp = y + Math.sin(rad) * radius;
-				if(i == (int) (degPer / 2))
-				{
-					stringPositions.add(new int[] { seg, (int) xp, (int) yp, mouseInSector ? 'n' : 'r' });
-					System.out.println("added a new one");
-				}
-
-				GL11.glVertex2d(xp, yp);
-			}
-			totalDeg += degPer;
-
-			GL11.glVertex2i(x, y);
-			GL11.glEnd();
-
-			if(mouseInSector)
-				radius -= highlight;
-		}
-		GlStateManager.shadeModel(GL11.GL_FLAT);
-		GlStateManager.enableTexture2D();
-		//GlStateManager.scale(1, 1, 1);
-		
-		for(int[] pos : stringPositions) 
-		{
-			int xp = pos[1];
-			int yp = pos[2];
-			char c = (char) pos[3];
+			int screenWidth = width / 2;
+			int screenHeight = height / 2;
+			float angleMouse = mouseAngle(screenWidth, screenHeight, mx, my);
 			
-			ItemStack spellStack = null;
-			try
+			// if any spells are held in the bag
+			if (amount > 0)
 			{
-				spellStack = getSpellStackFromID(spellArray[pos[0]]);
-			}
-			catch (ArrayIndexOutOfBoundsException e)
-			{
-				spellStack = null;
-			}
-			if(spellStack != null) 
-			{
-				int xsp = xp - 4;
-				int ysp = yp;
-				String name = "\u00a7" + c + spellStack.getDisplayName();
-				int width = fontRendererObj.getStringWidth(name);
-
-				double mod = 0.6;
-				int xdp = (int) ((xp - x) * mod + x);
-				int ydp = (int) ((yp - y) * mod + y);
-				//GlStateManager.scale(1.5, 1.5, 1.5);
-				mc.getRenderItem().renderItemIntoGUI(spellStack, xdp - 8, ydp - 8);
-				//GlStateManager.scale(1, 1, 1);
-				if(xsp < x)
+				float anglePer = 360F / amount;
+	
+				net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
+				GlStateManager.pushMatrix();
+				GuiHelper.renderCircle(screenWidth, screenHeight);
+				GlStateManager.popMatrix();
+				for (int curItem = 0; curItem < amount; curItem++)
 				{
-					xsp -= width - 8;
+					boolean mouseInSector = angleMouse > angle && angleMouse < angle + anglePer;
+					mouseInSector = false;
+					if (mouseInSector)
+					{
+						double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 13.6;
+						double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 13.6;
+						GlStateManager.pushMatrix();
+						GlStateManager.translate(xPos, yPos, 0);
+						GlStateManager.scale(1.7, 1.7, 1.7);
+						if (getSpellStackFromID(spellArray[curItem]) != null)
+						{
+							mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(spellArray[curItem]), 0, 0);
+							if (mx > xPos && mx < xPos + 27.2 && my > yPos && my < yPos + 27.2)
+							{
+								System.out.println("mouse touching #" + curItem);
+							}
+						}
+						GlStateManager.translate(-xPos, -yPos, 0);
+						GlStateManager.popMatrix();
+					}
+					else
+					{
+						double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 12;
+						double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 12;
+						GlStateManager.pushMatrix();
+						GlStateManager.translate(xPos, yPos, 0);
+						GlStateManager.scale(1.5, 1.5, 1.5);
+						if (getSpellStackFromID(spellArray[curItem]) != null)
+						{
+							mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(spellArray[curItem]), 0, 0);
+						}
+						GlStateManager.translate(-xPos, -yPos, 0);
+						GlStateManager.popMatrix();
+					}
+					angle += anglePer;
 				}
-				if(ysp < y)
+	
+				if (NBTLib.getInt(bagStack, "selectedSpell", 0) != 0)
 				{
-					ysp -= 9;
+					GlStateManager.pushMatrix();
+					GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
+					GlStateManager.scale(2, 2, 2);
+					if (getSpellStackFromID(NBTLib.getInt(bagStack, "selectedSpell", 0)) != null)
+					{
+						mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(NBTLib.getInt(bagStack, "selectedSpell", 0)), 0, 0);
+					}
+					GlStateManager.translate(-screenWidth, -screenHeight, 0);
+					GlStateManager.popMatrix();
 				}
-				
-				fontRendererObj.drawStringWithShadow(name, xsp, ysp, 0xFFFFFF);
-
-				mod = 0.8;
-				xdp = (int) ((xp - x) * mod + x);
-				ydp = (int) ((yp - y) * mod + y);
-
-				//mc.renderEngine.bindTexture(spellTextures[pos[0]]);
-				drawModalRectWithCustomSizedTexture(xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
+				net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 			}
 		}
-
-		float stime = 5F;
-		float fract = Math.min(stime, timeIn + partialTicks) / stime;
-		float s = 3F * fract;
-		GlStateManager.enableRescaleNormal();
-		GlStateManager.enableBlend();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-		RenderHelper.enableGUIStandardItemLighting();
-		/*
-		if(controlledStacks != null && controlledStacks.length > 0) {
-			int xs = width / 2 - 18 * controlledStacks.length / 2;
-			int ys = height / 2;
-
-			for(int i = 0; i < controlledStacks.length; i++) {
-				float yoff = 25F + maxRadius;
-				if(i == controlSlot)
-					yoff += 5F;
-
-				GlStateManager.translate(0, -yoff * fract, 0F);
-				mc.getRenderItem().renderItemAndEffectIntoGUI(controlledStacks[i], xs + i * 18, ys);
-				GlStateManager.translate(0, yoff * fract, 0F);
-			}
-
-		}
-		
-		if(socketableStack != null) {
-			GlStateManager.scale(s, s, s);
-			GlStateManager.translate(x / s - 8, y / s - 8, 0);
-			mc.getRenderItem().renderItemAndEffectIntoGUI(socketableStack, 0, 0);
-		}
-		*/
-		RenderHelper.disableStandardItemLighting();
-		GlStateManager.disableBlend();
-		GlStateManager.disableRescaleNormal();
-
-		GlStateManager.popMatrix();
 	}
-
+	
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException 
 	{
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		
-		int x = width / 2;
-		int y = height / 2;
-		//int maxRadius = 80;
 
-		boolean mouseIn = true;
-		float angle = mouseAngle(x, y, mouseX, mouseY);
+		// Check if mouse is touching any spell in the GUI
 		
-		//int curRenderID = 0;
-		float totalDeg = 0;
-		float degPer = 360F / segments;
-		for(int seg = 0; seg < segments; seg++) 
-		{
-			boolean mouseInSector = mouseIn && angle > totalDeg && angle < totalDeg + degPer;
-			if (mouseInSector)
-			{
-				System.out.println("In sector: " + mouseInSector + " Sector Number: " + seg);
-			}
-			totalDeg += degPer;
-		}
-		/*
-		if(bagStack != null && spellArrayLength > 0 && wandStack != null) 
-		{
-			if(mouseButton == 0) 
-			{
-				NBTLib.setInt(bagStack, "selectedSpell", NBTLib.getInt(bagStack, "selectedSpell", -1) + 1);
-				if (NBTLib.getInt(bagStack, "selectedSpell", 0) > spellArrayLength)
-				{
-					NBTLib.setInt(bagStack, "selectedSpell", 0);
-				}
-			} 
-			else if(mouseButton == 1) 
-			{
-				NBTLib.setInt(bagStack, "selectedSpell", NBTLib.getInt(bagStack, "selectedSpell", 0) - 1);
-				if (NBTLib.getInt(bagStack, "selectedSpell", 0) < 0)
-				{
-					NBTLib.setInt(bagStack, "selectedSpell", 0);
-				}
-			}
-		}
-		*/
+		// if it is, set that as the active spell and put it in the cent
 	}
 
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
-
-		if((KeyBindings.pickSpell.isPressed())) 
+		if(!isKeyDown(KeyBindings.pickSpell))
 		{
 			mc.displayGuiScreen(null);
+		
+			// idk what this code is doing lol
 			if(slotSelected != -1) 
 			{
-				/*
-				int slot = slots.get(slotSelected);
-				PlayerDataHandler.get(mc.thePlayer).stopLoopcast();
-
-				NetworkMessage message = null;
-				if(controllerStack != null)
-					message = new MessageChangeControllerSlot(controlSlot, slot);
-				else message = new MessageChangeSocketableSlot(slot);
-				*/
 				PacketManager.INSTANCE.sendToServer(new PacketSendKey());
 			}
 		}
