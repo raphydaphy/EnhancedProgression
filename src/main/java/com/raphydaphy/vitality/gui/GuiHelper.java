@@ -26,7 +26,7 @@ public final class GuiHelper
 		GL11.glStencilMask(0xFF);
 		mc.getRenderItem().renderItemAndEffectIntoGUI(new ItemStack(ModItems.fluxed_stick), x, y);
 
-		mc.renderEngine.bindTexture(new ResourceLocation("we need a resource location"));
+		//mc.renderEngine.bindTexture(new ResourceLocation("we need a resource location"));
 		int r = 90;
 		int centerX = x + 0;
 		int centerY = y + 0;

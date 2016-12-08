@@ -184,6 +184,7 @@ public class GuiSpellSelect extends GuiScreen
 		if (activeSector != -1)
 		{
 			NBTLib.setInt(Minecraft.getMinecraft().thePlayer.getHeldItemOffhand(), "selectedSpell", spellArray[activeSector]);
+			PacketManager.INSTANCE.sendToServer(new PacketSendKey(activeSector));
 		}
 	}
 
@@ -194,11 +195,11 @@ public class GuiSpellSelect extends GuiScreen
 		{
 			mc.displayGuiScreen(null);
 		
-			// idk what this code is doing lol
+			/* idk what this code is doing lol
 			if(slotSelected != -1) 
 			{
 				PacketManager.INSTANCE.sendToServer(new PacketSendKey());
-			}
+			}*/
 		}
 		
 		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
@@ -221,13 +222,4 @@ public class GuiSpellSelect extends GuiScreen
 	public boolean doesGuiPauseGame() {
 		return false;
 	}
-
-	private static float mouseAngle(int x, int y, int mx, int my) {
-		Vector2f baseVec = new Vector2f(1F, 0F);
-		Vector2f mouseVec = new Vector2f(mx - x, my - y);
-
-		float ang = (float) (Math.acos(Vector2f.dot(baseVec, mouseVec) / (baseVec.length() * mouseVec.length())) * (180F / Math.PI));
-		return my < y ? 360F - ang : ang;
-	}
-
 }

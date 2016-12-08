@@ -18,6 +18,7 @@ import com.raphydaphy.vitality.nbt.NBTLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOre;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -42,6 +43,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -406,6 +408,31 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 			
 		}
+		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 82)
+		{
+			if (useEssence(50, stack))
+			{
+				try
+				{
+					Entity toKill = Minecraft.getMinecraft().pointedEntity;
+					worldIn.createExplosion(player, toKill.posX, toKill.posY, toKill.posZ, 3, false);
+				}
+				catch (NullPointerException e)
+				{
+					RayTraceResult toBlowUp = Minecraft.getMinecraft().objectMouseOver;
+					BlockPos bombPos = toBlowUp.getBlockPos();
+					worldIn.createExplosion(player, bombPos.getX(), bombPos.getY() + 2, bombPos.getZ(), 3, false);
+				}
+				player.swingArm(hand);
+				player.getCooldownTracker().setCooldown(this, 25);
+				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+			}
+			else
+			{
+				Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+			}
+		}
 		return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 	}
 
@@ -588,22 +615,6 @@ public class ItemWand extends Item implements ICraftAchievement
 					return EnumActionResult.PASS;
 				}
 			}
-			// If the Contained Explosion spell is used
-			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 82)
-			{
-				if (useEssence(50, stack))
-				{
-					world.createExplosion(player, pos.getX(), pos.getY() + 2, pos.getZ(), 3, false);
-					player.swingArm(hand);
-					player.getCooldownTracker().setCooldown(this, 25);
-					return EnumActionResult.SUCCESS;
-				}
-				else
-				{
-					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-					return EnumActionResult.FAIL;
-				}
-			}
 		}
 		return EnumActionResult.PASS;
 	}
@@ -618,6 +629,13 @@ public class ItemWand extends Item implements ICraftAchievement
 		if (player instanceof EntityLivingBase)
 		{
 			EntityLivingBase entityIn = (EntityLivingBase) player;
+			if (entityIn.getHeldItemOffhand() != null)
+			{
+				if (entityIn.getHeldItemOffhand().getItem() instanceof ItemSpellBag)
+				{
+					//System.out.println(NBTLib.getInt(entityIn.getHeldItemOffhand(), "selectedSpell", 0));
+				}
+			}
 			if (entityIn.getHeldItemMainhand() != null)
 			{
 				if (!(entityIn.getHeldItemMainhand().getItem() instanceof ItemWand))
