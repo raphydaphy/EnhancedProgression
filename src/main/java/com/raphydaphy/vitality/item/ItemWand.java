@@ -633,7 +633,7 @@ public class ItemWand extends Item implements ICraftAchievement
 			{
 				if (entityIn.getHeldItemOffhand().getItem() instanceof ItemSpellBag)
 				{
-					//System.out.println(NBTLib.getInt(entityIn.getHeldItemOffhand(), "selectedSpell", 0));
+					System.out.println(NBTLib.getInt(entityIn.getHeldItemOffhand(), "selectedSpell", 0));
 				}
 			}
 			if (entityIn.getHeldItemMainhand() != null)

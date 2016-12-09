@@ -7,7 +7,6 @@ import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.ModRecipies;
 import com.raphydaphy.vitality.init.WorldGenHandler;
 import com.raphydaphy.vitality.network.MessageChangeSpell;
-import com.raphydaphy.vitality.network.MessageChangeSpell.ChangeSpellHandler;
 import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.AltarRecipes;
 
@@ -36,7 +35,7 @@ public class CommonProxy
 		ModBlocks.init();
 
 		ModAchievements.init();
-		PacketManager.INSTANCE.registerMessage(ChangeSpellHandler.class, MessageChangeSpell.class, 80, Side.SERVER);
+		PacketManager.INSTANCE.registerMessage(new MessageChangeSpell.ChangeSpellHandler(), MessageChangeSpell.class, 80, Side.SERVER);
 		
 		ModRecipies.registerOreDict();
 		AltarRecipes.init();
