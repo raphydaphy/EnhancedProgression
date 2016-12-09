@@ -181,7 +181,6 @@ public class GuiSpellSelect extends GuiScreen
 		if (activeSector != -1)
 		{
 			NBTLib.setInt(Minecraft.getMinecraft().thePlayer.getHeldItemOffhand(), "selectedSpell", spellArray[activeSector]);
-			//PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(activeSector));
 			PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(spellArray[activeSector]));
 		}
 	}
@@ -203,7 +202,8 @@ public class GuiSpellSelect extends GuiScreen
 
 	public boolean isKeyDown(KeyBinding keybind) {
 		int key = keybind.getKeyCode();
-		if(key < 0) {
+		if(key < 0) 
+		{
 			int button = 100 + key;
 			return Mouse.isButtonDown(button);
 		}
