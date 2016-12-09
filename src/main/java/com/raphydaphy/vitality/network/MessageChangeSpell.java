@@ -44,7 +44,6 @@ public class MessageChangeSpell implements IMessage
 			 // The value that was sent
 			 int newID = message.id;
 			 serverPlayer.getHeldItemOffhand().getTagCompound().setInteger("selectedSpell", newID);
-			 System.out.println("did stuff");
 			 // No response packet
 			 return null;
 		}

@@ -864,7 +864,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
 	{
 		if (NBTLib.getBoolean(stack, "hungerSpellActive", false) == true)		
-		{		
+		{	
 			if (entityLiving instanceof EntityPlayer)		
 			{
 				EntityPlayer entityplayer = (EntityPlayer) entityLiving;		
@@ -881,7 +881,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					return stack;		
 				}
 			}
-		}		
+		}
 		return stack;		
 	}
 }
