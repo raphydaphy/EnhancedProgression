@@ -18,8 +18,6 @@ public class ModRecipies
 	
 	public static void registerOreDict()
 	{
-		OreDictionary.registerOre("dustCoal", Items.COAL);
-		OreDictionary.registerOre("dustCoal", new ItemStack(Items.COAL, 1, 1));
 		OreDictionary.registerOre("powderBlaze", Items.BLAZE_POWDER);
 		OreDictionary.registerOre("fireCharge", Items.FIRE_CHARGE);
 
