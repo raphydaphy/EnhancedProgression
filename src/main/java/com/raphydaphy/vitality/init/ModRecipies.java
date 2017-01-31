@@ -18,11 +18,13 @@ public class ModRecipies
 	
 	public static void registerOreDict()
 	{
-		OreDictionary.registerOre("dustCoal", Items.COAL);
-		OreDictionary.registerOre("dustCoal", new ItemStack(Items.COAL, 1, 1));
+		OreDictionary.registerOre("justALumpOfCoalPlzIgnore", Items.COAL);
+		OreDictionary.registerOre("justALumpOfCoalPlzIgnore", new ItemStack(Items.COAL, 1, 1));
 		OreDictionary.registerOre("powderBlaze", Items.BLAZE_POWDER);
 		OreDictionary.registerOre("fireCharge", Items.FIRE_CHARGE);
-
+		
+		OreDictionary.registerOre("oreCopper", ModBlocks.ore_copper);
+		OreDictionary.registerOre("oreTin", ModBlocks.ore_tin);
 		OreDictionary.registerOre("ingotCopper", ModItems.ingot_copper);
 		OreDictionary.registerOre("ingotTin", ModItems.ingot_tin);
 		OreDictionary.registerOre("ingotBronze", ModItems.ingot_bronze);
@@ -37,7 +39,7 @@ public class ModRecipies
 		if (ConfigHandler.crafting.enableMagicLantern)
 		{
 			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern), "SCS", "CBC", "SCS", 'S', "stickWood", 'C',
-					"dustCoal", 'B', "ingotBronze");
+					"justALumpOfCoalPlzIgnore", 'B', "ingotBronze");
 		}
 		if (ConfigHandler.crafting.enableVitalExtraction)
 		{
