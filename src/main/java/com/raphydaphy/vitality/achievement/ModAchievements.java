@@ -40,7 +40,7 @@ public final class ModAchievements
 		craft_vital_extraction = new AchievementMod(AchievementNames.CRAFT_VITAL_EXTRACTION, -2, -2, ModItems.spell_card_vital_extraction,
 				craft_basic_wand);
 		
-		craft_magic_lantern = new AchievementMod(AchievementNames.CRAFT_MAGIC_LANTERN, 2, -2, ModItems.spell_card_lantern,
+		craft_magic_lantern = new AchievementMod(AchievementNames.CRAFT_MAGIC_LANTERN, 2, -2, ModItems.spell_card_lantern_1,
 				craft_basic_wand);
 		
 		craft_contained_explosion = new AchievementMod(AchievementNames.CRAFT_CONTAINED_EXPLOSION, -2, -4, ModItems.spell_card_explosion_1,

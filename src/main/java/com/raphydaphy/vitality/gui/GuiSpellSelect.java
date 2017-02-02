@@ -30,7 +30,11 @@ public class GuiSpellSelect extends GuiScreen
 		case 800:
 			return new ItemStack(ModItems.spell_card_vital_extraction);
 		case 810:
-			return new ItemStack(ModItems.spell_card_lantern);
+			return new ItemStack(ModItems.spell_card_lantern_1);
+		case 811:
+			return new ItemStack(ModItems.spell_card_lantern_2);
+		case 812:
+			return new ItemStack(ModItems.spell_card_lantern_3);
 		case 820:
 			return new ItemStack(ModItems.spell_card_explosion_1);
 		case 821:

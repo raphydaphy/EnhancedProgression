@@ -18,9 +18,17 @@ public class RecipeSpellBag implements IRecipe
 		{
 			return 800;
 		}
-		else if (spell.getItem() == ModItems.spell_card_lantern)
+		else if (spell.getItem() == ModItems.spell_card_lantern_1)
 		{
 			return 810;
+		}
+		else if (spell.getItem() == ModItems.spell_card_lantern_2)
+		{
+			return 811;
+		}
+		else if (spell.getItem() == ModItems.spell_card_lantern_3)
+		{
+			return 812;
 		}
 		else if (spell.getItem() == ModItems.spell_card_explosion_1)
 		{

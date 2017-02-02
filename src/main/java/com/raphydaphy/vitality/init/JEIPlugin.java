@@ -59,8 +59,12 @@ public class JEIPlugin implements IModPlugin
 		registry.addDescription(new ItemStack(ModItems.fluxed_stick), "This powerful item is used to craft the Master Wand, and other high tier spells and items. Crafted with two fluxed logs in a regular crafting table.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_vital_extraction),
 				"In order to cast any spells, you will need essence, which is initially collected from logs using this spell. Simply put this spell card in your offhand and rightclick on a tree while holding a wand and it will begin to fill with essence. Shift+rightclick with your wand to check how much you have ammased in your wand.");
-		registry.addDescription(new ItemStack(ModItems.spell_card_lantern),
+		registry.addDescription(new ItemStack(ModItems.spell_card_lantern_1),
 				"This simple spell can place a torch at the cost of 5 essence. Used by either placing the spell card in your offhand with a wand in your main hand, or by infusing it with a wand in an altar to add it to the wands inventory. Note that only Advanced+ wands can be infused with spells and Basic wands require the spell to be in the offhand always.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_lantern_2),
+				"With the power of imbued bronze, casting this upgraded spell costs only two essence, yet it still only produces a single torch.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_lantern_3),
+				"By infusing such a basic spell with top-tier fluxed ingots and sticks, the cost of casting the spell is now completely removed, allowing you to cast it for free.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_explosion_1),
 				"For the cost of 50 essence, this spell will create an explosion on the block you aim it at. Due to the essence imbued into the explosion, this blast will not cause any terrain damage and will not hurt the person who casts the spell.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_explosion_2),

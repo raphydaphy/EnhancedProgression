@@ -97,10 +97,20 @@ public class ItemWand extends Item implements ICraftAchievement
 			// ID of the vital extraction spell
 			return 800;
 		}
-		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_lantern)))
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_lantern_1)))
 		{
 			// ID of the magic lantern spell
 			return 810;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_lantern_2)))
+		{
+			// ID of the imbued lantern spell
+			return 811;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_lantern_3)))
+		{
+			// ID of the fluxed lantern spell
+			return 812;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_explosion_1)))
 		{
@@ -623,12 +633,21 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 			}
 			// If the Magic Lantern spell is used on a blocks
-			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 810)
+			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 809 && getActiveSpell(player.getHeldItemOffhand()) < 820)
 			{
+				int essenceVal = 5;
+				if (getActiveSpell(player.getHeldItemOffhand()) == 811)
+				{
+					essenceVal = 2;
+				}
+				else if (getActiveSpell(player.getHeldItemOffhand()) == 812)
+				{
+					essenceVal = 0;
+				}
 				BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
 				if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
 				{
-					if (useEssence(5, stack))
+					if (useEssence(essenceVal, stack))
 					{
 						spawnParticles(EnumParticleTypes.FLAME, world, true,new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ()), 15, 1);
 						world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());

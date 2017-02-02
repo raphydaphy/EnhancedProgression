@@ -12,7 +12,9 @@ item.fluxed_stick.name=Fluxed Stick
 item.spell_bag.name=Spell Bag
 
 item.spell_card_vital_extraction.name=Spell Card - Vital Extraction
-item.spell_card_lantern.name=Spell Card - Magic Lantern
+item.spell_card_lantern_1.name=Spell Card - Magic Lantern
+item.spell_card_lantern_2.name=Spell Card - Imbued Lantern
+item.spell_card_lantern_3.name=Spell Card - Fluxed Lantern
 item.spell_card_explosion_1.name=Spell Card - Contained Explosion
 item.spell_card_explosion_2.name=Spell Card - Imbued Explosion
 item.spell_card_explosion_3.name=Spell Card - Fluxed Explosion

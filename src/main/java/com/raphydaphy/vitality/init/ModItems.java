@@ -24,13 +24,15 @@ public class ModItems
 	public static ItemSpellBag spell_bag;
 
 	public static ItemBase spell_card_vital_extraction;
-	public static ItemBase spell_card_lantern;
 	public static ItemBase spell_card_explosion_1;
 	public static ItemBase spell_card_explosion_2;
 	public static ItemBase spell_card_explosion_3;
 	public static ItemBase spell_card_fireball_1;
 	public static ItemBase spell_card_fireball_2;
 	public static ItemBase spell_card_fireball_3;
+	public static ItemBase spell_card_lantern_1;
+	public static ItemBase spell_card_lantern_2;
+	public static ItemBase spell_card_lantern_3;
 	public static ItemBase spell_card_rapidfire;
 	public static ItemBase spell_card_transmutation;
 	public static ItemBase spell_card_hunger;
@@ -60,8 +62,6 @@ public class ModItems
 		imbued_stick = register(new ItemBase("imbued_stick", 64).setCreativeTab(Vitality.creativeTab));
 		spell_bag = register(
 				new ItemSpellBag().setCreativeTab(Vitality.creativeTab));
-		spell_card_lantern = register(
-				new ItemBase("spell_card_lantern", 1).setCreativeTab(Vitality.creativeTab));
 		
 		// Three tiers of explosion spell cards
 		spell_card_explosion_1 = register(
@@ -78,6 +78,14 @@ public class ModItems
 				new ItemBase("spell_card_fireball_2", 1).setCreativeTab(Vitality.creativeTab));
 		spell_card_fireball_3 = register(
 				new ItemBase("spell_card_fireball_3", 1).setCreativeTab(Vitality.creativeTab));
+		
+		// Three tiers of lantern spell cards
+		spell_card_lantern_1 = register(
+				new ItemBase("spell_card_lantern_1", 1).setCreativeTab(Vitality.creativeTab));
+		spell_card_lantern_2 = register(
+				new ItemBase("spell_card_lantern_2", 1).setCreativeTab(Vitality.creativeTab));
+		spell_card_lantern_3 = register(
+				new ItemBase("spell_card_lantern_3", 1).setCreativeTab(Vitality.creativeTab));
 		
 		spell_card_rapidfire = register(
 				new ItemBase("spell_card_rapidfire", 1).setCreativeTab(Vitality.creativeTab));

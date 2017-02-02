@@ -38,8 +38,12 @@ public class ModRecipies
 				"ingotTin");
 		if (ConfigHandler.crafting.enableMagicLantern)
 		{
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern), "SCS", "CBC", "SCS", 'S', "stickWood", 'C',
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_1), "SCS", "CBC", "SCS", 'S', "stickWood", 'C',
 					"justALumpOfCoalPlzIgnore", 'B', "ingotBronze");
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_2), "SCS", "CBC", "SCS", 'S', ModItems.imbued_stick, 'C',
+					ModItems.spell_card_lantern_1, 'B', ModItems.ingot_bronze_imbued);
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_3), "SCS", "CBC", "SCS", 'S', ModItems.fluxed_stick, 'C',
+					ModItems.spell_card_lantern_2, 'B', ModItems.ingot_fluxed);
 		}
 		if (ConfigHandler.crafting.enableVitalExtraction)
 		{
@@ -55,7 +59,7 @@ public class ModRecipies
 					ModItems.spell_card_explosion_1, 'B', ModItems.ingot_bronze_imbued);
 			
 			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
-					ModItems.spell_card_explosion_3, 'B', ModItems.ingot_fluxed);
+					ModItems.spell_card_explosion_2, 'B', ModItems.ingot_fluxed);
 		}
 		if (ConfigHandler.crafting.enableRadiantFireball)
 		{
