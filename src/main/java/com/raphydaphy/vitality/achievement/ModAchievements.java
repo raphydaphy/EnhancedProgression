@@ -46,7 +46,7 @@ public final class ModAchievements
 		craft_contained_explosion = new AchievementMod(AchievementNames.CRAFT_CONTAINED_EXPLOSION, -2, -4, ModItems.spell_card_explosion_1,
 				craft_basic_wand);
 		
-		craft_radiant_fireball = new AchievementMod(AchievementNames.CRAFT_RADIANT_FIREBALL, 2, -4, ModItems.spell_card_fireball,
+		craft_radiant_fireball = new AchievementMod(AchievementNames.CRAFT_RADIANT_FIREBALL, 2, -4, ModItems.spell_card_fireball_1,
 				craft_basic_wand);
 		
 		craft_cryptic_transmutation = new AchievementMod(AchievementNames.CRAFT_CRYPTIC_TRANSMUTATION, -2, 0, ModItems.spell_card_transmutation,

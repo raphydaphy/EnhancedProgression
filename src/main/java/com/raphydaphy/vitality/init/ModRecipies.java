@@ -59,8 +59,12 @@ public class ModRecipies
 		}
 		if (ConfigHandler.crafting.enableRadiantFireball)
 		{
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball), "SFS", "FBF", "SFS", 'S', "stickWood", 'F',
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_1), "SFS", "FBF", "SFS", 'S', "stickWood", 'F',
 					"fireCharge", 'B', "ingotBronze");
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_2), "SFS", "FBF", "SFS", 'S', ModItems.imbued_stick, 'F',
+					ModItems.spell_card_fireball_1, 'B', ModItems.ingot_bronze_imbued);
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_3), "SFS", "FBF", "SFS", 'S', ModItems.fluxed_stick, 'F',
+					ModItems.spell_card_fireball_2, 'B', ModItems.ingot_fluxed);
 		}
 		if (ConfigHandler.crafting.enableCrypticTransmutation)
 		{

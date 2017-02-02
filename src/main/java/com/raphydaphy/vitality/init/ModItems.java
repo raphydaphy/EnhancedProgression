@@ -28,7 +28,9 @@ public class ModItems
 	public static ItemBase spell_card_explosion_1;
 	public static ItemBase spell_card_explosion_2;
 	public static ItemBase spell_card_explosion_3;
-	public static ItemBase spell_card_fireball;
+	public static ItemBase spell_card_fireball_1;
+	public static ItemBase spell_card_fireball_2;
+	public static ItemBase spell_card_fireball_3;
 	public static ItemBase spell_card_rapidfire;
 	public static ItemBase spell_card_transmutation;
 	public static ItemBase spell_card_hunger;
@@ -69,9 +71,14 @@ public class ModItems
 		spell_card_explosion_3 = register(
 				new ItemBase("spell_card_explosion_3", 1).setCreativeTab(Vitality.creativeTab));
 		
+		// Three tiers of fireball spell cards
+		spell_card_fireball_1 = register(
+				new ItemBase("spell_card_fireball_1", 1).setCreativeTab(Vitality.creativeTab));
+		spell_card_fireball_2 = register(
+				new ItemBase("spell_card_fireball_2", 1).setCreativeTab(Vitality.creativeTab));
+		spell_card_fireball_3 = register(
+				new ItemBase("spell_card_fireball_3", 1).setCreativeTab(Vitality.creativeTab));
 		
-		spell_card_fireball = register(
-				new ItemBase("spell_card_fireball", 1).setCreativeTab(Vitality.creativeTab));
 		spell_card_rapidfire = register(
 				new ItemBase("spell_card_rapidfire", 1).setCreativeTab(Vitality.creativeTab));
 		spell_card_hunger = register(

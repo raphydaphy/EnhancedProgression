@@ -34,9 +34,17 @@ public class RecipeSpellBag implements IRecipe
 		{
 			return 822;
 		}
-		else if (spell.getItem() == ModItems.spell_card_fireball)
+		else if (spell.getItem() == ModItems.spell_card_fireball_1)
 		{
 			return 830;
+		}
+		else if (spell.getItem() == ModItems.spell_card_fireball_2)
+		{
+			return 831;
+		}
+		else if (spell.getItem() == ModItems.spell_card_fireball_3)
+		{
+			return 832;
 		}
 		else if (spell.getItem() == ModItems.spell_card_rapidfire)
 		{

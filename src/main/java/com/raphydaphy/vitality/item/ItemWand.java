@@ -117,10 +117,20 @@ public class ItemWand extends Item implements ICraftAchievement
 			// ID of the explosion spell
 			return 822;
 		}
-		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_fireball)))
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_fireball_1)))
 		{
 			// ID of the radiant fireball spell
 			return 830;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_fireball_2)))
+		{
+			// ID of the imbued fireball spell
+			return 831;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_fireball_3)))
+		{
+			// ID of the fluxed fireball spell
+			return 832;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_rapidfire)))
 		{
@@ -366,7 +376,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 			}
 		}
-		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 830)
+		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 829 && getActiveSpell(player.getHeldItemOffhand()) < 840)
 		{
 			if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == false)
 			{
@@ -815,9 +825,18 @@ public class ItemWand extends Item implements ICraftAchievement
 		if (player.getHeldItemOffhand().getItem() instanceof ItemBase || player.getHeldItemMainhand().getItem() instanceof ItemSpellBag)
 		{
 			EntityPlayer playerIn = (EntityPlayer) player;
-			if (getActiveSpell(player.getHeldItemOffhand()) == 830 && !worldIn.isRemote)
+			if (getActiveSpell(player.getHeldItemOffhand()) > 829 && getActiveSpell(player.getHeldItemOffhand()) < 840 && !worldIn.isRemote)
 			{
-				if (useEssence(25, stack))
+				int essenceCost = 25;
+				if (getActiveSpell(player.getHeldItemOffhand()) == 831)
+				{
+					essenceCost = 100;
+				}
+				else if (getActiveSpell(player.getHeldItemOffhand()) == 832)
+				{
+					essenceCost = 300;
+				}
+				if (useEssence(essenceCost, stack))
 				{
 					playerIn.getCooldownTracker().setCooldown(this, 50);
 					EntityLargeFireball bigBall = new EntityLargeFireball(worldIn, player, player.getLookVec().xCoord, player.getLookVec().yCoord, player.getLookVec().zCoord);
@@ -825,6 +844,14 @@ public class ItemWand extends Item implements ICraftAchievement
 					bigBall.accelerationY = player.getLookVec().yCoord;
 					bigBall.accelerationZ = player.getLookVec().zCoord;
 					bigBall.explosionPower = 4;
+					if (getActiveSpell(player.getHeldItemOffhand()) == 831)
+					{
+						bigBall.explosionPower = 6;
+					}
+					else if (getActiveSpell(player.getHeldItemOffhand()) == 832)
+					{
+						bigBall.explosionPower = 10;
+					}
 					worldIn.spawnEntityInWorld(bigBall);
 				}
 				else
