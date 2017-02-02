@@ -48,8 +48,14 @@ public class ModRecipies
 		}
 		if (ConfigHandler.crafting.enableContainedExplosion)
 		{
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_1), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
 					"gunpowder", 'B', "ingotBronze");
+			
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_2), "SGS", "GBG", "SGS", 'S', ModItems.imbued_stick, 'G',
+					ModItems.spell_card_explosion_1, 'B', ModItems.ingot_bronze_imbued);
+			
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
+					ModItems.spell_card_explosion_3, 'B', ModItems.ingot_fluxed);
 		}
 		if (ConfigHandler.crafting.enableRadiantFireball)
 		{
@@ -112,6 +118,6 @@ public class ModRecipies
 	public static void registerSmelting()
 	{
 		GameRegistry.addSmelting(ModBlocks.ore_copper, new ItemStack(ModItems.ingot_copper), 0.7f);
-		GameRegistry.addSmelting(ModBlocks.ore_tin, new ItemStack(ModItems.ingot_tin), 0.7f);
+		GameRegistry.addSmelting(ModBlocks.ore_tin, new ItemStack(ModItems.ingot_tin), 0.7f); 
 	}
 }

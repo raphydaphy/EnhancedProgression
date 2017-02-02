@@ -13,7 +13,9 @@ item.spell_bag.name=Spell Bag
 
 item.spell_card_vital_extraction.name=Spell Card - Vital Extraction
 item.spell_card_lantern.name=Spell Card - Magic Lantern
-item.spell_card_explosion.name=Spell Card - Contained Explosion
+item.spell_card_explosion_1.name=Spell Card - Contained Explosion
+item.spell_card_explosion_2.name=Spell Card - Imbued Explosion
+item.spell_card_explosion_3.name=Spell Card - Fluxed Explosion
 item.spell_card_fireball.name=Spell Card - Radiant Fireball
 item.spell_card_rapidfire.name=Spell Card - Rapid Fire
 item.spell_card_transmutation.name=Spell Card - Cryptic Transmutation

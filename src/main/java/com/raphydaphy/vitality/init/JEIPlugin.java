@@ -61,8 +61,12 @@ public class JEIPlugin implements IModPlugin
 				"In order to cast any spells, you will need essence, which is initially collected from logs using this spell. Simply put this spell card in your offhand and rightclick on a tree while holding a wand and it will begin to fill with essence. Shift+rightclick with your wand to check how much you have ammased in your wand.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_lantern),
 				"This simple spell can place a torch at the cost of 5 essence. Used by either placing the spell card in your offhand with a wand in your main hand, or by infusing it with a wand in an altar to add it to the wands inventory. Note that only Advanced+ wands can be infused with spells and Basic wands require the spell to be in the offhand always.");
-		registry.addDescription(new ItemStack(ModItems.spell_card_explosion),
+		registry.addDescription(new ItemStack(ModItems.spell_card_explosion_1),
 				"For the cost of 50 essence, this spell will create an explosion on the block you aim it at. Due to the essence imbued into the explosion, this blast will not cause any terrain damage and will not hurt the person who casts the spell.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_explosion_2),
+				"By imbuing the spell with an enhanced bronze alloy, the spell is now far more powerful at the cost of an additionall 30 essence per use, bringing the total cost of casting the spell to 80 essence.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_explosion_2),
+				"With sixteen regular contained explosion spells infused into one, this perfect blend of power and death will kill enemies in a huge radius for 250 essence.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_fireball), "For the cost of 25 essence, this spell summons a fireball that shoots off in the direction you are looking. Be careful around your house and other valuable things, because this will destroy anything that it touches!");
 		registry.addDescription(new ItemStack(ModItems.spell_card_rapidfire),
 				"For 100 essence, this spell will shoot arrows in a straight line from your cursor for one essence per arrow. With each arrow shot in a row, the cost incrases by one, so by the 50th arrow it would cost 50 essence. The arrows will continue to shoot until you stop holding rightclick or until you run out of essence, whichever happens first.");

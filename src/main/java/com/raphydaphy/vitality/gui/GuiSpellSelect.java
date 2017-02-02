@@ -27,25 +27,29 @@ public class GuiSpellSelect extends GuiScreen
 	{
 		switch (spellID)
 		{
-		case 80:
+		case 800:
 			return new ItemStack(ModItems.spell_card_vital_extraction);
-		case 81:
+		case 810:
 			return new ItemStack(ModItems.spell_card_lantern);
-		case 82:
-			return new ItemStack(ModItems.spell_card_explosion);
-		case 83:
+		case 820:
+			return new ItemStack(ModItems.spell_card_explosion_1);
+		case 821:
+			return new ItemStack(ModItems.spell_card_explosion_2);
+		case 822:
+			return new ItemStack(ModItems.spell_card_explosion_3);
+		case 830:
 			return new ItemStack(ModItems.spell_card_fireball);
-		case 84:
+		case 840:
 			return new ItemStack(ModItems.spell_card_rapidfire);
-		case 85:
+		case 850:
 			return new ItemStack(ModItems.spell_card_transmutation);
-		case 86:
+		case 860:
 			return new ItemStack(ModItems.spell_card_hunger);
-		case 87:
+		case 870:
 			return new ItemStack(ModItems.spell_card_enhanced_extraction);
-		case 88:
+		case 880:
 			return new ItemStack(ModItems.spell_card_flight);
-		case 89:
+		case 890:
 			return new ItemStack(ModItems.spell_card_forcefield);
 		}
 		return null;

@@ -16,23 +16,31 @@ public class RecipeSpellBag implements IRecipe
 	{
 		if (spell.getItem() == ModItems.spell_card_vital_extraction)
 		{
-			return 80;
+			return 800;
 		}
 		else if (spell.getItem() == ModItems.spell_card_lantern)
 		{
-			return 81;
+			return 810;
 		}
-		else if (spell.getItem() == ModItems.spell_card_explosion)
+		else if (spell.getItem() == ModItems.spell_card_explosion_1)
 		{
-			return 82;
+			return 820;
+		}
+		else if (spell.getItem() == ModItems.spell_card_explosion_2)
+		{
+			return 821;
+		}
+		else if (spell.getItem() == ModItems.spell_card_explosion_3)
+		{
+			return 822;
 		}
 		else if (spell.getItem() == ModItems.spell_card_fireball)
 		{
-			return 83;
+			return 830;
 		}
 		else if (spell.getItem() == ModItems.spell_card_rapidfire)
 		{
-			return 84;
+			return 840;
 		}
 		else if (spell.getItem() == ModItems.spell_card_transmutation)
 		{
@@ -40,19 +48,19 @@ public class RecipeSpellBag implements IRecipe
 		}
 		else if (spell.getItem() == ModItems.spell_card_hunger)
 		{
-			return 86;
+			return 860;
 		}
 		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction)
 		{
-			return 87;
+			return 870;
 		}
 		else if (spell.getItem() == ModItems.spell_card_flight)
 		{
-			return 88;
+			return 880;
 		}
 		else if (spell.getItem() == ModItems.spell_card_forcefield)
 		{
-			return 89;
+			return 890;
 		}
 		return 0;
 	}

@@ -43,7 +43,7 @@ public final class ModAchievements
 		craft_magic_lantern = new AchievementMod(AchievementNames.CRAFT_MAGIC_LANTERN, 2, -2, ModItems.spell_card_lantern,
 				craft_basic_wand);
 		
-		craft_contained_explosion = new AchievementMod(AchievementNames.CRAFT_CONTAINED_EXPLOSION, -2, -4, ModItems.spell_card_explosion,
+		craft_contained_explosion = new AchievementMod(AchievementNames.CRAFT_CONTAINED_EXPLOSION, -2, -4, ModItems.spell_card_explosion_1,
 				craft_basic_wand);
 		
 		craft_radiant_fireball = new AchievementMod(AchievementNames.CRAFT_RADIANT_FIREBALL, 2, -4, ModItems.spell_card_fireball,
