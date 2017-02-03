@@ -64,7 +64,7 @@ public final class ModAchievements
 		craft_enhanced_extraction = new AchievementMod(AchievementNames.CRAFT_ENHANCED_EXTRACTION, 2, 4, ModItems.spell_card_enhanced_extraction,
 				pickup_imbued_log);
 		
-		craft_rapidfire = new AchievementMod(AchievementNames.CRAFT_RAPIDFIRE, 2, 6, ModItems.spell_card_rapidfire,
+		craft_rapidfire = new AchievementMod(AchievementNames.CRAFT_RAPIDFIRE, 2, 6, ModItems.spell_card_rapidfire_1,
 				pickup_imbued_log);
 		
 		craft_hunger = new AchievementMod(AchievementNames.CRAFT_HUNGER, -2, 6, ModItems.spell_card_hunger,

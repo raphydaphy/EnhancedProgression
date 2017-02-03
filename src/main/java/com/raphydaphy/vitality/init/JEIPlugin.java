@@ -74,8 +74,10 @@ public class JEIPlugin implements IModPlugin
 		registry.addDescription(new ItemStack(ModItems.spell_card_fireball_1), "For the cost of 25 essence, this spell summons a fireball that shoots off in the direction you are looking. Be careful around your house and other valuable things, because this will destroy anything that it touches!");
 		registry.addDescription(new ItemStack(ModItems.spell_card_fireball_2), "For 100 essence, a giant fireball will be summoned and destroy blocks and entities in a large radius around the impact point. Be careful, because the nature of the spell is imprecice, and it can easily shoot far further than you expected, or far closer, blowing yourself up.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_fireball_3), "For 300 essence, a fireball of pure destruction will be summoned to destroy everything in a huge radius. Be careful not to use this too close to your base, and note that it will drain your stored essencd very quickly.");
-		registry.addDescription(new ItemStack(ModItems.spell_card_rapidfire),
+		registry.addDescription(new ItemStack(ModItems.spell_card_rapidfire_1),
 				"For 100 essence, this spell will shoot arrows in a straight line from your cursor for one essence per arrow. With each arrow shot in a row, the cost incrases by one, so by the 50th arrow it would cost 50 essence. The arrows will continue to shoot until you stop holding rightclick or until you run out of essence, whichever happens first.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_rapidfire_2),
+				"This spell will shoot five arrows every few ticks, for an initial cost of 250 essence and then two essence whenever arrows are shot..");
 		registry.addDescription(new ItemStack(ModItems.spell_card_hunger),
 				"If you ever find yourself out of food and hungry, this spell will restore your hunger and saturation levels to full, but will do so at the expense of 500 essence.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_transmutation),

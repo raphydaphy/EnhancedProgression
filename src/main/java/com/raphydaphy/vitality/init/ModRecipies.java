@@ -20,8 +20,6 @@ public class ModRecipies
 	{
 		OreDictionary.registerOre("justALumpOfCoalPlzIgnore", Items.COAL);
 		OreDictionary.registerOre("justALumpOfCoalPlzIgnore", new ItemStack(Items.COAL, 1, 1));
-		OreDictionary.registerOre("powderBlaze", Items.BLAZE_POWDER);
-		OreDictionary.registerOre("fireCharge", Items.FIRE_CHARGE);
 		
 		OreDictionary.registerOre("oreCopper", ModBlocks.ore_copper);
 		OreDictionary.registerOre("oreTin", ModBlocks.ore_tin);
@@ -64,7 +62,7 @@ public class ModRecipies
 		if (ConfigHandler.crafting.enableRadiantFireball)
 		{
 			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_1), "SFS", "FBF", "SFS", 'S', "stickWood", 'F',
-					"fireCharge", 'B', "ingotBronze");
+					Items.FIRE_CHARGE, 'B', "ingotBronze");
 			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_2), "SFS", "FBF", "SFS", 'S', ModItems.imbued_stick, 'F',
 					ModItems.spell_card_fireball_1, 'B', ModItems.ingot_bronze_imbued);
 			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_3), "SFS", "FBF", "SFS", 'S', ModItems.fluxed_stick, 'F',
@@ -73,7 +71,7 @@ public class ModRecipies
 		if (ConfigHandler.crafting.enableCrypticTransmutation)
 		{
 			addOreDictRecipe(new ItemStack(ModItems.spell_card_transmutation), "SPS", "PBP", "SPS", 'S', "stickWood",
-					'P', "powderBlaze", 'B', "ingotBronze");
+					'P', Items.BLAZE_POWDER, 'B', "ingotBronze");
 		}
 
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.advanced_wand), "  B", " S ", "S  ", 'S',
@@ -97,8 +95,10 @@ public class ModRecipies
 		
 		if (ConfigHandler.crafting.enableRapidfire)
 		{
-			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_rapidfire), "SAS", "ABA", "SAS", 'S',
+			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_rapidfire_1), "SAS", "ABA", "SAS", 'S',
 					ModItems.imbued_stick, 'A', Items.ARROW, 'B', ModItems.ingot_bronze_imbued);
+			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_rapidfire_2), "SAS", "ABA", "SAS", 'S',
+					ModItems.fluxed_stick, 'A', ModItems.spell_card_rapidfire_1, 'B', ModItems.ingot_fluxed);
 		}
 		if (ConfigHandler.crafting.enableHunger)
 		{

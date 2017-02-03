@@ -48,7 +48,9 @@ public class GuiSpellSelect extends GuiScreen
 		case 832:
 			return new ItemStack(ModItems.spell_card_fireball_3);
 		case 840:
-			return new ItemStack(ModItems.spell_card_rapidfire);
+			return new ItemStack(ModItems.spell_card_rapidfire_1);
+		case 841:
+			return new ItemStack(ModItems.spell_card_rapidfire_2);
 		case 850:
 			return new ItemStack(ModItems.spell_card_transmutation);
 		case 860:

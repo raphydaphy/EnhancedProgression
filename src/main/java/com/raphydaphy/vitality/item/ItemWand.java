@@ -142,10 +142,15 @@ public class ItemWand extends Item implements ICraftAchievement
 			// ID of the fluxed fireball spell
 			return 832;
 		}
-		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_rapidfire)))
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_rapidfire_1)))
 		{
 			// ID of the rapidfire spell
 			return 840;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_rapidfire_2)))
+		{
+			// ID of the rapidfire spell
+			return 841;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_transmutation)))
 		{
@@ -348,9 +353,14 @@ public class ItemWand extends Item implements ICraftAchievement
 			Vitality.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 					+ getEssenceStored(stack) + "/" + maxEssence + " " + (I18n.format("gui.essence.name"))));
 		}
-		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 840)
+		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 839 && getActiveSpell(player.getHeldItemOffhand()) < 850)
 		{
-			if (useEssence(100, stack))
+			int essenceVal = 100;
+			if (getActiveSpell(player.getHeldItemOffhand()) == 841)
+			{
+				essenceVal = 250;
+			}
+			if (useEssence(essenceVal, stack))
 			{
 				NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", true);
 				NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay", 0);
@@ -769,7 +779,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 				}
 			}
-			else if (getActiveSpell(player.getHeldItemOffhand()) == 840)
+			else if (getActiveSpell(player.getHeldItemOffhand()) > 839 && getActiveSpell(player.getHeldItemOffhand()) < 850)
 			{
 				if (NBTLib.getInt(player.getHeldItemOffhand(), "tickDelay", 0) == 0)
 				{
@@ -780,9 +790,18 @@ public class ItemWand extends Item implements ICraftAchievement
 						{
 							NBTLib.setInt(player.getHeldItemOffhand(), "arrowCount",
 									NBTLib.getInt(player.getHeldItemOffhand(), "arrowCount", 0) + 1);
-							NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay", 5);
-
-							ItemStack itemstack = new ItemStack(Items.TIPPED_ARROW);
+							
+							if (getActiveSpell(player.getHeldItemOffhand()) == 840)
+							{
+								NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay", 5);
+							}
+							else if (getActiveSpell(player.getHeldItemOffhand()) == 841)
+							{
+								NBTLib.setInt(player.getHeldItemOffhand(), "tickDelay", 1);
+							}
+							
+							
+							ItemStack itemstack = new ItemStack(Items.SPECTRAL_ARROW);
 							ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow
 									? itemstack.getItem() : Items.ARROW));
 							EntityArrow entityArrow = itemarrow.createArrow(player.worldObj, itemstack, player);
@@ -794,6 +813,7 @@ public class ItemWand extends Item implements ICraftAchievement
 							//entityArrow.setIsCritical(true);
 
 							player.worldObj.spawnEntityInWorld(entityArrow);
+							
 							player.worldObj.playSound(null, player.posX, player.posY, player.posZ,
 									SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F,
 									1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1 * 0.5F);

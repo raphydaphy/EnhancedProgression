@@ -54,9 +54,13 @@ public class RecipeSpellBag implements IRecipe
 		{
 			return 832;
 		}
-		else if (spell.getItem() == ModItems.spell_card_rapidfire)
+		else if (spell.getItem() == ModItems.spell_card_rapidfire_1)
 		{
 			return 840;
+		}
+		else if (spell.getItem() == ModItems.spell_card_rapidfire_2)
+		{
+			return 841;
 		}
 		else if (spell.getItem() == ModItems.spell_card_transmutation)
 		{

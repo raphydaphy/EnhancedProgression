@@ -24,16 +24,22 @@ public class ModItems
 	public static ItemSpellBag spell_bag;
 
 	public static ItemBase spell_card_vital_extraction;
+	
 	public static ItemBase spell_card_explosion_1;
 	public static ItemBase spell_card_explosion_2;
 	public static ItemBase spell_card_explosion_3;
+	
 	public static ItemBase spell_card_fireball_1;
 	public static ItemBase spell_card_fireball_2;
 	public static ItemBase spell_card_fireball_3;
+	
 	public static ItemBase spell_card_lantern_1;
 	public static ItemBase spell_card_lantern_2;
 	public static ItemBase spell_card_lantern_3;
-	public static ItemBase spell_card_rapidfire;
+	
+	public static ItemBase spell_card_rapidfire_1;
+	public static ItemBase spell_card_rapidfire_2;
+	
 	public static ItemBase spell_card_transmutation;
 	public static ItemBase spell_card_hunger;
 	public static ItemBase spell_card_enhanced_extraction;
@@ -87,8 +93,12 @@ public class ModItems
 		spell_card_lantern_3 = register(
 				new ItemBase("spell_card_lantern_3", 1).setCreativeTab(Vitality.creativeTab));
 		
-		spell_card_rapidfire = register(
-				new ItemBase("spell_card_rapidfire", 1).setCreativeTab(Vitality.creativeTab));
+		// Two tiers of rapidfire spell cards
+		spell_card_rapidfire_1 = register(
+				new ItemBase("spell_card_rapidfire_1", 1).setCreativeTab(Vitality.creativeTab));
+		spell_card_rapidfire_2 = register(
+				new ItemBase("spell_card_rapidfire_2", 1).setCreativeTab(Vitality.creativeTab));
+		
 		spell_card_hunger = register(
 				new ItemBase("spell_card_hunger", 1).setCreativeTab(Vitality.creativeTab));
 		spell_card_transmutation = register(
