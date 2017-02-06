@@ -11,6 +11,7 @@ import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.achievement.ICraftAchievement;
 import com.raphydaphy.vitality.achievement.ModAchievements;
 import com.raphydaphy.vitality.block.BlockAltar;
+import com.raphydaphy.vitality.block.BlockSpellForge;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.nbt.NBTLib;
@@ -520,6 +521,16 @@ public class ItemWand extends Item implements ICraftAchievement
 
 			return wanded ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
 		}
+		else if (block instanceof BlockSpellForge)
+		{
+			((BlockSpellForge) block).onUsedByWand(player, stack, world, pos, side);
+			if (world.isRemote)
+			{
+				player.swingArm(hand);
+			}
+
+			return EnumActionResult.SUCCESS;
+		}
 		// If the player right-clicks on a log
 		// Used for the Vital Extraction spell
 		else if (block instanceof BlockLog)
@@ -722,9 +733,6 @@ public class ItemWand extends Item implements ICraftAchievement
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
 	{
-		// ever since spell bags were added,
-		// this hasn't been called properly
-		// even when using normal spells (not bag)
 		if (NBTLib.getBoolean(player.getHeldItemOffhand(), "isActive", false) == true)
 		{
 			if (getActiveSpell(player.getHeldItemOffhand()) == 800)
@@ -947,7 +955,7 @@ public class ItemWand extends Item implements ICraftAchievement
 	 * Called when the value from getItemMaxUseDuration reaches 0
 	 * Value starts counting down when onItemRightClick is called
 	 * Used for the hunger spell to feed the player when they finish eating
-	 */
+	 */ 
 	@Nullable
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
@@ -971,6 +979,6 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 			}
 		}
-		return stack;		
+		return stack;
 	}
 }

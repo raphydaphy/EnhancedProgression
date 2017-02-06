@@ -75,7 +75,7 @@ public class TileAltar extends TileSimpleInventory
 		return compound;
 	}
 	
-	private int getAltarTier()
+	public int getAltarTier()
 	{
 		boolean quartzValid = checkAllIterable(QUARTZ_BLOCKS, Blocks.QUARTZ_BLOCK);
 		boolean obsidianValid = checkAllArray(OBSIDIAN_BLOCKS, Blocks.OBSIDIAN);

@@ -22,7 +22,6 @@ public class JEIPlugin implements IModPlugin
 	public void registerIngredients(IModIngredientRegistration registry)
 	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

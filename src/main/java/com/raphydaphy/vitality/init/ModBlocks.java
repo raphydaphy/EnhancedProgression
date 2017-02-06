@@ -6,6 +6,7 @@ import com.raphydaphy.vitality.block.BlockBase;
 import com.raphydaphy.vitality.block.BlockDeadLog;
 import com.raphydaphy.vitality.block.BlockModLog;
 import com.raphydaphy.vitality.block.BlockOre;
+import com.raphydaphy.vitality.block.BlockSpellForge;
 import com.raphydaphy.vitality.block.BlockTotem;
 
 import net.minecraft.block.Block;
@@ -32,6 +33,7 @@ public class ModBlocks
 	public static BlockTotem totem_bottom;
 
 	public static Block altar;
+	public static Block spell_forge;
 
 	public static void init()
 	{
@@ -55,6 +57,7 @@ public class ModBlocks
 		totem_bottom = register(new BlockTotem("totem_bottom").setCreativeTab(Vitality.creativeTab));
 
 		altar = register(new BlockAltar(false, "altar").setCreativeTab(Vitality.creativeTab));
+		spell_forge = register (new BlockSpellForge().setCreativeTab(Vitality.creativeTab));
 	}
 
 	private static <T extends Block> T register(T block, ItemBlock itemBlock)

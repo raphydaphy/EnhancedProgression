@@ -1,6 +1,7 @@
 package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.block.tile.TileAltar;
+import com.raphydaphy.vitality.block.tile.TileSpellForge;
 import com.raphydaphy.vitality.gui.GuiSpellSelect;
 import com.raphydaphy.vitality.item.ItemSpellBag;
 import com.raphydaphy.vitality.item.ItemWand;
@@ -33,6 +34,10 @@ public class Events
 				if (tile != null && tile instanceof TileAltar)
 				{
 					((TileAltar) tile).renderHUD(mc, event.getResolution());
+				}
+				else if (tile != null && tile instanceof TileSpellForge)
+				{
+					((TileSpellForge) tile).renderHUD(mc, event.getResolution());
 				}
 
 			}

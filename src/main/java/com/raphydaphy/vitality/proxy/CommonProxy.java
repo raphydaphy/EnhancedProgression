@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.proxy;
 
 import com.raphydaphy.vitality.achievement.ModAchievements;
 import com.raphydaphy.vitality.block.tile.TileAltar;
+import com.raphydaphy.vitality.block.tile.TileSpellForge;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.ModRecipies;
@@ -41,6 +42,7 @@ public class CommonProxy
 		AltarRecipes.init();
 
 		GameRegistry.registerTileEntity(TileAltar.class, "vitality:altar");
+		GameRegistry.registerTileEntity(TileSpellForge.class, "vitality:spell_forge");
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
 	}
 
