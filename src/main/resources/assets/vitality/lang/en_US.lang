@@ -50,7 +50,7 @@ tile.dead_log.name=Dead Log
 
 #Fancy Blocks
 tile.altar.name=Altar
-tie.spell_forge.name=Spell Forge
+tile.spell_forge.name=Spell Forge
 tile.totem_top.name=Totem
 tile.totem_middle.name=Totem
 tile.totem_bottom.name=Totem
@@ -98,6 +98,7 @@ key.pickSpell=Spell Picker GUI
 gui.altarmessage.name=Altar Tier Detected:
 gui.spellforgemessage.name=Spell Forge Tier:
 gui.confirm.name=Right Click again to Confirm Crafting!
+gui.confirmforge.name=Right Click again to Confirm Infusion!
 gui.norecipe.name=No valid recipe is stored in the altar!
 gui.nospells.name=There are no spells to infuse!
 gui.nobag.name=You need a spell bag in your offhand to infuse spells!
@@ -108,5 +109,5 @@ gui.notenoughessence.name=Not Enough Essence!
 gui.obstructed.name=Location Obstructed!
 gui.invalidblock.name=Invalid Block!
 gui.betterwandneeded.name=Wand too fragile! A higher tier wand is required.
-gui.nospells.name=No spells are stored in the bag!
+gui.nospells.name=No spells are stored in the altar!
 gui.setspell.name=Selected Spell:

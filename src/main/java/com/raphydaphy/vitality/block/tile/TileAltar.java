@@ -277,11 +277,11 @@ public class TileAltar extends TileSimpleInventory
 	@Override
 	public void update()
 	{
-
 		if (!worldObj.isRemote && confirm == 0 && disableTicks == 0)
 		{
 			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class,
 					new AxisAlignedBB(pos, pos.add(1, 1, 1)));
+			System.out.println(items.size());
 			for (EntityItem item : items)
 			{
 				if (!item.isDead && item.getEntityItem() != null)

@@ -6,6 +6,7 @@ import com.raphydaphy.vitality.block.tile.TileSpellForge;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -35,14 +36,20 @@ public class BlockSpellForge extends BlockBase
 	
 	public void onUsedByWand(EntityPlayer player, ItemStack stack, World world, BlockPos pos, EnumFacing side)
 	{
-		if (player == null)
-		{
-			System.out.println("error!!!!!!!!!11");
-		}
-		if (stack == null)
-		{
-			System.out.println("error!!!!!!!");
-		}
+		//world.setBlockState(pos, Blocks.DIAMOND_BLOCK.getDefaultState());
 		((TileSpellForge) world.getTileEntity(pos)).onWanded(player, stack);
+	}
+	
+	@Override
+	public boolean hasTileEntity(IBlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public BlockSpellForge setCreativeTab(CreativeTabs tab)
+	{
+		super.setCreativeTab(tab);
+		return this;
 	}
 }

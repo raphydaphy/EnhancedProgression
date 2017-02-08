@@ -3,12 +3,14 @@ package com.raphydaphy.vitality.block.tile;
 import java.util.List;
 
 import com.raphydaphy.vitality.Vitality;
+import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.nbt.AltarRecipe;
 import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.ModRecipes;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,12 +25,18 @@ public class TileSpellForge extends TileAltar
 {
 	public int altarTier = 1;
 	private int confirm = 0;
-	private int disableTicks = 0;
 	
 	@Override
 	public int getAltarTier()
 	{
 		return 1;
+	}
+	
+	@Override
+	public int getSizeInventory()
+	{
+		// TODO Auto-generated method stub
+		return 4;
 	}
 	
 	@Override
@@ -64,27 +72,30 @@ public class TileSpellForge extends TileAltar
 	
 	public boolean isSpell(ItemStack spell)
 	{
-		if (spell.getItem() == ModItems.spell_card_enhanced_extraction || 
-			spell.getItem() == ModItems.spell_card_explosion_1 ||
-			spell.getItem() == ModItems.spell_card_explosion_2 ||
-			spell.getItem() == ModItems.spell_card_explosion_3 || 
-			spell.getItem() == ModItems.spell_card_fireball_1 || 
-			spell.getItem() == ModItems.spell_card_fireball_2 || 
-			spell.getItem() == ModItems.spell_card_fireball_3 || 
-			spell.getItem() == ModItems.spell_card_flight ||
-			spell.getItem() == ModItems.spell_card_forcefield ||
-			spell.getItem() == ModItems.spell_card_hunger ||
-			spell.getItem() == ModItems.spell_card_lantern_1 ||
-			spell.getItem() == ModItems.spell_card_lantern_2 || 
-			spell.getItem() == ModItems.spell_card_lantern_3 ||
-			spell.getItem() == ModItems.spell_card_rapidfire_1 ||
-			spell.getItem() == ModItems.spell_card_rapidfire_2 ||
-			spell.getItem() == ModItems.spell_card_transmutation ||
-			spell.getItem() == ModItems.spell_card_vital_extraction)
+		if (spell != null)
 		{
-			return true;
+			if (spell.getItem() == ModItems.spell_card_enhanced_extraction || 
+				spell.getItem() == ModItems.spell_card_explosion_1 ||
+				spell.getItem() == ModItems.spell_card_explosion_2 ||
+				spell.getItem() == ModItems.spell_card_explosion_3 || 
+				spell.getItem() == ModItems.spell_card_fireball_1 || 
+				spell.getItem() == ModItems.spell_card_fireball_2 || 
+				spell.getItem() == ModItems.spell_card_fireball_3 || 
+				spell.getItem() == ModItems.spell_card_flight ||
+				spell.getItem() == ModItems.spell_card_forcefield ||
+				spell.getItem() == ModItems.spell_card_hunger ||
+				spell.getItem() == ModItems.spell_card_lantern_1 ||
+				spell.getItem() == ModItems.spell_card_lantern_2 || 
+				spell.getItem() == ModItems.spell_card_lantern_3 ||
+				spell.getItem() == ModItems.spell_card_rapidfire_1 ||
+				spell.getItem() == ModItems.spell_card_rapidfire_2 ||
+				spell.getItem() == ModItems.spell_card_transmutation ||
+				spell.getItem() == ModItems.spell_card_vital_extraction)
+			{
+				return true;
+			}
 		}
-		return false;
+		return true;
 	}
 
 	public boolean hasSpells()
@@ -123,9 +134,19 @@ public class TileSpellForge extends TileAltar
 	
 	public boolean readyToInfuse(EntityPlayer player)
 	{
-		if (player.getHeldItemOffhand().getItem() == ModItems.spell_bag && player.getHeldItemMainhand().getItem() instanceof ItemWand && hasSpells())
+		try
 		{
-			return true;
+			if (player.getHeldItemOffhand().getItem() != null)
+			{
+				if (player.getHeldItemOffhand().getItem() == ModItems.spell_bag && player.getHeldItemMainhand().getItem() instanceof ItemWand && hasSpells())
+				{
+					return true;
+				}
+			}
+		}
+		catch (NullPointerException e)
+		{
+			return false;
 		}
 		return false;
 	}
@@ -149,7 +170,7 @@ public class TileSpellForge extends TileAltar
 			{
 				if (worldObj.isRemote)
 				{
-					Vitality.proxy.setActionText((I18n.format("gui.confirm.name")));
+					Vitality.proxy.setActionText((I18n.format("gui.confirmforge.name")));
 				}
 				else
 				{
@@ -157,15 +178,11 @@ public class TileSpellForge extends TileAltar
 					markDirty();
 				}
 			}
-			if (!worldObj.isRemote && confirm > 1 && disableTicks == 0)
+			if (!worldObj.isRemote && confirm > 1)
 			{
 				if (readyToInfuse(player))
 				{
-					disableTicks = 50;
-					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5,
-							getPos().getZ() + 0.5, currentOutput().copy());
-					worldObj.spawnEntityInWorld(outputItem);
-					altarRecipe = null;
+					System.out.println("you crafted something!");
 					emptyAltar();
 					confirm = 0;
 					markDirty();
@@ -185,12 +202,13 @@ public class TileSpellForge extends TileAltar
 	
 	public boolean addItem(ItemStack stack)
 	{
+		System.out.println("something is adding!");
 		if (isSpell(stack))
 		{
 			boolean did = false;
 			
 			for (int i = 0; i < getSizeInventory(); i++)
-				if (itemHandler.getStackInSlot(i) == null && disableTicks == 0)
+				if (itemHandler.getStackInSlot(i) == null)
 				{
 					did = true;
 					ItemStack stackToAdd = stack.copy();
@@ -213,13 +231,16 @@ public class TileSpellForge extends TileAltar
 	@Override
 	public void update()
 	{
-
-		if (!worldObj.isRemote && confirm == 0 && disableTicks == 0)
+		if (!worldObj.isRemote && confirm == 0)
 		{
+			worldObj.setBlockState(pos.add(1,1,1), ModBlocks.fluxed_log.getDefaultState());
 			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class,
 					new AxisAlignedBB(pos, pos.add(1, 1, 1)));
+			System.out.println(worldObj.getEntitiesWithinAABB(EntityItem.class,
+					new AxisAlignedBB(pos, pos.add(1, 1, 1))));
 			for (EntityItem item : items)
 			{
+				System.out.println("we haz an item");
 				if (!item.isDead && item.getEntityItem() != null)
 				{
 					ItemStack stack = item.getEntityItem();
@@ -230,15 +251,11 @@ public class TileSpellForge extends TileAltar
 				}
 			}
 		}
-
-		else if (disableTicks > 0)
-		{
-			--disableTicks;
-		}
 	}
 	
 	public void renderHUD(Minecraft mc, ScaledResolution res)
 	{
+		System.out.println("drawing");
 		int screenWidth = res.getScaledWidth() / 2;
 		int screenHeight = res.getScaledHeight() / 2;
 
@@ -271,26 +288,14 @@ public class TileSpellForge extends TileAltar
 
 				angle += anglePer;
 			}
-
-			if (hasValidRecipe())
+			if (mc.thePlayer.getHeldItemOffhand().getItem() == ModItems.spell_bag)
 			{
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
 				GlStateManager.scale(2, 2, 2);
-				mc.getRenderItem().renderItemIntoGUI(currentOutput(), 0, 0);
+				mc.getRenderItem().renderItemIntoGUI(new ItemStack(ModItems.spell_bag), 0, 0);
 				GlStateManager.translate(-screenWidth, -screenHeight, 0);
 				GlStateManager.popMatrix();
-			}
-			else if (hasValidItems() && !hasValidRecipe())
-			{
-				GlStateManager.pushMatrix();
-				GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
-				GlStateManager.scale(2, 2, 2);
-				mc.getRenderItem().renderItemIntoGUI(currentOutput(), 0, 0);
-				mc.fontRendererObj.drawStringWithShadow("x", screenWidth, screenHeight, 0xFFFFFF);
-				GlStateManager.translate(-screenWidth, -screenHeight, 0);
-				GlStateManager.popMatrix();
-
 			}
 			net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 		}
