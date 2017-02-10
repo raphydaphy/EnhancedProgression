@@ -45,13 +45,73 @@ public class TileSpellForge extends TileAltar
 
 	public int getSpellID(ItemStack spell)
 	{
-		if (spell.getItem() != null)
+		if (spell.getItem() == ModItems.spell_card_vital_extraction)
 		{
-			if (spell.getItem() instanceof ItemSpell)
-			{
-				ItemSpell spellItem = (ItemSpell)spell.getItem();
-				return spellItem.getID();
-			}
+			return 800;
+		}
+		else if (spell.getItem() == ModItems.spell_card_lantern_1)
+		{
+			return 810;
+		}
+		else if (spell.getItem() == ModItems.spell_card_lantern_2)
+		{
+			return 811;
+		}
+		else if (spell.getItem() == ModItems.spell_card_lantern_3)
+		{
+			return 812;
+		}
+		else if (spell.getItem() == ModItems.spell_card_explosion_1)
+		{
+			return 820;
+		}
+		else if (spell.getItem() == ModItems.spell_card_explosion_2)
+		{
+			return 821;
+		}
+		else if (spell.getItem() == ModItems.spell_card_explosion_3)
+		{
+			return 822;
+		}
+		else if (spell.getItem() == ModItems.spell_card_fireball_1)
+		{
+			return 830;
+		}
+		else if (spell.getItem() == ModItems.spell_card_fireball_2)
+		{
+			return 831;
+		}
+		else if (spell.getItem() == ModItems.spell_card_fireball_3)
+		{
+			return 832;
+		}
+		else if (spell.getItem() == ModItems.spell_card_rapidfire_1)
+		{
+			return 840;
+		}
+		else if (spell.getItem() == ModItems.spell_card_rapidfire_2)
+		{
+			return 841;
+		}
+		else if (spell.getItem() == ModItems.spell_card_transmutation)
+		{
+			return 85;
+		}
+		else if (spell.getItem() == ModItems.spell_card_hunger)
+		{
+			return 860;
+		}
+		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction)
+		{
+			return 870;
+		}
+		else if (spell.getItem() == ModItems.spell_card_flight)
+		{
+			return 880;
+		}
+		else if (spell.getItem() == ModItems.spell_card_forcefield)
+		{
+			return 890;
 		}
 		return 0;
 	}
@@ -66,9 +126,12 @@ public class TileSpellForge extends TileAltar
 	
 	public boolean isSpell(ItemStack spell)
 	{
-		if (spell.getItem() instanceof ItemSpell)
+		if (spell != null)
 		{
-			return true;
+			if (spell.getItem() instanceof ItemSpell)
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -145,7 +208,6 @@ public class TileSpellForge extends TileAltar
 			{
 				if (readyToInfuse(player))
 				{
-					System.out.println("you crafted something!");
 					for (int i = 0; i < getSizeInventory(); i++)
 					{	
 						if (itemHandler.getStackInSlot(i).getItem() != null)
@@ -167,8 +229,8 @@ public class TileSpellForge extends TileAltar
 			            		{
 			            			if (curSpell == getSpellID(itemHandler.getStackInSlot(i)))
 			            			{
-			            				System.out.println("haha now ur gonna burn");
-			            				itemHandler.setStackInSlot(i, null);
+			            				Vitality.proxy.setActionText((I18n.format("gui.overlap.name")));
+			            				// we need to do something here to deal with the spell already being in the bag
 			            			}
 			            		}
 			            		int[] curSpells = resultBag.getTagCompound().getIntArray("spells");
@@ -177,6 +239,10 @@ public class TileSpellForge extends TileAltar
 			            		    if(curSpells[k] == 0)
 			            		    {
 			            		    	curSpells[k] = getSpellID(itemHandler.getStackInSlot(i));
+			            		    	itemHandler.setStackInSlot(i, null);
+			            		    	Vitality.proxy.setActionText((I18n.format("gui.forgesuccess.name")));
+			            		    	markDirty();
+			            		    	PacketManager.dispatchTE(worldObj, pos);
 			            		    	break;
 			            		    }
 			            		}
@@ -184,7 +250,6 @@ public class TileSpellForge extends TileAltar
 		                	}
 						}
 					}
-					emptyAltar();
 					confirm = 0;
 					markDirty();
 					PacketManager.dispatchTE(worldObj, pos);
