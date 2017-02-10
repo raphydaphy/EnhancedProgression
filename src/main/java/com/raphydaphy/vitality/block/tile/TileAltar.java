@@ -281,7 +281,6 @@ public class TileAltar extends TileSimpleInventory
 		{
 			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class,
 					new AxisAlignedBB(pos, pos.add(1, 1, 1)));
-			System.out.println(items.size());
 			for (EntityItem item : items)
 			{
 				if (!item.isDead && item.getEntityItem() != null)

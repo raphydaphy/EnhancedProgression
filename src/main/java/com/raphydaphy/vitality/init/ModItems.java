@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.item.ItemBase;
+import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemSpellBag;
 import com.raphydaphy.vitality.item.ItemWand;
 
@@ -25,13 +26,13 @@ public class ModItems
 
 	public static ItemBase spell_card_vital_extraction;
 	
-	public static ItemBase spell_card_explosion_1;
-	public static ItemBase spell_card_explosion_2;
-	public static ItemBase spell_card_explosion_3;
+	public static ItemSpell spell_card_explosion_1;
+	public static ItemSpell spell_card_explosion_2;
+	public static ItemSpell spell_card_explosion_3;
 	
-	public static ItemBase spell_card_fireball_1;
-	public static ItemBase spell_card_fireball_2;
-	public static ItemBase spell_card_fireball_3;
+	public static ItemSpell spell_card_fireball_1;
+	public static ItemSpell spell_card_fireball_2;
+	public static ItemSpell spell_card_fireball_3;
 	
 	public static ItemBase spell_card_lantern_1;
 	public static ItemBase spell_card_lantern_2;
@@ -70,20 +71,17 @@ public class ModItems
 				new ItemSpellBag().setCreativeTab(Vitality.creativeTab));
 		
 		// Three tiers of explosion spell cards
-		spell_card_explosion_1 = register(
-				new ItemBase("spell_card_explosion_1", 1).setCreativeTab(Vitality.creativeTab));
-		spell_card_explosion_2 = register(
-				new ItemBase("spell_card_explosion_2", 1).setCreativeTab(Vitality.creativeTab));
-		spell_card_explosion_3 = register(
-				new ItemBase("spell_card_explosion_3", 1).setCreativeTab(Vitality.creativeTab));
+		spell_card_explosion_1 = register(new ItemSpell("spell_card_explosion_1", 820));
+		spell_card_explosion_2 = register(new ItemSpell("spell_card_explosion_2", 821));
+		spell_card_explosion_3 = register(new ItemSpell("spell_card_explosion_3", 822));
 		
 		// Three tiers of fireball spell cards
 		spell_card_fireball_1 = register(
-				new ItemBase("spell_card_fireball_1", 1).setCreativeTab(Vitality.creativeTab));
+				new ItemSpell("spell_card_fireball_1", 830));
 		spell_card_fireball_2 = register(
-				new ItemBase("spell_card_fireball_2", 1).setCreativeTab(Vitality.creativeTab));
+				new ItemSpell("spell_card_fireball_2", 831));
 		spell_card_fireball_3 = register(
-				new ItemBase("spell_card_fireball_3", 1).setCreativeTab(Vitality.creativeTab));
+				new ItemSpell("spell_card_fireball_3", 832));
 		
 		// Three tiers of lantern spell cards
 		spell_card_lantern_1 = register(
