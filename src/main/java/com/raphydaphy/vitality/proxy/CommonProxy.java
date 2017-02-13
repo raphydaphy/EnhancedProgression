@@ -28,6 +28,7 @@ public class CommonProxy
 
 	public void init()
 	{
+		
 	}
 
 	public void preInit()
@@ -39,9 +40,9 @@ public class CommonProxy
 		PacketManager.INSTANCE.registerMessage(new MessageChangeSpell.ChangeSpellHandler(), MessageChangeSpell.class, 80, Side.SERVER);
 		
 		ModRecipies.registerOreDict();
-		AltarRecipes.init();
+		
 
-		GameRegistry.registerTileEntity(TileAltar.class, "vitality:altar");
+		
 		GameRegistry.registerTileEntity(TileSpellForge.class, "vitality:spell_forge");
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
 	}
