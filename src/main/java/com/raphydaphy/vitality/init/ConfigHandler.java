@@ -44,6 +44,9 @@ public class ConfigHandler
         
         @Config.Comment({"Enable Unabridged Immortality Spell Crafting. Disabled because its broken", "Default: false"})
         public boolean enableUnabridgedImmortality = false;
+        
+        @Config.Comment({"Enable Expert Mode", "Default: false"})
+        public boolean enableExpertMode = false;
     }
 
     public static class WandSettings {

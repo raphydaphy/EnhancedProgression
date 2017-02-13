@@ -79,7 +79,7 @@ public class TileAltar extends TileSimpleInventory
 	{
 		boolean quartzValid = checkAllIterable(QUARTZ_BLOCKS, Blocks.QUARTZ_BLOCK);
 		boolean obsidianValid = checkAllArray(OBSIDIAN_BLOCKS, Blocks.OBSIDIAN);
-		boolean imbuedValid = checkAllArray(IMBUED_LOG_BLOCKS, ModBlocks.imbued_log);
+		boolean imbuedValid = checkAllArray(IMBUED_LOG_BLOCKS, ModBlocks.imbued_plank);
 		
 		if (quartzValid && obsidianValid && imbuedValid)
 		{

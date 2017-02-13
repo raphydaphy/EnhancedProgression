@@ -423,9 +423,12 @@ public class ItemWand extends Item implements ICraftAchievement
 				if (useEssence(2500, stack))
 				{
 					entityplayer.capabilities.allowFlying = true;
-					spawnParticles(EnumParticleTypes.END_ROD, worldIn, true, player.getPosition(), 100, 2);
-					spawnParticles(EnumParticleTypes.ENCHANTMENT_TABLE, worldIn, true, player.getPosition(), 100, 2);
-					spawnParticles(EnumParticleTypes.SPELL_WITCH, worldIn, true, player.getPosition(), 100, 2);
+					if (!worldIn.isRemote)
+					{
+						spawnParticles(EnumParticleTypes.END_ROD, worldIn, true, player.getPosition(), 100, 2);
+						spawnParticles(EnumParticleTypes.ENCHANTMENT_TABLE, worldIn, true, player.getPosition(), 100, 2);
+						spawnParticles(EnumParticleTypes.SPELL_WITCH, worldIn, true, player.getPosition(), 100, 2);
+					}
 					worldIn.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
 					entityplayer.swingArm(hand);
 					player.getCooldownTracker().setCooldown(this, 100);
@@ -440,8 +443,11 @@ public class ItemWand extends Item implements ICraftAchievement
 			else
 			{
 				entityplayer.capabilities.allowFlying = false;
-				spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, player.getPosition(), 100, 2);
-				spawnParticles(EnumParticleTypes.PORTAL, worldIn, true, player.getPosition(), 100, 2);
+				if (worldIn.isRemote)
+				{
+					spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, player.getPosition(), 100, 2);
+					spawnParticles(EnumParticleTypes.PORTAL, worldIn, true, player.getPosition(), 100, 2);
+				}
 				worldIn.playSound(player, player.getPosition(), SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.AMBIENT, 1, 1);
 				entityplayer.swingArm(hand);
 				player.getCooldownTracker().setCooldown(this, 100);
@@ -466,17 +472,9 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 			if (useEssence(essenceAmount, stack))
 			{
-				try
-				{
-					Entity toKill = Minecraft.getMinecraft().pointedEntity;
-					worldIn.createExplosion(player, toKill.posX, toKill.posY, toKill.posZ, blastPower, false);
-				}
-				catch (NullPointerException e)
-				{
-					RayTraceResult toBlowUp = Minecraft.getMinecraft().objectMouseOver;
-					BlockPos bombPos = toBlowUp.getBlockPos();
-					worldIn.createExplosion(player, bombPos.getX(), bombPos.getY() + 2, bombPos.getZ(), blastPower, false);
-				}
+				RayTraceResult toBlowUp = Minecraft.getMinecraft().objectMouseOver;
+				BlockPos bombPos = toBlowUp.getBlockPos();
+				worldIn.createExplosion(player, bombPos.getX(), bombPos.getY() + 2, bombPos.getZ(), blastPower, false);
 				player.swingArm(hand);
 				player.getCooldownTracker().setCooldown(this, 25);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
@@ -565,7 +563,10 @@ public class ItemWand extends Item implements ICraftAchievement
 			// This line causes anyone who isnt running the server (in LAN/singleplayer)
 			// to crash with NullPointerExceptions. However, it works for every
 			// other time when particles are spawned on a non-server host instance.
-			spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, player.worldObj, true, pos, 3, 1);
+			if (!world.isRemote)
+			{
+				spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, player.worldObj, true, pos, 3, 1);
+			}
 			player.swingArm(hand);
 			world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
 
@@ -653,17 +654,20 @@ public class ItemWand extends Item implements ICraftAchievement
 					return EnumActionResult.FAIL;
 				}
 			}
-			// If the Magic Lantern spell is used on a blocks
+			// If the Magic Lantern spell is used on a block
 			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 809 && getActiveSpell(player.getHeldItemOffhand()) < 820)
 			{
 				int essenceVal = 5;
+				int cooldown = 20;
 				if (getActiveSpell(player.getHeldItemOffhand()) == 811)
 				{
 					essenceVal = 2;
+					cooldown = 10;
 				}
 				else if (getActiveSpell(player.getHeldItemOffhand()) == 812)
 				{
 					essenceVal = 0;
+					cooldown = 5;
 				}
 				BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
 				if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
@@ -673,7 +677,7 @@ public class ItemWand extends Item implements ICraftAchievement
 						spawnParticles(EnumParticleTypes.FLAME, world, true,new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ()), 15, 1);
 						world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
 						player.swingArm(hand);
-						player.getCooldownTracker().setCooldown(this, 20);
+						player.getCooldownTracker().setCooldown(this, cooldown);
 						return EnumActionResult.SUCCESS;
 					}
 					else

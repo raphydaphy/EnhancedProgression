@@ -36,42 +36,96 @@ public class ModRecipies
 				"ingotTin");
 		if (ConfigHandler.crafting.enableMagicLantern)
 		{
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_1), "SCS", "CBC", "SCS", 'S', "stickWood", 'C',
-					"justALumpOfCoalPlzIgnore", 'B', "ingotBronze");
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_2), "SCS", "CBC", "SCS", 'S', ModItems.imbued_stick, 'C',
-					ModItems.spell_card_lantern_1, 'B', ModItems.ingot_bronze_imbued);
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_3), "SCS", "CBC", "SCS", 'S', ModItems.fluxed_stick, 'C',
-					ModItems.spell_card_lantern_2, 'B', ModItems.ingot_fluxed);
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_1), "SCS", "CBC", "SCS", 'S', "stickWood", 'C',
+						"torch", 'B', Items.CLAY_BALL);
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_2), "SCS", "CBC", "SCS", 'S', ModItems.imbued_stick, 'C',
+						ModItems.spell_card_lantern_1, 'B', ModItems.ingot_bronze_imbued);
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_3), "SCS", "CBC", "SCS", 'S', ModItems.fluxed_stick, 'C',
+						ModItems.spell_card_lantern_2, 'B', ModItems.ingot_fluxed);
+			}
+			else
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_1), "SCS", "CBC", "SCS", 'S', "stickWood", 'C',
+						"justALumpOfCoalPlzIgnore", 'B', "ingotBronze");
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_2), "SCS", "CBC", "SCS", 'S', ModItems.imbued_stick, 'C',
+						ModItems.spell_card_lantern_1, 'B', ModItems.ingot_bronze_imbued);
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_lantern_3), "SCS", "CBC", "SCS", 'S', ModItems.fluxed_stick, 'C',
+						ModItems.spell_card_lantern_2, 'B', ModItems.ingot_fluxed);
+			}
 		}
 		if (ConfigHandler.crafting.enableVitalExtraction)
 		{
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_vital_extraction), "SLS", "LBL", "SLS", 'S', "stickWood",
-					'L', "logWood", 'B', "ingotBronze");
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_vital_extraction), "SLS", "LBL", "SLS", 'S', "stickWood",
+						'L', "treeSapling", 'B', Items.CLAY_BALL);
+			}
+			else
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_vital_extraction), "SLS", "LBL", "SLS", 'S', "stickWood",
+						'L', "logWood", 'B', "ingotBronze");
+			}
 		}
 		if (ConfigHandler.crafting.enableContainedExplosion)
 		{
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_1), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
-					"gunpowder", 'B', "ingotBronze");
-			
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_2), "SGS", "GBG", "SGS", 'S', ModItems.imbued_stick, 'G',
-					ModItems.spell_card_explosion_1, 'B', ModItems.ingot_bronze_imbued);
-			
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
-					ModItems.spell_card_explosion_2, 'B', ModItems.ingot_fluxed);
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_1), "SGS", "GBG", "SGS", 'S', "rodStone", 'G',
+						"gunpowder", 'B', Items.CLAY_BALL);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_2), "SGS", "GBG", "SGS", 'S', ModItems.imbued_stick, 'G',
+						ModItems.spell_card_explosion_1, 'B', ModItems.ingot_bronze_imbued);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
+						ModItems.spell_card_explosion_2, 'B', ModItems.ingot_fluxed);
+			}
+			else
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_1), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
+						"gunpowder", 'B', "ingotBronze");
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_2), "SGS", "GBG", "SGS", 'S', ModItems.imbued_stick, 'G',
+						ModItems.spell_card_explosion_1, 'B', ModItems.ingot_bronze_imbued);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_explosion_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
+						ModItems.spell_card_explosion_2, 'B', ModItems.ingot_fluxed);
+			}
 		}
 		if (ConfigHandler.crafting.enableRadiantFireball)
 		{
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_1), "SFS", "FBF", "SFS", 'S', "stickWood", 'F',
-					Items.FIRE_CHARGE, 'B', "ingotBronze");
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_2), "SFS", "FBF", "SFS", 'S', ModItems.imbued_stick, 'F',
-					ModItems.spell_card_fireball_1, 'B', ModItems.ingot_bronze_imbued);
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_3), "SFS", "FBF", "SFS", 'S', ModItems.fluxed_stick, 'F',
-					ModItems.spell_card_fireball_2, 'B', ModItems.ingot_fluxed);
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_1), "SFS", "FBF", "SFS", 'S', "rodStone", 'F',
+						"slimecrystalMagma", 'B', "ingotDawnstone");
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_2), "SFS", "FBF", "SFS", 'S', ModItems.imbued_stick, 'F',
+						ModItems.spell_card_fireball_1, 'B', ModItems.ingot_bronze_imbued);
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_3), "SFS", "FBF", "SFS", 'S', ModItems.fluxed_stick, 'F',
+						ModItems.spell_card_fireball_2, 'B', ModItems.ingot_fluxed);
+			}
+			else
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_1), "SFS", "FBF", "SFS", 'S', "stickWood", 'F',
+						Items.FIRE_CHARGE, 'B', "ingotBronze");
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_2), "SFS", "FBF", "SFS", 'S', ModItems.imbued_stick, 'F',
+						ModItems.spell_card_fireball_1, 'B', ModItems.ingot_bronze_imbued);
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_3), "SFS", "FBF", "SFS", 'S', ModItems.fluxed_stick, 'F',
+						ModItems.spell_card_fireball_2, 'B', ModItems.ingot_fluxed);
+			}
 		}
 		if (ConfigHandler.crafting.enableCrypticTransmutation)
 		{
-			addOreDictRecipe(new ItemStack(ModItems.spell_card_transmutation), "SPS", "PBP", "SPS", 'S', "stickWood",
-					'P', Items.BLAZE_POWDER, 'B', "ingotBronze");
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_transmutation), "SPS", "PBP", "SPS", 'S', "stickIron",
+						'P', "manaPearl", 'B', "ingotDawnstone");
+			}
+			else
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_transmutation), "SPS", "PBP", "SPS", 'S', "stickWood",
+						'P', Items.BLAZE_POWDER, 'B', "ingotBronze");
+			}
 		}
 
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.advanced_wand), "  B", " S ", "S  ", 'S',
@@ -107,13 +161,30 @@ public class ModRecipies
 		}
 		if (ConfigHandler.crafting.enableEnhancedExtraction)
 		{
-			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS",
-					'S', ModItems.imbued_stick, 'D', Items.DIAMOND, 'B', ModItems.ingot_bronze_imbued);
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS", 'S', ModItems.imbued_stick,
+						'D', "ingotElvenElementium", 'B',ModItems.ingot_bronze_imbued);
+			}
+			else
+			{
+				GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS",
+						'S', ModItems.imbued_stick, 'D', Items.DIAMOND, 'B', ModItems.ingot_bronze_imbued);
+			}
+			
 		}
 		if (ConfigHandler.crafting.enableElevatedMomentum)
 		{
-			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_flight), "SFS", "FIF", "SFS",
-					'S', ModItems.fluxed_stick, 'F', Items.FEATHER, 'I', ModItems.ingot_fluxed);
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_flight), "SFS", "FIF", "SFS",
+						'S', ModItems.fluxed_stick, 'F', "ingotDraconiumAwakened", 'I', ModItems.ingot_fluxed);
+			}
+			else
+			{
+				GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_flight), "SFS", "FIF", "SFS",
+						'S', ModItems.fluxed_stick, 'F', Items.FEATHER, 'I', ModItems.ingot_fluxed);
+			}
 		}
 		if (ConfigHandler.crafting.enableUnabridgedImmortality)
 		{
