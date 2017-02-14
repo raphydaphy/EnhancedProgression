@@ -19,6 +19,9 @@ import com.raphydaphy.vitality.nbt.NBTLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOre;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
@@ -51,6 +54,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*
  * Main class to control all wands
@@ -548,6 +553,8 @@ public class ItemWand extends Item implements ICraftAchievement
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 	}
+	
+	
 
 	/*
 	 * Called when the wand is right-clicked onto a block (not in air)
@@ -717,6 +724,36 @@ public class ItemWand extends Item implements ICraftAchievement
 					Vitality.proxy.setActionText((I18n.format("gui.invalidblock.name")));
 					return EnumActionResult.FAIL;
 				}
+			}
+			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 899 && getActiveSpell(player.getHeldItemOffhand()) < 910)
+			{
+				if (block instanceof IGrowable)
+		        {
+					int essenceVal = 100;
+					if (getActiveSpell(player.getHeldItemOffhand()) == 901)
+					{
+						essenceVal = 50;
+					}
+					else if (getActiveSpell(player.getHeldItemOffhand()) == 902)
+					{
+						essenceVal = 25;
+					}
+		            IGrowable igrowable = (IGrowable)block;
+		            IBlockState iblockstate = world.getBlockState(pos);
+		            if (igrowable.canGrow(world, pos, iblockstate, world.isRemote))
+		            {
+		                if (!world.isRemote && useEssence(essenceVal, stack))
+		                {
+		                    if (igrowable.canUseBonemeal(world, world.rand, pos, iblockstate))
+		                    {
+		                    	spawnParticles(EnumParticleTypes.VILLAGER_HAPPY, world, true, pos, 15, 1);
+		                        igrowable.grow(world, world.rand, pos, iblockstate);
+		                    }
+		                }
+		                
+		            }
+		        }
+
 			}
 			// If the Magic Lantern spell is used on a block
 			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 809 && getActiveSpell(player.getHeldItemOffhand()) < 820)

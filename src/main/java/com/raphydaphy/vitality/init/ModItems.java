@@ -109,14 +109,14 @@ public class ModItems
 				new ItemBase("spell_card_rapidfire_2", 1).setCreativeTab(Vitality.creativeTab));
 		
 		// Three tiers of renewed fertilization cards
-		spell_card_fertilization_1 = register(new ItemSpell("spell_card_renewed_fertilization_1", 900));
-		spell_card_fertilization_2 = register(new ItemSpell("spell_card_renewed_fertilization_2", 901));
-		spell_card_fertilization_3 = register(new ItemSpell("spell_card_renewed_fertilization_3", 902));
+		spell_card_fertilization_1 = register(new ItemSpell("spell_card_fertilization_1", 900));
+		spell_card_fertilization_2 = register(new ItemSpell("spell_card_fertilization_2", 901));
+		spell_card_fertilization_3 = register(new ItemSpell("spell_card_fertilization_3", 902));
 		
 		// Three tiers of angelic placement cards
-		spell_card_placement_1 = register(new ItemSpell("spell_card_angelic_placement_1", 910));
-		spell_card_placement_2 = register(new ItemSpell("spell_card_angelic_placement_2", 911));
-		spell_card_placement_3 = register(new ItemSpell("spell_card_angelic_placement_3", 912));
+		spell_card_placement_1 = register(new ItemSpell("spell_card_placement_1", 910));
+		spell_card_placement_2 = register(new ItemSpell("spell_card_placement_2", 911));
+		spell_card_placement_3 = register(new ItemSpell("spell_card_placement_3", 912));
 		
 		spell_card_hunger = register(
 				new ItemBase("spell_card_hunger", 1).setCreativeTab(Vitality.creativeTab));
