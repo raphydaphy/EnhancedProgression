@@ -27,6 +27,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityLargeFireball;
@@ -197,6 +198,16 @@ public class ItemWand extends Item implements ICraftAchievement
 		{
 			// ID of the hunger spell
 			return 860;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_lightning_1)))
+		{
+			// ID of the imbued lightning spell
+			return 920;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_lightning_2)))
+		{
+			// ID of the fluxed lightning spell
+			return 921;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_enhanced_extraction_1)))
 		{
@@ -546,6 +557,33 @@ public class ItemWand extends Item implements ICraftAchievement
 				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 			}
 		}
+		else if (getActiveSpell(player.getHeldItemOffhand()) > 919 && getActiveSpell(player.getHeldItemOffhand()) < 930)
+		{
+			int essenceVal = 250;
+			int cooldown = 20;
+			if (getActiveSpell(player.getHeldItemOffhand()) == 921)
+			{
+				essenceVal = 100;
+				cooldown = 10;
+			}
+			RayTraceResult theblock = Minecraft.getMinecraft().objectMouseOver;
+			Block therealblock = worldIn.getBlockState(theblock.getBlockPos()).getBlock();
+			if (therealblock != null)
+			{
+				EntityLightningBolt lightning = new EntityLightningBolt(worldIn, theblock.getBlockPos().getX(), theblock.getBlockPos().getY(), theblock.getBlockPos().getZ(), false);
+				useEssence(essenceVal, stack);
+				if (!worldIn.isRemote)
+				{
+					worldIn.addWeatherEffect(lightning);
+				}
+				player.getCooldownTracker().setCooldown(this, cooldown);
+				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+			}
+			else
+			{
+				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+			}
+		}
 		// Angelic Placement
 		else if (getActiveSpell(player.getHeldItemOffhand()) > 909 && getActiveSpell(player.getHeldItemOffhand()) < 920)
 		{
@@ -573,7 +611,7 @@ public class ItemWand extends Item implements ICraftAchievement
 			Block therealblock = worldIn.getBlockState(theblock.getBlockPos()).getBlock();
 			if (theblock != null)
 			{
-				if (player.isSneaking() && !worldIn.isRemote)
+				if (player.isSneaking())
 				{
 					if (therealblock == Blocks.DIRT)
 					{
@@ -607,24 +645,32 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 				else if (therealblock == Blocks.AIR || therealblock == Blocks.FLOWING_LAVA || therealblock == Blocks.FLOWING_WATER)
 				{
-					if (!worldIn.isRemote)
+					if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 1)
 					{
-						System.out.println(currentActiveBlock);
-						if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 1)
+						if (!worldIn.isRemote)
 						{
 							worldIn.setBlockState(theblock.getBlockPos(), Blocks.DIRT.getDefaultState());
 						}
-						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
+					}
+					else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
+					{
+						if (!worldIn.isRemote)
 						{
 							worldIn.setBlockState(theblock.getBlockPos(), Blocks.PLANKS.getDefaultState());
 						}
-						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 3)
+					}
+					else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 3)
+					{
+						if (!worldIn.isRemote)
 						{
 							worldIn.setBlockState(theblock.getBlockPos(), Blocks.COBBLESTONE.getDefaultState());
 						}
-						spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, theblock.getBlockPos(), 4, 1);
-						useEssence(essenceVal, stack);
 					}
+					if (!worldIn.isRemote)
+					{
+						spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, theblock.getBlockPos(), 4, 1);
+					}
+					useEssence(essenceVal, stack);
 					if (currentActiveBlock == 2)
 					{
 						worldIn.playSound(null, theblock.getBlockPos(), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);

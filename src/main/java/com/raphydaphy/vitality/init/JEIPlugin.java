@@ -85,6 +85,9 @@ public class JEIPlugin implements IModPlugin
 				"This spell will shoot five arrows every few ticks, for an initial cost of 250 essence and then two essence whenever arrows are shot..");
 		registry.addDescription(new ItemStack(ModItems.spell_card_hunger),
 				"If you ever find yourself out of food and hungry, this spell will restore your hunger and saturation levels to full, but will do so at the expense of 500 essence.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_lightning_1),
+				"For 250 essence, this spell summons a lightning bolt to destroy your foes! Be careful, because it can start a fire.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_lightning_2), "This functions the same as the Imbued Lightning spell, but only costs 100 essence to use.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_transmutation),
 				"One of the first arts any good magician must learn is that of transmutation - turning objects into other objects. This spell, if used correctly, will turn a diamond block into an altar at the cost of 1000 essence. This can also be used to create spell bags from bookshelfs for 500 essence.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_enhanced_extraction_1),

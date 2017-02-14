@@ -35,25 +35,29 @@ public class ItemSpell extends ItemBase implements IPickupAchievement
 			{
 				return ModAchievements.craft_vital_extraction;
 			}
-			case "spell_card_lantern":
+			case "spell_card_lantern_1":
 			{
 				return ModAchievements.craft_magic_lantern;
 			}
-			case "spell_card_explosion":
+			case "spell_card_explosion_1":
 			{
 				return ModAchievements.craft_contained_explosion;
 			}
-			case "spell_card_fireball":
+			case "spell_card_fireball_1":
 			{
 				return ModAchievements.craft_radiant_fireball;
 			}
-			case "spell_card_fertilization":
+			case "spell_card_fertilization_1":
 			{
 				return ModAchievements.craft_renewed_fertilization;
 			}
-			case "spell_card_placement":
+			case "spell_card_placement_1":
 			{
 				return ModAchievements.craft_angelic_placement;
+			}
+			case "spell_card_lightning_1":
+			{
+				return ModAchievements.craft_imbued_lightning;
 			}
 			case "spell_card_transmutation":
 			{

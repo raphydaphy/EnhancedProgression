@@ -67,6 +67,10 @@ public class GuiSpellSelect extends GuiScreen
 			return new ItemStack(ModItems.spell_card_transmutation);
 		case 860:
 			return new ItemStack(ModItems.spell_card_hunger);
+		case 920:
+			return new ItemStack(ModItems.spell_card_lightning_1);
+		case 921:
+			return new ItemStack(ModItems.spell_card_lightning_2);
 		case 870:
 			return new ItemStack(ModItems.spell_card_enhanced_extraction_1);
 		case 871:

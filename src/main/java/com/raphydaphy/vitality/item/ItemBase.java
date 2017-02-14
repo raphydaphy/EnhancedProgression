@@ -47,15 +47,15 @@ public class ItemBase extends Item implements ICraftAchievement, IPickupAchievem
 			{
 				return ModAchievements.craft_vital_extraction;
 			}
-			case "spell_card_lantern":
+			case "spell_card_lantern_1":
 			{
 				return ModAchievements.craft_magic_lantern;
 			}
-			case "spell_card_explosion":
+			case "spell_card_explosion_1":
 			{
 				return ModAchievements.craft_contained_explosion;
 			}
-			case "spell_card_fireball":
+			case "spell_card_fireball_1":
 			{
 				return ModAchievements.craft_radiant_fireball;
 			}

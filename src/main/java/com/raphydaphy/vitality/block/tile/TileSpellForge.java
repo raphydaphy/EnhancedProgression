@@ -125,6 +125,14 @@ public class TileSpellForge extends TileAltar
 		{
 			return 860;
 		}
+		else if (spell.getItem() == ModItems.spell_card_lightning_1)
+		{
+			return 920;
+		}
+		else if (spell.getItem() == ModItems.spell_card_lightning_2)
+		{
+			return 921;
+		}
 		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction_1)
 		{
 			return 870;

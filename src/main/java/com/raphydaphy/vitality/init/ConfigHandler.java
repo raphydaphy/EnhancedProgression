@@ -45,6 +45,9 @@ public class ConfigHandler
         @Config.Comment({"Enable Hunger Spell Crafting.", "Default: true"})
         public boolean enableHunger = true;
         
+        @Config.Comment({"Enable Imbued Lightning Spell Crafting.", "Default: true"})
+        public boolean enableImbuedLightning = true;
+        
         @Config.Comment({"Enable Elevated Momentum Spell Crafting.", "Default: true"})
         public boolean enableElevatedMomentum = true;
         

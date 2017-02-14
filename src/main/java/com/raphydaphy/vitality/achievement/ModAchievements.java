@@ -28,6 +28,7 @@ public final class ModAchievements
 	public static Achievement craft_enhanced_extraction;
 	public static Achievement craft_rapidfire;
 	public static Achievement craft_hunger;
+	public static Achievement craft_imbued_lightning;
 	public static Achievement pickup_fluxed_ingot;
 	public static Achievement pickup_fluxed_log;
 	public static Achievement craft_master_wand;
@@ -76,6 +77,9 @@ public final class ModAchievements
 				pickup_imbued_log);
 		
 		craft_hunger = new AchievementMod(AchievementNames.CRAFT_HUNGER, -2, 6, ModItems.spell_card_hunger,
+				pickup_imbued_log);
+		
+		craft_imbued_lightning = new AchievementMod(AchievementNames.CRAFT_IMBUED_LIGHTNING, 0, 8, ModItems.spell_card_lightning_1,
 				pickup_imbued_log);
 		
 		pickup_fluxed_ingot = new AchievementMod(AchievementNames.PICKUP_FLUXED_INGOT, -4, 4, ModItems.ingot_fluxed,

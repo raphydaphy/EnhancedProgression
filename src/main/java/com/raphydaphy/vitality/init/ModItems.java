@@ -52,6 +52,9 @@ public class ModItems
 	public static ItemBase spell_card_transmutation;
 	public static ItemBase spell_card_hunger;
 	
+	public static ItemSpell spell_card_lightning_1;
+	public static ItemSpell spell_card_lightning_2;
+	
 	public static ItemSpell spell_card_enhanced_extraction_1;
 	public static ItemSpell spell_card_enhanced_extraction_2;
 	
@@ -120,6 +123,11 @@ public class ModItems
 		
 		spell_card_hunger = register(
 				new ItemBase("spell_card_hunger", 1).setCreativeTab(Vitality.creativeTab));
+		
+		// Two tiers of lightning spells
+		spell_card_lightning_1 = register(new ItemSpell("spell_card_lightning_1", 920));
+		spell_card_lightning_2 = register(new ItemSpell("spell_card_lightning_2", 921));
+		
 		spell_card_transmutation = register(
 				new ItemBase("spell_card_transmutation", 1).setCreativeTab(Vitality.creativeTab));
 		spell_card_vital_extraction = register(

@@ -216,6 +216,13 @@ public class ModRecipies
 			GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_hunger), "SRS", "RBR", "SRS", 'S',
 					ModItems.imbued_stick, 'R', Items.ROTTEN_FLESH, 'B', ModItems.ingot_bronze_imbued);
 		}
+		if (ConfigHandler.crafting.enableImbuedLightning)
+		{
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_lightning_1), "SDS", "DBD", "SDS", 'S', ModItems.imbued_stick,
+					'D', Items.DIAMOND_AXE, 'B',ModItems.ingot_bronze_imbued);
+			addOreDictRecipe(new ItemStack(ModItems.spell_card_lightning_2), "SDS", "DBD", "SDS", 'S', ModItems.fluxed_stick,
+					'D', ModItems.spell_card_lightning_1, 'B',ModItems.ingot_fluxed);
+		}
 		if (ConfigHandler.crafting.enableEnhancedExtraction)
 		{
 			if (ConfigHandler.crafting.enableExpertMode)
