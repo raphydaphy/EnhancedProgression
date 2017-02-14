@@ -32,8 +32,8 @@ public class AltarRecipes
 					new ItemStack(ModItems.ingot_bronze_imbued), new ItemStack(ModItems.ingot_bronze_imbued), "manaDiamond",
 					"manaDiamond", "manaDiamond");
 	
-			recipeFluxedIngot = ModRecipes.registerAltarRecipe(3, new ItemStack(ModItems.ingot_fluxed), Items.END_CRYSTAL,
-					Items.END_CRYSTAL, Items.END_CRYSTAL, Items.END_CRYSTAL, "manaDiamond", "manaDiamond", "manaDiamond", "manaDiamond",
+			recipeFluxedIngot = ModRecipes.registerAltarRecipe(3, new ItemStack(ModItems.ingot_fluxed), new ItemStack(Items.END_CRYSTAL),
+					new ItemStack(Items.END_CRYSTAL), new ItemStack(Items.END_CRYSTAL), new ItemStack(Items.END_CRYSTAL), "manaDiamond", "manaDiamond", "manaDiamond", "manaDiamond",
 					new ItemStack(ModItems.ingot_bronze_imbued), new ItemStack(ModItems.ingot_bronze_imbued),
 					new ItemStack(ModItems.ingot_bronze_imbued), new ItemStack(ModItems.ingot_bronze_imbued));
 	

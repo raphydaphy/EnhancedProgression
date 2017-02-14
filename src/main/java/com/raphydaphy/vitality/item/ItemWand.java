@@ -443,7 +443,7 @@ public class ItemWand extends Item implements ICraftAchievement
 			else
 			{
 				entityplayer.capabilities.allowFlying = false;
-				if (worldIn.isRemote)
+				if (!worldIn.isRemote)
 				{
 					spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, player.getPosition(), 100, 2);
 					spawnParticles(EnumParticleTypes.PORTAL, worldIn, true, player.getPosition(), 100, 2);
@@ -455,7 +455,7 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 			
 		}
-		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 819 && getActiveSpell(player.getHeldItemOffhand()) < 830)
+		else if (getActiveSpell(player.getHeldItemOffhand()) > 819 && getActiveSpell(player.getHeldItemOffhand()) < 830)
 		{
 			int essenceAmount = 50;
 			int blastPower = 3;

@@ -35,7 +35,7 @@ public class Vitality
 		System.out.println("Setting up vital prerequisites");
 		MinecraftForge.EVENT_BUS.register(new Events());
 		MinecraftForge.EVENT_BUS.register(Events.class);
-		
+		GameRegistry.registerTileEntity(TileAltar.class, "vitality:altar");
 		proxy.preInit();
 	}
 
@@ -47,7 +47,9 @@ public class Vitality
 		ModRecipies.registerSmelting();
 		
 		
-		GameRegistry.registerTileEntity(TileAltar.class, "vitality:altar");
+		
+		
+		
 		proxy.init();
 	}
 
