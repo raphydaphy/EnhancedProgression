@@ -120,3 +120,4 @@ gui.invalidblock.name=Invalid Block!
 gui.betterwandneeded.name=Wand too fragile! A higher tier wand is required.
 gui.nospells.name=No spells are stored in the altar!
 gui.setspell.name=Selected Spell:
+gui.setblockplacement.name=Selected Block:

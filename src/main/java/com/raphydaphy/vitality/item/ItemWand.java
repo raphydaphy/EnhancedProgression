@@ -20,10 +20,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -54,8 +52,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*
  * Main class to control all wands
@@ -393,12 +389,12 @@ public class ItemWand extends Item implements ICraftAchievement
 	 */
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player, EnumHand hand)
 	{
-		if (player.isSneaking())
+		if (player.isSneaking() && (getActiveSpell(player.getHeldItemOffhand()) > 919 || getActiveSpell(player.getHeldItemOffhand()) < 910))
 		{
 			Vitality.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 					+ getEssenceStored(stack) + "/" + maxEssence + " " + (I18n.format("gui.essence.name"))));
 		}
-		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 839 && getActiveSpell(player.getHeldItemOffhand()) < 850)
+		if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 839 && getActiveSpell(player.getHeldItemOffhand()) < 850)
 		{
 			int essenceVal = 100;
 			if (getActiveSpell(player.getHeldItemOffhand()) == 841)
@@ -537,7 +533,6 @@ public class ItemWand extends Item implements ICraftAchievement
 				{
 					if (living != player)
 					{
-						// Thank u tehnut <3
 						living.attackEntityFrom(DamageSource.magic, blastPower);
 					}
 				}
@@ -550,6 +545,106 @@ public class ItemWand extends Item implements ICraftAchievement
 				Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 			}
+		}
+		// Angelic Placement
+		else if (getActiveSpell(player.getHeldItemOffhand()) > 909 && getActiveSpell(player.getHeldItemOffhand()) < 920)
+		{
+			int cooldown = 20;
+			int essenceVal = 50;
+			
+			// 1 = dirt, 2 = planks, 3 = cobble
+			int currentActiveBlock = player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock");
+			if (currentActiveBlock == 0)
+			{
+				player.getHeldItemOffhand().getTagCompound().setInteger("activeBlock", 1);
+			}
+			if (getActiveSpell(player.getHeldItemOffhand()) == 911)
+			{
+				cooldown = 10;
+				essenceVal = 25;
+			}
+			else if (getActiveSpell(player.getHeldItemOffhand()) == 912)
+			{
+				cooldown = 5;
+				essenceVal = 10;
+			}
+			
+			RayTraceResult theblock = Minecraft.getMinecraft().objectMouseOver;
+			Block therealblock = worldIn.getBlockState(theblock.getBlockPos()).getBlock();
+			if (theblock != null)
+			{
+				if (player.isSneaking() && !worldIn.isRemote)
+				{
+					if (therealblock == Blocks.DIRT)
+					{
+						if (currentActiveBlock != 1)
+						{
+							player.getHeldItemOffhand().getTagCompound().setInteger("activeBlock", 1);
+							Vitality.proxy.setActionText((I18n.format("gui.setblockplacement.name") + " Dirt"));
+						}
+					}
+					else if (therealblock == Blocks.PLANKS)
+					{
+						if (currentActiveBlock != 2)
+						{
+							player.getHeldItemOffhand().getTagCompound().setInteger("activeBlock", 2);
+							Vitality.proxy.setActionText((I18n.format("gui.setblockplacement.name") + " Oak Planks"));
+						}
+					}
+					else if (therealblock == Blocks.COBBLESTONE)
+					{
+						if (currentActiveBlock != 3)
+						{
+							player.getHeldItemOffhand().getTagCompound().setInteger("activeBlock", 3);
+							Vitality.proxy.setActionText((I18n.format("gui.setblockplacement.name") + " Cobblestone"));
+						}
+					}
+					else
+					{
+						Vitality.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
+								+ getEssenceStored(stack) + "/" + maxEssence + " " + (I18n.format("gui.essence.name"))));
+					}
+				}
+				else if (therealblock == Blocks.AIR || therealblock == Blocks.FLOWING_LAVA || therealblock == Blocks.FLOWING_WATER)
+				{
+					if (!worldIn.isRemote)
+					{
+						System.out.println(currentActiveBlock);
+						if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 1)
+						{
+							worldIn.setBlockState(theblock.getBlockPos(), Blocks.DIRT.getDefaultState());
+						}
+						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
+						{
+							worldIn.setBlockState(theblock.getBlockPos(), Blocks.PLANKS.getDefaultState());
+						}
+						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 3)
+						{
+							worldIn.setBlockState(theblock.getBlockPos(), Blocks.COBBLESTONE.getDefaultState());
+						}
+						spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, theblock.getBlockPos(), 4, 1);
+						useEssence(essenceVal, stack);
+					}
+					if (currentActiveBlock == 2)
+					{
+						worldIn.playSound(null, theblock.getBlockPos(), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
+					}
+					else
+					{
+						worldIn.playSound(null, theblock.getBlockPos(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 1, 1);
+					}
+					
+					player.swingArm(hand);
+					player.getCooldownTracker().setCooldown(this, cooldown);
+					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+				}
+				else
+				{
+					Vitality.proxy.setActionText((I18n.format("gui.obstructed.name")));
+				}
+				
+			}
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 	}
