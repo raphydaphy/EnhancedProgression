@@ -81,8 +81,9 @@ public class JEIPlugin implements IModPlugin
 				"If you ever find yourself out of food and hungry, this spell will restore your hunger and saturation levels to full, but will do so at the expense of 500 essence.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_transmutation),
 				"One of the first arts any good magician must learn is that of transmutation - turning objects into other objects. This spell, if used correctly, will turn a diamond block into an altar at the cost of 1000 essence. This can also be used to create spell bags from bookshelfs for 500 essence.");
-		registry.addDescription(new ItemStack(ModItems.spell_card_enhanced_extraction),
+		registry.addDescription(new ItemStack(ModItems.spell_card_enhanced_extraction_1),
 				"Once you have a tier 2 altar setup, you will want to be able to collect more essence than you can get from trees in order to cast the more powerful spells crafted with imbued items. The Enhanced Extraction spell, when placed in your offhand, allows you to extract essence from ores in your world. Simply rightclick with a wand while this spell is equipped and watch the magic happen.");
+		registry.addDescription(new ItemStack(ModItems.spell_card_enhanced_extraction_2), "With this higly enhanced extraction spell, you are now able to extract ore in a 3x3x3 radius from your wand. This allows much faster extraction and allows you to fill your wand quickly before you get a essence boilerr to do the job for you.");
 		registry.addDescription(new ItemStack(ModItems.spell_card_flight), "For 2500 essence, this spell grants you with the ability to fly until your next death, or until you use the spell again. Using the spell a second time once you are already able to fly will disable the ability until you use the spell again.");
 		registry.addDescription(new ItemStack(ModItems.spell_bag), "Crafted by right-clicking a bookshelf with a wand while the Cryptic Transmutation spell is active, this item can be crafted together with any spell in a normal crafting table to add it to the bag. Then just shift+rightclick while holding the bag to switch the active spell, and put it in your offhand to use it.");
 	}

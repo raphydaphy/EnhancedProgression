@@ -61,7 +61,7 @@ public final class ModAchievements
 		craft_advanced_wand = new AchievementMod(AchievementNames.CRAFT_ADVANCED_WAND, -2, 4, ModItems.advanced_wand,
 				pickup_imbued_log);
 		
-		craft_enhanced_extraction = new AchievementMod(AchievementNames.CRAFT_ENHANCED_EXTRACTION, 2, 4, ModItems.spell_card_enhanced_extraction,
+		craft_enhanced_extraction = new AchievementMod(AchievementNames.CRAFT_ENHANCED_EXTRACTION, 2, 4, ModItems.spell_card_enhanced_extraction_1,
 				pickup_imbued_log);
 		
 		craft_rapidfire = new AchievementMod(AchievementNames.CRAFT_RAPIDFIRE, 2, 6, ModItems.spell_card_rapidfire_1,

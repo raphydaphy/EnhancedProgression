@@ -21,8 +21,14 @@ public class ModRecipies
 		OreDictionary.registerOre("justALumpOfCoalPlzIgnore", Items.COAL);
 		OreDictionary.registerOre("justALumpOfCoalPlzIgnore", new ItemStack(Items.COAL, 1, 1));
 		
-		OreDictionary.registerOre("oreCopper", ModBlocks.ore_copper);
-		OreDictionary.registerOre("oreTin", ModBlocks.ore_tin);
+		if (ConfigHandler.world.enableCopperGen)
+		{
+			OreDictionary.registerOre("oreCopper", ModBlocks.ore_copper);
+		}
+		if (ConfigHandler.world.enableTinGen)
+		{
+			OreDictionary.registerOre("oreTin", ModBlocks.ore_tin);
+		}
 		OreDictionary.registerOre("ingotCopper", ModItems.ingot_copper);
 		OreDictionary.registerOre("ingotTin", ModItems.ingot_tin);
 		OreDictionary.registerOre("ingotBronze", ModItems.ingot_bronze);
@@ -163,13 +169,17 @@ public class ModRecipies
 		{
 			if (ConfigHandler.crafting.enableExpertMode)
 			{
-				addOreDictRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS", 'S', ModItems.imbued_stick,
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction_1), "SDS", "DBD", "SDS", 'S', ModItems.imbued_stick,
 						'D', "ingotElvenElementium", 'B',ModItems.ingot_bronze_imbued);
+				GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction_2), "SDS", "DBD", "SDS",
+						'S', ModItems.fluxed_stick, 'D', ModItems.spell_card_enhanced_extraction_1, 'B', ModItems.ingot_fluxed);
 			}
 			else
 			{
-				GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction), "SDS", "DBD", "SDS",
+				GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction_1), "SDS", "DBD", "SDS",
 						'S', ModItems.imbued_stick, 'D', Items.DIAMOND, 'B', ModItems.ingot_bronze_imbued);
+				GameRegistry.addShapedRecipe(new ItemStack(ModItems.spell_card_enhanced_extraction_2), "SDS", "DBD", "SDS",
+						'S', ModItems.fluxed_stick, 'D', ModItems.spell_card_enhanced_extraction_1, 'B', ModItems.ingot_fluxed);
 			}
 			
 		}
@@ -196,7 +206,13 @@ public class ModRecipies
 
 	public static void registerSmelting()
 	{
-		GameRegistry.addSmelting(ModBlocks.ore_copper, new ItemStack(ModItems.ingot_copper), 0.7f);
-		GameRegistry.addSmelting(ModBlocks.ore_tin, new ItemStack(ModItems.ingot_tin), 0.7f); 
+		if (ConfigHandler.world.enableCopperGen)
+		{
+			GameRegistry.addSmelting(ModBlocks.ore_copper, new ItemStack(ModItems.ingot_copper), 0.7f);
+		}
+		if (ConfigHandler.world.enableTinGen)
+		{
+			GameRegistry.addSmelting(ModBlocks.ore_tin, new ItemStack(ModItems.ingot_tin), 0.7f); 
+		}
 	}
 }

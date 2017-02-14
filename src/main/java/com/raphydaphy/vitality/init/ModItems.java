@@ -43,7 +43,10 @@ public class ModItems
 	
 	public static ItemBase spell_card_transmutation;
 	public static ItemBase spell_card_hunger;
-	public static ItemBase spell_card_enhanced_extraction;
+	
+	public static ItemSpell spell_card_enhanced_extraction_1;
+	public static ItemSpell spell_card_enhanced_extraction_2;
+	
 	public static ItemBase spell_card_flight;
 	public static ItemBase spell_card_forcefield;
 
@@ -103,8 +106,10 @@ public class ModItems
 				new ItemBase("spell_card_transmutation", 1).setCreativeTab(Vitality.creativeTab));
 		spell_card_vital_extraction = register(
 				new ItemBase("spell_card_vital_extraction", 1).setCreativeTab(Vitality.creativeTab));
-		spell_card_enhanced_extraction = register(
-				new ItemBase("spell_card_enhanced_extraction", 1).setCreativeTab(Vitality.creativeTab));
+		
+		spell_card_enhanced_extraction_1 = register(new ItemSpell("spell_card_enhanced_extraction_1", 870));
+		spell_card_enhanced_extraction_2 = register(new ItemSpell("spell_card_enhanced_extraction_2", 871));
+		
 		spell_card_flight = register(
 				new ItemBase("spell_card_flight", 1).setCreativeTab(Vitality.creativeTab));
 		spell_card_forcefield = register(

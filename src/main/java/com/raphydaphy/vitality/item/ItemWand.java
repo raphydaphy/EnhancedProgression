@@ -20,9 +20,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOre;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -37,11 +39,13 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -163,10 +167,15 @@ public class ItemWand extends Item implements ICraftAchievement
 			// ID of the hunger spell
 			return 860;
 		}
-		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_enhanced_extraction)))
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_enhanced_extraction_1)))
 		{
 			// ID of the enhanced extraction spell
 			return 870;
+		}
+		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_enhanced_extraction_2)))
+		{
+			// ID of the enhanced extraction spell
+			return 871;
 		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_flight)))
 		{
@@ -458,23 +467,45 @@ public class ItemWand extends Item implements ICraftAchievement
 		else if (getActiveSpell(player.getHeldItemOffhand()) > 819 && getActiveSpell(player.getHeldItemOffhand()) < 830)
 		{
 			int essenceAmount = 50;
-			int blastPower = 3;
+			int blastPower = 50;
+			int radius = 2;
 			
 			if (getActiveSpell(player.getHeldItemOffhand()) == 821)
 			{
 				essenceAmount = 80;
-				blastPower = 5;
+				blastPower = 150;
+				radius = 4;
 			}
 			else if (getActiveSpell(player.getHeldItemOffhand()) == 822)
 			{
 				essenceAmount = 250;
-				blastPower = 12;
+				blastPower = 300;
+				radius = 8;
 			}
 			if (useEssence(essenceAmount, stack))
 			{
+				Entity toBlowUpEntity = Minecraft.getMinecraft().pointedEntity;
 				RayTraceResult toBlowUp = Minecraft.getMinecraft().objectMouseOver;
+				
 				BlockPos bombPos = toBlowUp.getBlockPos();
-				worldIn.createExplosion(player, bombPos.getX(), bombPos.getY() + 2, bombPos.getZ(), blastPower, false);
+				if (toBlowUpEntity != null)
+				{
+					bombPos = toBlowUpEntity.getPosition();
+				}
+				worldIn.playSound(null, bombPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
+				if (!worldIn.isRemote)
+				{
+					spawnParticles(EnumParticleTypes.EXPLOSION_HUGE, worldIn, true, bombPos, radius*10, radius);
+				}
+				List<EntityLivingBase> entities = worldIn.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(bombPos.add(-radius, -radius, -radius), bombPos.add(radius,radius,radius)));
+				for (EntityLivingBase living : entities)
+				{
+					if (living != player)
+					{
+						// Thank u tehnut <3
+						living.attackEntityFrom(DamageSource.magic, blastPower);
+					}
+				}
 				player.swingArm(hand);
 				player.getCooldownTracker().setCooldown(this, 25);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
@@ -558,11 +589,9 @@ public class ItemWand extends Item implements ICraftAchievement
 		// If the player right-clicks on a ore block
 		// Used for Enhancced Extraction spell
 		else if (block instanceof BlockOre && !player.isSneaking() && 
-				getActiveSpell(player.getHeldItemOffhand()) == 870)
+				getActiveSpell(player.getHeldItemOffhand()) > 869 && 
+				getActiveSpell(player.getHeldItemOffhand()) < 880)
 		{
-			// This line causes anyone who isnt running the server (in LAN/singleplayer)
-			// to crash with NullPointerExceptions. However, it works for every
-			// other time when particles are spawned on a non-server host instance.
 			if (!world.isRemote)
 			{
 				spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, player.worldObj, true, pos, 3, 1);
@@ -598,8 +627,13 @@ public class ItemWand extends Item implements ICraftAchievement
 					addEssence(100, stack);
 				}
 
+				int cooldown = 10;
+				if (getActiveSpell(player.getHeldItemOffhand()) == 871)
+				{
+					cooldown = 3;
+				}
 				player.swingArm(hand);
-				player.getCooldownTracker().setCooldown(this, 10);
+				player.getCooldownTracker().setCooldown(this, cooldown);
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -670,7 +704,11 @@ public class ItemWand extends Item implements ICraftAchievement
 					cooldown = 5;
 				}
 				BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
-				if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState())
+				if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState() ||
+					world.getBlockState(torchPos) == Blocks.FLOWING_WATER.getDefaultState() ||
+					world.getBlockState(torchPos) == Blocks.WATER.getDefaultState() ||
+					world.getBlockState(torchPos) == Blocks.LAVA.getDefaultState() ||
+					world.getBlockState(torchPos) == Blocks.FLOWING_LAVA.getDefaultState())
 				{
 					if (useEssence(essenceVal, stack))
 					{

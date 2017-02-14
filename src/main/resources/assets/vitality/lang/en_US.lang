@@ -25,7 +25,8 @@ item.spell_card_rapidfire_1.name=Spell Card - Imbued Rapid Fire
 item.spell_card_rapidfire_2.name=Spell Card - Fluxed Rapid Fire
 item.spell_card_transmutation.name=Spell Card - Cryptic Transmutation
 item.spell_card_hunger.name=Spell Card - Hunger
-item.spell_card_enhanced_extraction.name=Spell Card - Enhanced Extraction
+item.spell_card_enhanced_extraction_1.name=Spell Card - Enhanced Extraction
+item.spell_card_enhanced_extraction_2.name=Spell Card - Fluxed Extraction
 item.spell_card_flight.name=Spell Card - Elevated Momentum
 item.spell_card_forcefield.name=Spell Card - Unabridged Immortality
 

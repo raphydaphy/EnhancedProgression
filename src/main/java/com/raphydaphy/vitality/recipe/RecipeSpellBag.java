@@ -64,15 +64,19 @@ public class RecipeSpellBag implements IRecipe
 		}
 		else if (spell.getItem() == ModItems.spell_card_transmutation)
 		{
-			return 85;
+			return 850;
 		}
 		else if (spell.getItem() == ModItems.spell_card_hunger)
 		{
 			return 860;
 		}
-		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction)
+		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction_1)
 		{
 			return 870;
+		}
+		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction_1)
+		{
+			return 871;
 		}
 		else if (spell.getItem() == ModItems.spell_card_flight)
 		{

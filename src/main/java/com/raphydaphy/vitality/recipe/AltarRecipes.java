@@ -5,6 +5,7 @@ import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.nbt.AltarRecipe;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -46,6 +47,12 @@ public class AltarRecipes
 			recipeImbuedBronze = ModRecipes.registerAltarRecipe(1, new ItemStack(ModItems.ingot_bronze_imbued),
 					"ingotBronze", "ingotBronze", "ingotBronze", "ingotBronze", "ingotGold", "ingotGold", "ingotGold",
 					"ingotGold", "ingotIron", "ingotIron", "ingotIron", "ingotIron");
+			
+			recipeBulkImbuedBronze = ModRecipes.registerAltarRecipe(1, new ItemStack(ModItems.ingot_bronze_imbued, 9),
+					"blockBronze", "blockBronze", "blockBronze", "blockBronze", new ItemStack(Blocks.GOLD_BLOCK), 
+					new ItemStack(Blocks.GOLD_BLOCK), new ItemStack(Blocks.GOLD_BLOCK), new ItemStack(Blocks.GOLD_BLOCK),
+					new ItemStack(Blocks.IRON_BLOCK), new ItemStack(Blocks.IRON_BLOCK), new ItemStack(Blocks.IRON_BLOCK),
+					new ItemStack(Blocks.IRON_BLOCK));
 	
 			recipeImbuedLog = ModRecipes.registerAltarRecipe(2, new ItemStack(ModBlocks.imbued_log), "logWood",
 					new ItemStack(ModItems.ingot_bronze_imbued), new ItemStack(ModItems.ingot_bronze_imbued), "nuggetGold",

@@ -37,8 +37,14 @@ public class ModBlocks
 
 	public static void init()
 	{
-		ore_copper = register(new BlockOre("ore_copper").setCreativeTab(Vitality.creativeTab));
-		ore_tin = register(new BlockOre("ore_tin").setCreativeTab(Vitality.creativeTab));
+		if (ConfigHandler.world.enableCopperGen)
+		{
+			ore_copper = register(new BlockOre("ore_copper").setCreativeTab(Vitality.creativeTab));
+		}
+		if (ConfigHandler.world.enableTinGen)
+		{
+			ore_tin = register(new BlockOre("ore_tin").setCreativeTab(Vitality.creativeTab));
+		}
 
 		fluxed_plank = register(
 				new BlockBase(Material.WOOD, "fluxed_plank").setCreativeTab(Vitality.creativeTab));

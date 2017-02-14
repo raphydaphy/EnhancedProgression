@@ -16,11 +16,16 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TileAltar extends TileSimpleInventory
 {
@@ -73,6 +78,32 @@ public class TileAltar extends TileSimpleInventory
 		super.writeToNBT(compound);
 		compound.setInteger("confirm", confirm);
 		return compound;
+	}
+	
+	/*
+	 * Spawns particles based on paramaters used
+	 * Can crash people in multiplayer (needs fixing)
+	 */
+	public static void spawnParticles(EnumParticleTypes particleType, World world, boolean forceSpawn, BlockPos pos,
+			int count, double radius)
+	{
+		// simply runs the main particle spawning method without so many arguments
+		spawnParticlesServer(particleType, world, forceSpawn, pos.getX(), pos.getY(), pos.getZ(), count, radius);
+	}
+	
+	/*
+	 * Spawns particles server-side only
+	 * Sometimes causes Null Pointer Exceptions
+	 * Only crashes in multiplayer. Needs fixing.
+	 */
+	public static void spawnParticlesServer(EnumParticleTypes particleType, World world, boolean forceSpawn, double x,
+			double y, double z, int count, double radius)
+	{
+		// spawns some particles through the server instance
+		// this prevents NullPointerExceptions but also seems to cause them sometimes
+		// TODO: Fix crashes
+		FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension())
+				.spawnParticle(particleType, forceSpawn, x, y, z, count, radius, radius, radius, 0.005D);
 	}
 	
 	public int getAltarTier()
@@ -151,19 +182,28 @@ public class TileAltar extends TileSimpleInventory
 					markDirty();
 				}
 			}
-			if (!worldObj.isRemote && confirm > 1 && disableTicks == 0)
+			if (confirm > 1 && disableTicks == 0)
 			{
 				if (hasValidRecipe())
 				{
-					disableTicks = 50;
-					EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5,
-							getPos().getZ() + 0.5, currentOutput().copy());
-					worldObj.spawnEntityInWorld(outputItem);
-					altarRecipe = null;
-					emptyAltar();
-					confirm = 0;
-					markDirty();
-					PacketManager.dispatchTE(worldObj, pos);
+					if (!worldObj.isRemote)
+					{
+						disableTicks = 50;
+						EntityItem outputItem = new EntityItem(worldObj, getPos().getX() + 0.5, getPos().getY() + 1.5,
+								getPos().getZ() + 0.5, currentOutput().copy());
+						
+						spawnParticles(EnumParticleTypes.DRAGON_BREATH, worldObj, true, pos.add(0, 0.5, 0), 100, 2);
+						worldObj.spawnEntityInWorld(outputItem);
+						altarRecipe = null;
+						emptyAltar();
+						confirm = 0;
+						markDirty();
+						PacketManager.dispatchTE(worldObj, pos);
+					}
+					else
+					{
+						worldObj.playSound(null, pos, SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.BLOCKS, 1, 1);
+					}
 				}
 			}
 			else if (!worldObj.isRemote && hasValidItems() && !hasValidRecipe())
