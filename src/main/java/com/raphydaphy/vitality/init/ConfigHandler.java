@@ -30,6 +30,12 @@ public class ConfigHandler
         @Config.Comment({"Enable Radiant Fireball Spell Crafting.", "Default: true"})
         public boolean enableRadiantFireball = true;
         
+        @Config.Comment({"Enable Renewed Fertilization Spell Crafting.", "Default: true"})
+        public boolean enableRenewedFertilization = true;
+        
+        @Config.Comment({"Enable Angelic Placement Spell Crafting.", "Default: true"})
+        public boolean enableAngelicPlacement = true;
+        
         @Config.Comment({"Enable Cryptic Transmutation Spell Crafting.", "Default: true"})
         public boolean enableCrypticTransmutation = true;
         

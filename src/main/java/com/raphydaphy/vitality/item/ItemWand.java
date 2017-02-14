@@ -147,6 +147,36 @@ public class ItemWand extends Item implements ICraftAchievement
 			// ID of the fluxed fireball spell
 			return 832;
 		}
+		else if (ItemStack.areItemsEqual(offhand,  new ItemStack(ModItems.spell_card_fertilization_1)))
+		{
+			// ID of the renewed fertilization spell
+			return 900;
+		}
+		else if (ItemStack.areItemsEqual(offhand,  new ItemStack(ModItems.spell_card_fertilization_2)))
+		{
+			// ID of the imbued fertilization spell
+			return 901;
+		}
+		else if (ItemStack.areItemsEqual(offhand,  new ItemStack(ModItems.spell_card_fertilization_3)))
+		{
+			// ID of the fluxed fertilization spell
+			return 902;
+		}
+		else if (ItemStack.areItemsEqual(offhand,  new ItemStack(ModItems.spell_card_placement_1)))
+		{
+			// ID of the angelic placement spell
+			return 910;
+		}
+		else if (ItemStack.areItemsEqual(offhand,  new ItemStack(ModItems.spell_card_placement_2)))
+		{
+			// ID of the imbued placement spell
+			return 911;
+		}
+		else if (ItemStack.areItemsEqual(offhand,  new ItemStack(ModItems.spell_card_placement_3)))
+		{
+			// ID of the fluxed placement spell
+			return 912;
+		}
 		else if (ItemStack.areItemsEqual(offhand, new ItemStack(ModItems.spell_card_rapidfire_1)))
 		{
 			// ID of the rapidfire spell

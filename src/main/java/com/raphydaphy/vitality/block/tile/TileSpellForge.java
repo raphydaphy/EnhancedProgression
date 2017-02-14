@@ -85,6 +85,30 @@ public class TileSpellForge extends TileAltar
 		{
 			return 832;
 		}
+		else if (spell.getItem() == ModItems.spell_card_fertilization_1)
+		{
+			return 900;
+		}
+		else if (spell.getItem() == ModItems.spell_card_fertilization_2)
+		{
+			return 901;
+		}
+		else if (spell.getItem() == ModItems.spell_card_fertilization_3)
+		{
+			return 902;
+		}
+		else if (spell.getItem() == ModItems.spell_card_placement_1)
+		{
+			return 910;
+		}
+		else if (spell.getItem() == ModItems.spell_card_placement_2)
+		{
+			return 911;
+		}
+		else if (spell.getItem() == ModItems.spell_card_placement_3)
+		{
+			return 912;
+		}
 		else if (spell.getItem() == ModItems.spell_card_rapidfire_1)
 		{
 			return 840;

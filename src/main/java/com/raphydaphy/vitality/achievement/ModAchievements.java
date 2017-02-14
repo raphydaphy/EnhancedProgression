@@ -19,6 +19,8 @@ public final class ModAchievements
 	public static Achievement craft_magic_lantern;
 	public static Achievement craft_contained_explosion;
 	public static Achievement craft_radiant_fireball;
+	public static Achievement craft_renewed_fertilization;
+	public static Achievement craft_angelic_placement;
 	public static Achievement craft_cryptic_transmutation;
 	public static Achievement pickup_imbued_bronze;
 	public static Achievement pickup_imbued_log;
@@ -47,6 +49,12 @@ public final class ModAchievements
 				craft_basic_wand);
 		
 		craft_radiant_fireball = new AchievementMod(AchievementNames.CRAFT_RADIANT_FIREBALL, 2, -4, ModItems.spell_card_fireball_1,
+				craft_basic_wand);
+		
+		craft_renewed_fertilization = new AchievementMod(AchievementNames.CRAFT_RENEWED_FERTILIZATION, -2, -6, ModItems.spell_card_fertilization_1,
+				craft_basic_wand);
+		
+		craft_angelic_placement = new AchievementMod(AchievementNames.CRAFT_ANGELIC_PLACEMENT, 2, -6, ModItems.spell_card_placement_1,
 				craft_basic_wand);
 		
 		craft_cryptic_transmutation = new AchievementMod(AchievementNames.CRAFT_CRYPTIC_TRANSMUTATION, -2, 0, ModItems.spell_card_transmutation,

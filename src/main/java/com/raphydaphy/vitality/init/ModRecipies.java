@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.recipe.RecipeSpellBag;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -118,6 +119,56 @@ public class ModRecipies
 						ModItems.spell_card_fireball_1, 'B', ModItems.ingot_bronze_imbued);
 				addOreDictRecipe(new ItemStack(ModItems.spell_card_fireball_3), "SFS", "FBF", "SFS", 'S', ModItems.fluxed_stick, 'F',
 						ModItems.spell_card_fireball_2, 'B', ModItems.ingot_fluxed);
+			}
+		}
+		if (ConfigHandler.crafting.enableRenewedFertilization)
+		{
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fertilization_1), "SGS", "GBG", "SGS", 'S', "rodStone", 'G',
+						"dyeWhite", 'B', Items.CLAY_BALL);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fertilization_2), "SGS", "GBG", "SGS", 'S', ModItems.imbued_stick, 'G',
+						ModItems.spell_card_fertilization_1, 'B', ModItems.ingot_bronze_imbued);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fertilization_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
+						ModItems.spell_card_fertilization_2, 'B', ModItems.ingot_fluxed);
+			}
+			else
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fertilization_1), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
+						"dyeWhite", 'B', "ingotBronze");
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fertilization_2), "SGS", "GBG", "SGS", 'S', ModItems.imbued_stick, 'G',
+						ModItems.spell_card_fertilization_1, 'B', ModItems.ingot_bronze_imbued);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_fertilization_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
+						ModItems.spell_card_fertilization_2, 'B', ModItems.ingot_fluxed);
+			}
+		}
+		if (ConfigHandler.crafting.enableAngelicPlacement)
+		{
+			if (ConfigHandler.crafting.enableExpertMode)
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_placement_1), "SGS", "GBG", "SGS", 'S', "rodStone", 'G',
+						Items.FEATHER, 'B', Items.CLAY_BALL);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_placement_2), "SGS", "GBG", "SGS", 'S', ModItems.imbued_stick, 'G',
+						ModItems.spell_card_placement_1, 'B', ModItems.ingot_bronze_imbued);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_placement_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
+						ModItems.spell_card_placement_2, 'B', ModItems.ingot_fluxed);
+			}
+			else
+			{
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_placement_1), "SGS", "GBG", "SGS", 'S', "stickWood", 'G',
+						Blocks.OBSIDIAN, 'B', "ingotBronze");
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_placement_2), "SGS", "GBG", "SGS", 'S', ModItems.imbued_stick, 'G',
+						ModItems.spell_card_placement_1, 'B', ModItems.ingot_bronze_imbued);
+				
+				addOreDictRecipe(new ItemStack(ModItems.spell_card_placement_3), "SGS", "GBG", "SGS", 'S', ModItems.fluxed_stick, 'G',
+						ModItems.spell_card_placement_2, 'B', ModItems.ingot_fluxed);
 			}
 		}
 		if (ConfigHandler.crafting.enableCrypticTransmutation)
