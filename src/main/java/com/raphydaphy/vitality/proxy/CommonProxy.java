@@ -25,6 +25,11 @@ public class CommonProxy
 	public void setActionText(String text)
 	{
 	}
+	
+	public void showWandStatus(String text, int essencestored, int essencemax)
+	{
+		
+	}
 
 	public void init()
 	{

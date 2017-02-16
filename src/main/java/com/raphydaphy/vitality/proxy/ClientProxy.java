@@ -26,6 +26,12 @@ public class ClientProxy extends CommonProxy
 	}
 	
 	@Override
+	public void showWandStatus(String text, int essenceStored, int essenceMax)
+	{
+		Minecraft.getMinecraft().ingameGUI.setRecordPlaying(TextFormatting.GOLD + text, false);
+	}
+	
+	@Override
 	public void init()
 	{
         KeyBindings.init();

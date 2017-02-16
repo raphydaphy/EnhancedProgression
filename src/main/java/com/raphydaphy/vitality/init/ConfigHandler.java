@@ -51,8 +51,8 @@ public class ConfigHandler
         @Config.Comment({"Enable Elevated Momentum Spell Crafting.", "Default: true"})
         public boolean enableElevatedMomentum = true;
         
-        @Config.Comment({"Enable Unabridged Immortality Spell Crafting. Disabled because its broken", "Default: false"})
-        public boolean enableUnabridgedImmortality = false;
+        @Config.Comment({"Enable Unabridged Immortality Spell Crafting.", "Default: true"})
+        public boolean enableUnabridgedImmortality = true;
         
         @Config.Comment({"Enable Expert Mode", "Default: false"})
         public boolean enableExpertMode = false;

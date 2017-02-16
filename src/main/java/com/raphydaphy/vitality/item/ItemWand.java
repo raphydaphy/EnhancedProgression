@@ -17,8 +17,11 @@ import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.nbt.NBTLib;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCactus;
+import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOre;
+import net.minecraft.block.BlockSapling;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -51,8 +54,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*
  * Main class to control all wands
@@ -349,11 +355,7 @@ public class ItemWand extends Item implements ICraftAchievement
 		spawnParticlesServer(particleType, world, forceSpawn, pos.getX(), pos.getY(), pos.getZ(), count, radius);
 	}
 	
-	/*
-	 * Spawns particles server-side only
-	 * Sometimes causes Null Pointer Exceptions
-	 * Only crashes in multiplayer. Needs fixing.
-	 */
+		
 	public static void spawnParticlesServer(EnumParticleTypes particleType, World world, boolean forceSpawn, double x,
 			double y, double z, int count, double radius)
 	{
@@ -405,7 +407,7 @@ public class ItemWand extends Item implements ICraftAchievement
 			Vitality.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 					+ getEssenceStored(stack) + "/" + maxEssence + " " + (I18n.format("gui.essence.name"))));
 		}
-		if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 839 && getActiveSpell(player.getHeldItemOffhand()) < 850)
+		else if (!worldIn.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 839 && getActiveSpell(player.getHeldItemOffhand()) < 850)
 		{
 			int essenceVal = 100;
 			if (getActiveSpell(player.getHeldItemOffhand()) == 841)
@@ -506,84 +508,6 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 			
 		}
-		else if (getActiveSpell(player.getHeldItemOffhand()) > 819 && getActiveSpell(player.getHeldItemOffhand()) < 830)
-		{
-			int essenceAmount = 50;
-			int blastPower = 50;
-			int radius = 2;
-			
-			if (getActiveSpell(player.getHeldItemOffhand()) == 821)
-			{
-				essenceAmount = 80;
-				blastPower = 150;
-				radius = 4;
-			}
-			else if (getActiveSpell(player.getHeldItemOffhand()) == 822)
-			{
-				essenceAmount = 250;
-				blastPower = 300;
-				radius = 8;
-			}
-			if (useEssence(essenceAmount, stack))
-			{
-				Entity toBlowUpEntity = Minecraft.getMinecraft().pointedEntity;
-				RayTraceResult toBlowUp = Minecraft.getMinecraft().objectMouseOver;
-				
-				BlockPos bombPos = toBlowUp.getBlockPos();
-				if (toBlowUpEntity != null)
-				{
-					bombPos = toBlowUpEntity.getPosition();
-				}
-				worldIn.playSound(null, bombPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
-				if (!worldIn.isRemote)
-				{
-					spawnParticles(EnumParticleTypes.EXPLOSION_HUGE, worldIn, true, bombPos, radius*10, radius);
-				}
-				List<EntityLivingBase> entities = worldIn.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(bombPos.add(-radius, -radius, -radius), bombPos.add(radius,radius,radius)));
-				for (EntityLivingBase living : entities)
-				{
-					if (living != player)
-					{
-						living.attackEntityFrom(DamageSource.magic, blastPower);
-					}
-				}
-				player.swingArm(hand);
-				player.getCooldownTracker().setCooldown(this, 25);
-				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
-			}
-			else
-			{
-				Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
-			}
-		}
-		else if (getActiveSpell(player.getHeldItemOffhand()) > 919 && getActiveSpell(player.getHeldItemOffhand()) < 930)
-		{
-			int essenceVal = 250;
-			int cooldown = 20;
-			if (getActiveSpell(player.getHeldItemOffhand()) == 921)
-			{
-				essenceVal = 100;
-				cooldown = 10;
-			}
-			RayTraceResult theblock = Minecraft.getMinecraft().objectMouseOver;
-			Block therealblock = worldIn.getBlockState(theblock.getBlockPos()).getBlock();
-			if (therealblock != null)
-			{
-				EntityLightningBolt lightning = new EntityLightningBolt(worldIn, theblock.getBlockPos().getX(), theblock.getBlockPos().getY(), theblock.getBlockPos().getZ(), false);
-				useEssence(essenceVal, stack);
-				if (!worldIn.isRemote)
-				{
-					worldIn.addWeatherEffect(lightning);
-				}
-				player.getCooldownTracker().setCooldown(this, cooldown);
-				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
-			}
-			else
-			{
-				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
-			}
-		}
 		// Angelic Placement
 		else if (getActiveSpell(player.getHeldItemOffhand()) > 909 && getActiveSpell(player.getHeldItemOffhand()) < 920)
 		{
@@ -607,9 +531,15 @@ public class ItemWand extends Item implements ICraftAchievement
 				essenceVal = 10;
 			}
 			
-			RayTraceResult theblock = Minecraft.getMinecraft().objectMouseOver;
-			Block therealblock = worldIn.getBlockState(theblock.getBlockPos()).getBlock();
-			if (theblock != null)
+			Vec3d lookVec = player.getLookVec();
+	        double posX = player.posX + lookVec.xCoord * 2;
+	        double posY = player.posY + player.eyeHeight + lookVec.yCoord * 2;
+	        double posZ = player.posX + lookVec.zCoord * 2;
+	        BlockPos pos = new BlockPos(posX, posY, posZ);
+	        Block therealblock = worldIn.getBlockState(pos).getBlock();
+	        EnumFacing facing = EnumFacing.getFacingFromVector((float) lookVec.xCoord, (float) lookVec.yCoord, (float) lookVec.zCoord);
+	        
+			if (pos != null)
 			{
 				if (player.isSneaking())
 				{
@@ -645,48 +575,91 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 				else if (therealblock == Blocks.AIR || therealblock == Blocks.FLOWING_LAVA || therealblock == Blocks.FLOWING_WATER)
 				{
-					if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 1)
+					if (useEssence(essenceVal, stack))
 					{
+						if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 1)
+						{
+							if (!worldIn.isRemote)
+							{
+								tryPlaceABlock(Blocks.DIRT, stack, player, worldIn, pos, facing, (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
+							}
+						}
+						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
+						{
+							if (!worldIn.isRemote)
+							{
+								tryPlaceABlock(Blocks.PLANKS, stack, player, worldIn, pos, facing, (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
+							}
+						}
+						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 3)
+						{
+							if (!worldIn.isRemote)
+							{
+								tryPlaceABlock(Blocks.COBBLESTONE, stack, player, worldIn, pos, facing, (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
+							}
+						}
 						if (!worldIn.isRemote)
 						{
-							worldIn.setBlockState(theblock.getBlockPos(), Blocks.DIRT.getDefaultState());
+							spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, pos, 4, 1);
 						}
+						player.swingArm(hand);
+						player.getCooldownTracker().setCooldown(this, cooldown);
+						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 					}
-					else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
-					{
-						if (!worldIn.isRemote)
-						{
-							worldIn.setBlockState(theblock.getBlockPos(), Blocks.PLANKS.getDefaultState());
-						}
-					}
-					else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 3)
-					{
-						if (!worldIn.isRemote)
-						{
-							worldIn.setBlockState(theblock.getBlockPos(), Blocks.COBBLESTONE.getDefaultState());
-						}
-					}
-					if (!worldIn.isRemote)
-					{
-						spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, theblock.getBlockPos(), 4, 1);
-					}
-					useEssence(essenceVal, stack);
-					if (currentActiveBlock == 2)
-					{
-						worldIn.playSound(null, theblock.getBlockPos(), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
-					}
-					else
-					{
-						worldIn.playSound(null, theblock.getBlockPos(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 1, 1);
-					}
-					
-					player.swingArm(hand);
-					player.getCooldownTracker().setCooldown(this, cooldown);
-					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 				}
 				else
 				{
-					Vitality.proxy.setActionText((I18n.format("gui.obstructed.name")));
+					tryPlaceABlock(Blocks.DIRT, stack, player, worldIn, pos, facing, (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
+					/*
+					if (worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() == Blocks.AIR)
+					{
+						if (useEssence(essenceVal, stack))
+						{
+							if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 1)
+							{
+								if (!worldIn.isRemote)
+								{
+									worldIn.setBlockState(theblock.getBlockPos().add(0, 1, 0), Blocks.DIRT.getDefaultState());
+								}
+							}
+							else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
+							{
+								if (!worldIn.isRemote)
+								{
+									worldIn.setBlockState(theblock.getBlockPos().add(0, 1, 0), Blocks.PLANKS.getDefaultState());
+								}
+							}
+							else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 3)
+							{
+								if (!worldIn.isRemote)
+								{
+									worldIn.setBlockState(theblock.getBlockPos().add(0, 1, 0), Blocks.COBBLESTONE.getDefaultState());
+								}
+							}
+							if (!worldIn.isRemote)
+							{
+								spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, theblock.getBlockPos().add(0, 1, 0), 4, 1);
+							}
+							
+							if (currentActiveBlock == 1)
+							{
+								worldIn.playSound(null, theblock.getBlockPos().add(0, 1, 0), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1, 1);
+							}
+							else if (currentActiveBlock == 2)
+							{
+								worldIn.playSound(null, theblock.getBlockPos().add(0, 1, 0), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
+							}
+							else
+							{
+								worldIn.playSound(null, theblock.getBlockPos().add(0, 1, 0), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 1, 1);
+							}
+							
+							player.swingArm(hand);
+							player.getCooldownTracker().setCooldown(this, cooldown);
+							return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+						}
+					}
+					*/
 				}
 				
 			}
@@ -866,6 +839,50 @@ public class ItemWand extends Item implements ICraftAchievement
 					return EnumActionResult.FAIL;
 				}
 			}
+			else if (getActiveSpell(player.getHeldItemOffhand()) > 819 && getActiveSpell(player.getHeldItemOffhand()) < 830)
+			{
+				int essenceAmount = 50;
+				int blastPower = 50;
+				int radius = 2;
+				
+				if (getActiveSpell(player.getHeldItemOffhand()) == 821)
+				{
+					essenceAmount = 80;
+					blastPower = 150;
+					radius = 4;
+				}
+				else if (getActiveSpell(player.getHeldItemOffhand()) == 822)
+				{
+					essenceAmount = 250;
+					blastPower = 300;
+					radius = 8;
+				}
+				if (useEssence(essenceAmount, stack))
+				{
+			        BlockPos bombPos = pos;
+					world.playSound(null, bombPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
+					if (!world.isRemote)
+					{
+						spawnParticles(EnumParticleTypes.EXPLOSION_HUGE, world, true, bombPos, radius*10, radius);
+					}
+					List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(bombPos.add(-radius, -radius, -radius), bombPos.add(radius,radius,radius)));
+					for (EntityLivingBase living : entities)
+					{
+						if (living != player)
+						{
+							living.attackEntityFrom(DamageSource.magic, blastPower);
+						}
+					}
+					player.swingArm(hand);
+					player.getCooldownTracker().setCooldown(this, 25);
+					return EnumActionResult.SUCCESS;
+				}
+				else
+				{
+					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+					return EnumActionResult.FAIL;
+				}
+			}
 			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 899 && getActiveSpell(player.getHeldItemOffhand()) < 910)
 			{
 				if (block instanceof IGrowable)
@@ -889,12 +906,66 @@ public class ItemWand extends Item implements ICraftAchievement
 		                    {
 		                    	spawnParticles(EnumParticleTypes.VILLAGER_HAPPY, world, true, pos, 15, 1);
 		                        igrowable.grow(world, world.rand, pos, iblockstate);
+		                        return EnumActionResult.SUCCESS;
 		                    }
 		                }
 		                
 		            }
 		        }
 
+			}
+			else if (getActiveSpell(player.getHeldItemOffhand()) == 800)
+			{
+				if (block instanceof BlockCrops)
+				{
+					if (!world.isRemote)
+					{ spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,pos, 10, 1); }
+					addEssence(((Integer)world.getBlockState(pos).getValue(BlockCrops.AGE)).intValue() * 10, stack);
+					world.setBlockState(pos, Blocks.DEADBUSH.getDefaultState());
+					
+					return EnumActionResult.SUCCESS;
+				}
+				else if (block instanceof BlockSapling)
+				{
+					addEssence(35, stack);
+					if (!world.isRemote)
+					{ spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,pos, 10, 1); }
+					world.setBlockState(pos, Blocks.DEADBUSH.getDefaultState());
+					return EnumActionResult.SUCCESS;
+				}
+				else if (block instanceof BlockCactus)
+				{
+					addEssence(25, stack);
+					if (!world.isRemote)
+					{ spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,pos, 10, 1); }
+					world.setBlockState(pos, Blocks.DEADBUSH.getDefaultState());
+					return EnumActionResult.SUCCESS;
+				}
+			}
+			else if (getActiveSpell(player.getHeldItemOffhand()) > 919 && getActiveSpell(player.getHeldItemOffhand()) < 930)
+			{
+				int essenceVal = 250;
+				int cooldown = 20;
+				if (getActiveSpell(player.getHeldItemOffhand()) == 921)
+				{
+					essenceVal = 100;
+					cooldown = 10;
+				}
+				EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), false);
+				if (useEssence(essenceVal, stack))
+				{
+					if (!world.isRemote)
+					{
+						world.addWeatherEffect(lightning);
+					}
+					player.getCooldownTracker().setCooldown(this, cooldown);
+					return EnumActionResult.SUCCESS;
+				}
+				else
+				{
+					return EnumActionResult.PASS;
+				}
+				
 			}
 			// If the Magic Lantern spell is used on a block
 			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 809 && getActiveSpell(player.getHeldItemOffhand()) < 820)
@@ -971,7 +1042,50 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 		}
     }
+	
+	public boolean placeABlock(ItemStack stack, EntityPlayer player, World world, BlockPos pos, IBlockState newState)
+	{
+        if (!world.setBlockState(pos, newState, 3))
+        {
+        	return false;
+        }
+        
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == newState.getBlock())
+        {
+            state.getBlock().onBlockPlacedBy(world, pos, state, player, stack);
+        }
+ 
+        return true;
+    }
 
+	public EnumActionResult tryPlaceABlock(Block block, ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing facing,float hitX, float hitY, float hitZ) 
+	{
+        if (player.canPlayerEdit(pos, facing, stack) && world.canBlockBePlaced(block, pos, false, facing, null, stack)) {
+            if (placeABlock(stack, player, world, pos, block.onBlockPlaced(world, pos, facing, hitX, hitY, hitZ, 0, player))) 
+            {
+                IBlockState placedState = world.getBlockState(pos);
+                
+                if (block == Blocks.DIRT)
+                {
+                	world.playSound(player, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, (Blocks.COBBLESTONE.getSoundType().getVolume() + 1.0F) / 2.0F, Blocks.DIRT.getSoundType().getPitch() * 0.8F);
+                }
+                else if (block == Blocks.PLANKS)
+                {
+                	world.playSound(player, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, (Blocks.PLANKS.getSoundType().getVolume() + 1.0F) / 2.0F, Blocks.PLANKS.getSoundType().getPitch() * 0.8F);
+                }
+                else
+                {
+                	world.playSound(player, pos, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, (Blocks.COBBLESTONE.getSoundType().getVolume() + 1.0F) / 2.0F, Blocks.COBBLESTONE.getSoundType().getPitch() * 0.8F);
+                }
+            }
+ 
+            return EnumActionResult.SUCCESS;
+        }
+ 
+        return EnumActionResult.FAIL;
+    }
+	
 	/*
 	 * Called once a tick while a player is holding right click
 	 * Only called if a wand instance is in the active slot
@@ -1023,19 +1137,10 @@ public class ItemWand extends Item implements ICraftAchievement
 			}
 			else if (!player.worldObj.isRemote && getActiveSpell(player.getHeldItemOffhand()) == 890)
 			{
-				if (useEssence(50, stack))
-				{
-					NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", true);
-					spawnParticles(EnumParticleTypes.PORTAL, player.worldObj, true, player.getPosition(), 100, 2);
-					spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, player.getPosition(), 100, 2);
-					player.setEntityInvulnerable(true);
-				}
-				else
-				{
-					player.setEntityInvulnerable(false);
-					NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", false);
-					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-				}
+				NBTLib.setBoolean(player.getHeldItemOffhand(), "isActive", true);
+				spawnParticles(EnumParticleTypes.PORTAL, player.worldObj, true, player.getPosition(), 100, 2);
+				spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, player.getPosition(), 100, 2);
+				player.setEntityInvulnerable(true);
 			}
 			else if (getActiveSpell(player.getHeldItemOffhand()) > 839 && getActiveSpell(player.getHeldItemOffhand()) < 850)
 			{
@@ -1156,9 +1261,9 @@ public class ItemWand extends Item implements ICraftAchievement
 					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 				}
 			}
-			else if (getActiveSpell(player.getHeldItemOffhand()) == 89 && !worldIn.isRemote)
+			else if (getActiveSpell(player.getHeldItemOffhand()) == 890 && !worldIn.isRemote)
 			{
-				playerIn.getCooldownTracker().setCooldown(this, 10000);
+				playerIn.getCooldownTracker().setCooldown(this, 1000);
 				player.setEntityInvulnerable(false);
 			}
 			
@@ -1224,7 +1329,10 @@ public class ItemWand extends Item implements ICraftAchievement
 				}		
 				else
 				{
-					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));		
+					if (worldIn.isRemote)
+					{
+						Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));		
+					}
 					return stack;		
 				}
 			}
