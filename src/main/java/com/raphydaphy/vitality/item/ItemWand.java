@@ -12,6 +12,7 @@ import com.raphydaphy.vitality.achievement.ICraftAchievement;
 import com.raphydaphy.vitality.achievement.ModAchievements;
 import com.raphydaphy.vitality.block.BlockAltar;
 import com.raphydaphy.vitality.block.BlockSpellForge;
+import com.raphydaphy.vitality.helper.Vector3;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.nbt.NBTLib;
@@ -24,7 +25,6 @@ import net.minecraft.block.BlockOre;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -53,12 +53,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*
  * Main class to control all wands
@@ -531,15 +527,16 @@ public class ItemWand extends Item implements ICraftAchievement
 				essenceVal = 10;
 			}
 			
-			Vec3d lookVec = player.getLookVec();
-	        double posX = player.posX + lookVec.xCoord * 2;
-	        double posY = player.posY + player.eyeHeight + lookVec.yCoord * 2;
-	        double posZ = player.posX + lookVec.zCoord * 2;
+			Vector3 playerVec = Vector3.fromEntityCenter(player);
+			Vector3 lookVec = new Vector3(player.getLookVec()).multiply(3);
+			Vector3 placeVec = playerVec.add(lookVec);
+			
+			int posX = MathHelper.absFloor(placeVec.x);
+			int posY = MathHelper.absFloor(placeVec.y) + 1;
+			int posZ = MathHelper.absFloor(placeVec.z);
 	        BlockPos pos = new BlockPos(posX, posY, posZ);
 	        Block therealblock = worldIn.getBlockState(pos).getBlock();
-	        EnumFacing facing = EnumFacing.getFacingFromVector((float) lookVec.xCoord, (float) lookVec.yCoord, (float) lookVec.zCoord);
-	        
-			if (pos != null)
+	        if (pos != null)
 			{
 				if (player.isSneaking())
 				{
@@ -581,21 +578,21 @@ public class ItemWand extends Item implements ICraftAchievement
 						{
 							if (!worldIn.isRemote)
 							{
-								tryPlaceABlock(Blocks.DIRT, stack, player, worldIn, pos, facing, (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
+								tryPlaceABlock(Blocks.DIRT, stack, player, worldIn, pos, player.getHorizontalFacing(), (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
 							}
 						}
 						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
 						{
 							if (!worldIn.isRemote)
 							{
-								tryPlaceABlock(Blocks.PLANKS, stack, player, worldIn, pos, facing, (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
+								tryPlaceABlock(Blocks.PLANKS, stack, player, worldIn, pos, player.getHorizontalFacing(), (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
 							}
 						}
 						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 3)
 						{
 							if (!worldIn.isRemote)
 							{
-								tryPlaceABlock(Blocks.COBBLESTONE, stack, player, worldIn, pos, facing, (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
+								tryPlaceABlock(Blocks.COBBLESTONE, stack, player, worldIn, pos, player.getHorizontalFacing(), (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
 							}
 						}
 						if (!worldIn.isRemote)
@@ -606,60 +603,6 @@ public class ItemWand extends Item implements ICraftAchievement
 						player.getCooldownTracker().setCooldown(this, cooldown);
 						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 					}
-				}
-				else
-				{
-					tryPlaceABlock(Blocks.DIRT, stack, player, worldIn, pos, facing, (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
-					/*
-					if (worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() == Blocks.AIR)
-					{
-						if (useEssence(essenceVal, stack))
-						{
-							if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 1)
-							{
-								if (!worldIn.isRemote)
-								{
-									worldIn.setBlockState(theblock.getBlockPos().add(0, 1, 0), Blocks.DIRT.getDefaultState());
-								}
-							}
-							else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
-							{
-								if (!worldIn.isRemote)
-								{
-									worldIn.setBlockState(theblock.getBlockPos().add(0, 1, 0), Blocks.PLANKS.getDefaultState());
-								}
-							}
-							else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 3)
-							{
-								if (!worldIn.isRemote)
-								{
-									worldIn.setBlockState(theblock.getBlockPos().add(0, 1, 0), Blocks.COBBLESTONE.getDefaultState());
-								}
-							}
-							if (!worldIn.isRemote)
-							{
-								spawnParticles(EnumParticleTypes.FLAME, player.worldObj, true, theblock.getBlockPos().add(0, 1, 0), 4, 1);
-							}
-							
-							if (currentActiveBlock == 1)
-							{
-								worldIn.playSound(null, theblock.getBlockPos().add(0, 1, 0), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1, 1);
-							}
-							else if (currentActiveBlock == 2)
-							{
-								worldIn.playSound(null, theblock.getBlockPos().add(0, 1, 0), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
-							}
-							else
-							{
-								worldIn.playSound(null, theblock.getBlockPos().add(0, 1, 0), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 1, 1);
-							}
-							
-							player.swingArm(hand);
-							player.getCooldownTracker().setCooldown(this, cooldown);
-							return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
-						}
-					}
-					*/
 				}
 				
 			}
@@ -982,30 +925,18 @@ public class ItemWand extends Item implements ICraftAchievement
 					essenceVal = 0;
 					cooldown = 5;
 				}
-				BlockPos torchPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
-				if (world.getBlockState(torchPos) == Blocks.AIR.getDefaultState() ||
-					world.getBlockState(torchPos) == Blocks.FLOWING_WATER.getDefaultState() ||
-					world.getBlockState(torchPos) == Blocks.WATER.getDefaultState() ||
-					world.getBlockState(torchPos) == Blocks.LAVA.getDefaultState() ||
-					world.getBlockState(torchPos) == Blocks.FLOWING_LAVA.getDefaultState())
+				if (useEssence(essenceVal, stack))
 				{
-					if (useEssence(essenceVal, stack))
-					{
-						spawnParticles(EnumParticleTypes.FLAME, world, true,new BlockPos(torchPos.getX(), torchPos.getY(), torchPos.getZ()), 15, 1);
-						world.setBlockState(torchPos, Blocks.TORCH.getDefaultState());
-						player.swingArm(hand);
-						player.getCooldownTracker().setCooldown(this, cooldown);
-						return EnumActionResult.SUCCESS;
-					}
-					else
-					{
-						Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-						return EnumActionResult.PASS;
-					}
+					spawnParticles(EnumParticleTypes.FLAME, world, true,pos, 15, 1);
+					ItemStack stackToPlace = new ItemStack(Blocks.DIRT);
+					stackToPlace.onItemUse(player, world, pos, hand, side, par8, par9, par10);
+					player.swingArm(hand);
+					player.getCooldownTracker().setCooldown(this, cooldown);
+					return EnumActionResult.SUCCESS;
 				}
 				else
 				{
-					Vitality.proxy.setActionText((I18n.format("gui.obstructed.name")));
+					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
 					return EnumActionResult.PASS;
 				}
 			}
@@ -1107,7 +1038,7 @@ public class ItemWand extends Item implements ICraftAchievement
 				{
 					BlockPos curBlock = replaceBlock
 							.get(NBTLib.getInt(player.getHeldItemOffhand(), "currentBlockId", 0));
-					player.worldObj.playSound(null, curBlock, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1, 1);
+					player.worldObj.playSound(null, curBlock, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
 					player.worldObj.setBlockState(curBlock, ModBlocks.dead_log.getDefaultState());
 					spawnParticles(EnumParticleTypes.SPELL_WITCH, player.worldObj, true, curBlock, 7, 1);
 					this.addEssence(ThreadLocalRandom.current().nextInt(2, 15 + 1), player.getHeldItemOffhand());
