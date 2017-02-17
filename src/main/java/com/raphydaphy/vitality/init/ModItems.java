@@ -153,10 +153,10 @@ public class ModItems
 		upgrade_template_basic = register(
 				new ItemBase("upgrade_template_basic", 16).setCreativeTab(Vitality.creativeTab));
 		
-		essence_vial_empty = register(new ItemEssenceVial("essence_vial_empty"));
+		essence_vial_empty = (ItemEssenceVial) register(new ItemEssenceVial("essence_vial_empty")).setCreativeTab(Vitality.creativeTab);
 		essence_vial_full = register(new ItemEssenceVial("essence_vial_full"));
 		
-		magic_multitool = register(new ItemMagicTool(2, 6, magicalToolMaterial, "magic_multitool"));
+		magic_multitool = register(new ItemMagicTool(2, 1, magicalToolMaterial, "magic_multitool"));
 		
 		
 		basic_wand_copper = register(new ItemWand("basic_wand_copper", 1, ConfigHandler.wandSettings.basicWandStorage,

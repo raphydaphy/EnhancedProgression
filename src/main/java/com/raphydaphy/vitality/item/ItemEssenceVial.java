@@ -20,7 +20,6 @@ public class ItemEssenceVial extends ItemBase
 	{
 		super(name, 1);
 		this.name=name;
-		super.setCreativeTab(Vitality.creativeTab);
 	}
 	
 	public void onUpdate(ItemStack stack, World world, Entity player, int itemSlot, boolean isSelected)

@@ -576,7 +576,29 @@ public class ItemWand extends Item implements ICraftAchievement
 					if (!world.isRemote)
 					{ spell.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,pos, 10, 1); }
 					world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.BLOCKS, 1, 1);
+					player.getCooldownTracker().setCooldown(this, 100);
 					return EnumActionResult.SUCCESS;
+				}
+				else
+				{
+					List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class,
+							new AxisAlignedBB(pos.add(-2, -2, -2), pos.add(2, 2, 2)));
+					for (EntityItem item : items)
+					{
+						if (item.getEntityItem().getItem() == ModItems.essence_vial_full)
+						{
+							if (!world.isRemote)
+							{
+								if (spell.useEssence(1000, item.getEntityItem()))
+								{
+									spell.addEssence(1000, stack, maxEssence);
+									spell.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, item.getPosition(), 100, 2);
+									world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
+									player.getCooldownTracker().setCooldown(this, 10);
+								}
+							}
+						}
+					}
 				}
 			}
 			else if (spell.getActiveSpell(player.getHeldItemOffhand()) > 819 && spell.getActiveSpell(player.getHeldItemOffhand()) < 830)
@@ -753,6 +775,7 @@ public class ItemWand extends Item implements ICraftAchievement
 								spell.spawnParticles(EnumParticleTypes.CLOUD, world, true, item.getPosition(), 100, 2);
 							}
 							world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
+							player.getCooldownTracker().setCooldown(this, 10);
 						}
 						else
 						{
@@ -762,15 +785,20 @@ public class ItemWand extends Item implements ICraftAchievement
 					}
 					else if (item.getEntityItem().getItem() == ModItems.essence_vial_full)
 					{
-						EntityItem fullBottle = new EntityItem(world, item.posX, item.posY, item.posZ, new ItemStack(ModItems.essence_vial_empty));
-						spell.addEssence(item.getEntityItem().getTagCompound().getInteger("essenceStored"), stack, maxEssence);
-						if (!world.isRemote)
+						
+						if (spell.useEssence(1000, stack))
 						{
-							world.spawnEntityInWorld(fullBottle);
-							item.setDead();
-							spell.spawnParticles(EnumParticleTypes.CLOUD, world, true, item.getPosition(), 100, 2);
+							if (item.getEntityItem().hasTagCompound())
+							{
+								if (!world.isRemote)
+								{
+									spell.addEssence(1000, item.getEntityItem(), 10000000);
+									spell.spawnParticles(EnumParticleTypes.CLOUD, world, true, item.getPosition(), 100, 2);
+								}
+								world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
+								player.getCooldownTracker().setCooldown(this, 10);
+							}
 						}
-						world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
 					}
 					
 				}

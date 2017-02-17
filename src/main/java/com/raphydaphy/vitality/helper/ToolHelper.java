@@ -88,11 +88,7 @@ public final class ToolHelper
 	}
 
 	public static boolean isRightMaterial(Material material, Material[] materialsListing) {
-		for(Material mat : materialsListing)
-			if(material == mat)
-				return true;
-
-		return false;
+		return true;
 	}
 
 	public static void removeBlockWithDrops(EntityPlayer player, ItemStack stack, World world, BlockPos pos, BlockPos bPos, Block block, Material[] materialsListing, boolean silk, int fortune, float blockHardness, boolean dispose) {

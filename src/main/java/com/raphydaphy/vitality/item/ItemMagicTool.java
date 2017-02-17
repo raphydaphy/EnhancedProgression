@@ -1,6 +1,7 @@
 package com.raphydaphy.vitality.item;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -11,8 +12,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -56,5 +63,22 @@ public class ItemMagicTool extends ItemTool
 
 		return true;
 	}
+	
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+        if(!playerIn.isSneaking()){
+            return Items.IRON_HOE.onItemUse(new ItemStack(Items.IRON_HOE), playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+        }
+        else{
+            return Items.IRON_SHOVEL.onItemUse(new ItemStack(Items.IRON_SHOVEL), playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+        }
+    }
+	
+	public Set<String> getToolClasses(ItemStack stack){
+        HashSet<String> hashSet = new HashSet<String>();
+        hashSet.add("pickaxe");
+        hashSet.add("axe");
+        hashSet.add("shovel");
+        return hashSet;
+    }
 
 }

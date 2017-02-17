@@ -45,7 +45,7 @@ item.upgrade_template_advanced.name=Advanced Upgrade Template
 item.upgrade_template_master.name=Master Upgrade Template
 
 item.essence_vial_empty.name=Empty Essence Vial
-item.essence_vial_full.name=Full Essence Vial
+item.essence_vial_full.name=Essence Vial
 
 item.basic_wand_copper.name=Basic Wand
 item.basic_wand_tin.name=Basic Wand
