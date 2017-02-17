@@ -277,6 +277,45 @@ public class ItemWand extends Item implements ICraftAchievement
 		}
 	}
 	
+	
+	public boolean lanternSpell(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+			EnumFacing side, float par8, float par9, float par10, Item cooldownStack)
+	{
+		if (!world.isRemote)
+		{
+			int essenceVal = 5;
+			int cooldown = 20;
+			if (getActiveSpell(player.getHeldItemOffhand()) == 811 || getActiveSpell(player.getHeldItemMainhand()) == 811)
+			{
+				essenceVal = 2;
+				cooldown = 10;
+			}
+			else if (getActiveSpell(player.getHeldItemOffhand()) == 812 || getActiveSpell(player.getHeldItemMainhand()) == 812)
+			{
+				essenceVal = 0;
+				cooldown = 5;
+			}
+			if (useEssence(essenceVal, stack))
+			{
+				spawnParticles(EnumParticleTypes.FLAME, world, true,pos, 15, 1);
+				world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
+				ItemStack stackToPlace = new ItemStack(Blocks.TORCH);
+				stackToPlace.onItemUse(player, world, pos, hand, side, par8, par9, par10);
+				player.swingArm(hand);
+				player.getCooldownTracker().setCooldown(cooldownStack, cooldown);
+				return true;
+			}
+			else
+			{
+				Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+				return false;
+			}
+		}
+		else
+		{
+			return true;
+		}
+	}
 	/*
 	 * Puts the current wand instance into the creative tab
 	 * Used with all instances of the wand item
@@ -952,36 +991,11 @@ public class ItemWand extends Item implements ICraftAchievement
 			// If the Magic Lantern spell is used on a block
 			else if (getActiveSpell(player.getHeldItemOffhand()) > 809 && getActiveSpell(player.getHeldItemOffhand()) < 820)
 			{
-				if (!world.isRemote)
+				if (lanternSpell(stack, player, world, pos, hand,side, par8, par9,  par10, this))
 				{
-					int essenceVal = 5;
-					int cooldown = 20;
-					if (getActiveSpell(player.getHeldItemOffhand()) == 811)
-					{
-						essenceVal = 2;
-						cooldown = 10;
-					}
-					else if (getActiveSpell(player.getHeldItemOffhand()) == 812)
-					{
-						essenceVal = 0;
-						cooldown = 5;
-					}
-					if (useEssence(essenceVal, stack))
-					{
-						spawnParticles(EnumParticleTypes.FLAME, world, true,pos, 15, 1);
-						world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
-						ItemStack stackToPlace = new ItemStack(Blocks.TORCH);
-						stackToPlace.onItemUse(player, world, pos, hand, side, par8, par9, par10);
-						player.swingArm(hand);
-						player.getCooldownTracker().setCooldown(this, cooldown);
-						return EnumActionResult.SUCCESS;
-					}
-					else
-					{
-						Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-						return EnumActionResult.FAIL;
-					}
+					return EnumActionResult.SUCCESS;
 				}
+				return EnumActionResult.FAIL;
 			}
 			// we need a spell for this soon
 			else
