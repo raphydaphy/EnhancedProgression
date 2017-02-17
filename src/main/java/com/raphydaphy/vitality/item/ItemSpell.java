@@ -44,49 +44,50 @@ public class ItemSpell extends ItemBase implements IPickupAchievement
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float par8, float par9, float par10)
 	{
-		if (player.getHeldItemMainhand() != null)
+		if (!ItemStack.areItemStacksEqual(player.getHeldItemMainhand(), new ItemStack(ModItems.advanced_wand)) &
+			!ItemStack.areItemStacksEqual(player.getHeldItemMainhand(), new ItemStack(ModItems.master_wand)) &
+			!ItemStack.areItemStacksEqual(player.getHeldItemMainhand(), new ItemStack(ModItems.basic_wand_tin)) &
+			!ItemStack.areItemStacksEqual(player.getHeldItemMainhand(), new ItemStack(ModItems.basic_wand_copper)))
 		{
-			if (!(player.getHeldItemMainhand().getItem() instanceof ItemWand))
+			for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
 			{
-				for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
+				ItemStack stackAt = player.inventory.getStackInSlot(i);
+				if (stackAt != null)
 				{
-					ItemStack stackAt = player.inventory.getStackInSlot(i);
-					if (stackAt != null)
+				if (stackAt.getItem() == ModItems.essence_vial_full)
 					{
-						if (stackAt.getItem() == ModItems.essence_vial_full)
+						System.out.println(this.name);
+						ItemWand wandFunc = new ItemWand("func_wand", 3, 10000, false);
+						if (wandFunc.getActiveSpell(player.getHeldItemOffhand()) > 809 && wandFunc.getActiveSpell(player.getHeldItemOffhand()) < 820)
 						{
-							ItemWand wandFunc = new ItemWand("func_wand", 3, 10000, false);
-							if (wandFunc.getActiveSpell(player.getHeldItemOffhand()) > 809 && wandFunc.getActiveSpell(player.getHeldItemOffhand()) < 820)
+							if (!world.isRemote)
 							{
-								if (!world.isRemote)
+								int essenceVal = 5;
+								int cooldown = 20;
+								if (this.name == "spell_card_lantern_2")
 								{
-									int essenceVal = 5;
-									int cooldown = 20;
-									if (wandFunc.getActiveSpell(player.getHeldItemOffhand()) == 811)
-									{
-										essenceVal = 2;
-										cooldown = 10;
-									}
-									else if (wandFunc.getActiveSpell(player.getHeldItemOffhand()) == 812)
-									{
-										essenceVal = 0;
-										cooldown = 5;
-									}
-									if (wandFunc.useEssence(essenceVal, stackAt))
-									{
-										wandFunc.spawnParticles(EnumParticleTypes.FLAME, world, true,pos, 15, 1);
-										world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
-										ItemStack stackToPlace = new ItemStack(Blocks.TORCH);
-										stackToPlace.onItemUse(player, world, pos, hand, side, par8, par9, par10);
-										player.swingArm(hand);
-										player.getCooldownTracker().setCooldown(this, cooldown);
-										return EnumActionResult.SUCCESS;
-									}
-									else
-									{
-										Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-										return EnumActionResult.FAIL;
-									}
+									essenceVal = 2;
+									cooldown = 10;
+								}
+								else if (this.name == "spell_card_lantern_3")
+								{
+									essenceVal = 0;
+									cooldown = 5;
+								}
+								if (wandFunc.useEssence(essenceVal, stackAt))
+								{
+									wandFunc.spawnParticles(EnumParticleTypes.FLAME, world, true,pos, 15, 1);
+									world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
+									ItemStack stackToPlace = new ItemStack(Blocks.TORCH);
+									stackToPlace.onItemUse(player, world, pos, hand, side, par8, par9, par10);
+									player.swingArm(hand);
+									player.getCooldownTracker().setCooldown(this, cooldown);
+									return EnumActionResult.SUCCESS;
+								}
+								else
+								{
+									Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+									return EnumActionResult.FAIL;
 								}
 							}
 						}
