@@ -102,12 +102,9 @@ public class ModItems
 				new ItemSpell("spell_card_fireball_3", 832));
 		
 		// Three tiers of lantern spell cards
-		spell_card_lantern_1 = register(
-				new ItemBase("spell_card_lantern_1", 1).setCreativeTab(Vitality.creativeTab));
-		spell_card_lantern_2 = register(
-				new ItemBase("spell_card_lantern_2", 1).setCreativeTab(Vitality.creativeTab));
-		spell_card_lantern_3 = register(
-				new ItemBase("spell_card_lantern_3", 1).setCreativeTab(Vitality.creativeTab));
+		spell_card_lantern_1 = register(new ItemSpell("spell_card_lantern_1", 810));
+		spell_card_lantern_2 = register(new ItemSpell("spell_card_lantern_2", 811));
+		spell_card_lantern_3 = register(new ItemSpell("spell_card_lantern_3", 812));
 		
 		// Two tiers of rapidfire spell cards
 		spell_card_rapidfire_1 = register(

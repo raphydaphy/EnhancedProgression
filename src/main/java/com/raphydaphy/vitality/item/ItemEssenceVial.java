@@ -29,11 +29,13 @@ public class ItemEssenceVial extends ItemBase
 			{
 					Vitality.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 							+ stack.getTagCompound().getInteger("essenceStored") +" " + (I18n.format("gui.essence.name"))));
+					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);	
 			}
 			if (player.getHeldItemMainhand().getItem() == ModItems.essence_vial_empty && player.isSneaking())
 			{
 					Vitality.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 							+ "0" +" " + (I18n.format("gui.essence.name"))));
+					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);	
 			}
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);	
