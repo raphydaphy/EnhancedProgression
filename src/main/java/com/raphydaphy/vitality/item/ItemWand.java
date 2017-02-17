@@ -774,7 +774,7 @@ public class ItemWand extends Item implements ICraftAchievement
 								item.setDead();
 								spell.spawnParticles(EnumParticleTypes.CLOUD, world, true, item.getPosition(), 100, 2);
 							}
-							world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
+							world.playSound(player, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.AMBIENT, 1, 1);
 							player.getCooldownTracker().setCooldown(this, 10);
 						}
 						else
@@ -795,9 +795,72 @@ public class ItemWand extends Item implements ICraftAchievement
 									spell.addEssence(1000, item.getEntityItem(), 10000000);
 									spell.spawnParticles(EnumParticleTypes.CLOUD, world, true, item.getPosition(), 100, 2);
 								}
-								world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
+								world.playSound(player, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.AMBIENT, 1, 1);
 								player.getCooldownTracker().setCooldown(this, 10);
 							}
+						}
+					}
+					else if (item.getEntityItem().getItem() == Items.WOODEN_PICKAXE)
+					{
+						if (spell.useEssence(1000, stack))
+						{
+							ItemStack multitoolStack = new ItemStack(ModItems.magic_multitool);
+							EntityItem fullBottle = new EntityItem(world, item.posX, item.posY, item.posZ, multitoolStack.copy());
+							if (!world.isRemote)
+							{
+								world.spawnEntityInWorld(fullBottle);
+								item.setDead();
+								spell.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, item.getPosition(), 100, 2);
+							}
+							world.playSound(player, player.getPosition(), SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.AMBIENT, 1, 1);
+							player.getCooldownTracker().setCooldown(this, 10);
+						}
+						else
+						{
+							Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+							return EnumActionResult.FAIL;
+						}
+					}
+					else if (item.getEntityItem().getItem() == ModItems.magic_multitool)
+					{
+						if (spell.useEssence(10000, stack))
+						{
+							ItemStack multitoolStack = new ItemStack(ModItems.imbued_multitool);
+							EntityItem fullBottle = new EntityItem(world, item.posX, item.posY, item.posZ, multitoolStack.copy());
+							if (!world.isRemote)
+							{
+								world.spawnEntityInWorld(fullBottle);
+								item.setDead();
+								spell.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, item.getPosition(), 100, 2);
+							}
+							world.playSound(player, player.getPosition(), SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.AMBIENT, 1, 1);
+							player.getCooldownTracker().setCooldown(this, 10);
+						}
+						else
+						{
+							Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+							return EnumActionResult.FAIL;
+						}
+					}
+					else if (item.getEntityItem().getItem() == ModItems.imbued_multitool)
+					{
+						if (spell.useEssence(100000, stack))
+						{
+							ItemStack multitoolStack = new ItemStack(ModItems.fluxed_multitool);
+							EntityItem fullBottle = new EntityItem(world, item.posX, item.posY, item.posZ, multitoolStack.copy());
+							if (!world.isRemote)
+							{
+								world.spawnEntityInWorld(fullBottle);
+								item.setDead();
+								spell.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, item.getPosition(), 100, 2);
+							}
+							world.playSound(player, player.getPosition(), SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.AMBIENT, 1, 1);
+							player.getCooldownTracker().setCooldown(this, 10);
+						}
+						else
+						{
+							Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+							return EnumActionResult.FAIL;
 						}
 					}
 					

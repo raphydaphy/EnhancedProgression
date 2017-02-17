@@ -12,6 +12,8 @@ item.fluxed_stick.name=Fluxed Stick
 item.spell_bag.name=Spell Bag
 
 item.magic_multitool.name=Magic Multitool
+item.imbued_multitool.name=Imbued Multitool
+item.fluxed_multitool.name=Fluxed Multitool
 
 item.spell_card_vital_extraction.name=Spell Card - Vital Extraction
 item.spell_card_lantern_1.name=Spell Card - Magic Lantern

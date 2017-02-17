@@ -75,6 +75,8 @@ public class ModItems
 	public static final Item.ToolMaterial fluxedToolMaterial = EnumHelper.addToolMaterial("FLUXED", 5, 5000, 15, 2, 100);
 	
 	public static ItemMagicTool magic_multitool;
+	public static ItemMagicTool imbued_multitool;
+	public static ItemMagicTool fluxed_multitool;
 
 	public static ItemWand basic_wand_copper;
 	public static ItemWand basic_wand_tin;
@@ -156,8 +158,9 @@ public class ModItems
 		essence_vial_empty = (ItemEssenceVial) register(new ItemEssenceVial("essence_vial_empty")).setCreativeTab(Vitality.creativeTab);
 		essence_vial_full = register(new ItemEssenceVial("essence_vial_full"));
 		
-		magic_multitool = register(new ItemMagicTool(2, 1, magicalToolMaterial, "magic_multitool"));
-		
+		magic_multitool = register(new ItemMagicTool(2, 1, magicalToolMaterial, "magic_multitool", 10));
+		imbued_multitool = register(new ItemMagicTool(2, 1, imbuedToolMaterial, "imbued_multitool", 25));
+		fluxed_multitool = register(new ItemMagicTool(2, 1, fluxedToolMaterial, "fluxed_multitool", 50));
 		
 		basic_wand_copper = register(new ItemWand("basic_wand_copper", 1, ConfigHandler.wandSettings.basicWandStorage,
 				ConfigHandler.wandSettings.canBasicWandBreak).setCreativeTab(Vitality.creativeTab));

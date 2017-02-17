@@ -77,13 +77,13 @@ public final class ToolHelper
 	/**
 	 * Pos is the actual block coordinate, posStart and posEnd are deltas from pos
 	 */
-	public static void removeBlocksInIteration(EntityPlayer player, ItemStack stack, World world, BlockPos pos, BlockPos posStart, BlockPos posEnd, Block block, Material[] materialsListing, boolean silk, int fortune, boolean dispose) {
+	public static void removeBlocksInIteration(EntityPlayer player, ItemStack stack, World world, BlockPos pos, BlockPos posStart, BlockPos posEnd, Block block, boolean silk, int fortune) {
 		float blockHardness = block == null ? 1F : block.getBlockHardness(world.getBlockState(pos), world, pos);
 
 		for (BlockPos iterPos : BlockPos.getAllInBox(pos.add(posStart), pos.add(posEnd))) {
 			if (iterPos.equals(pos)) // skip original block space to avoid crash, vanilla code in the tool class will handle it
 				continue;
-			removeBlockWithDrops(player, stack, world, iterPos, pos, block, materialsListing, silk, fortune, blockHardness, dispose);
+			removeBlockWithDrops(player, stack, world, iterPos, pos, block, silk, fortune, blockHardness, false);
 		}
 	}
 
@@ -91,7 +91,7 @@ public final class ToolHelper
 		return true;
 	}
 
-	public static void removeBlockWithDrops(EntityPlayer player, ItemStack stack, World world, BlockPos pos, BlockPos bPos, Block block, Material[] materialsListing, boolean silk, int fortune, float blockHardness, boolean dispose) {
+	public static void removeBlockWithDrops(EntityPlayer player, ItemStack stack, World world, BlockPos pos, BlockPos bPos, Block block, boolean silk, int fortune, float blockHardness, boolean dispose) {
 		if(!world.isBlockLoaded(pos))
 		{
 			return;
@@ -107,7 +107,7 @@ public final class ToolHelper
 
 		Material mat = world.getBlockState(pos).getMaterial();
 		if(!world.isRemote && blk != null && !blk.isAir(state, world, pos) && state.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
-			if(!blk.canHarvestBlock(player.worldObj, pos, player) || !isRightMaterial(mat, materialsListing)) 
+			if(!blk.canHarvestBlock(player.worldObj, pos, player)) 
 			{
 				return;
 			}
