@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "vitality:items/magic_tool"
+        "layer0": "vitality:items/magic_multitool"
     }
 }

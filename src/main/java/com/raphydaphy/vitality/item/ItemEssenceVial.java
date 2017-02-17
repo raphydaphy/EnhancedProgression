@@ -4,8 +4,10 @@ import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.init.ModItems;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -20,6 +22,25 @@ public class ItemEssenceVial extends ItemBase
 		this.name=name;
 		super.setCreativeTab(Vitality.creativeTab);
 	}
+	
+	public void onUpdate(ItemStack stack, World world, Entity player, int itemSlot, boolean isSelected)
+    {
+		if (stack.getItem() == ModItems.essence_vial_full)
+		{
+			if (stack.hasTagCompound())
+			{
+				if (stack.getTagCompound().getInteger("essenceStored") < 1)
+				{
+					stack = new ItemStack(ModItems.essence_vial_empty);
+				}
+			}
+			else
+			{
+				stack = new ItemStack(ModItems.essence_vial_empty);
+				//stack.setTagCompound(new NBTTagCompound());
+			}
+		}
+    }
 	
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player, EnumHand hand)
 	{

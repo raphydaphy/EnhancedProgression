@@ -3,11 +3,14 @@ package com.raphydaphy.vitality.init;
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemEssenceVial;
+import com.raphydaphy.vitality.item.ItemMagicTool;
 import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemSpellBag;
 import com.raphydaphy.vitality.item.ItemWand;
 
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModItems
@@ -66,6 +69,12 @@ public class ModItems
 	
 	public static ItemEssenceVial essence_vial_empty;
 	public static ItemEssenceVial essence_vial_full;
+	
+	public static final Item.ToolMaterial magicalToolMaterial = EnumHelper.addToolMaterial("MAGICAL", 2, 500, 6, 2, 60);
+	public static final Item.ToolMaterial imbuedToolMaterial = EnumHelper.addToolMaterial("IMBUED", 3, 2000, 10, 2, 80);
+	public static final Item.ToolMaterial fluxedToolMaterial = EnumHelper.addToolMaterial("FLUXED", 5, 5000, 15, 2, 100);
+	
+	public static ItemMagicTool magic_multitool;
 
 	public static ItemWand basic_wand_copper;
 	public static ItemWand basic_wand_tin;
@@ -147,6 +156,9 @@ public class ModItems
 		essence_vial_empty = register(new ItemEssenceVial("essence_vial_empty"));
 		essence_vial_full = register(new ItemEssenceVial("essence_vial_full"));
 		
+		magic_multitool = register(new ItemMagicTool(2, 6, magicalToolMaterial, "magic_multitool"));
+		
+		
 		basic_wand_copper = register(new ItemWand("basic_wand_copper", 1, ConfigHandler.wandSettings.basicWandStorage,
 				ConfigHandler.wandSettings.canBasicWandBreak).setCreativeTab(Vitality.creativeTab));
 		basic_wand_tin = register(new ItemWand("basic_wand_tin", 1, ConfigHandler.wandSettings.basicWandStorage,
@@ -174,6 +186,10 @@ public class ModItems
 		else if (item instanceof ItemSpellBag)
 		{
 			((ItemSpellBag) item).registerItemModel();
+		}
+		else if (item instanceof ItemMagicTool)
+		{
+			((ItemMagicTool) item).registerItemModel();
 		}
 		return item;
 	}

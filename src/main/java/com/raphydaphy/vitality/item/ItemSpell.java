@@ -48,13 +48,16 @@ public class ItemSpell extends ItemBase implements IPickupAchievement
 				{
 					if (stackAt.getItem() == ModItems.essence_vial_full)
 					{
-						System.out.println(this.name);
-						ItemWand wandFunc = new ItemWand("func_wand", 3, 10000, false);
-						if (wandFunc.lanternSpell(stackAt, player, world, pos, hand, side, par8, par9, par10, this))
+						SpellControl wandFunc = new SpellControl();
+						if (wandFunc.getActiveSpell(player.getHeldItem(hand)) > 809 && wandFunc.getActiveSpell(player.getHeldItem(hand)) < 820)
 						{
-							return EnumActionResult.SUCCESS;
+							if (wandFunc.lanternSpell(stackAt, player, world, pos, hand, side, par8, par9, par10, this))
+							{
+								return EnumActionResult.SUCCESS;
+							}
+							return EnumActionResult.FAIL;
 						}
-						return EnumActionResult.FAIL;
+						
 					}
 				}
 			}
