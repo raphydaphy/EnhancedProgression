@@ -190,6 +190,9 @@ public class ModRecipies
 		
 		GameRegistry.addShapedRecipe(new ItemStack(ModItems.master_wand), "  I", " S ", "S  ", 'S',
 				ModItems.fluxed_stick, 'I', ModItems.ingot_fluxed);
+		
+		addOreDictRecipe(new ItemStack(ModItems.essence_vial_empty), "GBG", " G ",  'G', "blockGlass",
+			 'B', "ingotBronze");
 
 		if (ConfigHandler.crafting.enableBronzeCrafting)
 		{

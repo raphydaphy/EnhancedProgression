@@ -18,9 +18,11 @@ import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.nbt.NBTLib;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBanner;
 import net.minecraft.block.BlockCactus;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.IGrowable;
@@ -31,6 +33,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityLargeFireball;
@@ -42,6 +45,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
@@ -55,6 +59,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 
 /*
  * Main class to control all wands
@@ -578,7 +583,8 @@ public class ItemWand extends Item implements ICraftAchievement
 						{
 							if (!worldIn.isRemote)
 							{
-								tryPlaceABlock(Blocks.DIRT, stack, player, worldIn, pos, player.getHorizontalFacing(), (float) (posX - pos.getX()), (float) (posY - pos.getY()), (float) (posZ - pos.getZ()));
+								System.out.println("dirt placing now?");
+								//World.s
 							}
 						}
 						else if (player.getHeldItemOffhand().getTagCompound().getInteger("activeBlock") == 2)
@@ -782,22 +788,43 @@ public class ItemWand extends Item implements ICraftAchievement
 					return EnumActionResult.FAIL;
 				}
 			}
+			if (getActiveSpell(player.getHeldItemOffhand()) > 869 && 
+				getActiveSpell(player.getHeldItemOffhand()) < 880)
+			{
+				if (block instanceof BlockMobSpawner)
+				{
+					// Balances since rougelike adds so many spawners
+					if (Loader.isModLoaded("roguelike"))
+					{
+						addEssence(2000, stack);
+					}
+					else
+					{
+						addEssence(15000, stack);
+					}
+					world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
+					if (!world.isRemote)
+					{ spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,pos, 10, 1); }
+					world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.BLOCKS, 1, 1);
+					return EnumActionResult.SUCCESS;
+				}
+			}
 			else if (getActiveSpell(player.getHeldItemOffhand()) > 819 && getActiveSpell(player.getHeldItemOffhand()) < 830)
 			{
 				int essenceAmount = 50;
-				int blastPower = 50;
+				int blastPower = 20;
 				int radius = 2;
 				
 				if (getActiveSpell(player.getHeldItemOffhand()) == 821)
 				{
 					essenceAmount = 80;
-					blastPower = 150;
+					blastPower = 50;
 					radius = 4;
 				}
 				else if (getActiveSpell(player.getHeldItemOffhand()) == 822)
 				{
 					essenceAmount = 250;
-					blastPower = 300;
+					blastPower = 100;
 					radius = 8;
 				}
 				if (useEssence(essenceAmount, stack))
@@ -845,14 +872,15 @@ public class ItemWand extends Item implements ICraftAchievement
 		            {
 		                if (!world.isRemote && useEssence(essenceVal, stack))
 		                {
-		                    if (igrowable.canUseBonemeal(world, world.rand, pos, iblockstate))
-		                    {
-		                    	spawnParticles(EnumParticleTypes.VILLAGER_HAPPY, world, true, pos, 15, 1);
-		                        igrowable.grow(world, world.rand, pos, iblockstate);
-		                        return EnumActionResult.SUCCESS;
-		                    }
+	                    	spawnParticles(EnumParticleTypes.VILLAGER_HAPPY, world, true, pos, 15, 1);
+	                        igrowable.grow(world, world.rand, pos, iblockstate);
+	                        return EnumActionResult.SUCCESS;
 		                }
-		                
+		                else
+		                {
+		                	Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+							return EnumActionResult.FAIL;
+		                }
 		            }
 		        }
 
@@ -863,8 +891,16 @@ public class ItemWand extends Item implements ICraftAchievement
 				{
 					if (!world.isRemote)
 					{ spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,pos, 10, 1); }
-					addEssence(((Integer)world.getBlockState(pos).getValue(BlockCrops.AGE)).intValue() * 10, stack);
+					try
+					{
+						addEssence(((Integer)world.getBlockState(pos).getValue(BlockCrops.AGE)).intValue() * 10, stack);
+					}
+					catch (Exception e)
+					{
+						addEssence(50, stack);
+					}
 					world.setBlockState(pos, Blocks.DEADBUSH.getDefaultState());
+					world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.BLOCKS, 1, 1);
 					
 					return EnumActionResult.SUCCESS;
 				}
@@ -874,6 +910,7 @@ public class ItemWand extends Item implements ICraftAchievement
 					if (!world.isRemote)
 					{ spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,pos, 10, 1); }
 					world.setBlockState(pos, Blocks.DEADBUSH.getDefaultState());
+					world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.BLOCKS, 1, 1);
 					return EnumActionResult.SUCCESS;
 				}
 				else if (block instanceof BlockCactus)
@@ -881,7 +918,8 @@ public class ItemWand extends Item implements ICraftAchievement
 					addEssence(25, stack);
 					if (!world.isRemote)
 					{ spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true,pos, 10, 1); }
-					world.setBlockState(pos, Blocks.DEADBUSH.getDefaultState());
+					world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.BLOCKS, 1, 1);
 					return EnumActionResult.SUCCESS;
 				}
 			}
@@ -906,38 +944,90 @@ public class ItemWand extends Item implements ICraftAchievement
 				}
 				else
 				{
-					return EnumActionResult.PASS;
+					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+					return EnumActionResult.FAIL;
 				}
 				
 			}
 			// If the Magic Lantern spell is used on a block
-			else if (!world.isRemote && getActiveSpell(player.getHeldItemOffhand()) > 809 && getActiveSpell(player.getHeldItemOffhand()) < 820)
+			else if (getActiveSpell(player.getHeldItemOffhand()) > 809 && getActiveSpell(player.getHeldItemOffhand()) < 820)
 			{
-				int essenceVal = 5;
-				int cooldown = 20;
-				if (getActiveSpell(player.getHeldItemOffhand()) == 811)
+				if (!world.isRemote)
 				{
-					essenceVal = 2;
-					cooldown = 10;
+					int essenceVal = 5;
+					int cooldown = 20;
+					if (getActiveSpell(player.getHeldItemOffhand()) == 811)
+					{
+						essenceVal = 2;
+						cooldown = 10;
+					}
+					else if (getActiveSpell(player.getHeldItemOffhand()) == 812)
+					{
+						essenceVal = 0;
+						cooldown = 5;
+					}
+					if (useEssence(essenceVal, stack))
+					{
+						spawnParticles(EnumParticleTypes.FLAME, world, true,pos, 15, 1);
+						world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 1);
+						ItemStack stackToPlace = new ItemStack(Blocks.TORCH);
+						stackToPlace.onItemUse(player, world, pos, hand, side, par8, par9, par10);
+						player.swingArm(hand);
+						player.getCooldownTracker().setCooldown(this, cooldown);
+						return EnumActionResult.SUCCESS;
+					}
+					else
+					{
+						Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+						return EnumActionResult.FAIL;
+					}
 				}
-				else if (getActiveSpell(player.getHeldItemOffhand()) == 812)
+			}
+			// we need a spell for this soon
+			else
+			{
+				List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class,
+						new AxisAlignedBB(pos.add(-2, -2, -2), pos.add(2, 2, 2)));
+				for (EntityItem item : items)
 				{
-					essenceVal = 0;
-					cooldown = 5;
-				}
-				if (useEssence(essenceVal, stack))
-				{
-					spawnParticles(EnumParticleTypes.FLAME, world, true,pos, 15, 1);
-					ItemStack stackToPlace = new ItemStack(Blocks.DIRT);
-					stackToPlace.onItemUse(player, world, pos, hand, side, par8, par9, par10);
-					player.swingArm(hand);
-					player.getCooldownTracker().setCooldown(this, cooldown);
-					return EnumActionResult.SUCCESS;
-				}
-				else
-				{
-					Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
-					return EnumActionResult.PASS;
+					if (item.getEntityItem().getItem() == ModItems.essence_vial_empty)
+					{
+						if (useEssence(1000, stack))
+						{
+							ItemStack fullBottleStack = new ItemStack(ModItems.essence_vial_full);
+							if (!fullBottleStack.hasTagCompound())
+							{
+								fullBottleStack.setTagCompound(new NBTTagCompound());
+							}
+							fullBottleStack.getTagCompound().setInteger("essenceStored", 1000);
+							EntityItem fullBottle = new EntityItem(world, item.posX, item.posY, item.posZ, fullBottleStack.copy());
+							if (!world.isRemote)
+							{
+								world.spawnEntityInWorld(fullBottle);
+								item.setDead();
+								spawnParticles(EnumParticleTypes.CLOUD, world, true, item.getPosition(), 100, 2);
+							}
+							world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
+						}
+						else
+						{
+							Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+							return EnumActionResult.FAIL;
+						}
+					}
+					else if (item.getEntityItem().getItem() == ModItems.essence_vial_full)
+					{
+						EntityItem fullBottle = new EntityItem(world, item.posX, item.posY, item.posZ, new ItemStack(ModItems.essence_vial_empty));
+						addEssence(item.getEntityItem().getTagCompound().getInteger("essenceStored"), stack);
+						if (!world.isRemote)
+						{
+							world.spawnEntityInWorld(fullBottle);
+							item.setDead();
+							spawnParticles(EnumParticleTypes.CLOUD, world, true, item.getPosition(), 100, 2);
+						}
+						world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
+					}
+					
 				}
 			}
 		}

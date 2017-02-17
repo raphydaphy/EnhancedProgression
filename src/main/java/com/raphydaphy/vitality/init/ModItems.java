@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.item.ItemBase;
+import com.raphydaphy.vitality.item.ItemEssenceVial;
 import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemSpellBag;
 import com.raphydaphy.vitality.item.ItemWand;
@@ -62,6 +63,9 @@ public class ModItems
 	public static ItemBase spell_card_forcefield;
 
 	public static ItemBase upgrade_template_basic;
+	
+	public static ItemEssenceVial essence_vial_empty;
+	public static ItemEssenceVial essence_vial_full;
 
 	public static ItemWand basic_wand_copper;
 	public static ItemWand basic_wand_tin;
@@ -142,6 +146,10 @@ public class ModItems
 				new ItemBase("spell_card_forcefield", 1).setCreativeTab(Vitality.creativeTab));
 		upgrade_template_basic = register(
 				new ItemBase("upgrade_template_basic", 16).setCreativeTab(Vitality.creativeTab));
+		
+		essence_vial_empty = register(new ItemEssenceVial("essence_vial_empty"));
+		essence_vial_full = register(new ItemEssenceVial("essence_vial_full"));
+		
 		basic_wand_copper = register(new ItemWand("basic_wand_copper", 1, ConfigHandler.wandSettings.basicWandStorage,
 				ConfigHandler.wandSettings.canBasicWandBreak).setCreativeTab(Vitality.creativeTab));
 		basic_wand_tin = register(new ItemWand("basic_wand_tin", 1, ConfigHandler.wandSettings.basicWandStorage,
