@@ -126,7 +126,7 @@ public final class ToolHelper
 					blk.harvestBlock(world, player, pos, state, tile, stack);
 				}
 
-				damageItem(stack, 1, player, 80);
+				damageItem(stack, 1, player, 10);
 			} 
 			else 
 			{

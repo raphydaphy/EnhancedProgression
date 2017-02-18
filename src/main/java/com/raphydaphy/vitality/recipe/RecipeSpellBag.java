@@ -106,7 +106,7 @@ public class RecipeSpellBag implements IRecipe
 		{
 			return 870;
 		}
-		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction_1)
+		else if (spell.getItem() == ModItems.spell_card_enhanced_extraction_2)
 		{
 			return 871;
 		}

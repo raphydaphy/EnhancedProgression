@@ -175,8 +175,11 @@ public class ItemWand extends Item implements ICraftAchievement
 	{
 		if (player.isSneaking() && (spell.getActiveSpell(player.getHeldItemOffhand()) > 919 || spell.getActiveSpell(player.getHeldItemOffhand()) < 910))
 		{
-			Vitality.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
+			if (worldIn.isRemote)
+			{
+				Vitality.proxy.setActionText((I18n.format("gui.checkessence.name") + " "
 					+ spell.getEssenceStored(stack) + "/" + maxEssence + " " + (I18n.format("gui.essence.name"))));
+			}
 		}
 		else if (!worldIn.isRemote && spell.getActiveSpell(player.getHeldItemOffhand()) > 839 && spell.getActiveSpell(player.getHeldItemOffhand()) < 850)
 		{
@@ -649,28 +652,38 @@ public class ItemWand extends Item implements ICraftAchievement
 			{
 				if (block instanceof IGrowable)
 		        {
-					int essenceVal = 100;
+					int essenceVal = 50;
+					int cooldown = 20;
 					if (spell.getActiveSpell(player.getHeldItemOffhand()) == 901)
 					{
-						essenceVal = 50;
+						essenceVal = 25;
+						cooldown = 10;
 					}
 					else if (spell.getActiveSpell(player.getHeldItemOffhand()) == 902)
 					{
-						essenceVal = 25;
+						essenceVal = 10;
+						cooldown = 5;
 					}
 		            IGrowable igrowable = (IGrowable)block;
 		            IBlockState iblockstate = world.getBlockState(pos);
 		            if (igrowable.canGrow(world, pos, iblockstate, world.isRemote))
 		            {
-		                if (!world.isRemote && spell.useEssence(essenceVal, stack))
+		                if (spell.useEssence(essenceVal, stack))
 		                {
-		                	spell.spawnParticles(EnumParticleTypes.VILLAGER_HAPPY, world, true, pos, 15, 1);
-	                        igrowable.grow(world, world.rand, pos, iblockstate);
-	                        return EnumActionResult.SUCCESS;
+		                	if (!world.isRemote)
+		                	{
+			                	spell.spawnParticles(EnumParticleTypes.VILLAGER_HAPPY, world, true, pos, 15, 1);
+		                        igrowable.grow(world, world.rand, pos, iblockstate);
+		                        return EnumActionResult.SUCCESS;
+		                	}
+		                	player.getCooldownTracker().setCooldown(this, cooldown);
 		                }
 		                else
 		                {
-		                	Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+		                	if (world.isRemote)
+		                	{
+		                		Vitality.proxy.setActionText((I18n.format("gui.notenoughessence.name")));
+		                	}
 							return EnumActionResult.FAIL;
 		                }
 		            }

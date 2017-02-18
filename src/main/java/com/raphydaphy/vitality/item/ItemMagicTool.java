@@ -10,12 +10,14 @@ import com.raphydaphy.vitality.helper.ToolHelper;
 import com.raphydaphy.vitality.init.ModItems;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -31,14 +33,14 @@ public class ItemMagicTool extends ItemTool
 {
 	protected String name;
 	protected String repairOredict;
-	protected int essencePerDmg;
+	protected int essencePerDmg = 10;
 	
 	public ItemMagicTool(float attack, float speed, ToolMaterial toolMat, String unlocalizedName, int epd)
 	{
         super(attack, speed, toolMat, new HashSet<Block>());
 
         this.name = unlocalizedName;
-        this.essencePerDmg = epd;
+        // this.essencePerDmg = epd;
         this.setMaxDamage(this.getMaxDamage()*4);
         this.setHarvestLevel("pickaxe", toolMat.getHarvestLevel());
 		setUnlocalizedName(unlocalizedName);
@@ -65,23 +67,15 @@ public class ItemMagicTool extends ItemTool
 	@Override
 	public boolean onBlockDestroyed(@Nonnull ItemStack stack, @Nonnull World world, IBlockState state, @Nonnull BlockPos pos, @Nonnull EntityLivingBase entity) {
 		if(state.getBlockHardness(world, pos) != 0F)
+		{
 			ToolHelper.damageItem(stack, 1, entity, essencePerDmg);
+		}
 
 		return true;
 	}
-	
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-        if(!playerIn.isSneaking()){
-            return Items.IRON_HOE.onItemUse(new ItemStack(Items.IRON_HOE), playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
-        }
-        else{
-            return Items.IRON_SHOVEL.onItemUse(new ItemStack(Items.IRON_SHOVEL), playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
-        }
-    }
-	
 	public void breakOtherBlock(EntityPlayer player, ItemStack stack, BlockPos pos, BlockPos originPos, EnumFacing side) 
 	{
-		if (player.getHeldItemMainhand().getItem() == ModItems.magic_multitool)
+		if (player.isSneaking() || player.getHeldItemMainhand().getItem() == ModItems.magic_multitool)
 		{
 			return;
 		}
@@ -123,22 +117,25 @@ public class ItemMagicTool extends ItemTool
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World world, Entity entity, int par4, boolean par5) {
 		super.onUpdate(par1ItemStack, world, entity, par4, par5);
-		if(entity instanceof EntityPlayer && !((EntityPlayer) entity).isSwingInProgress)
+		if (par1ItemStack.getItemDamage() != 0)
 		{
-			EntityPlayer player = (EntityPlayer) entity;
-			SpellControl spellMan = new SpellControl();
-			for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
+			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).isSwingInProgress)
 			{
-				ItemStack stackAt = player.inventory.getStackInSlot(i);
-				if (stackAt != null)
+				EntityPlayer player = (EntityPlayer) entity;
+				SpellControl spellMan = new SpellControl();
+				for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
 				{
-					if (stackAt.getItem() == ModItems.essence_vial_full)
+					ItemStack stackAt = player.inventory.getStackInSlot(i);
+					if (stackAt != null)
 					{
-						if (stackAt.hasTagCompound())
+						if (stackAt.getItem() == ModItems.essence_vial_full)
 						{
-							if (spellMan.useEssence(essencePerDmg, stackAt))
+							if (stackAt.hasTagCompound())
 							{
-								par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() -1);
+								if (spellMan.useEssence(essencePerDmg, stackAt))
+								{
+									par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() -1);
+								}
 							}
 						}
 					}
@@ -146,6 +143,22 @@ public class ItemMagicTool extends ItemTool
 			}
 		}
 	}
+	
+	@Override
+    public float getStrVsBlock(ItemStack stack, IBlockState state){
+        if(state.getBlock() == Blocks.WEB){
+            return 15.0F;
+        }
+        else{
+            return state.getBlock().getHarvestTool(state) == null || state.getBlock().getHarvestTool(state).isEmpty() || this.getToolClasses(stack).contains(state.getBlock().getHarvestTool(state)) ? this.efficiencyOnProperMaterial : 1.0F;
+        }
+    }
+	
+	 @Override
+    public boolean canHarvestBlock(IBlockState state, ItemStack stack){
+
+        return state.getBlock().getMaterial(state).isToolNotRequired() || (state.getBlock() == Blocks.SNOW_LAYER || state.getBlock() == Blocks.SNOW || (state.getBlock() == Blocks.OBSIDIAN ? this.toolMaterial.getHarvestLevel() >= 3 : (state.getBlock() != Blocks.DIAMOND_BLOCK && state.getBlock() != Blocks.DIAMOND_ORE ? (state.getBlock() != Blocks.EMERALD_ORE && state.getBlock() != Blocks.EMERALD_BLOCK ? (state.getBlock() != Blocks.GOLD_BLOCK && state.getBlock() != Blocks.GOLD_ORE ? (state.getBlock() != Blocks.IRON_BLOCK && state.getBlock() != Blocks.IRON_ORE ? (state.getBlock() != Blocks.LAPIS_BLOCK && state.getBlock() != Blocks.LAPIS_ORE ? (state.getBlock() != Blocks.REDSTONE_ORE && state.getBlock() != Blocks.LIT_REDSTONE_ORE ? (state.getBlock().getMaterial(state) == Material.ROCK || (state.getBlock().getMaterial(state) == Material.IRON || state.getBlock().getMaterial(state) == Material.ANVIL)) : this.toolMaterial.getHarvestLevel() >= 2) : this.toolMaterial.getHarvestLevel() >= 1) : this.toolMaterial.getHarvestLevel() >= 1) : this.toolMaterial.getHarvestLevel() >= 2) : this.toolMaterial.getHarvestLevel() >= 2) : this.toolMaterial.getHarvestLevel() >= 2)));
+    }
 	
 	public Set<String> getToolClasses(ItemStack stack){
         HashSet<String> hashSet = new HashSet<String>();
