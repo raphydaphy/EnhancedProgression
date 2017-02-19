@@ -1,6 +1,9 @@
 package com.raphydaphy.vitality.proxy;
 
+import com.raphydaphy.vitality.item.ItemVitalityGuide;
+
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.Loader;
 
 public class ServerProxy extends CommonProxy
 {
@@ -10,6 +13,15 @@ public class ServerProxy extends CommonProxy
 	{
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void preInit()
+	{
+		if(Loader.isModLoaded("guideapi"))
+		{
+			ItemVitalityGuide.mainGuide(false);
+		}
 	}
 
 }

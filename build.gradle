@@ -13,6 +13,9 @@ repositories {
         name "JEI"
         url "http://dvs1.progwml6.com/files/maven"
     }
+    maven { // Guide-API
+        url 'http://tehnut.info/maven/' 
+    }
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -44,7 +47,7 @@ minecraft {
 
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
-
+    deobfCompile "info.amerifrance.guideapi:Guide-API:1.10.2-2.0.2-45"
 }
 
 processResources

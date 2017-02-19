@@ -2,12 +2,14 @@ package com.raphydaphy.vitality.proxy;
 
 import com.raphydaphy.vitality.init.KeyBindings;
 import com.raphydaphy.vitality.init.Reference;
+import com.raphydaphy.vitality.item.ItemVitalityGuide;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Loader;
 
 public class ClientProxy extends CommonProxy
 {
@@ -35,6 +37,17 @@ public class ClientProxy extends CommonProxy
 	public void init()
 	{
         KeyBindings.init();
+        
+        
+	}
+	
+	@Override 
+	public void preInit()
+	{
+		if(Loader.isModLoaded("guideapi"))
+        {
+        	ItemVitalityGuide.mainGuide(true);
+        }
 	}
 
 }
