@@ -85,6 +85,12 @@ vitality:vital_extraction_basic_wand=A Spark of Life!
 vitality:vital_extraction_vital_extraction=Essence Extraction
 vitality:vital_extraction_essence_storage=Essence Storage
 
+vitality:simple_witchcraft_lantern=The First Tiny Shimmer
+vitality:simple_witchcraft_explosion=Better than TNT!
+vitality:simple_witchcraft_fireball=Next Level Blasting
+vitality:simple_witchcraft_fertilization=Simple Necessities
+vitality:simple_witchcraft_placement=Like an Angel
+
 #Achievements
 achievement.vitality:craft_basic_wand=A Spark of Life!
 achievement.vitality:craft_basic_wand.desc=Craft a Basic Wand.
