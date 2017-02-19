@@ -21,7 +21,7 @@ repositories {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = "2.3.2"
+version = "2.4"
 group= "com.raphydaphy.vitality" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "vitality"
 
@@ -47,7 +47,7 @@ minecraft {
 
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
-    deobfCompile "info.amerifrance.guideapi:Guide-API:1.10.2-2.0.2-45"
+    deobfCompile "info.amerifrance.guideapi:Guide-API:${mc_version}-${guideapi_version}"
 }
 
 processResources

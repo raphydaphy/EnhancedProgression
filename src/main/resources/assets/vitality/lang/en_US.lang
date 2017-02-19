@@ -83,6 +83,7 @@ guide.Vitality.category.simple_witchcraft=Simple Witchcraft
 vitality:vital_extraction_intro=The Beginning
 vitality:vital_extraction_basic_wand=A Spark of Life!
 vitality:vital_extraction_vital_extraction=Essence Extraction
+vitality:vital_extraction_essence_storage=Essence Storage
 
 #Achievements
 achievement.vitality:craft_basic_wand=A Spark of Life!

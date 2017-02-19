@@ -12,13 +12,14 @@ import com.raphydaphy.vitality.achievement.ICraftAchievement;
 import com.raphydaphy.vitality.achievement.ModAchievements;
 import com.raphydaphy.vitality.block.BlockAltar;
 import com.raphydaphy.vitality.block.BlockSpellForge;
+import com.raphydaphy.vitality.guide.VitalityGuide;
 import com.raphydaphy.vitality.helper.Vector3;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.nbt.NBTLib;
 
+import amerifrance.guideapi.api.GuideAPI;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBanner;
 import net.minecraft.block.BlockCactus;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockLog;
@@ -58,7 +59,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 
 /*
@@ -596,9 +596,12 @@ public class ItemWand extends Item implements ICraftAchievement
 								{
 									spell.addEssence(1000, stack, maxEssence);
 									spell.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, item.getPosition(), 100, 2);
-									world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
 									player.getCooldownTracker().setCooldown(this, 10);
 								}
+							}
+							if (spell.getEssenceStored(item.getEntityItem()) > 999)
+							{
+								world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
 							}
 						}
 					}
@@ -727,6 +730,30 @@ public class ItemWand extends Item implements ICraftAchievement
 					world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.BLOCKS, 1, 1);
 					return EnumActionResult.SUCCESS;
 				}
+				else
+				{
+					List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class,
+							new AxisAlignedBB(pos.add(-2, -2, -2), pos.add(2, 2, 2)));
+					for (EntityItem item : items)
+					{
+						if (item.getEntityItem().getItem() == ModItems.essence_vial_full)
+						{
+							if (!world.isRemote)
+							{
+								if (spell.useEssence(1000, item.getEntityItem()))
+								{
+									spell.addEssence(1000, stack, maxEssence);
+									spell.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, item.getPosition(), 100, 2);
+									player.getCooldownTracker().setCooldown(this, 10);
+								}
+							}
+							if (spell.getEssenceStored(item.getEntityItem()) > 999)
+							{
+								world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.AMBIENT, 1, 1);
+							}
+						}
+					}
+				}
 			}
 			else if (spell.getActiveSpell(player.getHeldItemOffhand()) > 919 && spell.getActiveSpell(player.getHeldItemOffhand()) < 930)
 			{
@@ -770,6 +797,18 @@ public class ItemWand extends Item implements ICraftAchievement
 						new AxisAlignedBB(pos.add(-2, -2, -2), pos.add(2, 2, 2)));
 				for (EntityItem item : items)
 				{
+					if (item.getEntityItem().getItem() == Items.BOOK)
+					{
+						EntityItem guideItem = new EntityItem(world, item.posX, item.posY, item.posZ, GuideAPI.getStackFromBook(VitalityGuide.vitalityGuide).copy());
+						if (!world.isRemote)
+						{
+							world.spawnEntityInWorld(guideItem);
+							item.setDead();
+							spell.spawnParticles(EnumParticleTypes.VILLAGER_ANGRY, world, true, item.getPosition(), 50, 2);
+						}
+						world.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
+						player.getCooldownTracker().setCooldown(this, 10);
+					}
 					if (item.getEntityItem().getItem() == ModItems.essence_vial_empty)
 					{
 						if (spell.useEssence(1000, stack))
@@ -784,8 +823,8 @@ public class ItemWand extends Item implements ICraftAchievement
 							if (!world.isRemote)
 							{
 								world.spawnEntityInWorld(fullBottle);
-								item.setDead();
 								spell.spawnParticles(EnumParticleTypes.CLOUD, world, true, item.getPosition(), 100, 2);
+								item.setDead();
 							}
 							world.playSound(player, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.AMBIENT, 1, 1);
 							player.getCooldownTracker().setCooldown(this, 10);

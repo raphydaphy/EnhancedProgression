@@ -2,6 +2,9 @@ package com.raphydaphy.vitality.guide;
 
 import java.awt.Color;
 
+import javax.annotation.Nullable;
+
+import com.google.common.base.Function;
 import com.raphydaphy.vitality.guide.category.CategorySimpleWitchcraft;
 import com.raphydaphy.vitality.guide.category.CategoryVitalExtraction;
 import com.raphydaphy.vitality.init.JEIPlugin;
@@ -10,9 +13,14 @@ import com.raphydaphy.vitality.init.ModItems;
 import amerifrance.guideapi.api.GuideAPI;
 import amerifrance.guideapi.api.impl.Book;
 import amerifrance.guideapi.category.CategoryItemStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class VitalityGuide
@@ -28,10 +36,22 @@ public class VitalityGuide
         vitalityGuide.setAuthor("guide.Vitality.author");
         vitalityGuide.setRegistryName("VitalityGuide");
         vitalityGuide.setSpawnWithBook(true);
-        vitalityGuide.setColor(Color.RED);
-
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-            GuideAPI.setModel(vitalityGuide);
+        
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+		{
+			
+			ModelLoader.setCustomModelResourceLocation(GuideAPI.guideBook, 5, new ModelResourceLocation(new ResourceLocation("vitality", "magicians_guidebook"), "inventory"));
+			
+			vitalityGuide.setMappingFunction(new Function<Book, Void>() {
+			    @Nullable
+			    @Override
+			    public Void apply(@Nullable Book input) {
+			        int bookMeta = ((FMLControlledNamespacedRegistry<Book>) GuideAPI.BOOKS).getId(input);
+			        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GuideAPI.guideBook, bookMeta, new ModelResourceLocation("vitality:magicians_guidebook", "inventory"));
+			        return null;
+			    }
+			});
+		}
     }
 
     public static void initCategories()
