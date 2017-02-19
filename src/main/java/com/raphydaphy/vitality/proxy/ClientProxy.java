@@ -40,14 +40,4 @@ public class ClientProxy extends CommonProxy
         
         
 	}
-	
-	@Override 
-	public void preInit()
-	{
-		if(Loader.isModLoaded("guideapi"))
-        {
-        	ItemVitalityGuide.mainGuide(true);
-        }
-	}
-
 }

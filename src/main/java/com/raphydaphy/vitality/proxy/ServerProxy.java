@@ -14,14 +14,5 @@ public class ServerProxy extends CommonProxy
 		// TODO Auto-generated method stub
 
 	}
-	
-	@Override
-	public void preInit()
-	{
-		if(Loader.isModLoaded("guideapi"))
-		{
-			ItemVitalityGuide.mainGuide(false);
-		}
-	}
 
 }

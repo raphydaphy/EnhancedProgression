@@ -5,10 +5,13 @@ import com.raphydaphy.vitality.init.Events;
 import com.raphydaphy.vitality.init.ModRecipies;
 import com.raphydaphy.vitality.init.Reference;
 import com.raphydaphy.vitality.init.VitalityCreativeTab;
+import com.raphydaphy.vitality.item.ItemVitalityGuide;
 import com.raphydaphy.vitality.proxy.CommonProxy;
 import com.raphydaphy.vitality.recipe.AltarRecipes;
 
+import amerifrance.guideapi.api.GuideAPI;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -17,8 +20,9 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MINECRAFT_VERSION,  dependencies = "after:guideapi")
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MINECRAFT_VERSION,  dependencies = "before:guideapi")
 public class Vitality
 {
 	@Instance
@@ -36,6 +40,14 @@ public class Vitality
 		MinecraftForge.EVENT_BUS.register(new Events());
 		MinecraftForge.EVENT_BUS.register(Events.class);
 		GameRegistry.registerTileEntity(TileAltar.class, "vitality:altar");
+		
+		ItemVitalityGuide.initBook();
+        GameRegistry.register(ItemVitalityGuide.vitalityGuide);
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            GuideAPI.setModel(ItemVitalityGuide.vitalityGuide);
+        }
+        
 		proxy.preInit();
 	}
 
@@ -45,11 +57,6 @@ public class Vitality
 		System.out.println("Initializing Vitality...");
 		ModRecipies.registerCrafting();
 		ModRecipies.registerSmelting();
-		
-		
-		
-		
-		
 		proxy.init();
 	}
 
@@ -57,6 +64,10 @@ public class Vitality
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		System.out.println("Vitality Loaded Successfully :D");
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+		{
+            ItemVitalityGuide.initCategories();
+		}
 		AltarRecipes.init();
 	}
 }
