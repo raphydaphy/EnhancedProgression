@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 @mezz.jei.api.JEIPlugin
 public class JEIPlugin implements IModPlugin
 {
-
+	public static IJeiRuntime jeiRuntime;
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry)
 	{

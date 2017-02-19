@@ -71,6 +71,19 @@ tile.totem_top.name=Totem
 tile.totem_middle.name=Totem
 tile.totem_bottom.name=Totem
 
+#Guide Book
+guide.Vitality.title=Magicians Guidebook
+guide.Vitality.display=Magicians Guidebook
+guide.Vitality.welcome=Welcome to Vitality
+guide.Vitality.author=raphydaphy
+
+guide.Vitality.category.vital_extraction=Vital Extraction
+guide.Vitality.category.simple_witchcraft=Simple Witchcraft
+
+vitality:vital_extraction_intro=The Beginning
+vitality:vital_extraction_basic_wand=A Spark of Life!
+vitality:vital_extraction_vital_extraction=Essence Extraction
+
 #Achievements
 achievement.vitality:craft_basic_wand=A Spark of Life!
 achievement.vitality:craft_basic_wand.desc=Craft a Basic Wand.

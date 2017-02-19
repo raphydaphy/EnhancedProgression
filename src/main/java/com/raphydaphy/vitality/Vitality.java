@@ -1,11 +1,11 @@
 package com.raphydaphy.vitality;
 
 import com.raphydaphy.vitality.block.tile.TileAltar;
+import com.raphydaphy.vitality.guide.VitalityGuide;
 import com.raphydaphy.vitality.init.Events;
 import com.raphydaphy.vitality.init.ModRecipies;
 import com.raphydaphy.vitality.init.Reference;
 import com.raphydaphy.vitality.init.VitalityCreativeTab;
-import com.raphydaphy.vitality.item.ItemVitalityGuide;
 import com.raphydaphy.vitality.proxy.CommonProxy;
 import com.raphydaphy.vitality.recipe.AltarRecipes;
 
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MINECRAFT_VERSION,  dependencies = "before:guideapi")
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MINECRAFT_VERSION,  dependencies = "after:guideapi")
 public class Vitality
 {
 	@Instance
@@ -41,11 +41,11 @@ public class Vitality
 		MinecraftForge.EVENT_BUS.register(Events.class);
 		GameRegistry.registerTileEntity(TileAltar.class, "vitality:altar");
 		
-		ItemVitalityGuide.initBook();
-        GameRegistry.register(ItemVitalityGuide.vitalityGuide);
+		VitalityGuide.initBook();
+        GameRegistry.register(VitalityGuide.vitalityGuide);
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
-            GuideAPI.setModel(ItemVitalityGuide.vitalityGuide);
+            GuideAPI.setModel(VitalityGuide.vitalityGuide);
         }
         
 		proxy.preInit();
@@ -66,7 +66,7 @@ public class Vitality
 		System.out.println("Vitality Loaded Successfully :D");
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
 		{
-            ItemVitalityGuide.initCategories();
+            VitalityGuide.initCategories();
 		}
 		AltarRecipes.init();
 	}

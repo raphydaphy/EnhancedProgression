@@ -1,6 +1,6 @@
 package com.raphydaphy.vitality.proxy;
 
-import com.raphydaphy.vitality.item.ItemVitalityGuide;
+import com.raphydaphy.vitality.guide.VitalityGuide;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Loader;

@@ -1,8 +1,8 @@
 package com.raphydaphy.vitality.proxy;
 
+import com.raphydaphy.vitality.guide.VitalityGuide;
 import com.raphydaphy.vitality.init.KeyBindings;
 import com.raphydaphy.vitality.init.Reference;
-import com.raphydaphy.vitality.item.ItemVitalityGuide;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
