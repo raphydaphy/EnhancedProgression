@@ -14,7 +14,7 @@ public class KeyBindings {
     public static void init() 
     {
     	System.out.println("Registered key bindings..");
-        pickSpell = new KeyBinding("key.pickSpell", Keyboard.KEY_O, "key.categories.vitality");
+        pickSpell = new KeyBinding("key.pickSpell", Keyboard.KEY_G, "key.categories.vitality");
         ClientRegistry.registerKeyBinding(pickSpell);
     }
 }

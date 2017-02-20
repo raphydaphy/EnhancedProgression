@@ -1,13 +1,13 @@
 package com.raphydaphy.vitality.guide;
 
-import java.awt.Color;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Function;
+import com.raphydaphy.vitality.guide.category.CatagoryCrypticTransmutation;
 import com.raphydaphy.vitality.guide.category.CategorySimpleWitchcraft;
 import com.raphydaphy.vitality.guide.category.CategoryVitalExtraction;
 import com.raphydaphy.vitality.init.JEIPlugin;
+import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 
 import amerifrance.guideapi.api.GuideAPI;
@@ -58,6 +58,7 @@ public class VitalityGuide
     {
     	vitalityGuide.addCategory(new CategoryItemStack(CategoryVitalExtraction.buildCategory(), "guide.Vitality.category.vital_extraction", new ItemStack(ModItems.basic_wand_copper)));
         vitalityGuide.addCategory(new CategoryItemStack(CategorySimpleWitchcraft.buildCategory(), "guide.Vitality.category.simple_witchcraft", new ItemStack(ModItems.spell_card_lantern_1)));
+        vitalityGuide.addCategory(new CategoryItemStack(CatagoryCrypticTransmutation.buildCategory(), "guide.Vitality.category.cryptic_transmutation", new ItemStack(ModBlocks.altar)));
     }
     
     public static void handleBookRecipe(boolean add)

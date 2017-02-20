@@ -79,6 +79,7 @@ guide.Vitality.author=raphydaphy
 
 guide.Vitality.category.vital_extraction=Vital Extraction
 guide.Vitality.category.simple_witchcraft=Simple Witchcraft
+guide.Vitality.category.cryptic_transmutation=Cryptic Transmutation
 
 vitality:vital_extraction_intro=The Beginning
 vitality:vital_extraction_basic_wand=A Spark of Life!
@@ -90,6 +91,11 @@ vitality:simple_witchcraft_explosion=Better than TNT!
 vitality:simple_witchcraft_fireball=Next Level Blasting
 vitality:simple_witchcraft_fertilization=Simple Necessities
 vitality:simple_witchcraft_placement=Like an Angel
+
+vitality:cryptic_transmutation_transmutation=Harsh Enlightenment
+vitality:cryptic_transmutation_spell_bag=Spell Storage
+vitality:cryptic_transmutation_infusion=Magic Infusion
+vitality:cryptic_transmutation_log=Logs of Power
 
 #Achievements
 achievement.vitality:craft_basic_wand=A Spark of Life!
