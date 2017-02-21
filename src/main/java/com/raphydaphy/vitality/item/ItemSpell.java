@@ -3,6 +3,7 @@ package com.raphydaphy.vitality.item;
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.achievement.IPickupAchievement;
 import com.raphydaphy.vitality.achievement.ModAchievements;
+import com.raphydaphy.vitality.helper.SpellControl;
 import com.raphydaphy.vitality.init.ModItems;
 
 import net.minecraft.entity.player.EntityPlayer;

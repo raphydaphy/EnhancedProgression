@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.Vitality;
+import com.raphydaphy.vitality.helper.SpellControl;
 import com.raphydaphy.vitality.helper.ToolHelper;
 import com.raphydaphy.vitality.init.ModItems;
 

@@ -13,6 +13,7 @@ import com.raphydaphy.vitality.achievement.ModAchievements;
 import com.raphydaphy.vitality.block.BlockAltar;
 import com.raphydaphy.vitality.block.BlockSpellForge;
 import com.raphydaphy.vitality.guide.VitalityGuide;
+import com.raphydaphy.vitality.helper.SpellControl;
 import com.raphydaphy.vitality.helper.Vector3;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;

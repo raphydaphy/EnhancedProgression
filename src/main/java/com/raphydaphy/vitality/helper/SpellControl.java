@@ -1,4 +1,4 @@
-package com.raphydaphy.vitality.item;
+package com.raphydaphy.vitality.helper;
 
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.init.ModItems;
@@ -242,7 +242,7 @@ public class SpellControl
 	 * Used to set a different landing position than the start pos raytrace
 	 * Now removed because rapidfire spell dosent use it anymore
 	 */
-	EntityArrow fancySetAim(EntityArrow target, Entity entity, float pitch, float yaw, float velocity,
+	public EntityArrow fancySetAim(EntityArrow target, Entity entity, float pitch, float yaw, float velocity,
 			float knockbackResistance)
 	{
 		float x = -MathHelper.sin(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);

@@ -3,7 +3,9 @@ package com.raphydaphy.vitality.guide;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Function;
+import com.raphydaphy.vitality.guide.category.CatagoryAdvancedWizardry;
 import com.raphydaphy.vitality.guide.category.CatagoryCrypticTransmutation;
+import com.raphydaphy.vitality.guide.category.CatagoryFluxedStateOfMind;
 import com.raphydaphy.vitality.guide.category.CategorySimpleWitchcraft;
 import com.raphydaphy.vitality.guide.category.CategoryVitalExtraction;
 import com.raphydaphy.vitality.init.JEIPlugin;
@@ -35,7 +37,7 @@ public class VitalityGuide
         vitalityGuide.setWelcomeMessage("guide.Vitality.welcome");
         vitalityGuide.setAuthor("guide.Vitality.author");
         vitalityGuide.setRegistryName("VitalityGuide");
-        vitalityGuide.setSpawnWithBook(true);
+        vitalityGuide.setSpawnWithBook(false);
         
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
 		{
@@ -59,6 +61,8 @@ public class VitalityGuide
     	vitalityGuide.addCategory(new CategoryItemStack(CategoryVitalExtraction.buildCategory(), "guide.Vitality.category.vital_extraction", new ItemStack(ModItems.basic_wand_copper)));
         vitalityGuide.addCategory(new CategoryItemStack(CategorySimpleWitchcraft.buildCategory(), "guide.Vitality.category.simple_witchcraft", new ItemStack(ModItems.spell_card_lantern_1)));
         vitalityGuide.addCategory(new CategoryItemStack(CatagoryCrypticTransmutation.buildCategory(), "guide.Vitality.category.cryptic_transmutation", new ItemStack(ModBlocks.altar)));
+        vitalityGuide.addCategory(new CategoryItemStack(CatagoryAdvancedWizardry.buildCategory(), "guide.Vitality.category.advanced_wizardary", new ItemStack(ModItems.imbued_multitool)));
+        vitalityGuide.addCategory(new CategoryItemStack(CatagoryFluxedStateOfMind.buildCategory(), "guide.Vitality.category.fluxed_state", new ItemStack(ModItems.master_wand)));
     }
     
     public static void handleBookRecipe(boolean add)

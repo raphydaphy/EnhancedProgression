@@ -11,7 +11,6 @@
 package com.raphydaphy.vitality.helper;
 
 import com.raphydaphy.vitality.init.ModItems;
-import com.raphydaphy.vitality.item.SpellControl;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
