@@ -1,0 +1,16 @@
+[
+{
+  "modid": "vitality",
+  "name": "Vitality",
+  "description": "Vitality is a magic mod designed to be able to be used very early on in the game.",
+  "version": "3.0",
+  "mcversion": "1.10.2",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["raphydaphy"],
+  "credits": "All code and textures by raphydaphy.",
+  "logoFile": "logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]

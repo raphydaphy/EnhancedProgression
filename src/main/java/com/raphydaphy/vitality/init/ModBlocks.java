@@ -1,0 +1,39 @@
+package com.raphydaphy.vitality.init;
+
+import com.raphydaphy.vitality.block.BlockBase;
+import com.raphydaphy.vitality.block.BlockModOre;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+public class ModBlocks 
+{
+	public static BlockModOre ore_copper;
+	public static BlockModOre ore_tin;
+	
+	public static void init()
+	{
+		if (ConfigHandler.world.enableCopperAndTin)
+		{
+			ore_copper = register(new BlockModOre("ore_copper"));
+			ore_tin = register(new BlockModOre("ore_tin"));
+		}
+	}
+	
+	private static <T extends Block> T register(T block, ItemBlock itemBlock)
+	{
+		GameRegistry.register(block);
+		GameRegistry.register(itemBlock);
+		
+		((BlockBase) block).registerItemModel(itemBlock);
+		return block;
+	}
+	
+	private static <T extends Block> T register(T block)
+	{
+		ItemBlock itemBlock = new ItemBlock(block);
+		itemBlock.setRegistryName(block.getRegistryName());
+		return register(block, itemBlock);
+	}
+}
