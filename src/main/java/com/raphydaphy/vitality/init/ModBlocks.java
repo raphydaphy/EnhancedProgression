@@ -1,6 +1,7 @@
 package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.block.BlockBase;
+import com.raphydaphy.vitality.block.BlockExtractionCrucible;
 import com.raphydaphy.vitality.block.BlockModOre;
 
 import net.minecraft.block.Block;
@@ -15,6 +16,8 @@ public class ModBlocks
 	public static BlockModOre angelic_crystal_ore;
 	public static BlockModOre exotic_crystal_ore;
 	
+	public static BlockExtractionCrucible life_extraction_crucible;
+	
 	public static void init()
 	{
 		if (ConfigHandler.world.enableCopperAndTin)
@@ -25,6 +28,8 @@ public class ModBlocks
 		
 		angelic_crystal_ore = register(new BlockModOre("angelic_crystal_ore"));
 		exotic_crystal_ore = register(new BlockModOre("exotic_crystal_ore"));
+		
+		life_extraction_crucible = register(new BlockExtractionCrucible());
 	}
 	
 	private static <T extends Block> T register(T block, ItemBlock itemBlock)

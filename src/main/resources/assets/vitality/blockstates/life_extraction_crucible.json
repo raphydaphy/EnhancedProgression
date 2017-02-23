@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "level=0": { "model": "vitality:life_extraction_crucible_level0" },
+        "level=1": { "model": "vitality:life_extraction_crucible_level1" },
+        "level=2": { "model": "vitality:life_extraction_crucible_level2" },
+        "level=3": { "model": "vitality:life_extraction_crucible_level3" }
+    }
+}
