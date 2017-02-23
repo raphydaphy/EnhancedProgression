@@ -9,10 +9,18 @@ import net.minecraft.nbt.NBTTagInt;
 
 public final class EssenceHelper 
 {
-	public static boolean addEssence(ItemStack stack, int essenceAmount)
+	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence)
 	{
-		stack.setTagInfo("essenceStored", new NBTTagInt(NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount));
-		return true;
+		if (NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount >= maxEssence)
+		{
+			stack.setTagInfo("essenceStored", new NBTTagInt(maxEssence));
+			return true;
+		}
+		else
+		{
+			stack.setTagInfo("essenceStored", new NBTTagInt(NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount));
+			return true;
+		}
 	}
 	public static boolean fillVial(Item vialType, EntityPlayer player, int essenceAmount)
 	{
@@ -23,7 +31,7 @@ public final class EssenceHelper
 			{
 				if (stackAt.getItem() == vialType)
 				{
-					addEssence(stackAt, essenceAmount);
+					addEssence(stackAt, essenceAmount, 1000);
 					return true;
 				}
 			}
@@ -36,7 +44,7 @@ public final class EssenceHelper
 				if (stackAt.getItem() == ModItems.essence_vial_empty)
 				{
 					ItemStack vialStack = new ItemStack(vialType);
-					addEssence(vialStack, essenceAmount);
+					addEssence(vialStack, essenceAmount, 1000);
 					player.inventory.setInventorySlotContents(i, vialStack);
 					return true;
 				}

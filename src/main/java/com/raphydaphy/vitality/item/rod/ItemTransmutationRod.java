@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.util.ParticleHelper;
@@ -52,10 +53,13 @@ public class ItemTransmutationRod extends ItemBase
 		{
 			if (!world.isRemote)
 			{
-				ParticleHelper.outlineAll(pos, EnumParticleTypes.FIREWORKS_SPARK, world);
-				ParticleHelper.spawnParticlesServer(EnumParticleTypes.SMOKE_LARGE, world, true, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 10, 0.25);
+				world.setBlockState(pos, ModBlocks.life_extraction_crucible.getDefaultState());
+				world.playSound(null, pos, SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.BLOCKS, 1F, 1F);
+				ParticleHelper.spawnParticlesServer(EnumParticleTypes.SMOKE_LARGE, world, true, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 20, 0.25);
 			}
+			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 10);
+			return EnumActionResult.SUCCESS;
 		}
 		else
 		{
@@ -68,11 +72,19 @@ public class ItemTransmutationRod extends ItemBase
 					if (!world.isRemote)
 					{
 						world.spawnEntityInWorld(vialEmpty);
-						item.setDead();
+						if (item.getEntityItem().stackSize > 1)
+						{
+							item.getEntityItem().stackSize -= 1;
+						}
+						else
+						{
+							item.setDead();
+						}
 						ParticleHelper.spawnParticles(EnumParticleTypes.CRIT_MAGIC, world, true, item.getPosition(), 50, 2);
 					}
 					world.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
 					player.getCooldownTracker().setCooldown(this, 10);
+					return EnumActionResult.SUCCESS;
 				}
 			}
 		}
