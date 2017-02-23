@@ -15,7 +15,7 @@ public class VitalityCreativeTab extends CreativeTabs
 	@Override
 	public Item getTabIconItem()
 	{
-		return Items.ARROW;
+		return ModItems.life_extraction_rod;
 	}
 
 }

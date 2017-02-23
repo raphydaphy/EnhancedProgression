@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "vitality:items/exotic_crystal_shard"
+    }
+}

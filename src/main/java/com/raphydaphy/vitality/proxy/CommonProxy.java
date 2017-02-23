@@ -1,9 +1,11 @@
 package com.raphydaphy.vitality.proxy;
 
 import com.raphydaphy.vitality.init.ModBlocks;
+import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.WorldGenHandler;
 
 import net.minecraft.item.Item;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CommonProxy 
@@ -20,6 +22,7 @@ public class CommonProxy
 	public void preInit()
 	{
 		ModBlocks.init();
+		ModItems.init();
 		
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
 	}
@@ -33,4 +36,15 @@ public class CommonProxy
 	 * Currently unused as nothing needs to be initialized in post
 	 */
 	public void postInit() {}
+	
+	/*
+	 * Used to display a message in the record area of the chat
+	 * Contents set in ClientProxy since it is client-side only
+	 */
+	public void setActionText(String text) {}
+	
+	/*
+	 * Alternate version of the function that also accepts a color
+	 */
+	public void setActionText(String text, TextFormatting color) {}
 }

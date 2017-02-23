@@ -25,6 +25,9 @@ public class WorldGenHandler implements IWorldGenerator {
             	{
 	                generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ore_copper.getDefaultState(), "ALL");
 	                generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ore_tin.getDefaultState(), "ALL");
+	                
+	                generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.angelic_crystal_ore.getDefaultState(), "NOPLAIN");
+	                generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.exotic_crystal_ore.getDefaultState(), "EXOTIC");
             	}
                 break;
             case 1:

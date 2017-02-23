@@ -12,6 +12,9 @@ public class ModBlocks
 	public static BlockModOre ore_copper;
 	public static BlockModOre ore_tin;
 	
+	public static BlockModOre angelic_crystal_ore;
+	public static BlockModOre exotic_crystal_ore;
+	
 	public static void init()
 	{
 		if (ConfigHandler.world.enableCopperAndTin)
@@ -19,6 +22,9 @@ public class ModBlocks
 			ore_copper = register(new BlockModOre("ore_copper"));
 			ore_tin = register(new BlockModOre("ore_tin"));
 		}
+		
+		angelic_crystal_ore = register(new BlockModOre("angelic_crystal_ore"));
+		exotic_crystal_ore = register(new BlockModOre("exotic_crystal_ore"));
 	}
 	
 	private static <T extends Block> T register(T block, ItemBlock itemBlock)

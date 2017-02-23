@@ -5,7 +5,27 @@ itemGroup.vitality=Vitality
 tile.ore_copper.name=Copper Ore
 tile.ore_tin.name=Tin Ore
 
+tile.angelic_crystal_ore.name=Angelic Crystal Ore
+tile.exotic_crystal_ore.name=Exotic Crystal Ore
+
 #Items
+item.ingot_copper.name=Copper Ingot
+item.ingot_tin.name=Tin Ingot
+item.ingot_bronze.name=Bronze Ingot
+
+item.angelic_crystal_shard.name=Angelic Crystal Shard
+item.exotic_crystal_shard.name=Exotic Crystal Shard
+
+item.essence_vial_empty.name=Essence Vial
+item.essence_vial_angelic.name=Angelic Essence Vial
+item.essence_vial_atmospheric.name=Atmospheric Essence Vial
+item.essence_vial_demonic.name=Demonic Essence Vial
+item.essence_vial_energetic.name=Energetic Essence Vial
+item.essence_vial_exotic.name=Exotic Essence Vial
+
+item.life_extraction_rod.name=Life Extraction Rod
+item.technicians_rod.name=Technicians Rod
+item.transmutation_rod.name=Transmutation Rod
 
 #Action Bar Messages
 
