@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.item.ItemBase;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -35,7 +34,7 @@ public class ItemTechniciansRod extends ItemBase
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float par8, float par9, float par10)
 	{
-		Block block = world.getBlockState(pos).getBlock();
+		//Block block = world.getBlockState(pos).getBlock();
 		
 		// check if the block is a pump
 			// switch the pump output/input mode

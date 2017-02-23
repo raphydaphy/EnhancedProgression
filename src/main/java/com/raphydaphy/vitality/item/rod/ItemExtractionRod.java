@@ -18,7 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
@@ -52,11 +51,11 @@ public class ItemExtractionRod extends ItemBase
 
         if (raytraceresult == null)
         {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         }
         else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK)
         {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         }
         else
         {
@@ -64,13 +63,13 @@ public class ItemExtractionRod extends ItemBase
 
             if (!worldIn.isBlockModifiable(player, blockpos))
             {
-                return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
             }
             else
             {
                 if (!player.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn))
                 {
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                 }
                 else
                 {
@@ -88,11 +87,11 @@ public class ItemExtractionRod extends ItemBase
                     	EssenceHelper.fillVial(ModItems.essence_vial_demonic, player, 5);
             			player.swingArm(hand);
             			player.getCooldownTracker().setCooldown(this, 25);
-                        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+                        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
                     }
                     else
                     {
-                        return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                     }
                 }
             }
@@ -123,7 +122,7 @@ public class ItemExtractionRod extends ItemBase
 			player.getCooldownTracker().setCooldown(this, 50);
 			return EnumActionResult.SUCCESS;
 		}
-		else if (block == ModBlocks.angelic_crystal_ore)
+		else if (block == ModBlocks.exotic_crystal_ore)
 		{
 			//Color color = new Color(0x00C6FF);
 			//Vitality.proxy.magicParticle((double)pos.getX(), (double)pos.getY() + 2, (double)pos.getZ(), (float)color.getRed(), (float)color.getGreen(), (float)color.getBlue(), 1F, 2);
@@ -165,7 +164,7 @@ public class ItemExtractionRod extends ItemBase
 					}
 					else if (NBTHelper.getString(stack, "essenceType", null) == "EXOTIC")
 					{
-						EssenceHelper.fillVial(ModItems.essence_vial_angelic, (EntityPlayer) entity, 30);
+						EssenceHelper.fillVial(ModItems.essence_vial_exotic, (EntityPlayer) entity, 30);
 					}
 				}
 			}

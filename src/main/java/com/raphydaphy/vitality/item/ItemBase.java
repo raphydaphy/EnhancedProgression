@@ -11,9 +11,9 @@ public class ItemBase extends Item
 
 	protected static String name;
 
-	public ItemBase(String name, int maxStack)
+	public ItemBase(String parName, int maxStack)
 	{
-		this.name = name;
+		name = parName;
 		setUnlocalizedName(name);
 		setRegistryName(name);
 		this.setCreativeTab(Reference.creativeTab);

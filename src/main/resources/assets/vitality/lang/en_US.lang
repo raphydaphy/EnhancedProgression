@@ -27,6 +27,8 @@ item.life_extraction_rod.name=Life Extraction Rod
 item.technicians_rod.name=Technicians Rod
 item.transmutation_rod.name=Transmutation Rod
 
+item.life_extraction_sword.name=Life Extraction Sword
+
 #Action Bar Messages
 
 #Achievements

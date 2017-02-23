@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemEssenceVial;
+import com.raphydaphy.vitality.item.ItemExtractionSword;
 import com.raphydaphy.vitality.item.rod.ItemExtractionRod;
 import com.raphydaphy.vitality.item.rod.ItemTechniciansRod;
 import com.raphydaphy.vitality.item.rod.ItemTransmutationRod;
@@ -28,6 +29,8 @@ public class ModItems
 	public static ItemExtractionRod life_extraction_rod;
 	public static ItemTechniciansRod technicians_rod;
 	public static ItemTransmutationRod transmutation_rod;
+	
+	public static ItemExtractionSword life_extraction_sword;
 
 	public static void init()
 	{
@@ -48,12 +51,21 @@ public class ModItems
 		life_extraction_rod = register(new ItemExtractionRod());
 		technicians_rod = register(new ItemTechniciansRod());
 		transmutation_rod = register(new ItemTransmutationRod());
+		
+		life_extraction_sword = register(new ItemExtractionSword());
 	}
 
 	private static <T extends Item> T register(T item)
 	{
 		GameRegistry.register(item);
-		((ItemBase) item).registerItemModel();
+		if (item instanceof ItemBase)
+		{
+			((ItemBase) item).registerItemModel();
+		}
+		else if (item instanceof ItemExtractionSword)
+		{
+			((ItemExtractionSword) item).registerItemModel();
+		}
 		return item;
 	}
 }
