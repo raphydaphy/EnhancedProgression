@@ -1,6 +1,5 @@
 package com.raphydaphy.vitality.util;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,6 +24,9 @@ public class ParticleHelper {
 				.spawnParticle(particleType, forceSpawn, x, y, z, count, radius, radius, radius, 0.000D);
 	}
 	
+	/*
+	 * Spawns particles on every edge of the block position given
+	 */
 	public static void outlineAll(BlockPos pos, EnumParticleTypes particle, World world)
 	{
 		outlineBottom(pos, particle, world);
@@ -32,6 +34,9 @@ public class ParticleHelper {
 		outlineSides(pos, particle, world);
 	}
 	
+	/*
+	 * Spawns particles on the side edges of a block
+	 */
 	public static void outlineSides(BlockPos pos, EnumParticleTypes particle, World world)
 	{
 		double x = pos.getX();
@@ -74,6 +79,9 @@ public class ParticleHelper {
 		}
 	}
 
+	/*
+	 * Spawns particles around the bottom edges of a block
+	 */
 	public static void outlineBottom(BlockPos pos, EnumParticleTypes particle, World world)
 	{
 		double x = pos.getX();

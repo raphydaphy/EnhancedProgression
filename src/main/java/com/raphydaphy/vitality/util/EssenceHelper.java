@@ -11,7 +11,6 @@ public final class EssenceHelper
 {
 	public static boolean fillVial(Item vialType, EntityPlayer player, int essenceAmount)
 	{
-		boolean done = false;
     	for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
 		{
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
@@ -19,27 +18,25 @@ public final class EssenceHelper
 			{
 				if (stackAt.getItem() == vialType)
 				{
-					done = true;
 					stackAt.setTagInfo("essenceStored", new NBTTagInt(NBTHelper.getInt(stackAt, "essenceStored", 0) + essenceAmount));
+					return true;
 				}
 			}
 		}
-    	if (!done)
-    	{
-			for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
+		{
+			ItemStack stackAt = player.inventory.getStackInSlot(i);
+			if (stackAt != null)
 			{
-				ItemStack stackAt = player.inventory.getStackInSlot(i);
-				if (stackAt != null)
+				if (stackAt.getItem() == ModItems.essence_vial_empty)
 				{
-					if (stackAt.getItem() == ModItems.essence_vial_empty)
-					{
-						done = true;
-						stackAt.setItem(vialType);
-						stackAt.setTagInfo("essenceStored", new NBTTagInt(essenceAmount));
-					}
+					ItemStack vialStack = new ItemStack(vialType);
+					vialStack.setTagInfo("essenceStored", new NBTTagInt(essenceAmount));
+					player.inventory.setInventorySlotContents(i, vialStack);
+					return true;
 				}
 			}
-    	}
-    	return done;
+		}
+		return false;
 	}
 }
