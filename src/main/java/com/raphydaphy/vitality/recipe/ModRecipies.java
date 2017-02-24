@@ -32,6 +32,8 @@ public class ModRecipies
 		addOreDictRecipe(new ItemStack(ModItems.life_extraction_rod), "X  ", " X ", "  Y", 'X', "stickWood", 'Y', "dye");
 		addOreDictRecipe(new ItemStack(ModItems.technicians_rod), "X  ", " X ", "  Y", 'X', "stickWood", 'Y', Items.REDSTONE);
 		addOreDictRecipe(new ItemStack(ModItems.transmutation_rod), "X  ", " X ", "  Y", 'X', "stickWood", 'Y', Items.WATER_BUCKET);
+		
+		addOreDictRecipe(new ItemStack(ModItems.wooden_demonic_wand), "Y  ", " X ", "  Y", 'X', ModItems.wand_core_demonic, 'Y', ModItems.wand_tip_wooden);
 	}
 	
 	public static void registerSmelting()

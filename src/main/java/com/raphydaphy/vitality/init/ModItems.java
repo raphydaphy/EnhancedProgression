@@ -2,8 +2,8 @@ package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemEssenceVial;
-import com.raphydaphy.vitality.item.ItemExtractionCrucible;
 import com.raphydaphy.vitality.item.ItemExtractionSword;
+import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.item.rod.ItemExtractionRod;
 import com.raphydaphy.vitality.item.rod.ItemTechniciansRod;
 import com.raphydaphy.vitality.item.rod.ItemTransmutationRod;
@@ -33,7 +33,19 @@ public class ModItems
 	
 	public static ItemExtractionSword life_extraction_sword;
 	
-	public static ItemExtractionCrucible life_extraction_crucible;
+	public static ItemBase wand_core_angelic;
+	public static ItemBase wand_core_atmospheric;
+	public static ItemBase wand_core_demonic;
+	public static ItemBase wand_core_energetic;
+	public static ItemBase wand_core_exotic;
+	
+	public static ItemBase wand_tip_wooden;
+	
+	public static ItemWand wooden_angelic_wand;
+	public static ItemWand wooden_atmospheric_wand;
+	public static ItemWand wooden_demonic_wand;
+	public static ItemWand wooden_energetic_wand;
+	public static ItemWand wooden_exotic_wand;
 
 	public static void init()
 	{
@@ -57,7 +69,19 @@ public class ModItems
 		
 		life_extraction_sword = register(new ItemExtractionSword());
 		
-		life_extraction_crucible = register(new ItemExtractionCrucible());
+		wand_core_angelic = register(new ItemBase("wand_core_angelic", 1));
+		wand_core_atmospheric = register(new ItemBase("wand_core_atmospheric", 1));
+		wand_core_demonic = register(new ItemBase("wand_core_demonic", 1));
+		wand_core_energetic = register(new ItemBase("wand_core_energetic", 1));
+		wand_core_exotic = register(new ItemBase("wand_core_exotic", 1));
+		
+		wand_tip_wooden = register(new ItemBase("wand_tip_wooden", 1));
+		
+		wooden_angelic_wand = register(new ItemWand("wooden_angelic_wand"));
+		wooden_atmospheric_wand = register(new ItemWand("wooden_atmospheric_wand"));
+		wooden_demonic_wand = register(new ItemWand("wooden_demonic_wand"));
+		wooden_energetic_wand = register(new ItemWand("wooden_energetic_wand"));
+		wooden_exotic_wand = register(new ItemWand("wooden_exotic_wand"));
 	}
 
 	private static <T extends Item> T register(T item)

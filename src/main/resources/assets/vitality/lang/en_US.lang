@@ -31,6 +31,20 @@ item.transmutation_rod.name=Transmutation Rod
 
 item.life_extraction_sword.name=Life Extraction Sword
 
+item.wand_core_angelic.name=Angelic Wand Core
+item.wand_core_atmospheric.name=Atmospheric Wand Core
+item.wand_core_demonic.name=Demonic Wand Core
+item.wand_core_energetic.name=Energetic Wand Core
+item.wand_core_exotic.name=Exotic Wand Core
+
+item.wand_tip_wooden.name=Wooden Wand Tip
+
+item.wooden_angelic_wand.name=Wooden Tipped Angelic Wand
+item.wooden_atmospheric_wand.name=Wooden Tipped Atmospheric Wand
+item.wooden_demonic_wand.name=Wooden Tipped Demonic Wand
+item.wooden_energetic_wand.name=Wooden Tipped Energetic Wand
+item.wooden_exotic_wand.name=Wooden Tipped Exotic Wand
+
 #Action Bar Messages
 
 #Achievements

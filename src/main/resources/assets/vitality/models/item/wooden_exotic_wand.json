@@ -1,0 +1,18 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "vitality:items/wooden_exotic_wand"
+    },
+    "display": {
+        "firstperson_righthand": {
+            "rotation": [ 0, 0, 320 ],
+            "translation": [ -3, 5, 4 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 0, 45 ],
+            "translation": [ -3, 5, 4 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        }
+    }
+}
