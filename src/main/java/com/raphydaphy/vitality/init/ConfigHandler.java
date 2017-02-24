@@ -11,6 +11,7 @@ public class ConfigHandler
 	 */
 	public static CraftingSettings crafting = new CraftingSettings();
 	public static WorldSettings world = new WorldSettings();
+	public static BalanceSettings balance = new BalanceSettings();
 	
 	/*
 	 * For the config on any items that are crafted
@@ -25,5 +26,11 @@ public class ConfigHandler
 	{
 		@Config.Comment({"Enable Copper and Tin Generation.", "Default: true"})
         public boolean enableCopperAndTin = true;
+	}
+	
+	public static class BalanceSettings
+	{
+		@Config.Comment({"Enable Bound Essence.", "Default: true"})
+		public boolean enabledBoundEssence = true;
 	}
 }

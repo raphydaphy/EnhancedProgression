@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemEssenceVial;
+import com.raphydaphy.vitality.item.ItemExtractionCrucible;
 import com.raphydaphy.vitality.item.ItemExtractionSword;
 import com.raphydaphy.vitality.item.rod.ItemExtractionRod;
 import com.raphydaphy.vitality.item.rod.ItemTechniciansRod;
@@ -31,6 +32,8 @@ public class ModItems
 	public static ItemTransmutationRod transmutation_rod;
 	
 	public static ItemExtractionSword life_extraction_sword;
+	
+	public static ItemExtractionCrucible life_extraction_crucible;
 
 	public static void init()
 	{
@@ -53,6 +56,8 @@ public class ModItems
 		transmutation_rod = register(new ItemTransmutationRod());
 		
 		life_extraction_sword = register(new ItemExtractionSword());
+		
+		life_extraction_crucible = register(new ItemExtractionCrucible());
 	}
 
 	private static <T extends Item> T register(T item)

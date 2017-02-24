@@ -45,7 +45,6 @@ public class BlockExtractionCrucible extends BlockBase
 		this.setHardness(3F);
 		this.setResistance(8F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, Integer.valueOf(0)));
-		
 	}
 	
 	 public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn)
