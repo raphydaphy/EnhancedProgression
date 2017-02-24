@@ -86,6 +86,18 @@ public class ItemTransmutationRod extends ItemBase
 					player.getCooldownTracker().setCooldown(this, 10);
 					return EnumActionResult.SUCCESS;
 				}
+				else if (item.getEntityItem().getItem() == Items.IRON_SWORD)
+				{
+					if (!world.isRemote)
+					{
+						world.spawnEntityInWorld(new EntityItem(world, item.posX, item.posY, item.posZ, new ItemStack(ModItems.life_extraction_sword)));
+						item.setDead();
+						ParticleHelper.spawnParticles(EnumParticleTypes.END_ROD, world, true, item.getPosition(), 50, 2);
+					}
+					world.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
+					player.getCooldownTracker().setCooldown(this, 10);
+					return EnumActionResult.SUCCESS;
+				}
 			}
 		}
 		

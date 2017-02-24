@@ -96,7 +96,7 @@ public class BlockExtractionCrucible extends BlockBase
             {
                 if (i > 0 && !worldIn.isRemote)
                 {
-                    EssenceHelper.addEssence(heldItem, 25, 1000);
+                	EssenceHelper.addEssence(heldItem, 25, 1000, playerIn, "Atmospheric");
                     this.setWaterLevel(worldIn, pos, state, i - 1);
                     ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, pos, 5, 1);
                     worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
@@ -110,7 +110,7 @@ public class BlockExtractionCrucible extends BlockBase
                 if (i > 0 && !worldIn.isRemote)
                 {
                 	ItemStack vialStack = new ItemStack(ModItems.essence_vial_atmospheric);
-                	EssenceHelper.addEssence(vialStack, 25, 1000);
+                	EssenceHelper.addEssence(heldItem, 25, 1000, playerIn, "Atmospheric");
                 	playerIn.setHeldItem(hand, vialStack);
                     this.setWaterLevel(worldIn, pos, state, i - 1);
                     ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, pos, 5, 1);

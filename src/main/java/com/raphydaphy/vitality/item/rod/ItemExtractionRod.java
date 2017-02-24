@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.item.rod;
 
 import javax.annotation.Nonnull;
 
+import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.item.ItemBase;
@@ -28,6 +29,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 /*
@@ -45,6 +47,11 @@ public class ItemExtractionRod extends ItemBase
 	
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player, EnumHand hand)
     {
+		if (player.isSneaking())
+		{
+			Vitality.proxy.setActionText("Angelic: " + player.getEntityData().getInteger("essenceStoredAngelic") + " Atmospheric: " + player.getEntityData().getInteger("essenceStoredAtmospheric") + " Demonic: " + player.getEntityData().getInteger("essenceStoredDemonic") + " Energetic: " + player.getEntityData().getInteger("essenceStoredEnergetic") + " Exotic: "+player.getEntityData().getInteger("essenceStoredExotic"), TextFormatting.AQUA);
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+		}
         RayTraceResult raytraceresult = this.rayTrace(worldIn, player, true);
         ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onBucketUse(player, worldIn, itemStackIn, raytraceresult);
         if (ret != null) return ret;
@@ -144,7 +151,6 @@ public class ItemExtractionRod extends ItemBase
     {
 		if (NBTHelper.getInt(stack, "counter", -1) != -1)
 		{
-			System.out.println(NBTHelper.getInt(stack, "counter", -1) + " client: " + world.isRemote);
 			if (NBTHelper.getInt(stack, "counter", -1) == 20)
 			{
 				if (!world.isRemote)
