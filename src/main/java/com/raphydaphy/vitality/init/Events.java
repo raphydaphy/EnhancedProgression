@@ -35,81 +35,28 @@ public class Events
 			int storedEnergetic = event.player.getEntityData().getInteger("essenceStoredEnergetic");
 			int storedExotic = event.player.getEntityData().getInteger("essenceStoredExotic");
 			
-			if (storedAngelic > 1000)
-			{
-				BoundHelper.levitation(event.player, (byte) 5, 50);
-			}
-			else if (storedAngelic > 500)
-			{
-				if (event.player.worldObj.rand.nextInt(50) == 1)
-				{
-					BoundHelper.levitation(event.player, (byte) 4, 100);
-				}
-			}
-			else if (storedAngelic > 100)
-			{
-				if (event.player.worldObj.rand.nextInt(100) == 1)
-				{
-					BoundHelper.levitation(event.player, (byte) 2, 100);
-				}
-			}
+			if (storedAngelic > 1000) { BoundHelper.levitation(event.player, (byte) 5, 50); }
+			else if (storedAngelic > 500) { if (event.player.worldObj.rand.nextInt(50) == 1) { BoundHelper.levitation(event.player, (byte) 4, 100); } }
+			else if (storedAngelic > 100) { if (event.player.worldObj.rand.nextInt(100) == 1) { BoundHelper.levitation(event.player, (byte) 2, 100); } }
 			
-			if (storedAtmospheric > 1000)
-			{
-				BoundHelper.lightning(event.player);
-			}
-			else if (storedAtmospheric > 500)
-			{
-				if (event.player.worldObj.rand.nextInt(50) == 1)
-				{
-					BoundHelper.lightning(event.player);
-				}
-			}
-			else if (storedAtmospheric > 100)
-			{
-				if (event.player.worldObj.rand.nextInt(100) == 1)
-				{
-					BoundHelper.lightning(event.player);
-				}
-			}
+			if (storedAtmospheric > 1000) { BoundHelper.lightning(event.player); }
+			else if (storedAtmospheric > 500) { if (event.player.worldObj.rand.nextInt(50) == 1) { BoundHelper.lightning(event.player); } }
+			else if (storedAtmospheric > 100) { if (event.player.worldObj.rand.nextInt(100) == 1) { BoundHelper.lightning(event.player); } }
 			
-			if (storedEnergetic > 1000)
-			{
-				BoundHelper.slowness(event.player, (byte) 5, 100);
-			}
-			else if (storedEnergetic > 500)
-			{
-				if (event.player.worldObj.rand.nextInt(50) == 1)
-				{
-					BoundHelper.slowness(event.player, (byte) 4, 100);
-				}
-			}
-			else if (storedEnergetic > 100)
-			{
-				if (event.player.worldObj.rand.nextInt(100) == 1)
-				{
-					BoundHelper.slowness(event.player, (byte) 2, 250);
-				}
-			}
+			if (storedDemonic > 1000) { BoundHelper.fire(event.player); }
+			else if (storedDemonic > 500) { if (event.player.worldObj.rand.nextInt(50) == 1) { BoundHelper.fire(event.player); } }
+			else if (storedDemonic > 100) { if (event.player.worldObj.rand.nextInt(100) == 1) { BoundHelper.fire(event.player); } }
+			
+			if (storedEnergetic > 1000) { BoundHelper.slowness(event.player, (byte) 5, 100); }
+			else if (storedEnergetic > 500) { if (event.player.worldObj.rand.nextInt(50) == 1) { BoundHelper.slowness(event.player, (byte) 4, 150); } }
+			else if (storedEnergetic > 100) { if (event.player.worldObj.rand.nextInt(100) == 1) { BoundHelper.slowness(event.player, (byte) 2, 250); } }
 			
 			if (storedExotic >= 10)
 			{
-				if (storedAngelic >= 5)
-				{
-					event.player.getEntityData().setInteger("essenceStoredAngelic", storedAngelic - 5);
-				}
-				if (storedAtmospheric >= 5)
-				{
-					event.player.getEntityData().setInteger("essenceStoredAtmospheric", storedAtmospheric - 5);
-				}
-				if (storedDemonic >= 5)
-				{
-					event.player.getEntityData().setInteger("essenceStoredDemonic", storedDemonic - 5);
-				}
-				if (storedEnergetic >= 5)
-				{
-					event.player.getEntityData().setInteger("essenceStoredEnergetic", storedEnergetic - 5);
-				}
+				if (storedAngelic >= 5) { event.player.getEntityData().setInteger("essenceStoredAngelic", storedAngelic - 5); }
+				if (storedAtmospheric >= 5) { event.player.getEntityData().setInteger("essenceStoredAtmospheric", storedAtmospheric - 5); }
+				if (storedDemonic >= 5) { event.player.getEntityData().setInteger("essenceStoredDemonic", storedDemonic - 5); }
+				if (storedEnergetic >= 5) { event.player.getEntityData().setInteger("essenceStoredEnergetic", storedEnergetic - 5); }
 				event.player.getEntityData().setInteger("essenceStoredExotic", storedExotic - 10);
 			}
 		}
