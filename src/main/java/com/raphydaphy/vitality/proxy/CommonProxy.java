@@ -1,11 +1,13 @@
 package com.raphydaphy.vitality.proxy;
 
+import com.raphydaphy.vitality.init.Events;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.WorldGenHandler;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CommonProxy 
@@ -23,6 +25,9 @@ public class CommonProxy
 	{
 		ModBlocks.init();
 		ModItems.init();
+		
+		MinecraftForge.EVENT_BUS.register(new Events());
+		MinecraftForge.EVENT_BUS.register(Events.class);
 		
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
 	}
