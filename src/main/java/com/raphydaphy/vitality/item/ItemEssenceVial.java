@@ -2,9 +2,11 @@ package com.raphydaphy.vitality.item;
 
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.block.BlockEssenceJar;
+import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.util.NBTHelper;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -73,5 +75,32 @@ public class ItemEssenceVial extends ItemBase
 			
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+    }
+	
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
+    {
+		if (stack.hasTagCompound())
+		{
+			if (stack.getTagCompound().getInteger("essenceStored") == 0)
+			{
+				if (entity instanceof EntityPlayer)
+				{
+					int slot = 0;
+					for(int i = 0; i < ((EntityPlayer) entity).inventory.getSizeInventory(); i++) 
+					{
+						ItemStack stackAt = ((EntityPlayer) entity).inventory.getStackInSlot(i);
+						if (stackAt != null)
+						{
+							if (stackAt == stack)
+							{
+								slot = i;
+							}
+						}
+					}
+					((EntityPlayer) entity).inventory.setInventorySlotContents(slot, new ItemStack(ModItems.essence_vial_empty));
+				}
+			}
+		}
     }
 }

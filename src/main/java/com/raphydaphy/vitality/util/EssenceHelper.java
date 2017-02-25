@@ -101,11 +101,11 @@ public final class EssenceHelper
 		// 1-4 = atmospheric
 		// 5-9 = demonic
 		
-		if (stat == 1 || stat == 2 || stat == 3 || stat == 4)
+		if (stat > 0 && stat < 5)
 		{
 			return "Atmospheric";
 		}
-		else if (stat == 5 || stat == 6 || stat == 7 || stat == 8)
+		else if (stat > 4 && stat < 9)
 		{
 			return "Demonic";
 		}
