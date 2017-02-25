@@ -1,5 +1,6 @@
 package com.raphydaphy.vitality.proxy;
 
+import com.raphydaphy.vitality.block.tile.TileEssenceJar;
 import com.raphydaphy.vitality.init.Events;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
@@ -17,6 +18,8 @@ public class CommonProxy
 	 */
 	public void registerItemRenderer(Item item, int meta, String id) {}
 	
+	public void preInitDiff() { }
+	public void initDiff() { }
 	/*
 	 * Initializes items, blocks and all other required things
 	 * Dosen't manage crafting recipies or smelting
@@ -30,6 +33,7 @@ public class CommonProxy
 		MinecraftForge.EVENT_BUS.register(Events.class);
 		
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
+		GameRegistry.registerTileEntity(TileEssenceJar.class, "essence_jar");
 	}
 	
 	/*
