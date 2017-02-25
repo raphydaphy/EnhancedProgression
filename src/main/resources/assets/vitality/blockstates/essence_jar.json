@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "stat=0": { "model": "vitality:essence_jar_level0" },
+        "stat=1": { "model": "vitality:essence_jar_atmospheric_level1" },
+        "stat=2": { "model": "vitality:essence_jar_atmospheric_level2" },
+        "stat=3": { "model": "vitality:essence_jar_atmospheric_level3" }
+, "stat=4": { "model": "vitality:essence_jar_atmospheric_level4" }, "stat=5": { "model": "vitality:essence_jar_demonic_level1" }, "stat=6": { "model": "vitality:essence_jar_demonic_level2" }, "stat=7": { "model": "vitality:essence_jar_demonic_level3" }, "stat=8": { "model": "vitality:essence_jar_demonic_level4" }
+     }
+}

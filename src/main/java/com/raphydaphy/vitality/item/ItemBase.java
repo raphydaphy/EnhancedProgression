@@ -19,6 +19,18 @@ public class ItemBase extends Item
 		this.setCreativeTab(Reference.creativeTab);
 		this.maxStackSize = maxStack;
 	}
+	
+	public ItemBase(String parName, int maxStack, boolean noCreativeTab)
+	{
+		name = parName;
+		setUnlocalizedName(name);
+		setRegistryName(name);
+		if (!noCreativeTab)
+		{
+			this.setCreativeTab(Reference.creativeTab);
+		}
+		this.maxStackSize = maxStack;
+	}
 
 	public void registerItemModel()
 	{

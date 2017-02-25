@@ -10,6 +10,8 @@ tile.exotic_crystal_ore.name=Exotic Crystal Ore
 
 tile.life_extraction_crucible.name=Life Extraction Crucible
 
+tile.essence_jar.name=Essence Jar
+
 #Items
 item.ingot_copper.name=Copper Ingot
 item.ingot_tin.name=Tin Ingot

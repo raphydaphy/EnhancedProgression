@@ -1,6 +1,7 @@
 package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.block.BlockBase;
+import com.raphydaphy.vitality.block.BlockEssenceJar;
 import com.raphydaphy.vitality.block.BlockExtractionCrucible;
 import com.raphydaphy.vitality.block.BlockModOre;
 
@@ -17,6 +18,9 @@ public class ModBlocks
 	public static BlockModOre exotic_crystal_ore;
 	
 	public static BlockExtractionCrucible life_extraction_crucible;
+
+	public static BlockEssenceJar essence_jar;
+
 	
 	public static void init()
 	{
@@ -30,6 +34,8 @@ public class ModBlocks
 		exotic_crystal_ore = register(new BlockModOre("exotic_crystal_ore"));
 		
 		life_extraction_crucible = register(new BlockExtractionCrucible());
+		
+		essence_jar = register(new BlockEssenceJar());
 	}
 	
 	private static <T extends Block> T register(T block, ItemBlock itemBlock)

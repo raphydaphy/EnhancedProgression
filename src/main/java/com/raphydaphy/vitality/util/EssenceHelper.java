@@ -9,10 +9,8 @@ import net.minecraft.nbt.NBTTagInt;
 
 public final class EssenceHelper 
 {
-	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence, EntityPlayer player, String essenceType)
+	public static boolean addEssenceFree(ItemStack stack, int essenceAmount, int maxEssence)
 	{
-		player.getEntityData().setInteger("essenceStored" + essenceType, player.getEntityData().getInteger("essenceStored" + essenceType) + essenceAmount);
-		
 		if (NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount >= maxEssence)
 		{
 			stack.setTagInfo("essenceStored", new NBTTagInt(maxEssence));
@@ -24,6 +22,24 @@ public final class EssenceHelper
 			return true;
 		}
 	}
+	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence, EntityPlayer player, String essenceType)
+	{
+		player.getEntityData().setInteger("essenceStored" + essenceType, player.getEntityData().getInteger("essenceStored" + essenceType) + essenceAmount);
+		return addEssenceFree(stack, essenceAmount, maxEssence);
+	}
+	public static boolean useEssence(ItemStack stack, int essenceAmount)
+	{
+		if (stack.hasTagCompound())
+		{
+			if (stack.getTagCompound().getInteger("essenceStored") >= essenceAmount)
+			{
+				stack.setTagInfo("essenceStored",new NBTTagInt(stack.getTagCompound().getInteger("essenceStored") - essenceAmount));
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static String vialItemToString(Item vial)
 	{
 		if (vial == ModItems.essence_vial_angelic)
@@ -77,5 +93,62 @@ public final class EssenceHelper
 			}
 		}
 		return false;
+	}
+	
+	public static String getJarStoring(int stat)
+	{
+		// 0 = empty
+		// 1-4 = atmospheric
+		// 5-9 = demonic
+		
+		if (stat == 1 || stat == 2 || stat == 3 || stat == 4)
+		{
+			return "Atmospheric";
+		}
+		else if (stat == 5 || stat == 6 || stat == 7 || stat == 8)
+		{
+			return "Demonic";
+		}
+		return "Unknown";
+	}
+	
+	public static int getJarMax(String type)
+	{
+		switch(type)
+		{
+		case "Atmospheric":
+			return 4;
+		case "Demonic":
+			return 8;
+		default:
+			return 0;
+		}
+	}
+	
+	public static int getJarMin(String type)
+	{
+		switch(type)
+		{
+		case "Atmospheric":
+			return 1;
+		case "Demonic":
+			return 5;
+		default:
+			return 0;
+		}
+	}
+	
+	public static int increaseJarForType(int stat, String type)
+	{
+		String jarType = getJarStoring(stat);
+		if (jarType == type)
+		{
+			if (stat < getJarMax(type))
+			{
+				return stat + 1;
+			}
+			return getJarMax(type);
+		}
+		return getJarMin(type);
 	}
 }
