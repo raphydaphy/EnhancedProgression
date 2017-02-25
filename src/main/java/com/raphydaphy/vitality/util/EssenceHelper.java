@@ -151,4 +151,18 @@ public final class EssenceHelper
 		}
 		return getJarMin(type);
 	}
+	
+	public static int decreaseJarForType(int stat, String type)
+	{
+		String jarType = getJarStoring(stat);
+		if (jarType == type)
+		{
+			if (stat >= getJarMin(type))
+			{
+				return stat - 1;
+			}
+			return 0;
+		}
+		return 0;
+	}
 }

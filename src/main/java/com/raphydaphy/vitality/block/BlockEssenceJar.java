@@ -68,7 +68,7 @@ public class BlockEssenceJar extends BlockBase
         {
             return true;
         }
-        else
+        else if (!playerIn.isSneaking())
         {
             int i = ((Integer)state.getValue(STAT)).intValue();
             String essenceType = EssenceHelper.vialItemToString(heldItem.getItem());
@@ -82,6 +82,26 @@ public class BlockEssenceJar extends BlockBase
                 		this.setEssenceStat(worldIn, pos, state, EssenceHelper.increaseJarForType(i, essenceType));
                         ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, pos, 5, 1);
                         worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
+                        playerIn.swingArm(hand);
+                	}
+                    
+                }
+        	}
+        }
+        else
+        {
+        	int i = ((Integer)state.getValue(STAT)).intValue();
+            String essenceType = EssenceHelper.vialItemToString(heldItem.getItem());
+            
+        	if (EssenceHelper.getJarStoring(i) == essenceType || essenceType == "Unknown")
+        	{
+        		if (i >= EssenceHelper.getJarMin(essenceType) && !worldIn.isRemote)
+                {
+                	if (EssenceHelper.addEssenceFree(heldItem, 10, 1000))
+                	{
+                		this.setEssenceStat(worldIn, pos, state, EssenceHelper.decreaseJarForType(i, essenceType));
+                        ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, pos, 5, 1);
+                        worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
                         playerIn.swingArm(hand);
                 	}
                     
