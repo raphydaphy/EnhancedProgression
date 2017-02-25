@@ -64,6 +64,26 @@ public final class EssenceHelper
 		}
 		return "Unknown";
 	}
+	
+	public static Item vialStringToItem(String vial)
+	{
+		switch(vial)
+		{
+		case "Angelic":
+			return ModItems.essence_vial_angelic;
+		case "Atmospheric":
+			return ModItems.essence_vial_atmospheric;
+		case "Demonic":
+			return ModItems.essence_vial_demonic;
+		case "Energetic":
+			return ModItems.essence_vial_energetic;
+		case "Exotic":
+			return ModItems.essence_vial_exotic;
+		default:
+			return ModItems.essence_vial_empty;
+		}
+	}
+	
 	public static boolean fillVial(Item vialType, EntityPlayer player, int essenceAmount)
 	{
     	for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
@@ -99,7 +119,8 @@ public final class EssenceHelper
 	{
 		// 0 = empty
 		// 1-4 = atmospheric
-		// 5-9 = demonic
+		// 5-8 = demonic
+		// 9-12 exotic
 		
 		if (stat > 0 && stat < 5)
 		{
@@ -108,6 +129,10 @@ public final class EssenceHelper
 		else if (stat > 4 && stat < 9)
 		{
 			return "Demonic";
+		}
+		else if (stat > 8 && stat < 13)
+		{
+			return "Exotic";
 		}
 		return "Unknown";
 	}
@@ -120,6 +145,8 @@ public final class EssenceHelper
 			return 4;
 		case "Demonic":
 			return 8;
+		case "Exotic":
+			return 12; 
 		default:
 			return 0;
 		}
@@ -133,6 +160,8 @@ public final class EssenceHelper
 			return 1;
 		case "Demonic":
 			return 5;
+		case "Exotic":
+			return 9;
 		default:
 			return 0;
 		}
@@ -157,12 +186,48 @@ public final class EssenceHelper
 		String jarType = getJarStoring(stat);
 		if (jarType == type)
 		{
-			if (stat >= getJarMin(type))
+			if (stat > getJarMin(type))
 			{
 				return stat - 1;
 			}
 			return 0;
 		}
 		return 0;
+	}
+	
+	public static void emptyVial(EntityPlayer player, ItemStack vial)
+	{
+		int slot = 0;
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
+		{
+			ItemStack stackAt = player.inventory.getStackInSlot(i);
+			if (stackAt != null)
+			{
+				if (stackAt == vial)
+				{
+					slot = i;
+				}
+			}
+		}
+		player.inventory.setInventorySlotContents(slot, new ItemStack(ModItems.essence_vial_empty));
+	}
+	
+	public static void fillEmptyVial(EntityPlayer player, ItemStack vial, int essenceAmount, Item vialType)
+	{
+		int slot = 0;
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
+		{
+			ItemStack stackAt = player.inventory.getStackInSlot(i);
+			if (stackAt != null)
+			{
+				if (stackAt == vial)
+				{
+					slot = i;
+				}
+			}
+		}
+		ItemStack fullVial = new ItemStack(vialType);
+		addEssenceFree(fullVial, essenceAmount, 1000);
+		player.inventory.setInventorySlotContents(slot, fullVial);
 	}
 }

@@ -1,16 +1,20 @@
 package com.raphydaphy.vitality.item;
 
+import javax.annotation.Nonnull;
+
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.block.BlockEssenceJar;
-import com.raphydaphy.vitality.init.ModItems;
+import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.NBTHelper;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -77,6 +81,22 @@ public class ItemEssenceVial extends ItemBase
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
 	
+	@Nonnull
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+			EnumFacing side, float par8, float par9, float par10)
+	{
+		if (player.isSneaking())
+		{
+			Block block = world.getBlockState(pos).getBlock();
+			if (block instanceof BlockEssenceJar)
+			{
+				((BlockEssenceJar) block).onBlockActivated(world, pos, world.getBlockState(pos), player, hand, stack, side, pos.getX(),pos.getY(), pos.getZ());
+			}
+		}
+		return EnumActionResult.PASS;
+	}
+	
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
     {
@@ -86,19 +106,7 @@ public class ItemEssenceVial extends ItemBase
 			{
 				if (entity instanceof EntityPlayer)
 				{
-					int slot = 0;
-					for(int i = 0; i < ((EntityPlayer) entity).inventory.getSizeInventory(); i++) 
-					{
-						ItemStack stackAt = ((EntityPlayer) entity).inventory.getStackInSlot(i);
-						if (stackAt != null)
-						{
-							if (stackAt == stack)
-							{
-								slot = i;
-							}
-						}
-					}
-					((EntityPlayer) entity).inventory.setInventorySlotContents(slot, new ItemStack(ModItems.essence_vial_empty));
+					EssenceHelper.emptyVial((EntityPlayer) entity, stack);
 				}
 			}
 		}

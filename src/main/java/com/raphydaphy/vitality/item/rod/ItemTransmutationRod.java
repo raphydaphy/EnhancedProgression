@@ -10,6 +10,7 @@ import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.util.ParticleHelper;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockGlass;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -60,6 +61,15 @@ public class ItemTransmutationRod extends ItemBase
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 10);
 			return EnumActionResult.SUCCESS;
+		}
+		else if (block instanceof BlockGlass)
+		{
+			if (!world.isRemote)
+			{
+				world.setBlockState(pos, ModBlocks.essence_jar.getDefaultState());
+				world.playSound(null, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 1);
+				ParticleHelper.spawnParticlesServer(EnumParticleTypes.PORTAL, world, true, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 50, 0.5);
+			}
 		}
 		else
 		{

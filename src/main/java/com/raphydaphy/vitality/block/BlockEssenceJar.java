@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockEssenceJar extends BlockBase
 {
-	public static final PropertyInteger STAT = PropertyInteger.create("stat", 0, 8);
+	public static final PropertyInteger STAT = PropertyInteger.create("stat", 0, 12);
 	
 	public BlockEssenceJar() 
 	{
@@ -58,7 +58,7 @@ public class BlockEssenceJar extends BlockBase
     
     public void setEssenceStat(World worldIn, BlockPos pos, IBlockState state, int stat)
     {
-        worldIn.setBlockState(pos, state.withProperty(STAT, Integer.valueOf(MathHelper.clamp_int(stat, 0, 8))), 2);
+        worldIn.setBlockState(pos, state.withProperty(STAT, Integer.valueOf(MathHelper.clamp_int(stat, 0, 12))), 2);
         worldIn.updateComparatorOutputLevel(pos, this);
     }
     
@@ -97,13 +97,18 @@ public class BlockEssenceJar extends BlockBase
         	{
         		if (i >= EssenceHelper.getJarMin(essenceType) && !worldIn.isRemote)
                 {
-                	if (EssenceHelper.addEssenceFree(heldItem, 10, 1000))
-                	{
-                		this.setEssenceStat(worldIn, pos, state, EssenceHelper.decreaseJarForType(i, essenceType));
-                        ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, pos, 5, 1);
-                        worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-                        playerIn.swingArm(hand);
-                	}
+            		if (EssenceHelper.getJarStoring(i) == essenceType)
+            		{
+            			EssenceHelper.addEssenceFree(heldItem, 10, 1000);
+            		}
+            		else if (essenceType == "Unknown")
+            		{
+            			EssenceHelper.fillEmptyVial(playerIn, heldItem, 10, EssenceHelper.vialStringToItem(EssenceHelper.getJarStoring(i)));
+            		}
+            		this.setEssenceStat(worldIn, pos, state, EssenceHelper.decreaseJarForType(i, essenceType));
+                    ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, pos, 5, 1);
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
+                    playerIn.swingArm(hand);
                     
                 }
         	}
