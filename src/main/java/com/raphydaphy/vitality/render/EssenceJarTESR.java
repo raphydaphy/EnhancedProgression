@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -57,18 +58,24 @@ public class EssenceJarTESR extends TileEntitySpecialRenderer<TileEssenceJar>
         	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_angelic");
         	break;
         case "Atmospheric":
-        	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_atmospheric");
+        	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_atmospheric").toString());
         	break;
         case "Demonic":
-        	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_demonic");
+        	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_demonic").toString());
         	break;
         case "Energetic":
         	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_energetic");
         	break;
         case "Exotic":
-        	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_exotic");
+        	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_exotic").toString());
         	break;
         }
+        
+        if (fluid == Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite())
+        {
+        	fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(FluidRegistry.LAVA.getStill().toString());
+        }
+        
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
         final int rgbaColor = FluidRegistry.WATER.getColor();

@@ -27,7 +27,7 @@ public class CommonProxy
 	public void preInit()
 	{
 		ModBlocks.init();
-		ModItems.init();
+		ModItems.init();	
 		
 		MinecraftForge.EVENT_BUS.register(new Events());
 		MinecraftForge.EVENT_BUS.register(Events.class);

@@ -69,11 +69,11 @@ public class ModItems
 		
 		life_extraction_sword = register(new ItemExtractionSword());
 		
-		wand_core_angelic = register(new ItemBase("wand_core_angelic", 1));
-		wand_core_atmospheric = register(new ItemBase("wand_core_atmospheric", 1));
-		wand_core_demonic = register(new ItemBase("wand_core_demonic", 1));
-		wand_core_energetic = register(new ItemBase("wand_core_energetic", 1));
-		wand_core_exotic = register(new ItemBase("wand_core_exotic", 1));
+		wand_core_angelic = register(new ItemBase("wand_core_angelic", 1, false));
+		wand_core_atmospheric = register(new ItemBase("wand_core_atmospheric", 1, false));
+		wand_core_demonic = register(new ItemBase("wand_core_demonic", 1, false));
+		wand_core_energetic = register(new ItemBase("wand_core_energetic", 1, false));
+		wand_core_exotic = register(new ItemBase("wand_core_exotic", 1, false));
 		
 		wand_tip_wooden = register(new ItemBase("wand_tip_wooden", 1));
 		

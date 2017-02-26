@@ -12,6 +12,12 @@ tile.life_extraction_crucible.name=Life Extraction Crucible
 
 tile.essence_jar.name=Essence Jar
 
+tile.essence_angelic.name=Angelic Essence
+tile.essence_atmospheric.name=Atmospheric Essence
+tile.essence_demonic.name=Demonic Essence
+tile.essence_energetic.name=Energetic Essence
+tile.essence_exotic.name=Exotic Essence
+
 #Items
 item.ingot_copper.name=Copper Ingot
 item.ingot_tin.name=Tin Ingot

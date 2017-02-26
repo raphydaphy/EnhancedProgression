@@ -18,7 +18,20 @@ public class BlockBase extends Block
 	 * material is the type of block, such as ROCK or WOOD
 	 * name is the unlocalized name of the block, such as tin_ore
 	 */
-	public BlockBase(Material material, String name)
+	public BlockBase(Material material, String name, boolean registerTab)
+	{
+		super(material);
+
+		this.name = name;
+		if (registerTab)
+		{
+			this.setCreativeTab(Reference.creativeTab);
+		}
+		setUnlocalizedName(name);
+		setRegistryName(name);
+	}
+	
+	public BlockBase (Material material, String name)
 	{
 		super(material);
 
