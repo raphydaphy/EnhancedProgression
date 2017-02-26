@@ -5,6 +5,7 @@ import com.raphydaphy.vitality.init.Events;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.WorldGenHandler;
+import com.raphydaphy.vitality.recipe.ModRecipies;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.text.TextFormatting;
@@ -39,7 +40,13 @@ public class CommonProxy
 	/*
 	 * Used to initialize crafting and smelting recipies
 	 */
-	public void init() {}
+	public void init() 
+	{
+		ModRecipies.registerOreDict();
+		
+		ModRecipies.registerCrafting();
+		ModRecipies.registerSmelting();
+	}
 	
 	/*
 	 * Currently unused as nothing needs to be initialized in post

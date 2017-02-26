@@ -119,7 +119,10 @@ public class ItemExtractionRod extends ItemBase
 		
 		if (block == ModBlocks.angelic_crystal_ore)
 		{
-			ParticleHelper.outlineAll(pos, EnumParticleTypes.ENCHANTMENT_TABLE, world);
+			if (!world.isRemote)
+			{
+				ParticleHelper.outlineAll(pos, EnumParticleTypes.ENCHANTMENT_TABLE, world);
+			}
 			stack.setTagInfo("counter", new NBTTagInt(40));
 			stack.setTagInfo("xPos", new NBTTagInt(pos.getX()));
 			stack.setTagInfo("yPos", new NBTTagInt(pos.getY()));
@@ -131,9 +134,10 @@ public class ItemExtractionRod extends ItemBase
 		}
 		else if (block == ModBlocks.exotic_crystal_ore)
 		{
-			//Color color = new Color(0x00C6FF);
-			//Vitality.proxy.magicParticle((double)pos.getX(), (double)pos.getY() + 2, (double)pos.getZ(), (float)color.getRed(), (float)color.getGreen(), (float)color.getBlue(), 1F, 2);
-			ParticleHelper.outlineAll(pos, EnumParticleTypes.ENCHANTMENT_TABLE, world);
+			if (!world.isRemote)
+			{
+				ParticleHelper.outlineAll(pos, EnumParticleTypes.ENCHANTMENT_TABLE, world);
+			}
 			stack.setTagInfo("counter", new NBTTagInt(40));
 			stack.setTagInfo("xPos", new NBTTagInt(pos.getX()));
 			stack.setTagInfo("yPos", new NBTTagInt(pos.getY()));

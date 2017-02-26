@@ -47,11 +47,13 @@ item.wand_core_exotic.name=Exotic Wand Core
 
 item.wand_tip_wooden.name=Wooden Wand Tip
 
-item.wooden_angelic_wand.name=Wooden Tipped Angelic Wand
-item.wooden_atmospheric_wand.name=Wooden Tipped Atmospheric Wand
-item.wooden_demonic_wand.name=Wooden Tipped Demonic Wand
-item.wooden_energetic_wand.name=Wooden Tipped Energetic Wand
-item.wooden_exotic_wand.name=Wooden Tipped Exotic Wand
+wooden_angelic_wand.name=Wooden Tipped Angelic Wand
+wooden_atmospheric_wand.name=Wooden Tipped Atmospheric Wand
+wooden_demonic_wand.name=Wooden Tipped Demonic Wand
+wooden_energetic_wand.name=Wooden Tipped Energetic Wand
+wooden_exotic_wand.name=Wooden Tipped Exotic Wand
+
+invalid_wand.name=Invalid Wand!
 
 #Action Bar Messages
 

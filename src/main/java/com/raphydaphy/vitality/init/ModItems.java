@@ -41,11 +41,7 @@ public class ModItems
 	
 	public static ItemBase wand_tip_wooden;
 	
-	public static ItemWand wooden_angelic_wand;
-	public static ItemWand wooden_atmospheric_wand;
-	public static ItemWand wooden_demonic_wand;
-	public static ItemWand wooden_energetic_wand;
-	public static ItemWand wooden_exotic_wand;
+	public static ItemWand wand;
 
 	public static void init()
 	{
@@ -77,11 +73,7 @@ public class ModItems
 		
 		wand_tip_wooden = register(new ItemBase("wand_tip_wooden", 1));
 		
-		wooden_angelic_wand = register(new ItemWand("wooden_angelic_wand"));
-		wooden_atmospheric_wand = register(new ItemWand("wooden_atmospheric_wand"));
-		wooden_demonic_wand = register(new ItemWand("wooden_demonic_wand"));
-		wooden_energetic_wand = register(new ItemWand("wooden_energetic_wand"));
-		wooden_exotic_wand = register(new ItemWand("wooden_exotic_wand"));
+		wand = register(new ItemWand("wand"));
 	}
 
 	private static <T extends Item> T register(T item)

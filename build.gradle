@@ -7,6 +7,14 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+
+repositories {
+    maven { // JEI repo
+        name "JEI"
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+}
+    
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
@@ -15,9 +23,9 @@ version = "3.0"
 group= "com.raphydaphy.vitality" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "vitality"
 
-sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.7" // Need this here so eclipse task generates correctly.
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
+    sourceCompatibility = targetCompatibility = "1.7"
 }
 
 minecraft {
@@ -50,6 +58,8 @@ dependencies {
     // except that these dependencies get remapped to your current MCP mappings
     //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
     //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    
+    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
 
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

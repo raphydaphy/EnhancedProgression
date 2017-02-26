@@ -1,7 +1,8 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "vitality:items/wooden_energetic_wand"
+        "layer0": "vitality:items/wand/core_energetic",
+	"layer1": "vitality:items/wand/tip_wood"
     },
     "display": {
         "firstperson_righthand": {

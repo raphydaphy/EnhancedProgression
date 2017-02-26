@@ -2,7 +2,8 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
         "0": "vitality:blocks/essence_jar_glass",
-        "1": "vitality:blocks/essence_jar_lid"
+        "1": "vitality:blocks/essence_jar_lid",
+	"particle": "vitality:blocks/essence_jar_glass"
     },
     "elements": [
         {
