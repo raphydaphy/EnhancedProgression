@@ -26,6 +26,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+// The author of Chisel may have told me that my jar model is shit
+// so ill fix that one day .. plz i hope he forgets it was scary
+
 public class BlockEssenceJar extends BlockBase implements ITileEntityProvider
 {
 	protected static final AxisAlignedBB AABB_MAIN = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
