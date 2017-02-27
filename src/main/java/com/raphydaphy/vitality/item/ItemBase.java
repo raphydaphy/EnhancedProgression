@@ -53,4 +53,10 @@ public class ItemBase extends Item
     {
         return null;
     }
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged || ItemStack.areItemStacksEqual(oldStack, newStack) == false;
+	}
+
 }

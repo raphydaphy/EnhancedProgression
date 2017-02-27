@@ -83,10 +83,4 @@ public class ItemWand extends ItemBase
     {
         return new ModelResourceLocation(Reference.MOD_ID + ":wand", "inventory");
     }
-	
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged;
-	}
-
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -109,6 +110,7 @@ public class ModelWand implements IModel, IModelCustomData
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
 
         coreSprite = bakedTextureGetter.apply(this.resourceCore);
+        
 
         if (this.resourceCore != null)
         {
@@ -206,6 +208,34 @@ public class ModelWand implements IModel, IModelCustomData
         @Override
         public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
         {
+        	if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
+        	{
+        		TRSRTransformation tr = new TRSRTransformation(new Vector3f(-0.25f,0.6f,0), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,49.9f)), new Vector3f(0.90f,0.90f,0.90f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,49.9f)));
+                Matrix4f mat = null;
+                if(tr != null && !tr.equals(TRSRTransformation.identity())) mat = TRSRTransformation.blockCornerToCenter(tr).getMatrix();
+                return Pair.of(this, mat);
+        	}
+			else if (cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
+			{
+				TRSRTransformation tr = new TRSRTransformation(new Vector3f(0f,0f,0), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,350f)), new Vector3f(0.90f,0.90f,0.90f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,359.98f)));
+			    Matrix4f mat = null;
+			    if(tr != null && !tr.equals(TRSRTransformation.identity())) mat = TRSRTransformation.blockCornerToCenter(tr).getMatrix();
+			    return Pair.of(this, mat);
+			}
+        	else if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
+        	{
+				TRSRTransformation tr = new TRSRTransformation(new Vector3f(0,0,0f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,0)), new Vector3f(0.85f,0.85f,0.85f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,0)));
+				Matrix4f mat = null;
+				if(tr != null && !tr.equals(TRSRTransformation.identity())) mat = TRSRTransformation.blockCornerToCenter(tr).getMatrix();
+				return Pair.of(this, mat);
+        	}
+        	else if (cameraTransformType == TransformType.GROUND)
+        	{
+				TRSRTransformation tr = new TRSRTransformation(new Vector3f(0,0,0f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,0)), new Vector3f(0.85f,0.85f,0.85f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,0)));
+				Matrix4f mat = null;
+				if(tr != null && !tr.equals(TRSRTransformation.identity())) mat = TRSRTransformation.blockCornerToCenter(tr).getMatrix();
+				return Pair.of(this, mat);
+        	}
             return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, this.transforms, cameraTransformType);
         }
 

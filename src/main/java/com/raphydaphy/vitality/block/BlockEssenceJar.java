@@ -48,20 +48,9 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_KNOB);
     }
 	
-	@Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
-    {
-        return AABB_MAIN;
-    }
-	
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return AABB_MAIN;
-    }
-	
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
-    {
-        return true;
     }
 	
 	@Override
@@ -83,7 +72,7 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider
     }
 
     @Override
-    public boolean isBlockNormalCube(IBlockState blockState) {
+    public boolean isFullCube(IBlockState blockState) {
         return false;
     }
 
