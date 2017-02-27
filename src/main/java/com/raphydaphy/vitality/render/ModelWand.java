@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector3f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -16,7 +15,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.raphydaphy.vitality.init.Reference;
-import com.raphydaphy.vitality.item.ItemWand;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -39,26 +37,21 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IModelCustomData;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.ItemLayerModel;
-import net.minecraftforge.client.model.ModelStateComposition;
 import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 public class ModelWand implements IModel, IModelCustomData
 {
-    public static final IModel MODEL = new ModelWand(null,null);
+    public static final IModel MODEL = new ModelWand("Demonic", "Wooden");
     private final ResourceLocation resourceCore;
     private final ResourceLocation resourceTip;
-    private final String core;
-    private final String tip;
-    protected static final Map<String, String> moduleTransforms = Maps.newHashMap();
 
     public ModelWand(String coreType, String tipType)
     {
-        this.core = coreType;
-        this.tip = tipType;
-        this.resourceCore = new ResourceLocation("vitality", "items/wand/core" + coreType.toLowerCase());
-        this.resourceTip = new ResourceLocation("vitality", "items/wand/tip" + tipType.toLowerCase());
+    	System.out.println(coreType);
+        this.resourceCore = new ResourceLocation("vitality", "items/wand/core_"+coreType.toLowerCase());
+        this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_"+tipType.toLowerCase());
     }
 
     @Override
@@ -78,7 +71,7 @@ public class ModelWand implements IModel, IModelCustomData
     {
         ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
         
-        builder.add(new ResourceLocation("vitality", "items/wand/tip_wood"));
+        builder.add(new ResourceLocation("vitality", "items/wand/tip_wooden"));
         
         builder.add(new ResourceLocation("vitality", "items/wand/core_angelic"));
         builder.add(new ResourceLocation("vitality", "items/wand/core_atmospheric"));
@@ -95,16 +88,14 @@ public class ModelWand implements IModel, IModelCustomData
         for (Map.Entry<String, String> entry : customData.entrySet())
         {
             String key = entry.getKey();
-            //System.out.printf("customData: %s => %s\n", key, entry.getValue());
-            if (key != null && key.startsWith("tr_") == true)
-            {
-                moduleTransforms.put(key, entry.getValue());
-            }
+            System.out.printf("customData: %s => %s\n", key, entry.getValue());
         }
+        
+        System.out.println(customData.size());
 
         String core = customData.get("coreType");
         String tip = customData.get("tipType");
-
+        System.out.println("Core: " + core + " Tip:" + tip);
         return new ModelWand(core,tip);
     }
 
@@ -127,69 +118,13 @@ public class ModelWand implements IModel, IModelCustomData
 
         if (this.resourceTip != null)
         {
-            IModelState stateTmp = this.getTransformedModelState(state, "co");
-            IBakedModel model = (new ItemLayerModel(ImmutableList.of(this.resourceTip))).bake(stateTmp, format, bakedTextureGetter);
+            IBakedModel model = (new ItemLayerModel(ImmutableList.of(this.resourceTip))).bake(state, format, bakedTextureGetter);
             builder.addAll(model.getQuads(null, null, 0));
         }
 
         return new BakedWand(this, builder.build(), coreSprite, format, Maps.immutableEnumMap(transformMap), Maps.<String, IBakedModel>newHashMap());
     }
 
-    private IModelState getTransformedModelState(IModelState state, String module)
-    {
-        ModuleTransforms mt = new ModuleTransforms(this, "Wand", module);
-        TRSRTransformation tr = new TRSRTransformation(new Vector3f(mt.tx, mt.ty, mt.tz), null, new Vector3f(mt.sx, mt.sy, mt.sz), null);
-        return new ModelStateComposition(state, TRSRTransformation.blockCenterToCorner(tr));
-    }
-
-    protected static class ModuleTransforms
-    {
-        public final float tx;
-        public final float ty;
-        public final float tz;
-        public final float sx;
-        public final float sy;
-        public final float sz;
-
-        private ModuleTransforms(ModelWand parent, String tool, String module)
-        {
-            float tx = 0f, ty = 0f, tz = 0f, sx = 1.02f, sy = 1.02f, sz = 1.6f;
-            String id = tool.equals("sword") == true ? "w" : tool.substring(0, 1);
-
-            try
-            {
-                String str = moduleTransforms.get("tr_tx_" + id + "_" + module);
-                if (str != null) tx = Float.valueOf(str);
-
-                str = moduleTransforms.get("tr_ty_" + id + "_" + module);
-                if (str != null) ty = Float.valueOf(str);
-
-                str = moduleTransforms.get("tr_tz_" + id + "_" + module);
-                if (str != null) tz = Float.valueOf(str);
-
-                str = moduleTransforms.get("tr_sx_" + id + "_" + module);
-                if (str != null) sx = Float.valueOf(str);
-
-                str = moduleTransforms.get("tr_sy_" + id + "_" + module);
-                if (str != null) sy = Float.valueOf(str);
-
-                str = moduleTransforms.get("tr_sz_" + id + "_" + module);
-                if (str != null) sz = Float.valueOf(str);
-            }
-            catch (NumberFormatException e)
-            {
-               	System.out.println("something bad happened");
-            }
-
-            //System.out.printf("tx: %.2f, ty: %.2f, tz: %.2f, sx: %.2f, sy: %.2f, sz: %.2f\n", tx, ty, tz, sx, sy, sz);
-            this.tx = tx;
-            this.ty = ty;
-            this.tz = tz;
-            this.sx = sx;
-            this.sy = sy;
-            this.sz = sz;
-        }
-    }
 
     private static final class BakedWandOverrideHandler extends ItemOverrideList
     {
@@ -203,13 +138,14 @@ public class ModelWand implements IModel, IModelCustomData
         @Override
         public IBakedModel handleItemState(IBakedModel originalModelIn, ItemStack stack, World world, EntityLivingBase entity)
         {
-        	String coreType = "Unknown";
-        	String tipType = "Unknown";
+        	String coreType = "";
+        	String tipType = "";
             if (stack.hasTagCompound())
             {
             	coreType = stack.getTagCompound().getString("coreType");
             	tipType = stack.getTagCompound().getString("tipType");
             }
+            
             String key = coreType + tipType;
 
             BakedWand originalModel = (BakedWand) originalModelIn;
@@ -237,7 +173,7 @@ public class ModelWand implements IModel, IModelCustomData
                 return bakedModel;
             }
 
-            return originalModel.cache.get(key);
+           return originalModel.cache.get(key);
         }
     }
 

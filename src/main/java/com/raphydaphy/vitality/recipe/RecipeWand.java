@@ -54,7 +54,7 @@ public class RecipeWand implements IRecipe
                 else if (itemstack.getItem() == ModItems.wand_core_atmospheric)
                 {
                 	cores++;
-                	coreType = "Angelic";
+                	coreType = "Atmospheric";
                 }
                 else if (itemstack.getItem() == ModItems.wand_core_demonic)
                 {
