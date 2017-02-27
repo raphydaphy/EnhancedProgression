@@ -73,7 +73,7 @@ public class ModItems
 		
 		wand_tip_wooden = register(new ItemBase("wand_tip_wooden", 1));
 		
-		wand = register(new ItemWand("wand"));
+		wand = registerSimple(new ItemWand("wand"));
 	}
 
 	private static <T extends Item> T register(T item)
@@ -87,6 +87,12 @@ public class ModItems
 		{
 			((ItemExtractionSword) item).registerItemModel();
 		}
+		return item;
+	}
+	
+	private static <T extends Item> T registerSimple(T item)
+	{
+		GameRegistry.register(item);
 		return item;
 	}
 }

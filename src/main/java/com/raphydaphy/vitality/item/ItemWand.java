@@ -1,15 +1,13 @@
 package com.raphydaphy.vitality.item;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.Vitality;
+import com.raphydaphy.vitality.init.Reference;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -77,6 +75,13 @@ public class ItemWand extends ItemBase
     public boolean hasEffect(ItemStack stack)
     {
 		return true;
+    }
+	
+	@SideOnly(Side.CLIENT)
+    @Override
+    public ModelResourceLocation getModelLocation(ItemStack stack)
+    {
+        return new ModelResourceLocation(Reference.MOD_ID + ":wand", "inventory");
     }
 	
 	@Override

@@ -2,8 +2,11 @@ package com.raphydaphy.vitality.proxy;
 
 import com.raphydaphy.vitality.block.tile.TileEssenceJar;
 import com.raphydaphy.vitality.init.ModBlocks;
+import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.Reference;
 import com.raphydaphy.vitality.render.EssenceJarTESR;
+import com.raphydaphy.vitality.render.ModelWand;
+import com.raphydaphy.vitality.util.MeshHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -11,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy
@@ -38,6 +42,10 @@ public class ClientProxy extends CommonProxy
 	public void preInitDiff()
 	{
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.essence_jar), 0, new ModelResourceLocation(new ResourceLocation("vitality", "essence_jar"), "inventory"));
+		ModelLoader.registerItemVariants(ModItems.wand, new ModelResourceLocation(Reference.MOD_ID + ":wand", "inventory"));
+        ModelLoader.setCustomMeshDefinition(ModItems.wand, MeshHelper.instance());
+        
+        ModelLoaderRegistry.registerLoader(ModelWand.LoaderWand.instance);
 	}
 	
 	@Override
