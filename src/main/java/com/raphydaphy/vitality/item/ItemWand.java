@@ -79,7 +79,7 @@ public class ItemWand extends ItemBase
 					{
 						if (EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).contains(essenceType))
 						{
-							System.out.println("boom");
+							System.out.println("restarting stuff");
 							stack.setTagInfo("posX", new NBTTagInt(pos.getX()));
 							stack.setTagInfo("posY", new NBTTagInt(pos.getY()));
 							stack.setTagInfo("posZ", new NBTTagInt(pos.getZ()));
@@ -92,12 +92,15 @@ public class ItemWand extends ItemBase
 				}
 			}
 		}
+		System.out.println("No action found");
+		stack.setTagInfo("curAction", new NBTTagString("nothing"));
 		return EnumActionResult.PASS;
 	}
 	
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
     {
+		// this dosent get called
 		 System.out.println("mega hacks achieved");
 		
     }
@@ -107,12 +110,11 @@ public class ItemWand extends ItemBase
     {
 		if (isSelected)
 		{
-			System.out.println(NBTHelper.getString(stack, "curAction", "nothing"));
+			System.out.println(NBTHelper.getString(stack, "useAction", "nothing"));
 			if (stack.hasTagCompound())
 			{
 				if (entity instanceof EntityPlayer)
 				{
-					System.out.println("a thing");
 					EntityPlayer player = (EntityPlayer)entity;
 					
 					BlockPos pos = new BlockPos(NBTHelper.getInt(stack, "posX", 0),
@@ -125,11 +127,14 @@ public class ItemWand extends ItemBase
 						TileEntity tile = player.worldObj.getTileEntity(pos);
 						IEssenceContainer container = (IEssenceContainer)tile;
 						int essenceStored = container.getEssenceStored();
-						
 						if (essenceStored > 0)
 						{
 							container.setEssenceStored(essenceStored - 1);
 							EssenceHelper.addEssenceFree(stack, 1, EssenceHelper.getMaxEssence(stack), NBTHelper.getString(stack, "essenceTypeOperation", "Unknown"));
+						}
+						else
+						{
+							this.onItemUseFinish(stack, world, (EntityLivingBase)entity);
 						}
 						return;
 					default:
@@ -154,12 +159,15 @@ public class ItemWand extends ItemBase
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft)
 	{	
+		//this dosent get called
 		System.out.println("IT WORKS :D");
 		resetUseInfo(stack);
 	}
 	
 	public static void resetUseInfo(ItemStack stack)
 	{
+		// this dosent get called
+		System.out.println("resetting use info");
 		NBTHelper.setString(stack, "curAction", "nothing");
 		NBTHelper.setString(stack, "useAction", "NONE");
 	}
