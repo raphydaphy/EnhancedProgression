@@ -1,6 +1,6 @@
 package com.raphydaphy.vitality.init;
 
-import com.raphydaphy.vitality.util.shadows.registry.ModItems;
+import com.raphydaphy.vitality.util.registry.ModItems;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

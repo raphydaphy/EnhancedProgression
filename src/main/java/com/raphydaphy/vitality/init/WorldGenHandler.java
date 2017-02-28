@@ -2,7 +2,7 @@ package com.raphydaphy.vitality.init;
 
 import java.util.Random;
 
-import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
+import com.raphydaphy.vitality.util.registry.ModBlocks;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;

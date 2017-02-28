@@ -8,8 +8,8 @@ import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.NBTHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
-import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
-import com.raphydaphy.vitality.util.shadows.registry.ModItems;
+import com.raphydaphy.vitality.util.registry.ModBlocks;
+import com.raphydaphy.vitality.util.registry.ModItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;

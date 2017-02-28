@@ -1,15 +1,15 @@
 package com.raphydaphy.vitality.item;
 
 import com.raphydaphy.vitality.init.Reference;
-import com.raphydaphy.vitality.util.shadows.registry.IRegisterable;
-import com.raphydaphy.vitality.util.shadows.registry.RegistryHelper;
+import com.raphydaphy.vitality.util.registry.IRegisterable;
+import com.raphydaphy.vitality.util.registry.RegistryHelper;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ItemBase extends Item implements IRegisterable{
+public class ItemBase extends Item implements IRegisterable {
 
 	public ItemBase(String name, int maxStack) {
 		this(name, maxStack, true);

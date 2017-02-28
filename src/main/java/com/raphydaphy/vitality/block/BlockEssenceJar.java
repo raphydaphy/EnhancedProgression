@@ -65,7 +65,8 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider {
 		return new TileEssenceJar();
 	}
 
-	@Override @SideOnly(Side.CLIENT)
+	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerModels() {
 		super.registerModels();
 		GameRegistry.registerTileEntity(TileEssenceJar.class, getRegistryName().getResourcePath());

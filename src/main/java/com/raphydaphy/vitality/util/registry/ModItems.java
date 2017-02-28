@@ -1,4 +1,4 @@
-package com.raphydaphy.vitality.util.shadows.registry;
+package com.raphydaphy.vitality.util.registry;
 
 import java.util.ArrayList;
 import java.util.List;

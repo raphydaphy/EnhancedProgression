@@ -52,7 +52,8 @@ public class ItemWand extends ItemBase {
 
 	}
 
-	@Override @SideOnly(Side.CLIENT)
+	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerModels() {
 		ModelLoader.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), "inventory"));
 		ModelLoader.setCustomMeshDefinition(this, MeshHelper.instance());

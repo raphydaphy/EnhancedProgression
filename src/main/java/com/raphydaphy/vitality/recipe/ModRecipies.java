@@ -1,8 +1,8 @@
 package com.raphydaphy.vitality.recipe;
 
 import com.raphydaphy.vitality.init.ConfigHandler;
-import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
-import com.raphydaphy.vitality.util.shadows.registry.ModItems;
+import com.raphydaphy.vitality.util.registry.ModBlocks;
+import com.raphydaphy.vitality.util.registry.ModItems;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

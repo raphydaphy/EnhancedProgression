@@ -1,4 +1,4 @@
-package com.raphydaphy.vitality.util.shadows.registry;
+package com.raphydaphy.vitality.util.registry;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 
 /**
  * 
- * @author Shadows   
- * @Desc You can implement this class in a metadata using item or
- *         block. DO NOT do it in both a Block and it's ItemBlock!
- *         Oh, and don't implement both this and IRegisterable.
+ * @author Shadows
+ * @Desc You can implement this class in a metadata using item or block. DO NOT
+ *       do it in both a Block and it's ItemBlock! Oh, and don't implement both
+ *       this and IRegisterable.
  */
 public interface IMeta {
 

@@ -1,7 +1,7 @@
 package com.raphydaphy.vitality.util;
 
 import com.raphydaphy.vitality.item.ItemBase;
-import com.raphydaphy.vitality.util.shadows.registry.IMeta;
+import com.raphydaphy.vitality.util.registry.IMeta;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

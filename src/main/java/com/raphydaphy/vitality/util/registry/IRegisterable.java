@@ -1,7 +1,8 @@
-package com.raphydaphy.vitality.util.shadows.registry;
+package com.raphydaphy.vitality.util.registry;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 /**
  * 
  * @author Shadows
@@ -10,10 +11,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IRegisterable {
 
 	/**
-	 * This is the thing that does model registration.  Override for custom things.
+	 * This is the thing that does model registration. Override for custom
+	 * things.
 	 * 
 	 */
 	@SideOnly(Side.CLIENT)
 	public void registerModels();
-	
+
 }

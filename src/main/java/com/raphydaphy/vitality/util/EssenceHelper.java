@@ -1,6 +1,6 @@
 package com.raphydaphy.vitality.util;
 
-import com.raphydaphy.vitality.util.shadows.registry.ModItems;
+import com.raphydaphy.vitality.util.registry.ModItems;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

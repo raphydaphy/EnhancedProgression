@@ -6,8 +6,8 @@ import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.util.ParticleHelper;
-import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
-import com.raphydaphy.vitality.util.shadows.registry.ModItems;
+import com.raphydaphy.vitality.util.registry.ModBlocks;
+import com.raphydaphy.vitality.util.registry.ModItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
