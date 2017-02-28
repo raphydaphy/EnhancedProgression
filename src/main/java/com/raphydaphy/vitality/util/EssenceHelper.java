@@ -1,6 +1,6 @@
 package com.raphydaphy.vitality.util;
 
-import com.raphydaphy.vitality.init.ModItems;
+import com.raphydaphy.vitality.util.shadows.registry.ModItems;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -38,15 +38,15 @@ public final class EssenceHelper {
 	}
 
 	public static String vialItemToString(Item vial) {
-		if (vial == ModItems.essence_vial_angelic) {
+		if (vial == ModItems.VIAL_ANGELIC) {
 			return "Angelic";
-		} else if (vial == ModItems.essence_vial_atmospheric) {
+		} else if (vial == ModItems.VIAL_ATMOSPHERIC) {
 			return "Atmospheric";
-		} else if (vial == ModItems.essence_vial_demonic) {
+		} else if (vial == ModItems.VIAL_DEMONIC) {
 			return "Demonic";
-		} else if (vial == ModItems.essence_vial_energetic) {
+		} else if (vial == ModItems.VIAL_ENERGETIC) {
 			return "Energetic";
-		} else if (vial == ModItems.essence_vial_exotic) {
+		} else if (vial == ModItems.VIAL_EXOTIC) {
 			return "Exotic";
 		}
 		return "Unknown";
@@ -55,17 +55,17 @@ public final class EssenceHelper {
 	public static Item vialStringToItem(String vial) {
 		switch (vial) {
 		case "Angelic":
-			return ModItems.essence_vial_angelic;
+			return ModItems.VIAL_ANGELIC;
 		case "Atmospheric":
-			return ModItems.essence_vial_atmospheric;
+			return ModItems.VIAL_ATMOSPHERIC;
 		case "Demonic":
-			return ModItems.essence_vial_demonic;
+			return ModItems.VIAL_DEMONIC;
 		case "Energetic":
-			return ModItems.essence_vial_energetic;
+			return ModItems.VIAL_ENERGETIC;
 		case "Exotic":
-			return ModItems.essence_vial_exotic;
+			return ModItems.VIAL_EXOTIC;
 		default:
-			return ModItems.essence_vial_empty;
+			return ModItems.VIAL_EMPTY;
 		}
 	}
 
@@ -82,7 +82,7 @@ public final class EssenceHelper {
 		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
 			if (stackAt != null) {
-				if (stackAt.getItem() == ModItems.essence_vial_empty) {
+				if (stackAt.getItem() == ModItems.VIAL_EMPTY) {
 					ItemStack vialStack = new ItemStack(vialType);
 					addEssence(vialStack, essenceAmount, 1000, player, vialItemToString(vialType));
 					player.inventory.setInventorySlotContents(i, vialStack);
@@ -103,7 +103,7 @@ public final class EssenceHelper {
 				}
 			}
 		}
-		player.inventory.setInventorySlotContents(slot, new ItemStack(ModItems.essence_vial_empty));
+		player.inventory.setInventorySlotContents(slot, new ItemStack(ModItems.VIAL_EMPTY));
 	}
 
 	public static void fillEmptyVial(EntityPlayer player, ItemStack vial, int essenceAmount, Item vialType) {

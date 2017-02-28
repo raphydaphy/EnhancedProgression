@@ -3,7 +3,9 @@ package com.raphydaphy.vitality.item;
 import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.Vitality;
-import com.raphydaphy.vitality.init.Reference;
+import com.raphydaphy.vitality.proxy.ClientProxy;
+import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
+import com.raphydaphy.vitality.util.MeshHelper;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
@@ -16,21 +18,24 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemWand extends ItemBase {
 	public ItemWand(String parName) {
-		super(parName, 1);
+		super(parName, 1, false);
 		this.setHasSubtypes(true);
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
-			Vitality.proxy.setActionText("Storing " + stack.getTagCompound().getInteger("essenceStored") + " / "
-					+ stack.getTagCompound().getInteger("maxEssence") + stack.getTagCompound().getInteger("essenceType")
-					+ " Essence", TextFormatting.BOLD);
+			if (world.isRemote)
+				ClientProxy.setActionText("Storing " + stack.getTagCompound().getInteger("essenceStored") + " / "
+						+ stack.getTagCompound().getInteger("maxEssence")
+						+ stack.getTagCompound().getInteger("essenceType") + " Essence", TextFormatting.BOLD);
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
@@ -46,6 +51,13 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
 
+	}
+
+	@Override
+	public void registerModels() {
+		ModelLoader.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), "inventory"));
+		ModelLoader.setCustomMeshDefinition(this, MeshHelper.instance());
+		ModelLoaderRegistry.registerLoader(LoaderWand.instance);
 	}
 
 	@Override
@@ -65,11 +77,5 @@ public class ItemWand extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	public boolean hasEffect(ItemStack stack) {
 		return true;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public ModelResourceLocation getModelLocation(ItemStack stack) {
-		return new ModelResourceLocation(Reference.MOD_ID + ":wand", "inventory");
 	}
 }

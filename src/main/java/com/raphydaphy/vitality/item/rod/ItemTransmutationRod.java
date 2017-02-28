@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.raphydaphy.vitality.init.ModBlocks;
-import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.util.ParticleHelper;
+import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
+import com.raphydaphy.vitality.util.shadows.registry.ModItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
@@ -49,7 +49,7 @@ public class ItemTransmutationRod extends ItemBase {
 
 		if (block == Blocks.CAULDRON) {
 			if (!world.isRemote) {
-				world.setBlockState(pos, ModBlocks.life_extraction_crucible.getDefaultState());
+				world.setBlockState(pos, ModBlocks.EXTRACTION_CRUCIBLE.getDefaultState());
 				world.playSound(null, pos, SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.BLOCKS, 1F, 1F);
 				ParticleHelper.spawnParticlesServer(EnumParticleTypes.SMOKE_LARGE, world, true, pos.getX() + 0.5,
 						pos.getY(), pos.getZ() + 0.5, 20, 0.25);
@@ -59,7 +59,7 @@ public class ItemTransmutationRod extends ItemBase {
 			return EnumActionResult.SUCCESS;
 		} else if (block instanceof BlockGlass) {
 			if (!world.isRemote) {
-				world.setBlockState(pos, ModBlocks.essence_jar.getDefaultState());
+				world.setBlockState(pos, ModBlocks.JAR.getDefaultState());
 				world.playSound(null, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 1);
 				ParticleHelper.spawnParticlesServer(EnumParticleTypes.PORTAL, world, true, pos.getX() + 0.5, pos.getY(),
 						pos.getZ() + 0.5, 50, 0.5);
@@ -70,7 +70,7 @@ public class ItemTransmutationRod extends ItemBase {
 			for (EntityItem item : items) {
 				if (item.getEntityItem().getItem() == Items.GLASS_BOTTLE) {
 					EntityItem vialEmpty = new EntityItem(world, item.posX, item.posY, item.posZ,
-							new ItemStack(ModItems.essence_vial_empty));
+							new ItemStack(ModItems.VIAL_EMPTY));
 					if (!world.isRemote) {
 						world.spawnEntityInWorld(vialEmpty);
 						if (item.getEntityItem().stackSize > 1) {
@@ -88,7 +88,7 @@ public class ItemTransmutationRod extends ItemBase {
 				} else if (item.getEntityItem().getItem() == Items.IRON_SWORD) {
 					if (!world.isRemote) {
 						world.spawnEntityInWorld(new EntityItem(world, item.posX, item.posY, item.posZ,
-								new ItemStack(ModItems.life_extraction_sword)));
+								new ItemStack(ModItems.EXTRACTION_SWORD)));
 						item.setDead();
 						ParticleHelper.spawnParticles(EnumParticleTypes.END_ROD, world, true, item.getPosition(), 50,
 								2);

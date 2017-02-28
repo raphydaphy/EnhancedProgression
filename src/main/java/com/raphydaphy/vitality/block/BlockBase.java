@@ -1,16 +1,14 @@
 package com.raphydaphy.vitality.block;
 
-import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.init.Reference;
+import com.raphydaphy.vitality.util.shadows.registry.RegistryHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockBase extends Block {
-
-	protected String name;
 
 	/*
 	 * Constructor for BlockBase, accepts a Material and String material is the
@@ -19,41 +17,20 @@ public class BlockBase extends Block {
 	 */
 	public BlockBase(Material material, String name, boolean registerTab) {
 		super(material);
-
-		this.name = name;
-		if (registerTab) {
+		if (registerTab)
 			this.setCreativeTab(Reference.creativeTab);
-		}
-		setUnlocalizedName(name);
+		setUnlocalizedName(Reference.MOD_ID + "." + name);
 		setRegistryName(name);
+		GameRegistry.register(this);
+		GameRegistry.register(new ItemBlock(this), getRegistryName());
 	}
 
 	public BlockBase(Material material, String name) {
-		super(material);
-
-		this.name = name;
-		this.setCreativeTab(Reference.creativeTab);
-
-		setUnlocalizedName(name);
-		setRegistryName(name);
+		this(material, name, true);
 	}
 
-	/*
-	 * Registeres the block as an item in the inventory Uses ClientProxy to
-	 * access the method client-side only
-	 */
-	public void registerItemModel(ItemBlock itemBlock) {
-		Vitality.proxy.registerItemRenderer(itemBlock, 0, name);
-	}
-
-	/*
-	 * Sets the creative tab of the block Used in the constructor to set it
-	 * automatically
-	 */
-	@Override
-	public BlockBase setCreativeTab(CreativeTabs tab) {
-		super.setCreativeTab(tab);
-		return this;
+	public void registerModels() {
+		RegistryHelper.setModelLoc(this);
 	}
 
 }

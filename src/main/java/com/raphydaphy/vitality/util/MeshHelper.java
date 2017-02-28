@@ -1,9 +1,11 @@
 package com.raphydaphy.vitality.util;
 
 import com.raphydaphy.vitality.item.ItemBase;
+import com.raphydaphy.vitality.util.shadows.registry.IMeta;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class MeshHelper implements ItemMeshDefinition {
@@ -22,9 +24,11 @@ public class MeshHelper implements ItemMeshDefinition {
 
 	@Override
 	public ModelResourceLocation getModelLocation(ItemStack stack) {
-		if (stack.getItem() instanceof ItemBase) {
-			return ((ItemBase) stack.getItem()).getModelLocation(stack);
-		}
+		Item item = stack.getItem();
+		if (item instanceof IMeta)
+			return ((IMeta) item).getMetaModelLocations().get(stack.getMetadata());
+		else if (item instanceof ItemBase)
+			return ((ItemBase) item).getModelLocation();
 
 		return null;
 	}

@@ -3,12 +3,13 @@ package com.raphydaphy.vitality.item.rod;
 import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.Vitality;
-import com.raphydaphy.vitality.init.ModBlocks;
-import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.item.ItemBase;
+import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.NBTHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
+import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
+import com.raphydaphy.vitality.util.shadows.registry.ModItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -46,11 +47,12 @@ public class ItemExtractionRod extends ItemBase {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player,
 			EnumHand hand) {
 		if (player.isSneaking()) {
-			Vitality.proxy.setActionText("Angelic: " + player.getEntityData().getInteger("essenceStoredAngelic")
-					+ " Atmospheric: " + player.getEntityData().getInteger("essenceStoredAtmospheric") + " Demonic: "
-					+ player.getEntityData().getInteger("essenceStoredDemonic") + " Energetic: "
-					+ player.getEntityData().getInteger("essenceStoredEnergetic") + " Exotic: "
-					+ player.getEntityData().getInteger("essenceStoredExotic"), TextFormatting.AQUA);
+			if (worldIn.isRemote)
+				ClientProxy.setActionText("Angelic: " + player.getEntityData().getInteger("essenceStoredAngelic")
+						+ " Atmospheric: " + player.getEntityData().getInteger("essenceStoredAtmospheric")
+						+ " Demonic: " + player.getEntityData().getInteger("essenceStoredDemonic") + " Energetic: "
+						+ player.getEntityData().getInteger("essenceStoredEnergetic") + " Exotic: "
+						+ player.getEntityData().getInteger("essenceStoredExotic"), TextFormatting.AQUA);
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 		RayTraceResult raytraceresult = this.rayTrace(worldIn, player, true);
@@ -85,7 +87,7 @@ public class ItemExtractionRod extends ItemBase {
 							worldIn.playSound(null, blockpos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.AMBIENT,
 									1, 1);
 						}
-						EssenceHelper.fillVial(ModItems.essence_vial_demonic, player, 5);
+						EssenceHelper.fillVial(ModItems.VIAL_DEMONIC, player, 5);
 						player.swingArm(hand);
 						player.getCooldownTracker().setCooldown(this, 25);
 						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
@@ -107,7 +109,7 @@ public class ItemExtractionRod extends ItemBase {
 			EnumFacing side, float par8, float par9, float par10) {
 		Block block = world.getBlockState(pos).getBlock();
 
-		if (block == ModBlocks.angelic_crystal_ore) {
+		if (block == ModBlocks.ORE_ANGELIC_CRYSTAL) {
 			if (!world.isRemote) {
 				ParticleHelper.outlineAll(pos, EnumParticleTypes.ENCHANTMENT_TABLE, world);
 			}
@@ -119,7 +121,7 @@ public class ItemExtractionRod extends ItemBase {
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 50);
 			return EnumActionResult.SUCCESS;
-		} else if (block == ModBlocks.exotic_crystal_ore) {
+		} else if (block == ModBlocks.ORE_EXOTIC_CRYSTAL) {
 			if (!world.isRemote) {
 				ParticleHelper.outlineAll(pos, EnumParticleTypes.ENCHANTMENT_TABLE, world);
 			}
@@ -154,9 +156,9 @@ public class ItemExtractionRod extends ItemBase {
 									NBTHelper.getInt(stack, "zPos", -1)),
 							SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
 					if (NBTHelper.getString(stack, "essenceType", null) == "ANGELIC") {
-						EssenceHelper.fillVial(ModItems.essence_vial_angelic, (EntityPlayer) entity, 15);
+						EssenceHelper.fillVial(ModItems.VIAL_ANGELIC, (EntityPlayer) entity, 15);
 					} else if (NBTHelper.getString(stack, "essenceType", null) == "EXOTIC") {
-						EssenceHelper.fillVial(ModItems.essence_vial_exotic, (EntityPlayer) entity, 30);
+						EssenceHelper.fillVial(ModItems.VIAL_EXOTIC, (EntityPlayer) entity, 30);
 					}
 				}
 			}

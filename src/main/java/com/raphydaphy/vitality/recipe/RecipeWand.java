@@ -2,7 +2,7 @@ package com.raphydaphy.vitality.recipe;
 
 import javax.annotation.Nullable;
 
-import com.raphydaphy.vitality.init.ModItems;
+import com.raphydaphy.vitality.util.shadows.registry.ModItems;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class RecipeWand implements IRecipe {
 			ItemStack itemstack = inv.getStackInSlot(k1);
 
 			if (itemstack != null) {
-				if (itemstack.getItem() == ModItems.wand_tip_wooden) {
+				if (itemstack.getItem() == ModItems.TIP_WOODEN) {
 					tips++;
 					if (tips == 1) {
 						tipType1 = "Wooden";
@@ -38,19 +38,19 @@ public class RecipeWand implements IRecipe {
 					}
 				}
 
-				if (itemstack.getItem() == ModItems.wand_core_angelic) {
+				if (itemstack.getItem() == ModItems.CORE_ANGELIC) {
 					cores++;
 					coreType = "Angelic";
-				} else if (itemstack.getItem() == ModItems.wand_core_atmospheric) {
+				} else if (itemstack.getItem() == ModItems.CORE_ATMOSPHERIC) {
 					cores++;
 					coreType = "Atmospheric";
-				} else if (itemstack.getItem() == ModItems.wand_core_demonic) {
+				} else if (itemstack.getItem() == ModItems.CORE_DEMONIC) {
 					cores++;
 					coreType = "Demonic";
-				} else if (itemstack.getItem() == ModItems.wand_core_energetic) {
+				} else if (itemstack.getItem() == ModItems.CORE_ENERGETIC) {
 					cores++;
 					coreType = "Energetic";
-				} else if (itemstack.getItem() == ModItems.wand_core_exotic) {
+				} else if (itemstack.getItem() == ModItems.CORE_EXOTIC) {
 					cores++;
 					coreType = "Exotic";
 				}
@@ -65,7 +65,7 @@ public class RecipeWand implements IRecipe {
 			return false;
 		}
 
-		resultItem = new ItemStack(ModItems.wand);
+		resultItem = new ItemStack(ModItems.WAND);
 		resultItem.setStackDisplayName(tipType1 + " Tipped " + coreType + " Wand");
 		resultItem.setTagCompound(new NBTTagCompound());
 		resultItem.getTagCompound().setString("coreType", coreType);

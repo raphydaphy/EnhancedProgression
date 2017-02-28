@@ -5,10 +5,10 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.raphydaphy.vitality.init.ModBlocks;
-import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
+import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
+import com.raphydaphy.vitality.util.shadows.registry.ModItems;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -83,7 +83,7 @@ public class BlockExtractionCrucible extends BlockBase {
 			int i = ((Integer) state.getValue(LEVEL)).intValue();
 			Item item = heldItem.getItem();
 
-			if (item == ModItems.essence_vial_atmospheric) {
+			if (item == ModItems.VIAL_ATMOSPHERIC) {
 				if (i > 0 && !worldIn.isRemote) {
 					EssenceHelper.addEssence(heldItem, 25, 1000, playerIn, "Atmospheric");
 					this.setWaterLevel(worldIn, pos, state, i - 1);
@@ -93,9 +93,9 @@ public class BlockExtractionCrucible extends BlockBase {
 				}
 
 				return true;
-			} else if (item == ModItems.essence_vial_empty) {
+			} else if (item == ModItems.VIAL_EMPTY) {
 				if (i > 0 && !worldIn.isRemote) {
-					ItemStack vialStack = new ItemStack(ModItems.essence_vial_atmospheric);
+					ItemStack vialStack = new ItemStack(ModItems.VIAL_ATMOSPHERIC);
 					EssenceHelper.addEssence(vialStack, 25, 1000, playerIn, "Atmospheric");
 					playerIn.setHeldItem(hand, vialStack);
 					this.setWaterLevel(worldIn, pos, state, i - 1);
@@ -126,11 +126,11 @@ public class BlockExtractionCrucible extends BlockBase {
 
 	@Nullable
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(ModBlocks.life_extraction_crucible);
+		return Item.getItemFromBlock(this);
 	}
 
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(ModBlocks.life_extraction_crucible);
+		return new ItemStack(this);
 	}
 
 	public boolean hasComparatorInputOverride(IBlockState state) {

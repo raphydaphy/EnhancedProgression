@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.block.BlockEssenceJar;
+import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.NBTHelper;
 
@@ -51,9 +52,10 @@ public class ItemEssenceVial extends ItemBase {
 						IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
 						if (!(iblockstate.getBlock() instanceof BlockEssenceJar)) {
-							Vitality.proxy.setActionText(
-									"Storing " + NBTHelper.getInt(stack, "essenceStored", 0) + " / 1000 Essence",
-									TextFormatting.DARK_PURPLE);
+							if (worldIn.isRemote)
+								ClientProxy.setActionText(
+										"Storing " + NBTHelper.getInt(stack, "essenceStored", 0) + " / 1000 Essence",
+										TextFormatting.DARK_PURPLE);
 							player.swingArm(hand);
 							return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 						} else {

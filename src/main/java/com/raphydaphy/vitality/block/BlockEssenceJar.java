@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.block.tile.TileEssenceJar;
+import com.raphydaphy.vitality.render.EssenceJarTESR;
 import com.raphydaphy.vitality.util.EssenceHelper;
 
 import net.minecraft.block.ITileEntityProvider;
@@ -23,6 +24,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -39,6 +42,7 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider {
 		super(Material.GLASS, "essence_jar");
 		this.setHardness(1F);
 		this.setResistance(2F);
+		GameRegistry.registerTileEntity(TileEssenceJar.class, getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -60,6 +64,12 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider {
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEssenceJar();
+	}
+
+	@Override
+	public void registerModels() {
+		super.registerModels();
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEssenceJar.class, new EssenceJarTESR());
 	}
 
 	@Override

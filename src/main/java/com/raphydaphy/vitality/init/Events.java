@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class Events {
+
 	@SubscribeEvent
 	public static void onDeath(PlayerEvent.Clone event) {
 		int storedAngelic = event.getOriginal().getEntityData().getInteger("essenceStoredAngelic");

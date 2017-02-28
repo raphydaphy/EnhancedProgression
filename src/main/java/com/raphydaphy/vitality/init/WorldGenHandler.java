@@ -2,6 +2,8 @@ package com.raphydaphy.vitality.init;
 
 import java.util.Random;
 
+import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,12 +25,12 @@ public class WorldGenHandler implements IWorldGenerator {
 			break;
 		case 0:
 			if (ConfigHandler.world.enableCopperAndTin) {
-				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ore_copper.getDefaultState(), "ALL");
-				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ore_tin.getDefaultState(), "ALL");
+				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ORE_COPPER.getDefaultState(), "ALL");
+				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ORE_TIN.getDefaultState(), "ALL");
 
-				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.angelic_crystal_ore.getDefaultState(),
+				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ORE_ANGELIC_CRYSTAL.getDefaultState(),
 						"NOPLAIN");
-				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.exotic_crystal_ore.getDefaultState(),
+				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ORE_EXOTIC_CRYSTAL.getDefaultState(),
 						"EXOTIC");
 			}
 			break;

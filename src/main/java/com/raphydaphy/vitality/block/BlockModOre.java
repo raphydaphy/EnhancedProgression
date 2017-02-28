@@ -4,8 +4,8 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.raphydaphy.vitality.init.ModBlocks;
-import com.raphydaphy.vitality.init.ModItems;
+import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
+import com.raphydaphy.vitality.util.shadows.registry.ModItems;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -29,15 +29,15 @@ public class BlockModOre extends BlockBase {
 
 	@Nullable
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return this == ModBlocks.angelic_crystal_ore ? ModItems.angelic_crystal_shard
-				: (this == ModBlocks.exotic_crystal_ore ? ModItems.exotic_crystal_shard : Item.getItemFromBlock(this));
+		return this == ModBlocks.ORE_ANGELIC_CRYSTAL ? ModItems.CRYSTAL_SHARD_ANGELIC
+				: (this == ModBlocks.ORE_EXOTIC_CRYSTAL ? ModItems.CRYSTAL_SHARD_EXOTIC : Item.getItemFromBlock(this));
 	}
 
 	/**
 	 * Returns the quantity of items to drop on block destruction.
 	 */
 	public int quantityDropped(Random random) {
-		if (this == ModBlocks.angelic_crystal_ore || this == ModBlocks.exotic_crystal_ore) {
+		if (this == ModBlocks.ORE_ANGELIC_CRYSTAL || this == ModBlocks.ORE_EXOTIC_CRYSTAL) {
 			return 2 + random.nextInt(5);
 		}
 		return 1;
@@ -74,9 +74,9 @@ public class BlockModOre extends BlockBase {
 		if (this.getItemDropped(state, rand, fortune) != Item.getItemFromBlock(this)) {
 			int i = 0;
 
-			if (this == ModBlocks.exotic_crystal_ore) {
+			if (this == ModBlocks.ORE_EXOTIC_CRYSTAL) {
 				i = MathHelper.getRandomIntegerInRange(rand, 3, 6);
-			} else if (this == ModBlocks.angelic_crystal_ore) {
+			} else if (this == ModBlocks.ORE_ANGELIC_CRYSTAL) {
 				i = MathHelper.getRandomIntegerInRange(rand, 1, 4);
 			}
 
