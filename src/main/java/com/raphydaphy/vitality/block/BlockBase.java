@@ -1,6 +1,7 @@
 package com.raphydaphy.vitality.block;
 
 import com.raphydaphy.vitality.init.Reference;
+import com.raphydaphy.vitality.util.shadows.registry.IRegisterable;
 import com.raphydaphy.vitality.util.shadows.registry.RegistryHelper;
 
 import net.minecraft.block.Block;
@@ -8,7 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockBase extends Block {
+public class BlockBase extends Block implements IRegisterable{
 
 	/*
 	 * Constructor for BlockBase, accepts a Material and String material is the
@@ -29,6 +30,7 @@ public class BlockBase extends Block {
 		this(material, name, true);
 	}
 
+	@Override
 	public void registerModels() {
 		RegistryHelper.setModelLoc(this);
 	}

@@ -2,7 +2,6 @@ package com.raphydaphy.vitality.item;
 
 import javax.annotation.Nonnull;
 
-import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
 import com.raphydaphy.vitality.util.MeshHelper;
@@ -53,7 +52,7 @@ public class ItemWand extends ItemBase {
 
 	}
 
-	@Override
+	@Override @SideOnly(Side.CLIENT)
 	public void registerModels() {
 		ModelLoader.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), "inventory"));
 		ModelLoader.setCustomMeshDefinition(this, MeshHelper.instance());

@@ -5,11 +5,17 @@ import java.util.List;
 
 import com.raphydaphy.vitality.block.BlockBase;
 import com.raphydaphy.vitality.item.ItemBase;
+import com.raphydaphy.vitality.util.shadows.registry.IMeta;
+import com.raphydaphy.vitality.util.shadows.registry.IRegisterable;
 import com.raphydaphy.vitality.util.shadows.registry.ModBlocks;
 import com.raphydaphy.vitality.util.shadows.registry.ModItems;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -39,10 +45,16 @@ public class ClientProxy extends CommonProxy {
 		Iterator<?> iterator = list.iterator();
 		while (iterator.hasNext()) {
 			Object k = iterator.next();
-			if (k instanceof BlockBase)
-				((BlockBase) k).registerModels();
-			else if (k instanceof ItemBase)
-				((ItemBase) k).registerModels();
+			if(k instanceof IMeta){
+				IMeta thing = (IMeta) k;
+				List<ModelResourceLocation> list2 = thing.getMetaModelLocations();
+				for(int i = 0; i <= thing.getMaxMeta(); i++){
+					if(k instanceof Block) ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock((Block) k), i, list2.get(i));
+					else if (k instanceof Item) ModelLoader.setCustomModelResourceLocation((Item) k, i, list2.get(i));
+				}
+			}
+			else if (k instanceof IRegisterable)
+				((IRegisterable) k).registerModels();
 		}
 	}
 
