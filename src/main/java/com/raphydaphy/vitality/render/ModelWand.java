@@ -241,7 +241,7 @@ public class ModelWand implements IModel, IModelCustomData
         	}
         	else if (cameraTransformType == TransformType.GROUND)
         	{
-				TRSRTransformation tr = new TRSRTransformation(new Vector3f(0,0,0f), TRSRTransformation.quatFromXYZ(new Vector3f(0,50,0)), new Vector3f(0.85f,0.85f,0.85f), TRSRTransformation.quatFromXYZ(new Vector3f(0,50,0)));
+				TRSRTransformation tr = new TRSRTransformation(new Vector3f(0,0,0f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,0)), new Vector3f(0.85f,0.85f,0.85f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,0)));
 				Matrix4f mat = null;
 				if(tr != null && !tr.equals(TRSRTransformation.identity())) mat = TRSRTransformation.blockCornerToCenter(tr).getMatrix();
 				return Pair.of(this, mat);

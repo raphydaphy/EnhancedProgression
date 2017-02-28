@@ -1,9 +1,9 @@
 package com.raphydaphy.vitality.item;
 
 import com.raphydaphy.vitality.Vitality;
+import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.init.ModItems;
 import com.raphydaphy.vitality.init.Reference;
-import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
 
 import net.minecraft.creativetab.CreativeTabs;

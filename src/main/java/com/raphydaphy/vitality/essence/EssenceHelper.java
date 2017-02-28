@@ -1,6 +1,10 @@
-package com.raphydaphy.vitality.util;
+package com.raphydaphy.vitality.essence;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.raphydaphy.vitality.init.ModItems;
+import com.raphydaphy.vitality.util.NBTHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,6 +26,30 @@ public final class EssenceHelper
 			return true;
 		}
 	}
+	public static int getEssenceStored(ItemStack stack)
+	{
+		if (stack.hasTagCompound())
+		{
+			return NBTHelper.getInt(stack, "essenceStored", 0);
+		}
+		return 0;
+	}
+	public static int getMaxEssence(ItemStack stack)
+	{
+		if (stack.hasTagCompound())
+		{
+			return NBTHelper.getInt(stack, "maxEssence", 0);
+		}
+		return 0;
+	}
+	public static String getWandCore(ItemStack stack)
+	{
+		if (stack.hasTagCompound())
+		{
+			return NBTHelper.getString(stack, "coreType", "Unknown");
+		}
+		return "Unknown";
+	}
 	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence, EntityPlayer player, String essenceType)
 	{
 		player.getEntityData().setInteger("essenceStored" + essenceType, player.getEntityData().getInteger("essenceStored" + essenceType) + essenceAmount);
@@ -38,6 +66,23 @@ public final class EssenceHelper
 			}
 		}
 		return false;
+	}
+	
+	public static List coreToAcceptedEssenceTypesList(String coreType)
+	{
+		List<String> acceptedTypes = new ArrayList<String>();
+		
+		switch(coreType)
+		{
+		case "Angelic":
+		case "Atmospheric":
+		case "Demonic":
+		case "Energetic":
+		case "Exotic":
+			acceptedTypes.add(coreType);
+			break;
+		}
+		return acceptedTypes;
 	}
 	
 	public static String vialItemToString(Item vial)

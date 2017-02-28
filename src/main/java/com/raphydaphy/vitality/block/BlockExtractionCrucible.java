@@ -5,9 +5,9 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
-import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
 
 import net.minecraft.block.material.Material;

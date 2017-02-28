@@ -1,21 +1,25 @@
 package com.raphydaphy.vitality.block.tile;
 
+import com.raphydaphy.vitality.essence.IEssenceContainer;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEssenceJar extends TileEntity
+public class TileEssenceJar extends TileEntity implements IEssenceContainer
 {
 	private int essenceStored = 0	;
 	private String essenceType = "Unknown";
 	
+	@Override
 	public int getEssenceStored()
 	{
 		return essenceStored;
 	}
 	
+	@Override
 	public String getEssenceType()
 	{
 		return essenceType;
@@ -35,12 +39,14 @@ public class TileEssenceJar extends TileEntity
 		return height;
 	}
 	
+	@Override
 	 public void setEssenceStored(int newAmount) 
 	 {
         this.essenceStored = newAmount;
         updateTE();
 	 }
 	 
+	@Override
 	 public void setEssenceType(String newType) 
 	 {
         this.essenceType = newType;

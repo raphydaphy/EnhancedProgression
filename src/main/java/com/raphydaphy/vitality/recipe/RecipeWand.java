@@ -1,13 +1,19 @@
 package com.raphydaphy.vitality.recipe;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.init.ModItems;
+import com.raphydaphy.vitality.util.NBTHelper;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
 public class RecipeWand implements IRecipe
@@ -92,6 +98,18 @@ public class RecipeWand implements IRecipe
         resultItem.setTagCompound(new NBTTagCompound());
         resultItem.getTagCompound().setString("coreType", coreType);
         resultItem.getTagCompound().setString("tipType", tipType1);
+        resultItem.getTagCompound().setInteger("essenceStored", 0);
+        
+        int maxEssence = 0;
+        switch(tipType1)
+        {
+        case "Wooden":
+        	maxEssence = 1000;
+        	break;
+        default:
+        	return false;
+        }
+        NBTHelper.setInt(resultItem, "maxEssence", maxEssence);
 		return true;
     }
 
