@@ -136,7 +136,7 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
                     {
                 		if (essenceTypeJar == essenceTypeVial)
                 		{
-                			EssenceHelper.addEssenceFree(heldItem, 10, 1000);
+                			EssenceHelper.addEssenceFree(heldItem, 10, 1000, essenceTypeJar);
                 		}
                 		else if (essenceTypeVial == "Unknown")
                 		{

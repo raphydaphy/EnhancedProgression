@@ -13,7 +13,8 @@ import net.minecraft.nbt.NBTTagInt;
 
 public final class EssenceHelper 
 {
-	public static boolean addEssenceFree(ItemStack stack, int essenceAmount, int maxEssence)
+	// TODO: replace all essenceStored instances with essenceStoredType (eg. essenceStoredAngelic) to support multi-type essence containers
+	public static boolean addEssenceFree(ItemStack stack, int essenceAmount, int maxEssence, String essenceType)
 	{
 		if (NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount >= maxEssence)
 		{
@@ -53,7 +54,7 @@ public final class EssenceHelper
 	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence, EntityPlayer player, String essenceType)
 	{
 		player.getEntityData().setInteger("essenceStored" + essenceType, player.getEntityData().getInteger("essenceStored" + essenceType) + essenceAmount);
-		return addEssenceFree(stack, essenceAmount, maxEssence);
+		return addEssenceFree(stack, essenceAmount, maxEssence, essenceType);
 	}
 	public static boolean useEssence(ItemStack stack, int essenceAmount)
 	{
@@ -192,7 +193,7 @@ public final class EssenceHelper
 			}
 		}
 		ItemStack fullVial = new ItemStack(vialType);
-		addEssenceFree(fullVial, essenceAmount, 1000);
+		addEssenceFree(fullVial, essenceAmount, 1000, vialItemToString(vialType));
 		player.inventory.setInventorySlotContents(slot, fullVial);
 	}
 }

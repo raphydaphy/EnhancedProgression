@@ -48,7 +48,7 @@ public class ItemWand extends ItemBase
 			Vitality.proxy.setActionText("Storing " + 
 										  EssenceHelper.getEssenceStored(stack) + " / " + 
 										  EssenceHelper.getMaxEssence(stack) + " " + 
-										  EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)) + 
+										  EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).toString() + 
 										  " Essence", TextFormatting.BOLD);
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}
@@ -107,26 +107,34 @@ public class ItemWand extends ItemBase
 			{
 				if (isSelected)
 				{
-					BlockPos pos = new BlockPos(NBTHelper.getInt(stack, "posX", 0),
-												NBTHelper.getInt(stack, "posY", 0),
-												NBTHelper.getInt(stack, "posZ", 0));
-					switch (NBTHelper.getString(stack, "curAction", "nothing"))
+					if (entity instanceof EntityPlayer)
 					{
-					case "extractFromContainer":
-						TileEntity tile = world.getTileEntity(pos);
-						IEssenceContainer container = (IEssenceContainer)tile;
-						int essenceStored = container.getEssenceStored();
-						String essenceType = container.getEssenceType();
+						EntityPlayer player = (EntityPlayer)entity;
 						
-						if (essenceStored > 0)
-						{
-							container.setEssenceStored(essenceStored - 1);
-						}
-						return;
-					default:
-						NBTHelper.setString(stack, "useAction", "NONE");
-						return;
+						BlockPos pos = new BlockPos(NBTHelper.getInt(stack, "posX", 0),
+								NBTHelper.getInt(stack, "posY", 0),
+								NBTHelper.getInt(stack, "posZ", 0));
+								switch (NBTHelper.getString(stack, "curAction", "nothing"))
+								{
+								case "extractFromContainer":
+									System.out.println("hi");
+									TileEntity tile = world.getTileEntity(pos);
+									IEssenceContainer container = (IEssenceContainer)tile;
+									int essenceStored = container.getEssenceStored();
+									String essenceType = container.getEssenceType();
+									
+									if (essenceStored > 0)
+									{
+										container.setEssenceStored(essenceStored - 1);
+										EssenceHelper.addEssenceFree(stack, 1, EssenceHelper.getMaxEssence(stack), NBTHelper.getString(stack, "essenceTypeOperation", "Unknown"));
+									}
+									return;
+								default:
+									NBTHelper.setString(stack, "useAction", "NONE");
+									return;
+								}
 					}
+					
 				}
 				else
 				{
