@@ -1,10 +1,3 @@
-/* 
- * vazkii made this...
- * but its under WTFPL
- * so im gonna steal it
- * thx vazkii <3
- */
-
 package com.raphydaphy.vitality.nbt;
 
 import net.minecraft.item.ItemStack;
