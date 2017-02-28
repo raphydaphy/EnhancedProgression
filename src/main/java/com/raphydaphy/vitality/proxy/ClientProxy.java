@@ -39,8 +39,9 @@ public class ClientProxy extends CommonProxy
 	}
 	
 	@Override
-	public void preInitDiff()
+	public void preInit()
 	{
+		super.preInit();
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.essence_jar), 0, new ModelResourceLocation(new ResourceLocation("vitality", "essence_jar"), "inventory"));
 		ModelLoader.registerItemVariants(ModItems.wand, new ModelResourceLocation(Reference.MOD_ID + ":wand", "inventory"));
         ModelLoader.setCustomMeshDefinition(ModItems.wand, MeshHelper.instance());
@@ -49,8 +50,9 @@ public class ClientProxy extends CommonProxy
 	}
 	
 	@Override
-	public void initDiff()
+	public void init()
 	{
+		super.init();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEssenceJar.class, new EssenceJarTESR());
 	}
 	

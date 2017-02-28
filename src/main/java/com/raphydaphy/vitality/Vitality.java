@@ -20,14 +20,12 @@ public class Vitality
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		proxy.preInit();
-		proxy.preInitDiff();
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
 		proxy.init();
-		proxy.initDiff();
 	}
 	
 	@EventHandler

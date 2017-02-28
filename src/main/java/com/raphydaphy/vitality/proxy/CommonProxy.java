@@ -19,8 +19,6 @@ public class CommonProxy
 	 */
 	public void registerItemRenderer(Item item, int meta, String id) {}
 	
-	public void preInitDiff() { }
-	public void initDiff() { }
 	/*
 	 * Initializes items, blocks and all other required things
 	 * Dosen't manage crafting recipies or smelting
