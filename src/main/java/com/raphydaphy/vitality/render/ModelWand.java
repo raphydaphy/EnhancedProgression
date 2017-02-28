@@ -217,14 +217,15 @@ public class ModelWand implements IModel, IModelCustomData
         	}
 			else if (cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
 			{
-				TRSRTransformation tr = new TRSRTransformation(new Vector3f(0f,0f,0), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,350f)), new Vector3f(0.90f,0.90f,0.90f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,359.98f)));
+				TRSRTransformation tr = new TRSRTransformation(new Vector3f(0.5f,0f,0), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0,0,22)), new Vector3f(0.90f,0.90f,0.90f), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0,0,22)));
 			    Matrix4f mat = null;
 			    if(tr != null && !tr.equals(TRSRTransformation.identity())) mat = TRSRTransformation.blockCornerToCenter(tr).getMatrix();
 			    return Pair.of(this, mat);
 			}
         	else if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
         	{
-				TRSRTransformation tr = new TRSRTransformation(new Vector3f(0,0,0f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,0)), new Vector3f(0.85f,0.85f,0.85f), TRSRTransformation.quatFromXYZ(new Vector3f(0,0,0)));
+        		// Vector3f(left/right, forwards,back, up/down)
+				TRSRTransformation tr = new TRSRTransformation(new Vector3f(-0.05f,0.8f,1.2f), TRSRTransformation.quatFromXYZDegrees(new Vector3f(340f,230,310f)), new Vector3f(0.85f,0.85f,0.85f), TRSRTransformation.quatFromXYZDegrees(new Vector3f(340f,200,280f)));
 				Matrix4f mat = null;
 				if(tr != null && !tr.equals(TRSRTransformation.identity())) mat = TRSRTransformation.blockCornerToCenter(tr).getMatrix();
 				return Pair.of(this, mat);
