@@ -23,8 +23,8 @@ public class BlockEssence extends BlockBase {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing facing) {
-		return state.getBlock() != this;
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		return world.getBlockState(pos.offset(facing)).getBlock() != this;
 	}
 
 }
