@@ -10,50 +10,43 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBase extends Item
-{
+public class ItemBase extends Item {
 
 	protected static String name;
 
-	public ItemBase(String parName, int maxStack)
-	{
+	public ItemBase(String parName, int maxStack) {
 		name = parName;
 		setUnlocalizedName(name);
 		setRegistryName(name);
 		this.setCreativeTab(Reference.creativeTab);
 		this.maxStackSize = maxStack;
 	}
-	
-	public ItemBase(String parName, int maxStack, boolean noCreativeTab)
-	{
+
+	public ItemBase(String parName, int maxStack, boolean noCreativeTab) {
 		name = parName;
 		setUnlocalizedName(name);
 		setRegistryName(name);
-		if (!noCreativeTab)
-		{
+		if (!noCreativeTab) {
 			this.setCreativeTab(Reference.creativeTab);
 		}
 		this.maxStackSize = maxStack;
 	}
 
-	public void registerItemModel()
-	{
+	public void registerItemModel() {
 		Vitality.proxy.registerItemRenderer(this, 0, name);
 	}
 
 	@Override
-	public ItemBase setCreativeTab(CreativeTabs tab)
-	{
+	public ItemBase setCreativeTab(CreativeTabs tab) {
 		super.setCreativeTab(tab);
 		return this;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
-    public ModelResourceLocation getModelLocation(ItemStack stack)
-    {
-        return null;
-    }
-	
+	public ModelResourceLocation getModelLocation(ItemStack stack) {
+		return null;
+	}
+
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged || ItemStack.areItemStacksEqual(oldStack, newStack) == false;

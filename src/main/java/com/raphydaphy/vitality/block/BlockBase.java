@@ -8,31 +8,27 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 
-public class BlockBase extends Block
-{
+public class BlockBase extends Block {
 
 	protected String name;
 
 	/*
-	 * Constructor for BlockBase, accepts a Material and String
-	 * material is the type of block, such as ROCK or WOOD
-	 * name is the unlocalized name of the block, such as tin_ore
+	 * Constructor for BlockBase, accepts a Material and String material is the
+	 * type of block, such as ROCK or WOOD name is the unlocalized name of the
+	 * block, such as tin_ore
 	 */
-	public BlockBase(Material material, String name, boolean registerTab)
-	{
+	public BlockBase(Material material, String name, boolean registerTab) {
 		super(material);
 
 		this.name = name;
-		if (registerTab)
-		{
+		if (registerTab) {
 			this.setCreativeTab(Reference.creativeTab);
 		}
 		setUnlocalizedName(name);
 		setRegistryName(name);
 	}
-	
-	public BlockBase (Material material, String name)
-	{
+
+	public BlockBase(Material material, String name) {
 		super(material);
 
 		this.name = name;
@@ -43,21 +39,19 @@ public class BlockBase extends Block
 	}
 
 	/*
-	 * Registeres the block as an item in the inventory
-	 * Uses ClientProxy to access the method client-side only
+	 * Registeres the block as an item in the inventory Uses ClientProxy to
+	 * access the method client-side only
 	 */
-	public void registerItemModel(ItemBlock itemBlock)
-	{
+	public void registerItemModel(ItemBlock itemBlock) {
 		Vitality.proxy.registerItemRenderer(itemBlock, 0, name);
 	}
 
 	/*
-	 * Sets the creative tab of the block
-	 * Used in the constructor to set it automatically
+	 * Sets the creative tab of the block Used in the constructor to set it
+	 * automatically
 	 */
 	@Override
-	public BlockBase setCreativeTab(CreativeTabs tab)
-	{
+	public BlockBase setCreativeTab(CreativeTabs tab) {
 		super.setCreativeTab(tab);
 		return this;
 	}

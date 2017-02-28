@@ -7,68 +7,53 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 
-public final class EssenceHelper 
-{
-	public static boolean addEssenceFree(ItemStack stack, int essenceAmount, int maxEssence)
-	{
-		if (NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount >= maxEssence)
-		{
+public final class EssenceHelper {
+	public static boolean addEssenceFree(ItemStack stack, int essenceAmount, int maxEssence) {
+		if (NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount >= maxEssence) {
 			stack.setTagInfo("essenceStored", new NBTTagInt(maxEssence));
 			return true;
-		}
-		else
-		{
-			stack.setTagInfo("essenceStored", new NBTTagInt(NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount));
+		} else {
+			stack.setTagInfo("essenceStored",
+					new NBTTagInt(NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount));
 			return true;
 		}
 	}
-	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence, EntityPlayer player, String essenceType)
-	{
-		player.getEntityData().setInteger("essenceStored" + essenceType, player.getEntityData().getInteger("essenceStored" + essenceType) + essenceAmount);
+
+	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence, EntityPlayer player,
+			String essenceType) {
+		player.getEntityData().setInteger("essenceStored" + essenceType,
+				player.getEntityData().getInteger("essenceStored" + essenceType) + essenceAmount);
 		return addEssenceFree(stack, essenceAmount, maxEssence);
 	}
-	public static boolean useEssence(ItemStack stack, int essenceAmount)
-	{
-		if (stack.hasTagCompound())
-		{
-			if (stack.getTagCompound().getInteger("essenceStored") >= essenceAmount)
-			{
-				stack.setTagInfo("essenceStored",new NBTTagInt(stack.getTagCompound().getInteger("essenceStored") - essenceAmount));
+
+	public static boolean useEssence(ItemStack stack, int essenceAmount) {
+		if (stack.hasTagCompound()) {
+			if (stack.getTagCompound().getInteger("essenceStored") >= essenceAmount) {
+				stack.setTagInfo("essenceStored",
+						new NBTTagInt(stack.getTagCompound().getInteger("essenceStored") - essenceAmount));
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public static String vialItemToString(Item vial)
-	{
-		if (vial == ModItems.essence_vial_angelic)
-		{
+
+	public static String vialItemToString(Item vial) {
+		if (vial == ModItems.essence_vial_angelic) {
 			return "Angelic";
-		}
-		else if (vial == ModItems.essence_vial_atmospheric)
-		{
+		} else if (vial == ModItems.essence_vial_atmospheric) {
 			return "Atmospheric";
-		}
-		else if (vial == ModItems.essence_vial_demonic)
-		{
+		} else if (vial == ModItems.essence_vial_demonic) {
 			return "Demonic";
-		}
-		else if (vial == ModItems.essence_vial_energetic)
-		{
+		} else if (vial == ModItems.essence_vial_energetic) {
 			return "Energetic";
-		}
-		else if (vial == ModItems.essence_vial_exotic)
-		{
+		} else if (vial == ModItems.essence_vial_exotic) {
 			return "Exotic";
 		}
 		return "Unknown";
 	}
-	
-	public static Item vialStringToItem(String vial)
-	{
-		switch(vial)
-		{
+
+	public static Item vialStringToItem(String vial) {
+		switch (vial) {
 		case "Angelic":
 			return ModItems.essence_vial_angelic;
 		case "Atmospheric":
@@ -83,28 +68,21 @@ public final class EssenceHelper
 			return ModItems.essence_vial_empty;
 		}
 	}
-	
-	public static boolean fillVial(Item vialType, EntityPlayer player, int essenceAmount)
-	{
-    	for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
-		{
+
+	public static boolean fillVial(Item vialType, EntityPlayer player, int essenceAmount) {
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			if (stackAt != null)
-			{
-				if (stackAt.getItem() == vialType)
-				{
+			if (stackAt != null) {
+				if (stackAt.getItem() == vialType) {
 					addEssence(stackAt, essenceAmount, 1000, player, vialItemToString(vialType));
 					return true;
 				}
 			}
 		}
-		for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
-		{
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			if (stackAt != null)
-			{
-				if (stackAt.getItem() == ModItems.essence_vial_empty)
-				{
+			if (stackAt != null) {
+				if (stackAt.getItem() == ModItems.essence_vial_empty) {
 					ItemStack vialStack = new ItemStack(vialType);
 					addEssence(vialStack, essenceAmount, 1000, player, vialItemToString(vialType));
 					player.inventory.setInventorySlotContents(i, vialStack);
@@ -114,34 +92,26 @@ public final class EssenceHelper
 		}
 		return false;
 	}
-	
-	public static void emptyVial(EntityPlayer player, ItemStack vial)
-	{
+
+	public static void emptyVial(EntityPlayer player, ItemStack vial) {
 		int slot = 0;
-		for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
-		{
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			if (stackAt != null)
-			{
-				if (stackAt == vial)
-				{
+			if (stackAt != null) {
+				if (stackAt == vial) {
 					slot = i;
 				}
 			}
 		}
 		player.inventory.setInventorySlotContents(slot, new ItemStack(ModItems.essence_vial_empty));
 	}
-	
-	public static void fillEmptyVial(EntityPlayer player, ItemStack vial, int essenceAmount, Item vialType)
-	{
+
+	public static void fillEmptyVial(EntityPlayer player, ItemStack vial, int essenceAmount, Item vialType) {
 		int slot = 0;
-		for(int i = 0; i < player.inventory.getSizeInventory(); i++) 
-		{
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			if (stackAt != null)
-			{
-				if (stackAt == vial)
-				{
+			if (stackAt != null) {
+				if (stackAt == vial) {
 					slot = i;
 				}
 			}

@@ -16,13 +16,12 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.common.util.EnumHelper;
 
-public class ItemExtractionSword extends ItemSword 
-{
-	private static final Item.ToolMaterial lifeExtractionMaterial = EnumHelper.addToolMaterial("EXTRACTION", 2, 300, 6, 3, 20);
+public class ItemExtractionSword extends ItemSword {
+	private static final Item.ToolMaterial lifeExtractionMaterial = EnumHelper.addToolMaterial("EXTRACTION", 2, 300, 6,
+			3, 20);
 	private static String name;
-	
-	public ItemExtractionSword() 
-	{
+
+	public ItemExtractionSword() {
 		super(lifeExtractionMaterial);
 		name = "life_extraction_sword";
 		setUnlocalizedName(name);
@@ -30,27 +29,25 @@ public class ItemExtractionSword extends ItemSword
 		this.setCreativeTab(Reference.creativeTab);
 	}
 
-	public void registerItemModel()
-	{
+	public void registerItemModel() {
 		Vitality.proxy.registerItemRenderer(this, 0, name);
 	}
-	
+
 	@Override
-	public ItemExtractionSword setCreativeTab(CreativeTabs tab)
-	{
+	public ItemExtractionSword setCreativeTab(CreativeTabs tab) {
 		super.setCreativeTab(tab);
 		return this;
 	}
+
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
-		if (target instanceof IMob && attacker instanceof EntityPlayer)
-		{
-			EssenceHelper.fillVial(ModItems.essence_vial_energetic, (EntityPlayer)attacker, 5);
-			ParticleHelper.spawnParticlesServer(EnumParticleTypes.DAMAGE_INDICATOR, target.worldObj, true, target.posX, target.posY, target.posZ, 5, 0.25);
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+		if (target instanceof IMob && attacker instanceof EntityPlayer) {
+			EssenceHelper.fillVial(ModItems.essence_vial_energetic, (EntityPlayer) attacker, 5);
+			ParticleHelper.spawnParticlesServer(EnumParticleTypes.DAMAGE_INDICATOR, target.worldObj, true, target.posX,
+					target.posY, target.posZ, 5, 0.25);
 		}
-        stack.damageItem(1, attacker);
-        return true;
-    }
+		stack.damageItem(1, attacker);
+		return true;
+	}
 
 }

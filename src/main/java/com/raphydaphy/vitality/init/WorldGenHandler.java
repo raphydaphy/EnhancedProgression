@@ -13,58 +13,56 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class WorldGenHandler implements IWorldGenerator {
 
-    // Which dimension to generate in by dimension ID (Nether -1, Overworld 0, End 1, etc)
+	// Which dimension to generate in by dimension ID (Nether -1, Overworld 0,
+	// End 1, etc)
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
-	{
-        switch (world.provider.getDimension()) {
-            case -1:
-                break;
-            case 0:
-            	if (ConfigHandler.world.enableCopperAndTin)
-            	{
-	                generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ore_copper.getDefaultState(), "ALL");
-	                generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ore_tin.getDefaultState(), "ALL");
-	                
-	                generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.angelic_crystal_ore.getDefaultState(), "NOPLAIN");
-	                generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.exotic_crystal_ore.getDefaultState(), "EXOTIC");
-            	}
-                break;
-            case 1:
-                break;
-        }
-    }
+	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
+			IChunkProvider chunkProvider) {
+		switch (world.provider.getDimension()) {
+		case -1:
+			break;
+		case 0:
+			if (ConfigHandler.world.enableCopperAndTin) {
+				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ore_copper.getDefaultState(), "ALL");
+				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.ore_tin.getDefaultState(), "ALL");
 
-    /*
-     * This function will generate any ore given using an IBlockState
-     */
-    private void generateOre(World world, Random rand, int chunkX, int chunkZ, IBlockState block, String genBiomes) {
-        for (int k = 0; k < 16; k++)
-        {
-            int firstBlockXCoord = chunkX + rand.nextInt(16);
-            int firstBlockZCoord = chunkZ + rand.nextInt(16);
-            //Will be found between y = 0 and y = 60
-            int quisqueY = rand.nextInt(60);
-            BlockPos quisquePos = new BlockPos(firstBlockXCoord, quisqueY, firstBlockZCoord);
-        	Biome biome = world.getBiome(new BlockPos(chunkX * 16, 64, chunkZ*16));
-        	switch(genBiomes)
-        	{
-        	case "EXOTIC":
-        		if (biome.getBiomeName() == "Jungle" || biome.getBiomeName() == "Mesa")
-        		{
-        			(new WorldGenMinable(block, 7)).generate(world, rand, quisquePos);
-        		}
-        		break;
-        	case "NOPLAIN":
-        		if (biome.getBiomeName() != "Plains" && biome.getBiomeName() != "Desert")
-        		{
-        			(new WorldGenMinable(block, 7)).generate(world, rand, quisquePos);
-        		}
-        		break;
-        	default:
-        		(new WorldGenMinable(block, 7)).generate(world, rand, quisquePos);
-        		break;
-        	}
-        }
-    }
+				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.angelic_crystal_ore.getDefaultState(),
+						"NOPLAIN");
+				generateOre(world, random, chunkX * 16, chunkZ * 16, ModBlocks.exotic_crystal_ore.getDefaultState(),
+						"EXOTIC");
+			}
+			break;
+		case 1:
+			break;
+		}
+	}
+
+	/*
+	 * This function will generate any ore given using an IBlockState
+	 */
+	private void generateOre(World world, Random rand, int chunkX, int chunkZ, IBlockState block, String genBiomes) {
+		for (int k = 0; k < 16; k++) {
+			int firstBlockXCoord = chunkX + rand.nextInt(16);
+			int firstBlockZCoord = chunkZ + rand.nextInt(16);
+			// Will be found between y = 0 and y = 60
+			int quisqueY = rand.nextInt(60);
+			BlockPos quisquePos = new BlockPos(firstBlockXCoord, quisqueY, firstBlockZCoord);
+			Biome biome = world.getBiome(new BlockPos(chunkX * 16, 64, chunkZ * 16));
+			switch (genBiomes) {
+			case "EXOTIC":
+				if (biome.getBiomeName() == "Jungle" || biome.getBiomeName() == "Mesa") {
+					(new WorldGenMinable(block, 7)).generate(world, rand, quisquePos);
+				}
+				break;
+			case "NOPLAIN":
+				if (biome.getBiomeName() != "Plains" && biome.getBiomeName() != "Desert") {
+					(new WorldGenMinable(block, 7)).generate(world, rand, quisquePos);
+				}
+				break;
+			default:
+				(new WorldGenMinable(block, 7)).generate(world, rand, quisquePos);
+				break;
+			}
+		}
+	}
 }
