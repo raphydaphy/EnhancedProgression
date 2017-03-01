@@ -23,13 +23,14 @@ public class BlockBase extends Block implements IRegisterable {
 		setUnlocalizedName(Reference.MOD_ID + "." + name);
 		setRegistryName(name);
 		GameRegistry.register(this);
-		if(!hasCustomItemBlock) GameRegistry.register(new ItemBlock(this), getRegistryName());
+		if (!hasCustomItemBlock)
+			GameRegistry.register(new ItemBlock(this), getRegistryName());
 	}
 
-	public BlockBase(Material material, String name, boolean registerTab){
+	public BlockBase(Material material, String name, boolean registerTab) {
 		this(material, name, registerTab, false);
 	}
-	
+
 	public BlockBase(Material material, String name) {
 		this(material, name, true);
 	}

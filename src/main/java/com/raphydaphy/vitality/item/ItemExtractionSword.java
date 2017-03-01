@@ -1,6 +1,6 @@
 package com.raphydaphy.vitality.item;
 
-import com.raphydaphy.vitality.util.EssenceHelper;
+import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
 import com.raphydaphy.vitality.util.registry.ModItems;
 

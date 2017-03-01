@@ -3,9 +3,9 @@ package com.raphydaphy.vitality.item.rod;
 import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.Vitality;
+import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.proxy.ClientProxy;
-import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.NBTHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
 import com.raphydaphy.vitality.util.registry.ModBlocks;

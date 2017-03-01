@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.block.BlockEssenceJar;
+import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
-import com.raphydaphy.vitality.util.EssenceHelper;
 import com.raphydaphy.vitality.util.NBTHelper;
 
 import net.minecraft.block.Block;
