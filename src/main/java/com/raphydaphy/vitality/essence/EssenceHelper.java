@@ -48,6 +48,7 @@ public final class EssenceHelper {
 
 	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence, EntityPlayer player,
 			String essenceType) {
+		System.out.println("adding entity data to: essenceStored" + essenceType);
 		player.getEntityData().setInteger("essenceStored" + essenceType,
 				player.getEntityData().getInteger("essenceStored" + essenceType) + essenceAmount);
 		return addEssenceFree(stack, essenceAmount, maxEssence, essenceType);

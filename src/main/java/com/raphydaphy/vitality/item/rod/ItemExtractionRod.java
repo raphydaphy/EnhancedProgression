@@ -2,7 +2,6 @@ package com.raphydaphy.vitality.item.rod;
 
 import javax.annotation.Nonnull;
 
-import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.proxy.ClientProxy;
@@ -47,12 +46,12 @@ public class ItemExtractionRod extends ItemBase {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player,
 			EnumHand hand) {
 		if (player.isSneaking()) {
-			if (worldIn.isRemote)
 				ClientProxy.setActionText("Angelic: " + player.getEntityData().getInteger("essenceStoredAngelic")
 						+ " Atmospheric: " + player.getEntityData().getInteger("essenceStoredAtmospheric")
 						+ " Demonic: " + player.getEntityData().getInteger("essenceStoredDemonic") + " Energetic: "
 						+ player.getEntityData().getInteger("essenceStoredEnergetic") + " Exotic: "
 						+ player.getEntityData().getInteger("essenceStoredExotic"), TextFormatting.AQUA);
+			
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 		RayTraceResult raytraceresult = this.rayTrace(worldIn, player, true);
@@ -117,7 +116,7 @@ public class ItemExtractionRod extends ItemBase {
 			stack.setTagInfo("xPos", new NBTTagInt(pos.getX()));
 			stack.setTagInfo("yPos", new NBTTagInt(pos.getY()));
 			stack.setTagInfo("zPos", new NBTTagInt(pos.getZ()));
-			stack.setTagInfo("essenceType", new NBTTagString("ANGELIC"));
+			stack.setTagInfo("essenceType", new NBTTagString("Angelic"));
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 50);
 			return EnumActionResult.SUCCESS;
@@ -129,7 +128,7 @@ public class ItemExtractionRod extends ItemBase {
 			stack.setTagInfo("xPos", new NBTTagInt(pos.getX()));
 			stack.setTagInfo("yPos", new NBTTagInt(pos.getY()));
 			stack.setTagInfo("zPos", new NBTTagInt(pos.getZ()));
-			stack.setTagInfo("essenceType", new NBTTagString("EXOTIC"));
+			stack.setTagInfo("essenceType", new NBTTagString("Exotic"));
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 65);
 			return EnumActionResult.SUCCESS;
@@ -155,9 +154,10 @@ public class ItemExtractionRod extends ItemBase {
 							new BlockPos(NBTHelper.getInt(stack, "xPos", -1), NBTHelper.getInt(stack, "yPos", -1),
 									NBTHelper.getInt(stack, "zPos", -1)),
 							SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
-					if (NBTHelper.getString(stack, "essenceType", null) == "ANGELIC") {
+					if (NBTHelper.getString(stack, "essenceType", null) == "Angelic") 
+					{
 						EssenceHelper.fillVial(ModItems.VIAL_ANGELIC, (EntityPlayer) entity, 15);
-					} else if (NBTHelper.getString(stack, "essenceType", null) == "EXOTIC") {
+					} else if (NBTHelper.getString(stack, "essenceType", null) == "Exotic") {
 						EssenceHelper.fillVial(ModItems.VIAL_EXOTIC, (EntityPlayer) entity, 30);
 					}
 				}

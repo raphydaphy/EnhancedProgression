@@ -44,8 +44,7 @@ public class ItemWand extends ItemBase {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
-			// i want to remove the [] brackets from the essence name but not
-			// sure how rn
+			// i want to remove the [] brackets from the essence name but not sure how rn
 			if (world.isRemote)
 				ClientProxy
 						.setActionText("Storing " + EssenceHelper.getEssenceStored(stack) + " / "
@@ -64,24 +63,63 @@ public class ItemWand extends ItemBase {
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float par8, float par9, float par10) 
 	{
+		//if (player.getEntityData().getString("wandCurOperation") != "fun")
+		//{
+			//player.getEntityData().setString("wandCurOperation", "fun");
+			//NBTHelper.setString(stack, "useAction", "BOW");
+			//System.out.println("use started");
+			//player.setActiveHand(hand);
+			//return EnumActionResult.SUCCESS;
+		//}
 		return EnumActionResult.PASS;
 	}
 
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) 
 	{
-
-	}
-
-	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
 		
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft) 
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) 
 	{
+		
+	}
+
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) 
+	{
+		if (entity instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer)entity;
+			stack.getTagCompound().setString("useAction", null);
+			player.getEntityData().setString("wandCurOperation", null);
+		}
+		System.out.println("done");
+	}
 	
+	public int getMaxItemUseDuration(ItemStack stack)
+	{
+		return 72000;
+	}
+	
+	@Override
+	@Nullable
+	public EnumAction getItemUseAction(ItemStack stack) 
+	{
+		switch (NBTHelper.getString(stack, "useAction", null)) 
+		{
+		case "BOW":
+			return EnumAction.BOW;
+		case "EAT":
+			return EnumAction.EAT;
+		case "BLOCK":
+			return EnumAction.BLOCK;
+		case "DRINK":
+			return EnumAction.DRINK;
+		default:
+			return EnumAction.NONE;
+		}
 	}
 
 	@Override
@@ -95,29 +133,6 @@ public class ItemWand extends ItemBase {
 			return "invalid_wand";
 		}
 
-	}
-	
-	public int getMaxItemUseDuration(ItemStack stack)
-	{
-		return 72000;
-	}
-
-	@Override
-	@Nullable
-	public EnumAction getItemUseAction(ItemStack stack) {
-		switch (NBTHelper.getString(stack, "useAction", "NONE")) {
-		case "BOW":
-			return EnumAction.BOW;
-		case "EAT":
-			return EnumAction.EAT;
-		case "BLOCK":
-			return EnumAction.BLOCK;
-		case "DRINK":
-			return EnumAction.DRINK;
-		case "NONE":
-			return EnumAction.NONE;
-		}
-		return EnumAction.NONE;
 	}
 
 	@Override

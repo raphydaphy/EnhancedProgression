@@ -16,8 +16,9 @@ public class CommonProxy {
 	 * Initializes items, blocks and all other required things Dosen't manage
 	 * crafting recipies or smelting
 	 */
-	public void preInit(FMLPreInitializationEvent e) {
-		MinecraftForge.EVENT_BUS.register(new Events());
+	public void preInit(FMLPreInitializationEvent e) 
+	{
+		MinecraftForge.EVENT_BUS.register(Events.class);
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
 	}
 
