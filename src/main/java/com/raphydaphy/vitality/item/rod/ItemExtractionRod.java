@@ -3,6 +3,7 @@ package com.raphydaphy.vitality.item.rod;
 import javax.annotation.Nonnull;
 
 import com.raphydaphy.vitality.Vitality;
+import com.raphydaphy.vitality.block.BlockModOre;
 import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.init.ModBlocks;
 import com.raphydaphy.vitality.init.ModItems;
@@ -166,15 +167,18 @@ public class ItemExtractionRod extends ItemBase
 			{
 				if(!world.isRemote)
 				{
-					world.setBlockState(new BlockPos(NBTHelper.getInt(stack, "xPos", -1), NBTHelper.getInt(stack, "yPos", -1), NBTHelper.getInt(stack, "zPos", -1)), Blocks.STONE.getDefaultState());
-					world.playSound(null, new BlockPos(NBTHelper.getInt(stack, "xPos", -1), NBTHelper.getInt(stack, "yPos", -1), NBTHelper.getInt(stack, "zPos", -1)), SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
-					if (NBTHelper.getString(stack, "essenceType", null) == "ANGELIC")
+					if (world.getBlockState(new BlockPos(NBTHelper.getInt(stack, "xPos", -1), NBTHelper.getInt(stack, "yPos", -1), NBTHelper.getInt(stack, "zPos", -1))).getBlock() instanceof BlockModOre)
 					{
-						EssenceHelper.fillVial(ModItems.essence_vial_angelic, (EntityPlayer) entity, 15);
-					}
-					else if (NBTHelper.getString(stack, "essenceType", null) == "EXOTIC")
-					{
-						EssenceHelper.fillVial(ModItems.essence_vial_exotic, (EntityPlayer) entity, 30);
+						world.setBlockState(new BlockPos(NBTHelper.getInt(stack, "xPos", -1), NBTHelper.getInt(stack, "yPos", -1), NBTHelper.getInt(stack, "zPos", -1)), Blocks.STONE.getDefaultState());
+						world.playSound(null, new BlockPos(NBTHelper.getInt(stack, "xPos", -1), NBTHelper.getInt(stack, "yPos", -1), NBTHelper.getInt(stack, "zPos", -1)), SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
+						if (NBTHelper.getString(stack, "essenceType", null) == "ANGELIC")
+						{
+							EssenceHelper.fillVial(ModItems.essence_vial_angelic, (EntityPlayer) entity, 15);
+						}
+						else if (NBTHelper.getString(stack, "essenceType", null) == "EXOTIC")
+						{
+							EssenceHelper.fillVial(ModItems.essence_vial_exotic, (EntityPlayer) entity, 30);
+						}
 					}
 				}
 			}

@@ -5,8 +5,6 @@ import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.essence.EssenceHelper;
-import com.raphydaphy.vitality.essence.IEssenceContainer;
-import com.raphydaphy.vitality.essence.IWandable;
 import com.raphydaphy.vitality.init.Reference;
 import com.raphydaphy.vitality.util.NBTHelper;
 
@@ -16,10 +14,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -49,7 +43,8 @@ public class ItemWand extends ItemBase
 										  EssenceHelper.getMaxEssence(stack) + " " + 
 										  EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).toString() + 
 										  " Essence", TextFormatting.BOLD);
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+			player.swingArm(hand);
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
@@ -59,117 +54,50 @@ public class ItemWand extends ItemBase
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float par8, float par9, float par10)
 	{
-		if (!stack.hasTagCompound())
-		{
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		if (world.getBlockState(pos).getBlock() instanceof IWandable)
-		{
-			TileEntity tile = world.getTileEntity(pos);
+		//if (world.getBlockState(pos).getBlock() instanceof IWandable)
+		//{
+			//TileEntity tile = world.getTileEntity(pos);
 			
-			if (tile instanceof IEssenceContainer)
-			{
-				if (stack.getTagCompound().getString("curAction") != "extractFromContainer")
+			//if (tile instanceof IEssenceContainer)
+			//{
+				if (NBTHelper.getString(stack, "curAction", "nothing") != "extractFromContainer")
 				{
-					IEssenceContainer container = (IEssenceContainer)tile;
-					int essenceStored = container.getEssenceStored();
-					String essenceType = container.getEssenceType();
-					
-					if (essenceStored > 0)
+					System.out.println("started extraction");
+					player.setActiveHand(hand);
+					if (!world.isRemote)
 					{
-						if (EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).contains(essenceType))
-						{
-							System.out.println("restarting stuff");
-							stack.setTagInfo("posX", new NBTTagInt(pos.getX()));
-							stack.setTagInfo("posY", new NBTTagInt(pos.getY()));
-							stack.setTagInfo("posZ", new NBTTagInt(pos.getZ()));
-							stack.setTagInfo("essenceTypeOperation", new NBTTagString("essenceTypeOperation"));
-							stack.setTagInfo("useAction", new NBTTagString("BOW"));
-							stack.setTagInfo("curAction", new NBTTagString("extractFromContainer"));
-							return EnumActionResult.SUCCESS;
-						}
+						NBTHelper.setString(stack, "curAction", "extractFromContainer");
 					}
+					return EnumActionResult.SUCCESS;
 				}
-			}
-		}
-		System.out.println("No action found");
-		stack.setTagInfo("curAction", new NBTTagString("nothing"));
+			//}
+		//}
 		return EnumActionResult.PASS;
 	}
 	
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
-    {
-		// this dosent get called
-		 System.out.println("mega hacks achieved");
-		
-    }
+	{
+		if (NBTHelper.getString(stack, "curAction", "nothing") != "nothing")
+		{
+			
+		}
+	}
 	
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
     {
-		if (isSelected)
-		{
-			System.out.println(NBTHelper.getString(stack, "useAction", "nothing"));
-			if (stack.hasTagCompound())
-			{
-				if (entity instanceof EntityPlayer)
-				{
-					EntityPlayer player = (EntityPlayer)entity;
-					
-					BlockPos pos = new BlockPos(NBTHelper.getInt(stack, "posX", 0),
-							NBTHelper.getInt(stack, "posY", 0),
-							NBTHelper.getInt(stack, "posZ", 0));
-					switch (NBTHelper.getString(stack, "curAction", "nothing"))
-					{
-					case "extractFromContainer":
-						System.out.println("hi");
-						TileEntity tile = player.worldObj.getTileEntity(pos);
-						IEssenceContainer container = (IEssenceContainer)tile;
-						int essenceStored = container.getEssenceStored();
-						if (essenceStored > 0)
-						{
-							container.setEssenceStored(essenceStored - 1);
-							EssenceHelper.addEssenceFree(stack, 1, EssenceHelper.getMaxEssence(stack), NBTHelper.getString(stack, "essenceTypeOperation", "Unknown"));
-						}
-						else
-						{
-							this.onItemUseFinish(stack, world, (EntityLivingBase)entity);
-						}
-						return;
-					default:
-						System.out.println("stopped");
-						NBTHelper.setString(stack, "useAction", "NONE");
-						return;
-					}
-				}
-				
-			}
-		}
-		else
-		{
-			if (NBTHelper.getString(stack, "curAction", "nothing") != "nothing")
-			{
-				this.onItemUseFinish(stack, world, (EntityLivingBase)entity);
-				return;
-			}
-		}
+		System.out.println(NBTHelper.getString(stack, "curAction", null));
     }
 	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft)
 	{	
-		//this dosent get called
-		System.out.println("IT WORKS :D");
-		resetUseInfo(stack);
-	}
-	
-	public static void resetUseInfo(ItemStack stack)
-	{
-		// this dosent get called
-		System.out.println("resetting use info");
-		NBTHelper.setString(stack, "curAction", "nothing");
-		NBTHelper.setString(stack, "useAction", "NONE");
+		System.out.println("stopped");
+		if (!worldIn.isRemote)
+		{
+			NBTHelper.setString(stack, "curAction", "nothing");
+		}
 	}
 	
 	@Override
@@ -193,20 +121,12 @@ public class ItemWand extends ItemBase
 	@Nullable
 	public EnumAction getItemUseAction(ItemStack stack)
 	{
-		switch(NBTHelper.getString(stack, "useAction", "NONE"))
-		{
-		case "BOW":
-			return EnumAction.NONE;
-		case "EAT":
-			return EnumAction.EAT;
-		case "BLOCK":
-			return EnumAction.BLOCK;
-		case "DRINK":
-			return EnumAction.DRINK;
-		case "NONE":
-			return EnumAction.BOW;
-		}
-		return EnumAction.BOW;
+		return EnumAction.NONE;
+	}
+	
+	public int getMaxItemUseDuration(ItemStack stack)
+	{
+		return 72000;
 	}
 
 	
@@ -223,4 +143,9 @@ public class ItemWand extends ItemBase
     {
         return new ModelResourceLocation(Reference.MOD_ID + ":wand", "inventory");
     }
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
+	}
 }

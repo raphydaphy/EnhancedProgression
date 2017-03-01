@@ -9,6 +9,7 @@ import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.essence.IWandable;
 import com.raphydaphy.vitality.item.ItemEssenceVial;
 import com.raphydaphy.vitality.item.ItemWand;
+import com.raphydaphy.vitality.util.NBTHelper;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -158,7 +159,10 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
             	{
             		if (!player.isSneaking())
             		{
-            			((ItemWand)heldItem.getItem()).onItemUse(heldItem, player, world, pos, hand, side, hitX, hitY, hitZ);
+            			if (NBTHelper.getString(heldItem, "curAction", "nothing") != "extractFromContainer")
+            			{
+            				((ItemWand)heldItem.getItem()).onItemUse(heldItem, player, world, pos, hand, side, hitX, hitY, hitZ);
+            			}
             		}
             	}
             }
