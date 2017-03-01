@@ -16,16 +16,20 @@ public class BlockBase extends Block implements IRegisterable {
 	 * type of block, such as ROCK or WOOD name is the unlocalized name of the
 	 * block, such as tin_ore
 	 */
-	public BlockBase(Material material, String name, boolean registerTab) {
+	public BlockBase(Material material, String name, boolean registerTab, boolean hasCustomItemBlock) {
 		super(material);
 		if (registerTab)
 			this.setCreativeTab(Reference.creativeTab);
 		setUnlocalizedName(Reference.MOD_ID + "." + name);
 		setRegistryName(name);
 		GameRegistry.register(this);
-		GameRegistry.register(new ItemBlock(this), getRegistryName());
+		if(!hasCustomItemBlock) GameRegistry.register(new ItemBlock(this), getRegistryName());
 	}
 
+	public BlockBase(Material material, String name, boolean registerTab){
+		this(material, name, registerTab, false);
+	}
+	
 	public BlockBase(Material material, String name) {
 		this(material, name, true);
 	}
