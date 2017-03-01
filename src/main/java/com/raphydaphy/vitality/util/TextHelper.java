@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.util;
 
 import net.minecraft.util.text.translation.I18n;
 
+@SuppressWarnings("deprecation")
 public class TextHelper {
 	/*
 	 * Formats text using the minecraft formatting system Allows sytax such as

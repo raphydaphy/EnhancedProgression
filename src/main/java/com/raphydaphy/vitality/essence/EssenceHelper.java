@@ -38,6 +38,12 @@ public final class EssenceHelper {
 		}
 		return 0;
 	}
+	
+	public static void setEssenceStored(ItemStack stack, int essence) {
+		if (stack.hasTagCompound()) {
+			NBTHelper.setInt(stack, "essenceStored", essence);
+		}
+	}
 
 	public static String getWandCore(ItemStack stack) {
 		if (stack.hasTagCompound()) {

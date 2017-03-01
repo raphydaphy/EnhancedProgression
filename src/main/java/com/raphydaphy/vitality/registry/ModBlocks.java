@@ -3,14 +3,12 @@ package com.raphydaphy.vitality.registry;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.raphydaphy.vitality.block.BlockBase;
 import com.raphydaphy.vitality.block.BlockEssence;
 import com.raphydaphy.vitality.block.BlockEssenceJar;
 import com.raphydaphy.vitality.block.BlockExtractionCrucible;
 import com.raphydaphy.vitality.block.BlockModOre;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 
 public class ModBlocks {
 

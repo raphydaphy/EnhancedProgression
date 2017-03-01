@@ -90,7 +90,6 @@ public class EssenceJarTESR extends TileEntitySpecialRenderer<TileEssenceJar> {
 		float u1 = fluid.getMinU();
 		float v1 = fluid.getMinV();
 		float u2 = fluid.getMaxU();
-		float v2 = fluid.getMaxV();
 
 		if (maxHeight > 0) {
 			float texWidth = u2 - u1;

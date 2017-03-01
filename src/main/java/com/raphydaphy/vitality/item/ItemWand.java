@@ -66,7 +66,6 @@ public class ItemWand extends ItemBase {
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float par8, float par9, float par10) 
 	{
-		System.out.println("Mode: " + player.getEntityData().getString("wandCurOperation"));
 		if (player.getEntityData().getString("wandCurOperation") == "")
 		{
 			if (world.getBlockState(pos).getBlock() instanceof IWandable)
@@ -76,9 +75,15 @@ public class ItemWand extends ItemBase {
 				if (tile instanceof IEssenceContainer)
 				{
 					IEssenceContainer container = (IEssenceContainer)tile;
-					if (container.getEssenceStored() > 0)
+					if (container.getEssenceStored() > 0 && EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).contains(container.getEssenceType()))
 					{
+						System.out.println("starting");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
+						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
+						player.getEntityData().setInteger("wandBlockPosY", pos.getY());
+						player.getEntityData().setInteger("wandBlockPosZ", pos.getZ());
+						player.getEntityData().setString("wandCurEssenceType", container.getEssenceType());
+						player.getEntityData().setInteger("wandCurEssenceStored", EssenceHelper.getEssenceStored(stack));
 						player.setActiveHand(hand);
 						return EnumActionResult.SUCCESS;
 					}
@@ -90,20 +95,44 @@ public class ItemWand extends ItemBase {
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) 
+	public void onUsingTick(ItemStack stack, EntityLivingBase entity, int count) 
 	{
-		System.out.println("running");
+		System.out.println("using");
+		if (entity instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer)entity;
+			BlockPos pos = new BlockPos(player.getEntityData().getInteger("wandBlockPosX"),player.getEntityData().getInteger("wandBlockPosY"),player.getEntityData().getInteger("wandBlockPosZ"));
+			
+			switch(player.getEntityData().getString("wandCurOperation"))
+			{
+			case "extractFromContainer":
+				IEssenceContainer container = (IEssenceContainer)player.getEntityWorld().getTileEntity(pos);
+				if (container.getEssenceStored() > 0)
+				{
+					container.setEssenceStored(container.getEssenceStored() - 1);
+					player.getEntityData().setInteger("wandCurEssenceStored", player.getEntityData().getInteger("wandCurEssenceStored") + 1);
+				}
+				break;
+			}
+		}
+		
 	}
 
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) 
 	{
+		System.out.println("finished");
 		if (entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)entity;
+			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer")
+			{
+				System.out.println(player.getEntityData().getInteger("wandCurEssenceStored"));
+				EssenceHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
+			}
+			player.getEntityData().setString("wandCurEssenceType", "");
 			player.getEntityData().setString("wandCurOperation", "");
 		}
-		System.out.println("finished");
 	}
 	
 	@Override

@@ -3,8 +3,6 @@ package com.raphydaphy.vitality.proxy;
 import java.util.Iterator;
 import java.util.List;
 
-import com.raphydaphy.vitality.block.BlockBase;
-import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.registry.IMeta;
 import com.raphydaphy.vitality.registry.IRegisterable;
 import com.raphydaphy.vitality.registry.ModBlocks;
