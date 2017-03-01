@@ -44,6 +44,7 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 		super(Material.GLASS, "essence_jar");
 		this.setHardness(1F);
 		this.setResistance(2F);
+		GameRegistry.registerTileEntity(TileEssenceJar.class, getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -71,7 +72,6 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 	@SideOnly(Side.CLIENT)
 	public void registerModels() {
 		super.registerModels();
-		//GameRegistry.registerTileEntity(TileEssenceJar.class, getRegistryName().getResourcePath());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEssenceJar.class, new EssenceJarTESR());
 	}
 

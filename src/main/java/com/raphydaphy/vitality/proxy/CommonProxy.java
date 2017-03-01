@@ -21,7 +21,6 @@ public class CommonProxy {
 	{
 		MinecraftForge.EVENT_BUS.register(Events.class);
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
-		GameRegistry.registerTileEntity(TileEssenceJar.class, "essence_jar");
 	}
 
 	/*
