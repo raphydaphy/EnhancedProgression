@@ -4,11 +4,15 @@ import java.util.Map;
 
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
-@IFMLLoadingPlugin.Name(value = "VitalityCore")
-@IFMLLoadingPlugin.MCVersion(value = "1.10.2")
-@IFMLLoadingPlugin.TransformerExclusions({ "com.raphydaphy.vitality.core" })
-@IFMLLoadingPlugin.SortingIndex(100)
+@Name(value = "VitalityCore")
+@MCVersion(value = "1.10.2")
+@TransformerExclusions({ "com.raphydaphy.vitality.core" })
+@SortingIndex(100)
 public class VitalityCore implements IFMLLoadingPlugin, IFMLCallHook {
 
 	public VitalityCore() {
