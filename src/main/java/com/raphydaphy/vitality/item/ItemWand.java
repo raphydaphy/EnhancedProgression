@@ -7,7 +7,6 @@ import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
 import com.raphydaphy.vitality.util.MeshHelper;
-import com.raphydaphy.vitality.util.NBTHelper;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
@@ -46,11 +45,12 @@ public class ItemWand extends ItemBase {
 		if (player.isSneaking()) {
 			// i want to remove the [] brackets from the essence name but not sure how rn
 			if (world.isRemote)
-				ClientProxy
-						.setActionText("Storing " + EssenceHelper.getEssenceStored(stack) + " / "
-								+ EssenceHelper.getMaxEssence(stack) + " " + EssenceHelper
-										.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).toString()
-								+ " Essence", TextFormatting.BOLD);
+			{
+				ClientProxy.setActionText("Storing " + EssenceHelper.getEssenceStored(stack) + " / "
+									   				 + EssenceHelper.getMaxEssence(stack) + " " 
+									   				 + EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).toString()
+									   				 + " Essence", TextFormatting.BOLD);
+			}
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
@@ -63,27 +63,19 @@ public class ItemWand extends ItemBase {
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float par8, float par9, float par10) 
 	{
-		//if (player.getEntityData().getString("wandCurOperation") != "fun")
-		//{
-			//player.getEntityData().setString("wandCurOperation", "fun");
-			//NBTHelper.setString(stack, "useAction", "BOW");
-			//System.out.println("use started");
-			//player.setActiveHand(hand);
-			//return EnumActionResult.SUCCESS;
-		//}
+		if (player.getEntityData().getString("wandCurOperation") == "")
+		{
+			player.getEntityData().setString("wandCurOperation", "extractFromContainer");
+			player.setActiveHand(hand);
+			return EnumActionResult.SUCCESS;
+		}
 		return EnumActionResult.PASS;
 	}
 
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) 
 	{
-		
-	}
-
-	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) 
-	{
-		
+		System.out.println("running");
 	}
 
 	@Override
@@ -92,10 +84,15 @@ public class ItemWand extends ItemBase {
 		if (entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)entity;
-			stack.getTagCompound().setString("useAction", null);
-			player.getEntityData().setString("wandCurOperation", null);
+			player.getEntityData().setString("wandCurOperation", "");
 		}
-		System.out.println("done");
+		System.out.println("finished");
+	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) 
+	{
+		
 	}
 	
 	public int getMaxItemUseDuration(ItemStack stack)
@@ -107,19 +104,7 @@ public class ItemWand extends ItemBase {
 	@Nullable
 	public EnumAction getItemUseAction(ItemStack stack) 
 	{
-		switch (NBTHelper.getString(stack, "useAction", null)) 
-		{
-		case "BOW":
-			return EnumAction.BOW;
-		case "EAT":
-			return EnumAction.EAT;
-		case "BLOCK":
-			return EnumAction.BLOCK;
-		case "DRINK":
-			return EnumAction.DRINK;
-		default:
-			return EnumAction.NONE;
-		}
+		return EnumAction.BOW;
 	}
 
 	@Override
