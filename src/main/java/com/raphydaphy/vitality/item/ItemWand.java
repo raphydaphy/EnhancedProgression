@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.essence.EssenceHelper;
+import com.raphydaphy.vitality.essence.IEssenceContainer;
+import com.raphydaphy.vitality.essence.IWandable;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
 import com.raphydaphy.vitality.util.MeshHelper;
@@ -14,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -63,11 +66,25 @@ public class ItemWand extends ItemBase {
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float par8, float par9, float par10) 
 	{
+		System.out.println("Mode: " + player.getEntityData().getString("wandCurOperation"));
 		if (player.getEntityData().getString("wandCurOperation") == "")
 		{
-			player.getEntityData().setString("wandCurOperation", "extractFromContainer");
-			player.setActiveHand(hand);
-			return EnumActionResult.SUCCESS;
+			if (world.getBlockState(pos).getBlock() instanceof IWandable)
+			{
+				TileEntity tile = world.getTileEntity(pos);
+				
+				if (tile instanceof IEssenceContainer)
+				{
+					IEssenceContainer container = (IEssenceContainer)tile;
+					if (container.getEssenceStored() > 0)
+					{
+						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
+						player.setActiveHand(hand);
+						return EnumActionResult.SUCCESS;
+					}
+				}
+			}
+			
 		}
 		return EnumActionResult.PASS;
 	}

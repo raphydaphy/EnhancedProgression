@@ -107,6 +107,14 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 		if (heldItem == null) {
 			return true;
 		}
+		
+		else if (heldItem.getItem() instanceof ItemWand)
+		{
+			if (player.getEntityData().getString("wandCurOperation") == null)
+			{
+				((ItemWand)heldItem.getItem()).onItemUse(heldItem, player, world, pos, hand, side, hitX, hitY, hitZ);
+			}
+		}
 
 		else if (!world.isRemote) 
 		{
@@ -133,13 +141,6 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 							}
 		
 						}
-					}
-				}
-				else if (heldItem.getItem() instanceof ItemWand)
-				{
-					if (player.getEntityData().getString("wandCurOperation") == "")
-					{
-						((ItemWand)heldItem.getItem()).onItemUse(heldItem, player, world, pos, hand, side, hitX, hitY, hitZ);
 					}
 				}
 			} 
