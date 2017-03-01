@@ -8,7 +8,6 @@ import com.raphydaphy.vitality.block.tile.TileEssenceJar;
 import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.essence.IWandable;
 import com.raphydaphy.vitality.item.ItemEssenceVial;
-import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.render.EssenceJarTESR;
 
 import net.minecraft.block.ITileEntityProvider;
@@ -103,70 +102,66 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
-			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (heldItem == null) {
+			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) 
+	{
+		if (heldItem == null) 
+		{
 			return true;
 		}
-		
-		else if (heldItem.getItem() instanceof ItemWand)
+		else if (heldItem.getItem() instanceof ItemEssenceVial)
 		{
-			if (player.getEntityData().getString("wandCurOperation") == null)
+			if (!world.isRemote) 
 			{
-				((ItemWand)heldItem.getItem()).onItemUse(heldItem, player, world, pos, hand, side, hitX, hitY, hitZ);
-			}
-		}
-
-		else if (!world.isRemote) 
-		{
-			TileEssenceJar te = getTE(world, pos);
-			String essenceTypeVial = EssenceHelper.vialItemToString(heldItem.getItem());
-			String essenceTypeJar = te.getEssenceType();
-			int essenceStoredJar = te.getEssenceStored();
-			if (!player.isSneaking()) 
-			{
-				if (heldItem.getItem() instanceof ItemEssenceVial)
+				TileEssenceJar te = getTE(world, pos);
+				String essenceTypeVial = EssenceHelper.vialItemToString(heldItem.getItem());
+				String essenceTypeJar = te.getEssenceType();
+				int essenceStoredJar = te.getEssenceStored();
+				if (!player.isSneaking()) 
 				{
-					if (essenceTypeJar == essenceTypeVial || essenceTypeJar == "Unknown") 
+					if (heldItem.getItem() instanceof ItemEssenceVial)
 					{
-						if (essenceStoredJar <= 1000) {
-							if (EssenceHelper.useEssence(heldItem, 10)) 
-							{
-								if (essenceTypeJar != essenceTypeVial) 
+						if (essenceTypeJar == essenceTypeVial || essenceTypeJar == "Unknown") 
+						{
+							if (essenceStoredJar <= 1000) {
+								if (EssenceHelper.useEssence(heldItem, 10)) 
 								{
-									te.setEssenceType(essenceTypeVial);
+									if (essenceTypeJar != essenceTypeVial) 
+									{
+										te.setEssenceType(essenceTypeVial);
+									}
+									te.setEssenceStored(essenceStoredJar + 10);
+									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
+									player.swingArm(hand);
 								}
-								te.setEssenceStored(essenceStoredJar + 10);
-								world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
-								player.swingArm(hand);
+			
 							}
-		
 						}
 					}
-				}
-			} 
-			else 
-			{
-				if (heldItem.getItem() instanceof ItemEssenceVial)
+				} 
+				else 
 				{
-					if (essenceTypeJar == essenceTypeVial || essenceTypeVial == "Unknown") {
-						if (essenceStoredJar >= 10) {
-							if (essenceTypeJar == essenceTypeVial) {
-								EssenceHelper.addEssenceFree(heldItem, 10, 1000, essenceTypeJar);
-							} else if (essenceTypeVial == "Unknown") {
-								EssenceHelper.fillEmptyVial(player, heldItem, 10, heldItem.getItem());
+					if (heldItem.getItem() instanceof ItemEssenceVial)
+					{
+						if (essenceTypeJar == essenceTypeVial || essenceTypeVial == "Unknown") {
+							if (essenceStoredJar >= 10) {
+								if (essenceTypeJar == essenceTypeVial) {
+									EssenceHelper.addEssenceFree(heldItem, 10, 1000, essenceTypeJar);
+								} else if (essenceTypeVial == "Unknown") {
+									EssenceHelper.fillEmptyVial(player, heldItem, 10, heldItem.getItem());
+								}
+								te.setEssenceStored(essenceStoredJar - 10);
+								world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
+								player.swingArm(hand);
+		
 							}
-							te.setEssenceStored(essenceStoredJar - 10);
-							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-							player.swingArm(hand);
-	
 						}
 					}
 				}
+	
 			}
-
+			return true;
 		}
-
-		return true;
+		return false;
 	}
 
 }

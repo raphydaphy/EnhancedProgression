@@ -109,7 +109,10 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) 
 	{
-		
+		if (!isSelected && entity.getEntityData().getString("wandCurOperation") != "")
+		{
+			this.onPlayerStoppedUsing(stack, world,(EntityLivingBase)entity, 0);
+		}
 	}
 	
 	public int getMaxItemUseDuration(ItemStack stack)
