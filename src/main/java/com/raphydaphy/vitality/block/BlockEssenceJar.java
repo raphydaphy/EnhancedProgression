@@ -5,9 +5,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.block.tile.TileEssenceJar;
+import com.raphydaphy.vitality.essence.EssenceHelper;
+import com.raphydaphy.vitality.essence.IWandable;
 import com.raphydaphy.vitality.render.EssenceJarTESR;
-import com.raphydaphy.vitality.util.EssenceHelper;
-
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 // The author of Chisel may have told me that my jar model is shit
 // so ill fix that one day .. plz i hope he forgets it was scary
 
-public class BlockEssenceJar extends BlockBase implements ITileEntityProvider {
+public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, IWandable {
 	protected static final AxisAlignedBB AABB_MAIN = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.875D,
 			0.8125D);
 	protected static final AxisAlignedBB AABB_KNOB = new AxisAlignedBB(0.3125D, 0.875D, 0.3125D, 0.5625D, 1.0D,
@@ -129,7 +129,7 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider {
 				if (essenceTypeJar == essenceTypeVial || essenceTypeVial == "Unknown") {
 					if (essenceStoredJar >= 10) {
 						if (essenceTypeJar == essenceTypeVial) {
-							EssenceHelper.addEssenceFree(heldItem, 10, 1000);
+							EssenceHelper.addEssenceFree(heldItem, 10, 1000, essenceTypeJar);
 						} else if (essenceTypeVial == "Unknown") {
 							EssenceHelper.fillEmptyVial(player, heldItem, 10, heldItem.getItem());
 						}

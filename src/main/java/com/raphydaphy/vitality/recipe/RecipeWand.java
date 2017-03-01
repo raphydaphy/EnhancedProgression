@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.recipe;
 
 import javax.annotation.Nullable;
 
+import com.raphydaphy.vitality.util.NBTHelper;
 import com.raphydaphy.vitality.util.registry.ModItems;
 
 import net.minecraft.inventory.InventoryCrafting;
@@ -70,6 +71,18 @@ public class RecipeWand implements IRecipe {
 		resultItem.setTagCompound(new NBTTagCompound());
 		resultItem.getTagCompound().setString("coreType", coreType);
 		resultItem.getTagCompound().setString("tipType", tipType1);
+        resultItem.getTagCompound().setInteger("essenceStored", 0);
+        
+        int maxEssence = 0;
+        switch(tipType1)
+        {
+        case "Wooden":
+        	maxEssence = 1000;
+        	break;
+        default:
+        	return false;
+        }
+        NBTHelper.setInt(resultItem, "maxEssence", maxEssence);
 		return true;
 	}
 
