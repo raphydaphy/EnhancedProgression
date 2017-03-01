@@ -4,8 +4,8 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.raphydaphy.vitality.util.registry.ModBlocks;
-import com.raphydaphy.vitality.util.registry.ModItems;
+import com.raphydaphy.vitality.registry.ModBlocks;
+import com.raphydaphy.vitality.registry.ModItems;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

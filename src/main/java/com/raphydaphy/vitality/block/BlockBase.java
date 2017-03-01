@@ -1,8 +1,8 @@
 package com.raphydaphy.vitality.block;
 
 import com.raphydaphy.vitality.init.Reference;
-import com.raphydaphy.vitality.util.registry.IRegisterable;
-import com.raphydaphy.vitality.util.registry.RegistryHelper;
+import com.raphydaphy.vitality.registry.IRegisterable;
+import com.raphydaphy.vitality.registry.RegistryHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

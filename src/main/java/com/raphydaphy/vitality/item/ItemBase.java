@@ -1,8 +1,8 @@
 package com.raphydaphy.vitality.item;
 
 import com.raphydaphy.vitality.init.Reference;
-import com.raphydaphy.vitality.util.registry.IRegisterable;
-import com.raphydaphy.vitality.util.registry.RegistryHelper;
+import com.raphydaphy.vitality.registry.IRegisterable;
+import com.raphydaphy.vitality.registry.RegistryHelper;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;

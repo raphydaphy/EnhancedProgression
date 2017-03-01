@@ -1,4 +1,4 @@
-package com.raphydaphy.vitality.util.registry;
+package com.raphydaphy.vitality.registry;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

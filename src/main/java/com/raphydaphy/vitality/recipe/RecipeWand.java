@@ -2,8 +2,8 @@ package com.raphydaphy.vitality.recipe;
 
 import javax.annotation.Nullable;
 
+import com.raphydaphy.vitality.registry.ModItems;
 import com.raphydaphy.vitality.util.NBTHelper;
-import com.raphydaphy.vitality.util.registry.ModItems;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

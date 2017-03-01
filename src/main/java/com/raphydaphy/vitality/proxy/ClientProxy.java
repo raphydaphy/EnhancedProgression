@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.raphydaphy.vitality.block.BlockBase;
 import com.raphydaphy.vitality.item.ItemBase;
-import com.raphydaphy.vitality.util.registry.IMeta;
-import com.raphydaphy.vitality.util.registry.IRegisterable;
-import com.raphydaphy.vitality.util.registry.ModBlocks;
-import com.raphydaphy.vitality.util.registry.ModItems;
+import com.raphydaphy.vitality.registry.IMeta;
+import com.raphydaphy.vitality.registry.IRegisterable;
+import com.raphydaphy.vitality.registry.ModBlocks;
+import com.raphydaphy.vitality.registry.ModItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

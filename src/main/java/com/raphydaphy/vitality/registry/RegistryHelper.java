@@ -1,4 +1,4 @@
-package com.raphydaphy.vitality.util.registry;
+package com.raphydaphy.vitality.registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

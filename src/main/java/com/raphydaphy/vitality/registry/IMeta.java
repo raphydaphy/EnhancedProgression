@@ -1,4 +1,4 @@
-package com.raphydaphy.vitality.util.registry;
+package com.raphydaphy.vitality.registry;
 
 import java.util.List;
 
