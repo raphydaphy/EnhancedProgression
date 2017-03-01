@@ -1,20 +1,19 @@
 package com.raphydaphy.vitality.init;
 
+import com.raphydaphy.vitality.util.registry.ModItems;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class VitalityCreativeTab extends CreativeTabs
-{
+public class VitalityCreativeTab extends CreativeTabs {
 
-	public VitalityCreativeTab()
-	{
+	public VitalityCreativeTab() {
 		super(Reference.MOD_ID);
 	}
 
 	@Override
-	public Item getTabIconItem()
-	{
-		return ModItems.life_extraction_rod;
+	public Item getTabIconItem() {
+		return ModItems.EXTRACTION_ROD;
 	}
 
 }

@@ -28,6 +28,8 @@ crash-reports/
 *.iws
 *.classpath
 *.project
+*.settings
+*.prefs
 
 # Specific files
 Thumbs.db
