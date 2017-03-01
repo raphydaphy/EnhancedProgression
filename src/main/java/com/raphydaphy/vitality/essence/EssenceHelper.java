@@ -14,7 +14,8 @@ import net.minecraft.nbt.NBTTagInt;
 public final class EssenceHelper {
 	// TODO: replace all essenceStored instances with essenceStoredType (eg.
 	// essenceStoredAngelic) to support multi-type essence containers
-	public static boolean addEssenceFree(ItemStack stack, int essenceAmount, int maxEssence, String essenceType) {
+	public static boolean addEssenceFree(ItemStack stack, int essenceAmount, int maxEssence, String essenceType) 
+	{
 		if (NBTHelper.getInt(stack, "essenceStored", 0) + essenceAmount >= maxEssence) {
 			stack.setTagInfo("essenceStored", new NBTTagInt(maxEssence));
 			return true;
@@ -54,7 +55,6 @@ public final class EssenceHelper {
 
 	public static boolean addEssence(ItemStack stack, int essenceAmount, int maxEssence, EntityPlayer player,
 			String essenceType) {
-		System.out.println("adding entity data to: essenceStored" + essenceType);
 		player.getEntityData().setInteger("essenceStored" + essenceType,
 				player.getEntityData().getInteger("essenceStored" + essenceType) + essenceAmount);
 		return addEssenceFree(stack, essenceAmount, maxEssence, essenceType);

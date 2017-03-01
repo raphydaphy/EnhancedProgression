@@ -45,13 +45,16 @@ public class ItemExtractionRod extends ItemBase {
 
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player,
 			EnumHand hand) {
-		if (player.isSneaking()) {
+		if (player.isSneaking()) 
+		{
+			if (worldIn.isRemote)
+			{
 				ClientProxy.setActionText("Angelic: " + player.getEntityData().getInteger("essenceStoredAngelic")
 						+ " Atmospheric: " + player.getEntityData().getInteger("essenceStoredAtmospheric")
 						+ " Demonic: " + player.getEntityData().getInteger("essenceStoredDemonic") + " Energetic: "
 						+ player.getEntityData().getInteger("essenceStoredEnergetic") + " Exotic: "
 						+ player.getEntityData().getInteger("essenceStoredExotic"), TextFormatting.AQUA);
-			
+			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 		RayTraceResult raytraceresult = this.rayTrace(worldIn, player, true);
@@ -146,25 +149,25 @@ public class ItemExtractionRod extends ItemBase {
 							NBTHelper.getInt(stack, "zPos", -1) + 0.5, 1000, 0.5);
 				}
 			} else if (NBTHelper.getInt(stack, "counter", -1) == 0) {
-				if (!world.isRemote) 
+				BlockPos pos = new BlockPos(NBTHelper.getInt(stack, "xPos", -1),NBTHelper.getInt(stack, "yPos", -1), NBTHelper.getInt(stack, "zPos", -1));
+				if (world.getBlockState(pos).getBlock() == ModBlocks.ORE_ANGELIC_CRYSTAL ||
+					world.getBlockState(pos).getBlock() == ModBlocks.ORE_EXOTIC_CRYSTAL)
 				{
-					BlockPos pos = new BlockPos(NBTHelper.getInt(stack, "xPos", -1),NBTHelper.getInt(stack, "yPos", -1), NBTHelper.getInt(stack, "zPos", -1));
-					if (world.getBlockState(pos).getBlock() == ModBlocks.ORE_ANGELIC_CRYSTAL ||
-						world.getBlockState(pos).getBlock() == ModBlocks.ORE_EXOTIC_CRYSTAL)
+					if (!world.isRemote)
 					{
 						world.setBlockState(pos,Blocks.STONE.getDefaultState());
 						world.playSound(null,pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
-						if (NBTHelper.getString(stack, "essenceType", null) == "Angelic") 
-						{
-							EssenceHelper.fillVial(ModItems.VIAL_ANGELIC, (EntityPlayer) entity, 15);
-						} else if (NBTHelper.getString(stack, "essenceType", null) == "Exotic") {
-							EssenceHelper.fillVial(ModItems.VIAL_EXOTIC, (EntityPlayer) entity, 30);
-						}
 					}
-					else
+					if (NBTHelper.getString(stack, "essenceType", null) == "Angelic") 
 					{
-						System.out.println(entity.getName() + " tried to cheat!");
+						EssenceHelper.fillVial(ModItems.VIAL_ANGELIC, (EntityPlayer) entity, 15);
+					} else if (NBTHelper.getString(stack, "essenceType", null) == "Exotic") {
+						EssenceHelper.fillVial(ModItems.VIAL_EXOTIC, (EntityPlayer) entity, 30);
 					}
+				}
+				else
+				{
+					System.out.println(entity.getName() + " tried to cheat!");
 				}
 			}
 			stack.setTagInfo("counter", new NBTTagInt(NBTHelper.getInt(stack, "counter", -1) - 1));
