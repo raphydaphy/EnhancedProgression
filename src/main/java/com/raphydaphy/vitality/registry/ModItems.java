@@ -80,6 +80,8 @@ public class ModItems {
 		list.add(CORE_EXOTIC);
 		list.add(TIP_WOODEN);
 		list.add(WAND);
+		list.add(SPELL_ILLUMINATION);
+		list.add(SPELL_FIREBALL);
 		return list;
 	}
 
