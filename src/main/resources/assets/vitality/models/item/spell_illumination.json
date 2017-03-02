@@ -1,6 +1,6 @@
 {
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "vitality:items/spell/illumination"
-	}
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "vitality:items/spell/illumination"
+    }
 }
