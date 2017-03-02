@@ -3,9 +3,9 @@ package com.raphydaphy.vitality.item;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.raphydaphy.vitality.essence.EssenceHelper;
-import com.raphydaphy.vitality.essence.IEssenceContainer;
-import com.raphydaphy.vitality.essence.IWandable;
+import com.raphydaphy.vitality.api.essence.EssenceHelper;
+import com.raphydaphy.vitality.api.essence.IEssenceContainer;
+import com.raphydaphy.vitality.api.wand.IWandable;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
 import com.raphydaphy.vitality.util.MeshHelper;
@@ -81,7 +81,7 @@ public class ItemWand extends ItemBase {
 						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
 						player.getEntityData().setInteger("wandBlockPosY", pos.getY());
 						player.getEntityData().setInteger("wandBlockPosZ", pos.getZ());
-						player.getEntityData().setString("wandCurEssenceType", container.getEssenceType());
+						player.getEntityData().setString("wandCurEssenceType", container.getEssenceType().getName());
 						player.getEntityData().setInteger("wandCurEssenceStored", EssenceHelper.getEssenceStored(stack));
 						player.setActiveHand(hand);
 						return EnumActionResult.SUCCESS;

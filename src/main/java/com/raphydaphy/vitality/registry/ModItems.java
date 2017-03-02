@@ -3,9 +3,12 @@ package com.raphydaphy.vitality.registry;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemEssenceVial;
 import com.raphydaphy.vitality.item.ItemExtractionSword;
+import com.raphydaphy.vitality.item.ItemVial;
+import com.raphydaphy.vitality.item.ItemVial.VialQuality;
 import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.item.rod.ItemExtractionRod;
 import com.raphydaphy.vitality.item.rod.ItemTechniciansRod;
@@ -21,12 +24,14 @@ public class ModItems {
 	public static final Item CRYSTAL_SHARD_ANGELIC = new ItemBase("angelic_crystal_shard");
 	public static final Item CRYSTAL_SHARD_EXOTIC = new ItemBase("exotic_crystal_shard");
 
-	public static final Item VIAL_EMPTY = new ItemEssenceVial("essence_vial_empty");
-	public static final Item VIAL_ANGELIC = new ItemEssenceVial("essence_vial_angelic");
-	public static final Item VIAL_ATMOSPHERIC = new ItemEssenceVial("essence_vial_atmospheric");
-	public static final Item VIAL_DEMONIC = new ItemEssenceVial("essence_vial_demonic");
-	public static final Item VIAL_ENERGETIC = new ItemEssenceVial("essence_vial_energetic");
-	public static final Item VIAL_EXOTIC = new ItemEssenceVial("essence_vial_exotic");
+	//Remember kids, always register your empty vial for that quality first, or the world will burn down.
+	
+	public static final ItemVial VIAL_EMPTY = new ItemVial("empty_vial", null, 0, VialQuality.BASIC);
+	public static final ItemVial VIAL_ANGELIC = new ItemVial("angelic_vial", Essence.ANGELIC, 1000, VialQuality.BASIC, VIAL_EMPTY);
+	public static final ItemVial VIAL_ATMOSPHERIC = new ItemVial("atmospheric_vial", Essence.ATMOSPHERIC, 1500, VialQuality.BASIC, VIAL_EMPTY);
+	public static final ItemVial VIAL_DEMONIC = new ItemVial("demonic_vial", Essence.DEMONIC, 400, VialQuality.BASIC, VIAL_EMPTY);
+	public static final ItemVial VIAL_ENERGETIC = new ItemVial("energetic_vial", Essence.ENERGETIC, 850, VialQuality.BASIC, VIAL_EMPTY);
+	public static final ItemVial VIAL_EXOTIC = new ItemVial("exotic_vial", Essence.EXOTIC, 100, VialQuality.BASIC, VIAL_EMPTY);
 
 	public static final Item EXTRACTION_ROD = new ItemExtractionRod();
 	public static final Item TECHNICIANS_ROD = new ItemTechniciansRod();

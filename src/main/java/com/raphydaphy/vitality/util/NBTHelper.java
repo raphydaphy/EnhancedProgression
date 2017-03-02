@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+@Deprecated
 public final class NBTHelper {
 
 	/** Checks if an ItemStack has a Tag Compound **/

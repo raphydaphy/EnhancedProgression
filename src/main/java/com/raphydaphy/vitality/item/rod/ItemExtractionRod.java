@@ -2,7 +2,7 @@ package com.raphydaphy.vitality.item.rod;
 
 import javax.annotation.Nonnull;
 
-import com.raphydaphy.vitality.essence.EssenceHelper;
+import com.raphydaphy.vitality.api.essence.EssenceHelper;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.registry.ModBlocks;

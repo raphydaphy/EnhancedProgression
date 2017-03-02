@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.essence.EssenceHelper;
+import com.raphydaphy.vitality.api.essence.MiscEssence;
+import com.raphydaphy.vitality.api.wand.IWandable;
 import com.raphydaphy.vitality.block.tile.TileEssenceJar;
-import com.raphydaphy.vitality.essence.EssenceHelper;
-import com.raphydaphy.vitality.essence.IWandable;
 import com.raphydaphy.vitality.item.ItemEssenceVial;
+import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.render.EssenceJarTESR;
 
 import net.minecraft.block.ITileEntityProvider;
@@ -20,6 +23,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -37,7 +41,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 // The author of Chisel may have told me that my jar model is shit
 // so ill fix that one day .. plz i hope he forgets it was scary
 
-public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, IWandable {
+public class BlockEssenceJar extends BlockBase implements ITileEntityProvider/*, IWandable */ {
 	protected static final AxisAlignedBB AABB_MAIN = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.875D,
 			0.8125D);
 	protected static final AxisAlignedBB AABB_KNOB = new AxisAlignedBB(0.3125D, 0.875D, 0.3125D, 0.5625D, 1.0D,
@@ -110,6 +114,7 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 		return (TileEssenceJar) world.getTileEntity(pos);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
 			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) 
@@ -118,53 +123,50 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 		{
 			return true;
 		}
-		else if (heldItem.getItem() instanceof ItemEssenceVial)
+		else if (heldItem.getItem() instanceof ItemVial)
 		{
 			if (!world.isRemote) 
 			{
 				TileEssenceJar te = getTE(world, pos);
-				String essenceTypeVial = EssenceHelper.vialItemToString(heldItem.getItem());
-				String essenceTypeJar = te.getEssenceType();
+				ItemVial theVial = ((ItemVial) heldItem.getItem());
+				Essence vialType = theVial.getVialType();
+				Essence jarType = te.getEssenceType();
 				int essenceStoredJar = te.getEssenceStored();
+				int essenceStoredVial = 0;
+				if(heldItem.hasTagCompound()) essenceStoredVial = heldItem.getTagCompound().getInteger(Essence.KEY);
 				if (!player.isSneaking()) 
 				{
-					if (heldItem.getItem() instanceof ItemEssenceVial)
-					{
-						if (essenceTypeJar == essenceTypeVial || essenceTypeJar == "Unknown") 
+						if (vialType == jarType || te.isEmpty()) 
 						{
-							if (essenceStoredJar <= 1000) {
-								if (EssenceHelper.useEssence(heldItem, 10)) 
+							if (essenceStoredJar <= te.getCapacity()) {
+								if (MiscEssence.fillJar(te, heldItem, 10)) 
 								{
-									if (essenceTypeJar != essenceTypeVial) 
-									{
-										te.setEssenceType(essenceTypeVial);
-									}
-									te.setEssenceStored(essenceStoredJar + 10);
 									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
 									player.swingArm(hand);
 								}
 			
 							}
-						}
 					}
 				} 
 				else 
 				{
-					if (heldItem.getItem() instanceof ItemEssenceVial)
-					{
-						if (essenceTypeJar == essenceTypeVial || essenceTypeVial == "Unknown") {
-							if (essenceStoredJar >= 10) {
-								if (essenceTypeJar == essenceTypeVial) {
-									EssenceHelper.addEssenceFree(heldItem, 10, 1000, essenceTypeJar);
-								} else if (essenceTypeVial == "Unknown") {
-									EssenceHelper.fillEmptyVial(player, heldItem, 10, heldItem.getItem());
-								}
-								te.setEssenceStored(essenceStoredJar - 10);
+					if ((vialType == null || vialType == jarType) && !te.isEmpty())  {
+							if(vialType == jarType && te.subtractEssence(10)){
+								heldItem.getTagCompound().setInteger(Essence.KEY, essenceStoredVial + 10);
 								world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
 								player.swingArm(hand);
-		
 							}
-						}
+							else if(vialType == null && te.subtractEssence(10)){
+								NBTTagCompound compound = new NBTTagCompound();
+								compound.setInteger(Essence.KEY, 10);
+								heldItem.setTagCompound(compound);
+								heldItem.setItem(MiscEssence.vialMap.get(theVial.getQuality()).get(jarType));
+								heldItem.setTagCompound(compound);
+								world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
+								player.swingArm(hand);
+							}
+							
+						
 					}
 				}
 	

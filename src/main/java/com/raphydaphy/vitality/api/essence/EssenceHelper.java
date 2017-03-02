@@ -1,4 +1,4 @@
-package com.raphydaphy.vitality.essence;
+package com.raphydaphy.vitality.api.essence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
-
+@Deprecated
 public final class EssenceHelper {
 	// TODO: replace all essenceStored instances with essenceStoredType (eg.
 	// essenceStoredAngelic) to support multi-type essence containers

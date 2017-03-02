@@ -2,8 +2,8 @@ package com.raphydaphy.vitality.item;
 
 import javax.annotation.Nonnull;
 
+import com.raphydaphy.vitality.api.essence.EssenceHelper;
 import com.raphydaphy.vitality.block.BlockEssenceJar;
-import com.raphydaphy.vitality.essence.EssenceHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.util.NBTHelper;
 
@@ -18,7 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-
+@Deprecated
 public class ItemEssenceVial extends ItemBase {
 	public ItemEssenceVial(String name) {
 		super(name, 1);

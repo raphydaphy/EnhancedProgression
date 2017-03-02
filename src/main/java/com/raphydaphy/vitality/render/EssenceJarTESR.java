@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.render;
 
 import org.lwjgl.opengl.GL11;
 
+import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.block.tile.TileEssenceJar;
 
 import net.minecraft.client.Minecraft;
@@ -39,7 +40,7 @@ public class EssenceJarTESR extends TileEntitySpecialRenderer<TileEssenceJar> {
 		GlStateManager.popMatrix();
 	}
 
-	public void renderFluid(float maxHeight, String essenceType, double x, double y, double z) {
+	public void renderFluid(float maxHeight, Essence essenceType, double x, double y, double z) {
 		maxHeight = maxHeight / 16;
 		GlStateManager.translate(x, y + 0.0625, z);
 		RenderHelper.disableStandardItemLighting();
@@ -51,21 +52,21 @@ public class EssenceJarTESR extends TileEntitySpecialRenderer<TileEssenceJar> {
 		VertexBuffer buffer = tessellator.getBuffer();
 		TextureAtlasSprite fluid = null;
 		switch (essenceType) {
-		case "Angelic":
+		case ANGELIC:
 			fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_angelic");
 			break;
-		case "Atmospheric":
+		case ATMOSPHERIC:
 			fluid = Minecraft.getMinecraft().getTextureMapBlocks()
 					.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_atmospheric").toString());
 			break;
-		case "Demonic":
+		case DEMONIC:
 			fluid = Minecraft.getMinecraft().getTextureMapBlocks()
 					.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_demonic").toString());
 			break;
-		case "Energetic":
+		case ENERGETIC:
 			fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_energetic");
 			break;
-		case "Exotic":
+		case EXOTIC:
 			fluid = Minecraft.getMinecraft().getTextureMapBlocks()
 					.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_exotic").toString());
 			break;

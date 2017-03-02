@@ -5,7 +5,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.raphydaphy.vitality.essence.EssenceHelper;
+import com.raphydaphy.vitality.api.essence.EssenceHelper;
 import com.raphydaphy.vitality.registry.ModItems;
 import com.raphydaphy.vitality.util.ParticleHelper;
 

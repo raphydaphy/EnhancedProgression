@@ -1,8 +1,12 @@
 package com.raphydaphy.vitality.block.tile;
 
-import com.raphydaphy.vitality.essence.IEssenceContainer;
+import javax.annotation.Nullable;
+
+import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.essence.IEssenceContainer;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -10,16 +14,46 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEssenceJar extends TileEntity implements IEssenceContainer {
 	private int essenceStored = 0;
-	private String essenceType = "Unknown";
+	private Essence essenceType;
 
 	@Override
 	public int getEssenceStored() {
 		return essenceStored;
 	}
 
-	@Override
-	public String getEssenceType() {
+	@Override @Nullable
+	public Essence getEssenceType() {
 		return essenceType;
+	}
+	
+	public int getCapacity(){
+		return 1000;
+	}
+	
+	public boolean addEssence(Essence essence, int toAdd){
+		if(getEssenceType() == null) setEssenceType(essence);
+		if(getEssenceStored() + toAdd > getCapacity() || essence != getEssenceType()) return false;
+		else{
+			setEssenceStored(getEssenceStored() + toAdd);
+			return true;
+		}
+	}
+	
+	public boolean subtractEssence(int toRemove){
+		if(getEssenceStored() - toRemove < 0) return false;
+		else{
+			setEssenceStored(getEssenceStored() - toRemove);
+			if(getEssenceStored() == 0) setEssenceType(null);
+			return true;
+		}
+	}
+	
+	public boolean isFull(){
+		return essenceStored >= getCapacity();
+	}
+	
+	public boolean isEmpty(){
+		return essenceStored == 0 || essenceType == null;
 	}
 
 	public int getEssenceHeight() {
@@ -39,7 +73,7 @@ public class TileEssenceJar extends TileEntity implements IEssenceContainer {
 	}
 
 	@Override
-	public void setEssenceType(String newType) {
+	public void setEssenceType(Essence newType) {
 		this.essenceType = newType;
 		updateTE();
 	}
@@ -85,24 +119,15 @@ public class TileEssenceJar extends TileEntity implements IEssenceContainer {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		if (compound.hasKey("essenceStored")) {
-			essenceStored = compound.getInteger("essenceStored");
-		} else {
-			essenceStored = 0;
-		}
-
-		if (compound.hasKey("essenceType")) {
-			essenceType = compound.getString("essenceType");
-		} else {
-			essenceType = "Unknown";
-		}
+			essenceStored = compound.getInteger(Essence.KEY);
+			essenceType = Essence.getByName(compound.getString(Essence.TYPE_KEY));
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setInteger("essenceStored", essenceStored);
-		compound.setString("essenceType", essenceType);
+		compound.setInteger(Essence.KEY, essenceStored);
+		if(essenceType != null) compound.setString(Essence.TYPE_KEY, essenceType.getName());
 		return compound;
 	}
 }
