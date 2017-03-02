@@ -11,11 +11,14 @@ import com.raphydaphy.vitality.item.ItemEssenceVial;
 import com.raphydaphy.vitality.render.EssenceJarTESR;
 
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -41,10 +44,17 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 			0.5625D);
 
 	public BlockEssenceJar() {
-		super(Material.GLASS, "essence_jar");
+		super(Material.GLASS, "essence_jar", true, true);
+		this.setSoundType(SoundType.GLASS);
 		this.setHardness(1F);
 		this.setResistance(2F);
 		GameRegistry.registerTileEntity(TileEssenceJar.class, getRegistryName().getResourcePath());
+		GameRegistry.register(new ItemBlock(this){
+			@Override
+			public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity){
+				 return armorType == EntityEquipmentSlot.HEAD && !stack.hasTagCompound();
+			}
+		}, getRegistryName());
 	}
 
 	@Override
