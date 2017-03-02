@@ -50,10 +50,10 @@ public class ItemExtractionRod extends ItemBase {
 			if (worldIn.isRemote)
 			{
 				ClientProxy.setActionText("Angelic: " + player.getEntityData().getInteger("essenceStoredAngelic")
-						+ " Atmospheric: " + player.getEntityData().getInteger("essenceStoredAtmospheric")
-						+ " Demonic: " + player.getEntityData().getInteger("essenceStoredDemonic") + " Energetic: "
-						+ player.getEntityData().getInteger("essenceStoredEnergetic") + " Exotic: "
-						+ player.getEntityData().getInteger("essenceStoredExotic"), TextFormatting.AQUA);
+						+ TextFormatting.DARK_PURPLE.toString() +" Atmospheric: " + player.getEntityData().getInteger("essenceStoredAtmospheric")
+						+ TextFormatting.RED.toString() + " Demonic: " + player.getEntityData().getInteger("essenceStoredDemonic") 
+						+ TextFormatting.DARK_AQUA.toString() + " Energetic: "  + player.getEntityData().getInteger("essenceStoredEnergetic") 
+						+ TextFormatting.DARK_GREEN.toString() +" Exotic: " +  player.getEntityData().getInteger("essenceStoredExotic"), TextFormatting.AQUA);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
@@ -167,6 +167,10 @@ public class ItemExtractionRod extends ItemBase {
 				}
 				else
 				{
+					if (world.isRemote)
+					{
+						ClientProxy.setActionText("Dont cheat!", TextFormatting.GOLD);
+					}
 					System.out.println(entity.getName() + " tried to cheat!");
 				}
 			}

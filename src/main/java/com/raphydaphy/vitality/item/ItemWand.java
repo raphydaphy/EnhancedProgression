@@ -49,10 +49,10 @@ public class ItemWand extends ItemBase {
 			// i want to remove the [] brackets from the essence name but not sure how rn
 			if (world.isRemote)
 			{
-				ClientProxy.setActionText("Storing " + EssenceHelper.getEssenceStored(stack) + " / "
-									   				 + EssenceHelper.getMaxEssence(stack) + " " 
-									   				 + EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).toString()
-									   				 + " Essence", TextFormatting.BOLD);
+				ClientProxy.setActionText("Storing " + TextFormatting.BOLD.toString() + EssenceHelper.getEssenceStored(stack) + " / "
+									   				 + EssenceHelper.getMaxEssence(stack) + " " + TextFormatting.RESET.toString() + TextFormatting.GOLD.toString()
+									   				 + EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).get(0)
+									   				 + " Essence", TextFormatting.GOLD);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}
@@ -77,7 +77,6 @@ public class ItemWand extends ItemBase {
 					IEssenceContainer container = (IEssenceContainer)tile;
 					if (container.getEssenceStored() > 0 && EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).contains(container.getEssenceType()))
 					{
-						System.out.println("starting");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
 						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
 						player.getEntityData().setInteger("wandBlockPosY", pos.getY());
@@ -97,7 +96,6 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase entity, int count) 
 	{
-		System.out.println("using");
 		if (entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)entity;
@@ -121,7 +119,6 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) 
 	{
-		System.out.println("finished");
 		if (entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)entity;
