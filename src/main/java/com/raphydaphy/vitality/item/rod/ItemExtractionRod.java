@@ -2,11 +2,11 @@ package com.raphydaphy.vitality.item.rod;
 
 import javax.annotation.Nonnull;
 
-import com.raphydaphy.vitality.api.essence.EssenceHelper;
+import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.essence.MiscEssence;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.registry.ModBlocks;
-import com.raphydaphy.vitality.registry.ModItems;
 import com.raphydaphy.vitality.util.NBTHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
 
@@ -49,11 +49,11 @@ public class ItemExtractionRod extends ItemBase {
 		{
 			if (worldIn.isRemote)
 			{
-				ClientProxy.setActionText("Angelic: " + player.getEntityData().getInteger("essenceStoredAngelic")
-						+ TextFormatting.DARK_PURPLE.toString() +" Atmospheric: " + player.getEntityData().getInteger("essenceStoredAtmospheric")
-						+ TextFormatting.RED.toString() + " Demonic: " + player.getEntityData().getInteger("essenceStoredDemonic") 
-						+ TextFormatting.DARK_AQUA.toString() + " Energetic: "  + player.getEntityData().getInteger("essenceStoredEnergetic") 
-						+ TextFormatting.DARK_GREEN.toString() +" Exotic: " +  player.getEntityData().getInteger("essenceStoredExotic"), TextFormatting.AQUA);
+				ClientProxy.setActionText("Angelic: " + player.getEntityData().getInteger(Essence.ANGELIC.getMultiKey())
+						+ TextFormatting.DARK_PURPLE.toString() +" Atmospheric: " + player.getEntityData().getInteger(Essence.ATMOSPHERIC.getMultiKey())
+						+ TextFormatting.RED.toString() + " Demonic: " + player.getEntityData().getInteger(Essence.DEMONIC.getMultiKey()) 
+						+ TextFormatting.DARK_AQUA.toString() + " Energetic: "  + player.getEntityData().getInteger(Essence.ENERGETIC.getMultiKey()) 
+						+ TextFormatting.DARK_GREEN.toString() +" Exotic: " +  player.getEntityData().getInteger(Essence.EXOTIC.getMultiKey()), TextFormatting.AQUA);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
@@ -89,7 +89,7 @@ public class ItemExtractionRod extends ItemBase {
 							worldIn.playSound(null, blockpos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.AMBIENT,
 									1, 1);
 						}
-						EssenceHelper.fillVial(ModItems.VIAL_DEMONIC, player, 5);
+						MiscEssence.fillVial(Essence.DEMONIC, 5, true, player);
 						player.swingArm(hand);
 						player.getCooldownTracker().setCooldown(this, 25);
 						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
@@ -119,7 +119,7 @@ public class ItemExtractionRod extends ItemBase {
 			stack.setTagInfo("xPos", new NBTTagInt(pos.getX()));
 			stack.setTagInfo("yPos", new NBTTagInt(pos.getY()));
 			stack.setTagInfo("zPos", new NBTTagInt(pos.getZ()));
-			stack.setTagInfo("essenceType", new NBTTagString("Angelic"));
+			stack.setTagInfo("essenceType", new NBTTagString(Essence.ANGELIC.toString()));
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 50);
 			return EnumActionResult.SUCCESS;
@@ -131,7 +131,7 @@ public class ItemExtractionRod extends ItemBase {
 			stack.setTagInfo("xPos", new NBTTagInt(pos.getX()));
 			stack.setTagInfo("yPos", new NBTTagInt(pos.getY()));
 			stack.setTagInfo("zPos", new NBTTagInt(pos.getZ()));
-			stack.setTagInfo("essenceType", new NBTTagString("Exotic"));
+			stack.setTagInfo("essenceType", new NBTTagString(Essence.EXOTIC.toString()));
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 65);
 			return EnumActionResult.SUCCESS;
@@ -158,11 +158,11 @@ public class ItemExtractionRod extends ItemBase {
 						world.setBlockState(pos,Blocks.STONE.getDefaultState());
 						world.playSound(null,pos,SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
 					}
-					if (NBTHelper.getString(stack, "essenceType", null) == "Angelic") 
+					if (stack.getTagCompound().getString("essenceType") == Essence.ANGELIC.toString()) 
 					{
-						EssenceHelper.fillVial(ModItems.VIAL_ANGELIC, (EntityPlayer) entity, 15);
-					} else if (NBTHelper.getString(stack, "essenceType", null) == "Exotic") {
-						EssenceHelper.fillVial(ModItems.VIAL_EXOTIC, (EntityPlayer) entity, 30);
+						MiscEssence.fillVial(Essence.ANGELIC, 15, true, entity);
+					} else if (stack.getTagCompound().getString("essenceType") == Essence.EXOTIC.toString()) {
+						MiscEssence.fillVial(Essence.EXOTIC, 30, true, entity);
 					}
 				}
 				else

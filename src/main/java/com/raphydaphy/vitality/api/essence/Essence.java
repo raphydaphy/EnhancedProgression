@@ -3,10 +3,7 @@ package com.raphydaphy.vitality.api.essence;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.wand.WandEnums.WandTier;
-import com.raphydaphy.vitality.item.ItemVial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+
 import net.minecraft.util.IStringSerializable;
 
 public enum Essence implements IStringSerializable{

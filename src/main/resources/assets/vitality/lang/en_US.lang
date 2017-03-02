@@ -26,12 +26,12 @@ item.vitality.ingot_bronze.name=Bronze Ingot
 item.vitality.angelic_crystal_shard.name=Angelic Crystal Shard
 item.vitality.exotic_crystal_shard.name=Exotic Crystal Shard
 
-item.vitality.essence_vial_empty.name=Essence Vial
-item.vitality.essence_vial_angelic.name=Angelic Essence Vial
-item.vitality.essence_vial_atmospheric.name=Atmospheric Essence Vial
-item.vitality.essence_vial_demonic.name=Demonic Essence Vial
-item.vitality.essence_vial_energetic.name=Energetic Essence Vial
-item.vitality.essence_vial_exotic.name=Exotic Essence Vial
+item.vitality.empty_vial.name=Essence Vial
+item.vitality.angelic_vial.name=Angelic Essence Vial
+item.vitality.atmospheric_vial.name=Atmospheric Essence Vial
+item.vitality.demonic_vial.name=Demonic Essence Vial
+item.vitality.energetic_vial.name=Energetic Essence Vial
+item.vitality.exotic_vial.name=Exotic Essence Vial
 
 item.vitality.life_extraction_rod.name=Life Extraction Rod
 item.vitality.technicians_rod.name=Technicians Rod
@@ -54,6 +54,9 @@ wooden_energetic_wand.name=Wooden Tipped Energetic Wand
 wooden_exotic_wand.name=Wooden Tipped Exotic Wand
 
 invalid_wand.name=Invalid Wand!
+
+item.vitality.spell_illumination.name=Spell: Omnipresent Illumination
+item.vitality.spell_fireball.name=Spell: Radiant Fireball
 
 #Action Bar Messages
 

@@ -144,6 +144,7 @@ public class ItemVial extends ItemBase{
 	
 	public enum VialQuality{
 		BASIC,
+		EMPOWERED,
 	}
 
 }

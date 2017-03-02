@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.item.ItemBase;
-import com.raphydaphy.vitality.item.ItemEssenceVial;
 import com.raphydaphy.vitality.item.ItemExtractionSword;
+import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.item.ItemVial.VialQuality;
 import com.raphydaphy.vitality.item.ItemWand;
@@ -25,6 +25,8 @@ public class ModItems {
 	public static final Item CRYSTAL_SHARD_EXOTIC = new ItemBase("exotic_crystal_shard");
 
 	//Remember kids, always register your empty vial for that quality first, or the world will burn down.
+	
+	//Ok i will remember
 	
 	public static final ItemVial VIAL_EMPTY = new ItemVial("empty_vial", null, 0, VialQuality.BASIC);
 	public static final ItemVial VIAL_ANGELIC = new ItemVial("angelic_vial", Essence.ANGELIC, 1000, VialQuality.BASIC, VIAL_EMPTY);
@@ -48,6 +50,9 @@ public class ModItems {
 	public static final Item TIP_WOODEN = new ItemBase("wand_tip_wooden", 1);
 
 	public static final Item WAND = new ItemWand("wand");
+	
+	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination");
+	public static final Item SPELL_FIREBALL = new ItemSpell("fireball");
 
 	public static final List<Item> ITEM_LIST = getList();
 

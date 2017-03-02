@@ -1,7 +1,7 @@
 package com.raphydaphy.vitality.item;
 
-import com.raphydaphy.vitality.api.essence.EssenceHelper;
-import com.raphydaphy.vitality.registry.ModItems;
+import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.essence.MiscEssence;
 import com.raphydaphy.vitality.util.ParticleHelper;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,9 +30,12 @@ public class ItemExtractionSword extends SwordBase {
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
 		if (target instanceof IMob && attacker instanceof EntityPlayer) {
-			EssenceHelper.fillVial(ModItems.VIAL_ENERGETIC, (EntityPlayer) attacker, 5);
-			ParticleHelper.spawnParticlesServer(EnumParticleTypes.DAMAGE_INDICATOR, target.worldObj, true, target.posX,
-					target.posY, target.posZ, 5, 0.25);
+			MiscEssence.fillVial(Essence.ENERGETIC, 5, true, (EntityPlayer)attacker);
+			if (!attacker.worldObj.isRemote)
+			{
+				ParticleHelper.spawnParticlesServer(EnumParticleTypes.DAMAGE_INDICATOR, target.worldObj, true, target.posX,
+						target.posY, target.posZ, 5, 0.25);
+			}
 		}
 		stack.damageItem(1, attacker);
 		return true;

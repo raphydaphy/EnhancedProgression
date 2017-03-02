@@ -5,7 +5,8 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.raphydaphy.vitality.api.essence.EssenceHelper;
+import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.essence.MiscEssence;
 import com.raphydaphy.vitality.registry.ModItems;
 import com.raphydaphy.vitality.util.ParticleHelper;
 
@@ -85,7 +86,7 @@ public class BlockExtractionCrucible extends BlockBase {
 			if (item == ModItems.VIAL_ATMOSPHERIC) {
 				if (i > 0) 
 				{
-					EssenceHelper.addEssence(heldItem, 25, 1000, playerIn, "Atmospheric");
+					MiscEssence.addEssence(heldItem, 25, true, playerIn, Essence.ATMOSPHERIC, 0);
 					playerIn.swingArm(hand);
 					if (!worldIn.isRemote)
 					{
@@ -100,7 +101,7 @@ public class BlockExtractionCrucible extends BlockBase {
 				if (i > 0) 
 				{
 					ItemStack vialStack = new ItemStack(ModItems.VIAL_ATMOSPHERIC);
-					EssenceHelper.addEssence(vialStack, 25, 1000, playerIn, "Atmospheric");
+					MiscEssence.addEssence(vialStack, 25, true, playerIn, Essence.ATMOSPHERIC, 0);
 					playerIn.swingArm(hand);
 					if (!worldIn.isRemote)
 					{

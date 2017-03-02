@@ -10,6 +10,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
+
+// ono its depricated
+// very sad day
+// time to cry ;-;
 @Deprecated
 public final class EssenceHelper {
 	// TODO: replace all essenceStored instances with essenceStoredType (eg.
