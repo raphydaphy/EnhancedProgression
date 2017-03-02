@@ -4,12 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.vecmath.Matrix4f;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.ImmutableMap;
 import com.raphydaphy.vitality.block.tile.TileEssenceJar;
 import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.item.ItemVial.VialQuality;
 import com.raphydaphy.vitality.registry.ModItems;
 
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -93,6 +99,56 @@ public class MiscEssence {
 	}
 	
 	/**
+	 * Idk the equivelent of tupes in Java so i made two methods
+	 * one for getting the int one for ItemStack. Plz no kill.
+	 * @param entity
+	 * @return
+	 */
+	public static int findVialSlotInInventory(Entity entity) {
+		// Check if the entity is actually a player
+		if (entity instanceof EntityPlayer)
+		{
+			// Cast entity to EntityPlayer so that we can access the players inventory
+			EntityPlayer player = (EntityPlayer)entity;
+			// loop through the players inventory
+			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+				// get the currently selected item in the players inventory
+				ItemStack stackAt = player.inventory.getStackInSlot(i);
+				// check that the current stack isnt null to prevent NullPointerExceptions
+				if (stackAt != null) {
+					// check if the stack actually is a vial
+					if (stackAt.getItem() instanceof ItemVial){
+						return i;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+	
+	public static ItemStack findVialStackInInventory(Entity entity) {
+		// Check if the entity is actually a player
+		if (entity instanceof EntityPlayer)
+		{
+			// Cast entity to EntityPlayer so that we can access the players inventory
+			EntityPlayer player = (EntityPlayer)entity;
+			// loop through the players inventory
+			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+				// get the currently selected item in the players inventory
+				ItemStack stackAt = player.inventory.getStackInSlot(i);
+				// check that the current stack isnt null to prevent NullPointerExceptions
+				if (stackAt != null) {
+					// check if the stack actually is a vial
+					if (stackAt.getItem() instanceof ItemVial){
+						return stackAt;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Tries to fill an Essence Vial with an amount of Essence
 	 * The difference betwen this and addEssence is this finds the vial
 	 * from the players inventory, and addEssence takes an ItemStack argument.
@@ -108,19 +164,10 @@ public class MiscEssence {
 		{
 			// Cast entity to EntityPlayer so that we can access the players inventory
 			EntityPlayer player = (EntityPlayer)entity;
-			// loop through the players inventory
-			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-				// get the currently selected item in the players inventory
-				ItemStack stackAt = player.inventory.getStackInSlot(i);
-				// check that the current stack isnt null to prevent NullPointerExceptions
-				if (stackAt != null) {
-					// check if the stack actually is a vial
-					if (stackAt.getItem() instanceof ItemVial){
-						// fill the vial
-						return addEssence(stackAt, toAdd, shouldBind, entity, type, i);
-					}
-				}
-			}
+			
+			int slot =  findVialSlotInInventory(entity);
+			// fill the vial
+			return addEssence(findVialStackInInventory(entity), toAdd, shouldBind, entity, type, slot);
 		}
 		
 		return false;
