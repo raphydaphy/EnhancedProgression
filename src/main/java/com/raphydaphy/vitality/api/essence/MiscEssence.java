@@ -130,7 +130,7 @@ public class MiscEssence {
 				// check that the current stack isnt null to prevent NullPointerExceptions
 				if (stackAt != null) {
 					// check if the stack actually is a vial
-					if (stackAt.getItem() instanceof ItemVial){
+					if (stackAt.getItem() instanceof ItemVial && !(((ItemVial)stackAt.getItem()).hasType())){
 						return i;
 					}
 				}
@@ -175,7 +175,7 @@ public class MiscEssence {
 				// check that the current stack isnt null to prevent NullPointerExceptions
 				if (stackAt != null) {
 					// check if the stack actually is a vial
-					if (stackAt.getItem() instanceof ItemVial){
+					if (stackAt.getItem() instanceof ItemVial && !(((ItemVial)stackAt.getItem()).hasType())){
 						return stackAt;
 					}
 				}
