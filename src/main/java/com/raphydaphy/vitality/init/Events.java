@@ -8,26 +8,38 @@ import com.raphydaphy.vitality.util.BoundHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber()
 public class Events {
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) 
+    public static void onKeyInput(InputEvent.KeyInputEvent event) 
 	{
 		Minecraft mc = Minecraft.getMinecraft();
         if (KeyBindings.pickSpell.isPressed() && mc.inGameHasFocus) 
         {	
-        	if (mc.thePlayer.getHeldItemMainhand() != null &&
-        		mc.thePlayer.getHeldItemOffhand() != null)
+        	
+        	boolean did = false;
+        	if (mc.thePlayer.getHeldItemMainhand() != null)
         	{
 	        	if (mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand)
 	        	{
+	        		did = true;
+	        		mc.displayGuiScreen(new GUISpellSelect());
+	        	}
+        	}
+        	if (!did && mc.thePlayer.getHeldItemOffhand() != null)
+        	{
+        		if (mc.thePlayer.getHeldItemOffhand().getItem() instanceof ItemWand)
+	        	{
+	        		did = true;
 	        		mc.displayGuiScreen(new GUISpellSelect());
 	        	}
         	}

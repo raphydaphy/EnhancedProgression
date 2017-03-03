@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.spell.Spell;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemExtractionSword;
 import com.raphydaphy.vitality.item.ItemSpell;
@@ -57,8 +58,8 @@ public class ModItems {
 
 	public static final Item WAND = new ItemWand("wand");
 
-	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination");
-	public static final Item SPELL_FIREBALL = new ItemSpell("fireball");
+	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", Spell.ILLUMINATION);
+	public static final Item SPELL_FIREBALL = new ItemSpell("fireball", Spell.FIREBALL);
 
 	public static final List<Item> ITEM_LIST = getList();
 

@@ -20,7 +20,6 @@ public class CommonProxy {
 	 * crafting recipies or smelting
 	 */
 	public void preInit(FMLPreInitializationEvent e) {
-		MinecraftForge.EVENT_BUS.register(Events.class);
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
 		PacketManager.INSTANCE.registerMessage(new MessageChangeSpell.ChangeSpellHandler(), MessageChangeSpell.class, 80, Side.SERVER);
 	}

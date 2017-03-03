@@ -3,6 +3,7 @@ package com.raphydaphy.vitality.recipe;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.spell.Spell;
 import com.raphydaphy.vitality.api.wand.WandEnums;
 import com.raphydaphy.vitality.registry.ModItems;
 

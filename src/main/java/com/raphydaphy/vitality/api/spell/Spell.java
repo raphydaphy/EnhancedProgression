@@ -37,7 +37,11 @@ public enum Spell implements IStringSerializable{
 	}
 	
 	public Item getAsItem() {
-		return item;
+		if (item != null)
+		{
+			return item;
+		}
+		return ModItems.SPELL_FIREBALL;
 	}
 
 }

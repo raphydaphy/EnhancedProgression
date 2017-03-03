@@ -1,6 +1,9 @@
 #Containers and GUI's
 itemGroup.vitality=Vitality
 
+key.categories.vitality=Vitality
+key.pickSpell=Spell GUI
+
 #Blocks
 tile.vitality.ore_copper.name=Copper Ore
 tile.vitality.ore_tin.name=Tin Ore

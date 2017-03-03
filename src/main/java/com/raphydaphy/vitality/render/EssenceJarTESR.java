@@ -51,25 +51,32 @@ public class EssenceJarTESR extends TileEntitySpecialRenderer<TileEssenceJar> {
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer buffer = tessellator.getBuffer();
 		TextureAtlasSprite fluid = null;
-		switch (essenceType) {
-		case ANGELIC:
-			fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_angelic");
-			break;
-		case ATMOSPHERIC:
-			fluid = Minecraft.getMinecraft().getTextureMapBlocks()
-					.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_atmospheric").toString());
-			break;
-		case DEMONIC:
-			fluid = Minecraft.getMinecraft().getTextureMapBlocks()
-					.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_demonic").toString());
-			break;
-		case ENERGETIC:
-			fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_energetic");
-			break;
-		case EXOTIC:
-			fluid = Minecraft.getMinecraft().getTextureMapBlocks()
-					.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_exotic").toString());
-			break;
+		if (essenceType != null)
+		{
+			switch (essenceType) {
+			case ANGELIC:
+				fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_angelic");
+				break;
+			case ATMOSPHERIC:
+				fluid = Minecraft.getMinecraft().getTextureMapBlocks()
+						.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_atmospheric").toString());
+				break;
+			case DEMONIC:
+				fluid = Minecraft.getMinecraft().getTextureMapBlocks()
+						.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_demonic").toString());
+				break;
+			case ENERGETIC:
+				fluid = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("vitality:blocks/essence_energetic");
+				break;
+			case EXOTIC:
+				fluid = Minecraft.getMinecraft().getTextureMapBlocks()
+						.getAtlasSprite(new ResourceLocation("vitality", "blocks/essence_exotic").toString());
+				break;
+			}
+		}
+		else
+		{
+			return;
 		}
 
 		if (fluid == Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite()) {

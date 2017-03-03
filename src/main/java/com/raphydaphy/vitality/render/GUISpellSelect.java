@@ -9,9 +9,12 @@ import org.lwjgl.input.Mouse;
 
 import com.google.common.collect.ImmutableSet;
 import com.raphydaphy.vitality.api.spell.Spell;
+import com.raphydaphy.vitality.api.spell.SpellHelper;
 import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemWand;
-import com.raphydaphy.vitality.util.NBTHelper;
+import com.raphydaphy.vitality.network.MessageChangeSpell;
+import com.raphydaphy.vitality.network.PacketManager;
+import com.raphydaphy.vitality.registry.KeyBindings;
 import com.raphydaphy.vitality.util.RenderHelper;
 
 import net.minecraft.client.Minecraft;
@@ -52,10 +55,11 @@ public class GUISpellSelect extends GuiScreen
 			if (stackAt != null) {
 				if (stackAt.getItem() instanceof ItemSpell)
 				{
-					//spells.add(Spell.)
+					spells.add(((ItemSpell)stackAt.getItem()).toSpell());
 				}
 			}
 		}
+		System.out.println(spells.size());
 		if (spells.size() > 0)
 		{
 	
@@ -70,7 +74,7 @@ public class GUISpellSelect extends GuiScreen
 			if (amount > 0)
 			{
 				float anglePer;
-				if (NBTHelper.getInt(bagStack, "selectedSpell", 0) != 0)
+				if (wandStack.getTagCompound().getString(Spell.ACTIVE_KEY) != "")
 				{
 					anglePer = 360F / (amount - 1);
 				}
@@ -83,17 +87,20 @@ public class GUISpellSelect extends GuiScreen
 				GlStateManager.pushMatrix();
 				RenderHelper.renderCircle(screenWidth, screenHeight);
 				GlStateManager.popMatrix();
-				activeSector = -1;/*
-				for (int curItem = 0; curItem < amount; curItem++)
+				activeSector = -1;
+				for (int curItem = 0; curItem < spells.size(); curItem++)
 				{
-					if (spellArray[curItem] == NBTLib.getInt(bagStack, "selectedSpell", 0))
+					if (spells.get(curItem).toString() == wandStack.getTagCompound().getString(Spell.ACTIVE_KEY))
 					{
 						GlStateManager.pushMatrix();
 						GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
 						GlStateManager.scale(2, 2, 2);
-						if (getSpellStackFromID(NBTLib.getInt(bagStack, "selectedSpell", 0)) != null)
+						if (wandStack.getTagCompound().getString(Spell.ACTIVE_KEY) != "")
 						{
-							mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(NBTLib.getInt(bagStack, "selectedSpell", 0)), 0, 0);
+							if (Spell.valueOf(wandStack.getTagCompound().getString(Spell.ACTIVE_KEY)).getAsItem() != null)
+							{
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(Spell.valueOf(wandStack.getTagCompound().getString(Spell.ACTIVE_KEY)).getAsItem()), 0, 0);
+							}
 						}
 						GlStateManager.translate(-screenWidth, -screenHeight, 0);
 						GlStateManager.popMatrix();
@@ -102,15 +109,18 @@ public class GUISpellSelect extends GuiScreen
 					{
 						double xPos = screenWidth + Math.cos(angle * Math.PI / 180D) * radius - 13.6;
 						double yPos = screenHeight + Math.sin(angle * Math.PI / 180D) * radius - 13.6;
+						// i got no clue what this shit does its been half a year since i wrote it xD
 						if (mx > xPos && mx < xPos + 27.2 && my > yPos && my < yPos + 27.2)
 						{
 							activeSector = curItem;
 							GlStateManager.pushMatrix();
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.7, 1.7, 1.7);
-							if (getSpellStackFromID(spellArray[curItem]) != null)
+							System.out.println(spells.get(curItem).getAsItem().getUnlocalizedName());
+							if (spells.get(curItem).getAsItem() != null)
 							{
-								mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(spellArray[curItem]), 0, 0);
+								
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(spells.get(curItem).getAsItem()), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
@@ -122,16 +132,16 @@ public class GUISpellSelect extends GuiScreen
 							GlStateManager.pushMatrix();
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.5, 1.5, 1.5);
-							if (getSpellStackFromID(spellArray[curItem]) != null)
+							if (spells.get(curItem).getAsItem() != null)
 							{
-								mc.getRenderItem().renderItemIntoGUI(getSpellStackFromID(spellArray[curItem]), 0, 0);
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(spells.get(curItem).getAsItem()), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
 						}
 						angle += anglePer;
 					}
-				}*/
+				}
 				net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 			}
 		}
@@ -144,18 +154,25 @@ public class GUISpellSelect extends GuiScreen
 		
 		if (activeSector != -1)
 		{
-			//NBTHelper.setInt(Minecraft.getMinecraft().thePlayer.getHeldItemOffhand(), "selectedSpell", spellArray[activeSector]);
-			//PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(spellArray[activeSector]));
+			if (Minecraft.getMinecraft().thePlayer.getHeldItemMainhand() != null)
+			{
+				if (Minecraft.getMinecraft().thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand)
+				{
+					Minecraft.getMinecraft().thePlayer.getHeldItemMainhand().getTagCompound().setString(Spell.ACTIVE_KEY, spells.get(activeSector).toString());
+				}
+			}
+			
+			PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(SpellHelper.getIDFromSpell(spells.get(activeSector))));
 		}
 	}
 
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
-		//if(!isKeyDown(KeyBindings.pickSpell))
-		//{
-		//	mc.displayGuiScreen(null);
-		//}
+		if(!isKeyDown(KeyBindings.pickSpell))
+		{
+			mc.displayGuiScreen(null);
+		}
 		
 		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
 		for(KeyBinding k : set)

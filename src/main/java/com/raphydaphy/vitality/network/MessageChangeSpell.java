@@ -15,22 +15,22 @@ public class MessageChangeSpell implements IMessage
 	  // A default constructor is always required
 	  public MessageChangeSpell(){}
 	
-	  private int id;
+	  private int spell;
 	  public MessageChangeSpell(int newID) 
 	  {
-	    this.id = newID;
+	    this.spell = newID;
 	  }
 	
 	  @Override public void toBytes(ByteBuf buf) 
 	  {
 	    // Writes the int into the buf
-	    buf.writeInt(id);
+	    buf.writeInt(spell);
 	  }
 	
 	  @Override public void fromBytes(ByteBuf buf) 
 	  {
 	    // Reads the int back from the buf. Note that if you have multiple values, you must read in the same order you wrote.
-	    id = buf.readInt();
+	    spell = buf.readInt();
 	  
 	  }
 	  
@@ -46,7 +46,7 @@ public class MessageChangeSpell implements IMessage
 			// This is the player the packet was sent to the server from
 			 EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
 			 // The value that was sent
-			 int newID = message.id;
+			 int newID = message.spell;
 			 if (serverPlayer.getHeldItemMainhand().getItem() instanceof ItemWand)
 			 {
 				 serverPlayer.getHeldItemMainhand().getTagCompound().setString(Spell.ACTIVE_KEY, SpellHelper.getSpellFromID(newID).toString());

@@ -49,10 +49,10 @@ public class ItemWand extends ItemBase {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
 			if (world.isRemote) {
-				ClientProxy.setActionText("Storing " + TextFormatting.BOLD.toString()
+				ClientProxy.setActionText("Storing " + TextFormatting.BOLD
 						+ WandHelper.getEssenceStored(stack) + " / " + WandHelper.getMaxEssence(stack) + " "
-						+ TextFormatting.RESET.toString() + TextFormatting.GOLD.toString()
-						+ WandHelper.getCore(stack).acceptedTypes().get(0) + " Essence", TextFormatting.GOLD);
+						+ TextFormatting.RESET + TextFormatting.GOLD
+						+ WandHelper.getCore(stack).acceptedTypes().get(0).name() + " Essence", TextFormatting.GOLD);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}
@@ -127,7 +127,7 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
 		if (!isSelected && entity.getEntityData().getString("wandCurOperation") != "") {
-			this.onPlayerStoppedUsing(stack, world, (EntityLivingBase) entity, 0);
+			//this.onPlayerStoppedUsing(stack, world, (EntityLivingBase) entity, 0);
 		}
 	}
 
