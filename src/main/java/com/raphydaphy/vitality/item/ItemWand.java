@@ -71,6 +71,7 @@ public class ItemWand extends ItemBase {
 					IEssenceContainer container = (IEssenceContainer) tile;
 					if (container.getEssenceStored() > 0
 							&& WandHelper.getCore(stack).acceptedTypes().contains(container.getEssenceType())) {
+						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
 						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
 						player.getEntityData().setInteger("wandBlockPosY", pos.getY());
