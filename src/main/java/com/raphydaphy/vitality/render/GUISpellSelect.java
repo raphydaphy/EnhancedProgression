@@ -26,17 +26,15 @@ import net.minecraft.item.ItemStack;
 
 public class GUISpellSelect extends GuiScreen 
 {
-	List<Spell> spells = new ArrayList<Spell>();
-	int activeSector = -1;
+	private int activeSector = -1;
 	
-	ItemStack wandStack;
-	ItemStack bagStack;
+	private ItemStack wandStack;
 
 	@Override
 	public void drawScreen(int mx, int my, float partialTicks) 
 	{
 		super.drawScreen(mx, my, partialTicks);
-		
+		List<Spell> spells = new ArrayList<Spell>()
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		wandStack = player.getHeldItemMainhand();
 		if (!(wandStack.getItem() instanceof ItemWand))
@@ -55,11 +53,14 @@ public class GUISpellSelect extends GuiScreen
 			if (stackAt != null) {
 				if (stackAt.getItem() instanceof ItemSpell)
 				{
-					spells.add(((ItemSpell)stackAt.getItem()).toSpell());
+					if (!(spells.contains(((ItemSpell)stackAt.getItem()).toSpell())))
+					{
+						spells.add(((ItemSpell)stackAt.getItem()).toSpell());
+					}
+					
 				}
 			}
 		}
-		System.out.println(spells.size());
 		if (spells.size() > 0)
 		{
 	
@@ -90,7 +91,7 @@ public class GUISpellSelect extends GuiScreen
 				activeSector = -1;
 				for (int curItem = 0; curItem < spells.size(); curItem++)
 				{
-					if (spells.get(curItem).toString() == wandStack.getTagCompound().getString(Spell.ACTIVE_KEY))
+					if (spells.get(curItem).toString().equals(wandStack.getTagCompound().getString(Spell.ACTIVE_KEY)))
 					{
 						GlStateManager.pushMatrix();
 						GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
