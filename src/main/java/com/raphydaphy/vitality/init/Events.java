@@ -1,14 +1,39 @@
 package com.raphydaphy.vitality.init;
 
 import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.item.ItemWand;
+import com.raphydaphy.vitality.registry.KeyBindings;
+import com.raphydaphy.vitality.render.GuiSpellSelect;
 import com.raphydaphy.vitality.util.BoundHelper;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Events {
 
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent event) 
+	{
+		Minecraft mc = Minecraft.getMinecraft();
+        if (KeyBindings.pickSpell.isPressed() && mc.inGameHasFocus) 
+        {	
+        	if (mc.thePlayer.getHeldItemMainhand() != null &&
+        		mc.thePlayer.getHeldItemOffhand() != null)
+        	{
+	        	if (mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand)
+	        	{
+	        		mc.displayGuiScreen(new GuiSpellSelect());
+	        	}
+        	}
+        }
+    }
+	
 	@SubscribeEvent
 	public static void onDeath(PlayerEvent.Clone event) 
 	{
