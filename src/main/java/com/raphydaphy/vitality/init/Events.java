@@ -3,7 +3,7 @@ package com.raphydaphy.vitality.init;
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.registry.KeyBindings;
-import com.raphydaphy.vitality.render.GuiSpellSelect;
+import com.raphydaphy.vitality.render.GUISpellSelect;
 import com.raphydaphy.vitality.util.BoundHelper;
 
 import net.minecraft.client.Minecraft;
@@ -28,7 +28,7 @@ public class Events {
         	{
 	        	if (mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand)
 	        	{
-	        		mc.displayGuiScreen(new GuiSpellSelect());
+	        		mc.displayGuiScreen(new GUISpellSelect());
 	        	}
         	}
         }

@@ -160,9 +160,9 @@ public class ItemExtractionRod extends ItemBase {
 						world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
 					}
 					if (stack.getTagCompound().getString("essenceType") == Essence.ANGELIC.toString()) {
-						MiscEssence.fillVial(Essence.ANGELIC, 15, true, entity);
+						MiscEssence.fillVial(Essence.ANGELIC, 15, true, (EntityPlayer) entity);
 					} else if (stack.getTagCompound().getString("essenceType") == Essence.EXOTIC.toString()) {
-						MiscEssence.fillVial(Essence.EXOTIC, 30, true, entity);
+						MiscEssence.fillVial(Essence.EXOTIC, 30, true, (EntityPlayer)entity);
 					}
 				} else {
 					if (world.isRemote) {

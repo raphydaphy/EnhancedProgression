@@ -191,9 +191,10 @@ public class MiscEssence {
 	 * @return Returns true if the vial was successfully filled with Essence
 	 */
 	public static boolean fillVial(Essence type, int toAdd, boolean shouldBind, EntityPlayer player) {
-		// Check if the entity is actually a player
-			// find a vial from the players inventory
-			SlottedStack slotstack = findValidVial(player, type, toAdd);
+		// find a vial from the players inventory
+		SlottedStack slotstack = findValidVial(player, type, toAdd);
+		if (slotstack.exists())
+		{
 			ItemStack stack = slotstack.getStack();
 			if (stack != null) {
 				// check that a vial was actually found
@@ -201,8 +202,7 @@ public class MiscEssence {
 					// try to fill the vial with essence
 					return addEssence(stack, toAdd, shouldBind, player, type, slotstack.getSlotID());
 				}
-			
-
+			}
 		}
 
 		return false;
