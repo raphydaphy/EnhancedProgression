@@ -100,7 +100,7 @@ public class MiscEssence {
 	 * 		   in the players inventory or an empty vial slot if no
 	 * 	 	   full vials are found.
 	 */ 
-	public static int findVialSlotInInventory(Entity entity) {
+	public static int findVialSlotInInventory(Entity entity, Essence type) {
 		// Check if the entity is actually a player
 		if (entity instanceof EntityPlayer)
 		{
@@ -115,7 +115,7 @@ public class MiscEssence {
 					// check if the stack actually is a vial
 					if (stackAt.getItem() instanceof ItemVial){
 						// check that the vial already has some essence
-						if (((ItemVial)stackAt.getItem()).hasType())
+						if (((ItemVial)stackAt.getItem()).hasType() && ((ItemVial)stackAt.getItem()).getVialType() == type)
 						{
 							return i;
 						}
@@ -145,7 +145,7 @@ public class MiscEssence {
 	 * @return Returns the first full vial in the players inventory
 	 * 		   or an empty vial if no full ones are found
 	 */
-	public static ItemStack findVialStackInInventory(Entity entity) {
+	public static ItemStack findVialStackInInventory(Entity entity, Essence type) {
 		// Check if the entity is actually a player
 		if (entity instanceof EntityPlayer)
 		{
@@ -160,7 +160,7 @@ public class MiscEssence {
 					// check if the stack actually is a vial
 					if (stackAt.getItem() instanceof ItemVial){
 						// check that the vial already has some essence
-						if (((ItemVial)stackAt.getItem()).hasType())
+						if (((ItemVial)stackAt.getItem()).hasType() && ((ItemVial)stackAt.getItem()).getVialType() == type)
 						{
 							return stackAt;
 						}
@@ -199,13 +199,15 @@ public class MiscEssence {
 		if (entity instanceof EntityPlayer)
 		{
 			// find a vial from  the players inventory
-			ItemStack stack = findVialStackInInventory(entity);
-			
-			// check that a vial was actually found
-			if (stack.getItem() instanceof ItemVial)
+			ItemStack stack = findVialStackInInventory(entity, type);
+			if (stack != null)
 			{
-				// try to fill the vial with essence
-				return addEssence(stack, toAdd, shouldBind, entity, type, findVialSlotInInventory(entity));
+				// check that a vial was actually found
+				if (stack.getItem() instanceof ItemVial)
+				{
+					// try to fill the vial with essence
+					return addEssence(stack, toAdd, shouldBind, entity, type, findVialSlotInInventory(entity, type));
+				}
 			}
 			
 		}
