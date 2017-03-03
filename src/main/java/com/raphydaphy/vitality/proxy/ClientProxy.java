@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.raphydaphy.vitality.registry.IMeta;
 import com.raphydaphy.vitality.registry.IRegisterable;
+import com.raphydaphy.vitality.registry.KeyBindings;
 import com.raphydaphy.vitality.registry.ModBlocks;
 import com.raphydaphy.vitality.registry.ModItems;
 
@@ -32,6 +33,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent e) {
 		super.init(e);
+		KeyBindings.init();
 	}
 
 	@Override
