@@ -10,8 +10,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class Events {
 
 	@SubscribeEvent
-	public static void onDeath(PlayerEvent.Clone event) 
-	{
+	public static void onDeath(PlayerEvent.Clone event) {
 		int storedAngelic = event.getOriginal().getEntityData().getInteger(Essence.ANGELIC.getMultiKey());
 		int storedAtmospheric = event.getOriginal().getEntityData().getInteger(Essence.ATMOSPHERIC.getMultiKey());
 		int storedDemonic = event.getOriginal().getEntityData().getInteger(Essence.DEMONIC.getMultiKey());
@@ -26,8 +25,7 @@ public class Events {
 	}
 
 	@SubscribeEvent
-	public static void onPlayerTick(TickEvent.PlayerTickEvent event) 
-	{
+	public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		if (event.player.worldObj.rand.nextInt(100) == 1 && ConfigHandler.balance.enabledBoundEssence) {
 			int storedAngelic = event.player.getEntityData().getInteger(Essence.ANGELIC.getMultiKey());
 			int storedAtmospheric = event.player.getEntityData().getInteger(Essence.ATMOSPHERIC.getMultiKey());

@@ -36,7 +36,7 @@ public class ItemWand extends ItemBase {
 		super(parName, 1, false);
 		this.setHasSubtypes(true);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModels() {
@@ -48,36 +48,29 @@ public class ItemWand extends ItemBase {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
-			if (world.isRemote)
-			{
-				ClientProxy.setActionText("Storing " + TextFormatting.BOLD.toString() + WandHelper.getEssenceStored(stack) + " / "
-									   				 + WandHelper.getMaxEssence(stack) + " " + TextFormatting.RESET.toString() + TextFormatting.GOLD.toString()
-									   				 + WandHelper.getCore(stack).acceptedTypes().get(0)
-									   				 + " Essence", TextFormatting.GOLD);
+			if (world.isRemote) {
+				ClientProxy.setActionText("Storing " + TextFormatting.BOLD.toString()
+						+ WandHelper.getEssenceStored(stack) + " / " + WandHelper.getMaxEssence(stack) + " "
+						+ TextFormatting.RESET.toString() + TextFormatting.GOLD.toString()
+						+ WandHelper.getCore(stack).acceptedTypes().get(0) + " Essence", TextFormatting.GOLD);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
 
-	
-
 	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
-			EnumFacing side, float par8, float par9, float par10) 
-	{
-		if (player.getEntityData().getString("wandCurOperation") == "")
-		{
-			if (world.getBlockState(pos).getBlock() instanceof IWandable)
-			{
+			EnumFacing side, float par8, float par9, float par10) {
+		if (player.getEntityData().getString("wandCurOperation") == "") {
+			if (world.getBlockState(pos).getBlock() instanceof IWandable) {
 				TileEntity tile = world.getTileEntity(pos);
-				
-				if (tile instanceof IEssenceContainer)
-				{
-					IEssenceContainer container = (IEssenceContainer)tile;
-					if (container.getEssenceStored() > 0 && WandHelper.getCore(stack).acceptedTypes().contains(container.getEssenceType()))
-					{
+
+				if (tile instanceof IEssenceContainer) {
+					IEssenceContainer container = (IEssenceContainer) tile;
+					if (container.getEssenceStored() > 0
+							&& WandHelper.getCore(stack).acceptedTypes().contains(container.getEssenceType())) {
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
 						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
 						player.getEntityData().setInteger("wandBlockPosY", pos.getY());
@@ -89,43 +82,39 @@ public class ItemWand extends ItemBase {
 					}
 				}
 			}
-			
+
 		}
 		return EnumActionResult.PASS;
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase entity, int count) 
-	{
-		if (entity instanceof EntityPlayer)
-		{
-			EntityPlayer player = (EntityPlayer)entity;
-			BlockPos pos = new BlockPos(player.getEntityData().getInteger("wandBlockPosX"),player.getEntityData().getInteger("wandBlockPosY"),player.getEntityData().getInteger("wandBlockPosZ"));
-			
-			switch(player.getEntityData().getString("wandCurOperation"))
-			{
+	public void onUsingTick(ItemStack stack, EntityLivingBase entity, int count) {
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			BlockPos pos = new BlockPos(player.getEntityData().getInteger("wandBlockPosX"),
+					player.getEntityData().getInteger("wandBlockPosY"),
+					player.getEntityData().getInteger("wandBlockPosZ"));
+
+			switch (player.getEntityData().getString("wandCurOperation")) {
 			case "extractFromContainer":
-				IEssenceContainer container = (IEssenceContainer)player.getEntityWorld().getTileEntity(pos);
-				if (container.getEssenceStored() > 0)
-				{
+				IEssenceContainer container = (IEssenceContainer) player.getEntityWorld().getTileEntity(pos);
+				if (container.getEssenceStored() > 0) {
 					System.out.println("doing something");
 					container.subtractEssence(1);
-					player.getEntityData().setInteger("wandCurEssenceStored", player.getEntityData().getInteger("wandCurEssenceStored") + 1);
+					player.getEntityData().setInteger("wandCurEssenceStored",
+							player.getEntityData().getInteger("wandCurEssenceStored") + 1);
 				}
 				break;
 			}
 		}
-		
+
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) 
-	{
-		if (entity instanceof EntityPlayer)
-		{
-			EntityPlayer player = (EntityPlayer)entity;
-			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer")
-			{
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) {
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer") {
 				System.out.println(player.getEntityData().getInteger("wandCurEssenceStored"));
 				WandHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
 			}
@@ -133,25 +122,21 @@ public class ItemWand extends ItemBase {
 			player.getEntityData().setString("wandCurOperation", "");
 		}
 	}
-	
+
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) 
-	{
-		if (!isSelected && entity.getEntityData().getString("wandCurOperation") != "")
-		{
-			this.onPlayerStoppedUsing(stack, world,(EntityLivingBase)entity, 0);
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+		if (!isSelected && entity.getEntityData().getString("wandCurOperation") != "") {
+			this.onPlayerStoppedUsing(stack, world, (EntityLivingBase) entity, 0);
 		}
 	}
-	
-	public int getMaxItemUseDuration(ItemStack stack)
-	{
+
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
-	
+
 	@Override
 	@Nullable
-	public EnumAction getItemUseAction(ItemStack stack) 
-	{
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 
@@ -160,13 +145,10 @@ public class ItemWand extends ItemBase {
 		if (stack.hasTagCompound()) {
 			CoreType coreType = WandHelper.getCore(stack);
 			TipType tipType = WandHelper.getTip(stack);
-			
-			try
-			{
+
+			try {
 				return tipType.toString().toLowerCase() + "_" + coreType.toString().toLowerCase() + "_wand";
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				return "invalid_wand";
 			}
 		} else {

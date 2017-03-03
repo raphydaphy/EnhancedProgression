@@ -24,16 +24,22 @@ public class ModItems {
 	public static final Item CRYSTAL_SHARD_ANGELIC = new ItemBase("angelic_crystal_shard");
 	public static final Item CRYSTAL_SHARD_EXOTIC = new ItemBase("exotic_crystal_shard");
 
-	//Remember kids, always register your empty vial for that quality first, or the world will burn down.
-	
-	//Ok i will remember
-	
+	// Remember kids, always register your empty vial for that quality first, or
+	// the world will burn down.
+
+	// Ok i will remember
+
 	public static final ItemVial VIAL_EMPTY = new ItemVial("empty_vial", null, 0, VialQuality.BASIC);
-	public static final ItemVial VIAL_ANGELIC = new ItemVial("angelic_vial", Essence.ANGELIC, 1000, VialQuality.BASIC, VIAL_EMPTY);
-	public static final ItemVial VIAL_ATMOSPHERIC = new ItemVial("atmospheric_vial", Essence.ATMOSPHERIC, 1500, VialQuality.BASIC, VIAL_EMPTY);
-	public static final ItemVial VIAL_DEMONIC = new ItemVial("demonic_vial", Essence.DEMONIC, 400, VialQuality.BASIC, VIAL_EMPTY);
-	public static final ItemVial VIAL_ENERGETIC = new ItemVial("energetic_vial", Essence.ENERGETIC, 850, VialQuality.BASIC, VIAL_EMPTY);
-	public static final ItemVial VIAL_EXOTIC = new ItemVial("exotic_vial", Essence.EXOTIC, 100, VialQuality.BASIC, VIAL_EMPTY);
+	public static final ItemVial VIAL_ANGELIC = new ItemVial("angelic_vial", Essence.ANGELIC, 1000, VialQuality.BASIC,
+			VIAL_EMPTY);
+	public static final ItemVial VIAL_ATMOSPHERIC = new ItemVial("atmospheric_vial", Essence.ATMOSPHERIC, 1500,
+			VialQuality.BASIC, VIAL_EMPTY);
+	public static final ItemVial VIAL_DEMONIC = new ItemVial("demonic_vial", Essence.DEMONIC, 400, VialQuality.BASIC,
+			VIAL_EMPTY);
+	public static final ItemVial VIAL_ENERGETIC = new ItemVial("energetic_vial", Essence.ENERGETIC, 850,
+			VialQuality.BASIC, VIAL_EMPTY);
+	public static final ItemVial VIAL_EXOTIC = new ItemVial("exotic_vial", Essence.EXOTIC, 100, VialQuality.BASIC,
+			VIAL_EMPTY);
 
 	public static final Item EXTRACTION_ROD = new ItemExtractionRod();
 	public static final Item TECHNICIANS_ROD = new ItemTechniciansRod();
@@ -50,7 +56,7 @@ public class ModItems {
 	public static final Item TIP_WOODEN = new ItemBase("wand_tip_wooden", 1);
 
 	public static final Item WAND = new ItemWand("wand");
-	
+
 	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination");
 	public static final Item SPELL_FIREBALL = new ItemSpell("fireball");
 

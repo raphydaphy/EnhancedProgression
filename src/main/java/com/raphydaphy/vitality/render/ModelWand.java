@@ -92,22 +92,16 @@ public class ModelWand implements IModel, IModelCustomData {
 
 		CoreType core = CoreType.ANGELIC;
 		TipType tip = TipType.WOODEN;
-		try
-		{
+		try {
 			core = CoreType.valueOf(customData.get(CoreType.KEY));
-			
+
+		} catch (Exception e) {
+
 		}
-		catch (Exception e)
-		{
-			
-		}
-		try
-		{
+		try {
 			tip = TipType.valueOf(customData.get(TipType.KEY));
-		}
-		catch (Exception e)
-		{
-			
+		} catch (Exception e) {
+
 		}
 		System.out.println("Core: " + core + " Tip:" + tip);
 		return new ModelWand(core, tip);
@@ -157,12 +151,10 @@ public class ModelWand implements IModel, IModelCustomData {
 				coreType = WandHelper.getCore(stack);
 				tipType = WandHelper.getTip(stack);
 			}
-			if (coreType == null)
-			{
+			if (coreType == null) {
 				coreType = CoreType.ANGELIC;
 			}
-			if (tipType == null)
-			{
+			if (tipType == null) {
 				tipType = TipType.WOODEN;
 			}
 

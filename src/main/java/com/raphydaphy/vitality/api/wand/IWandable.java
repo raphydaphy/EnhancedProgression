@@ -7,5 +7,5 @@ import com.raphydaphy.vitality.api.wand.WandEnums.WandTier;
 public interface IWandable {
 
 	public WandResult onWandUse(Essence[] reqEssences, int[] costs, WandTier minTier);
-	
+
 }

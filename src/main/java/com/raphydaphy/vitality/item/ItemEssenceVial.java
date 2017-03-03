@@ -18,6 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+
 @Deprecated
 public class ItemEssenceVial extends ItemBase {
 	public ItemEssenceVial(String name) {
@@ -26,11 +27,10 @@ public class ItemEssenceVial extends ItemBase {
 
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player,
 			EnumHand hand) {
-		if (player.isSneaking()) 
-		{
-			if (worldIn.isRemote)
-			{
-				ClientProxy.setActionText("Storing " + NBTHelper.getInt(stack, "essenceStored", 0) + " / 1000 Essence",TextFormatting.DARK_PURPLE);
+		if (player.isSneaking()) {
+			if (worldIn.isRemote) {
+				ClientProxy.setActionText("Storing " + NBTHelper.getInt(stack, "essenceStored", 0) + " / 1000 Essence",
+						TextFormatting.DARK_PURPLE);
 				player.swingArm(hand);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 			}

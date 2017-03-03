@@ -30,11 +30,10 @@ public class ItemExtractionSword extends SwordBase {
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
 		if (target instanceof IMob && attacker instanceof EntityPlayer) {
-			MiscEssence.fillVial(Essence.ENERGETIC, 5, true, (EntityPlayer)attacker);
-			if (!attacker.worldObj.isRemote)
-			{
-				ParticleHelper.spawnParticlesServer(EnumParticleTypes.DAMAGE_INDICATOR, target.worldObj, true, target.posX,
-						target.posY, target.posZ, 5, 0.25);
+			MiscEssence.fillVial(Essence.ENERGETIC, 5, true, (EntityPlayer) attacker);
+			if (!attacker.worldObj.isRemote) {
+				ParticleHelper.spawnParticlesServer(EnumParticleTypes.DAMAGE_INDICATOR, target.worldObj, true,
+						target.posX, target.posY, target.posZ, 5, 0.25);
 			}
 		}
 		stack.damageItem(1, attacker);

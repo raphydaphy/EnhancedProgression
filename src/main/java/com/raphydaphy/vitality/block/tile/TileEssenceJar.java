@@ -20,40 +20,42 @@ public class TileEssenceJar extends TileEntity implements IEssenceContainer {
 		return essenceStored;
 	}
 
-	@Override @Nullable
+	@Override
+	@Nullable
 	public Essence getEssenceType() {
 		return essenceType;
 	}
-	
-	public int getCapacity(){
+
+	@Override
+	public int getCapacity() {
 		return 1000;
 	}
-	
+
 	@Override
-	public boolean addEssence(Essence essence, int toAdd){
-		if(getEssenceType() == null) setEssenceType(essence);
-		if(getEssenceStored() + toAdd > getCapacity() || essence != getEssenceType()) return false;
-		else{
+	public boolean addEssence(Essence essence, int toAdd) {
+		if (getEssenceType() == null)
+			setEssenceType(essence);
+		if (getEssenceStored() + toAdd > getCapacity() || essence != getEssenceType())
+			return false;
+		else {
 			setEssenceStored(getEssenceStored() + toAdd);
 			return true;
 		}
 	}
-	
+
 	@Override
-	public boolean subtractEssence(int toRemove){
-		if(getEssenceStored() - toRemove < 0) return false;
-		else{
+	public boolean subtractEssence(int toRemove) {
+		if (getEssenceStored() - toRemove < 0)
+			return false;
+		else {
 			setEssenceStored(getEssenceStored() - toRemove);
-			if(getEssenceStored() == 0) setEssenceType(null);
+			if (getEssenceStored() == 0)
+				setEssenceType(null);
 			return true;
 		}
 	}
-	
-	public boolean isFull(){
-		return essenceStored >= getCapacity();
-	}
-	
-	public boolean isEmpty(){
+
+	public boolean isEmpty() {
 		return essenceStored == 0 || essenceType == null;
 	}
 
@@ -120,15 +122,16 @@ public class TileEssenceJar extends TileEntity implements IEssenceContainer {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-			essenceStored = compound.getInteger(Essence.KEY);
-			essenceType = Essence.getByName(compound.getString(Essence.TYPE_KEY));
+		essenceStored = compound.getInteger(Essence.KEY);
+		essenceType = Essence.getByName(compound.getString(Essence.TYPE_KEY));
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setInteger(Essence.KEY, essenceStored);
-		if(essenceType != null) compound.setString(Essence.TYPE_KEY, essenceType.getName());
+		if (essenceType != null)
+			compound.setString(Essence.TYPE_KEY, essenceType.getName());
 		return compound;
 	}
 }
