@@ -1,20 +1,19 @@
 package com.raphydaphy.vitality.render;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import com.google.common.collect.ImmutableSet;
-import com.raphydaphy.vitality.item.ItemSpellBag;
+import com.raphydaphy.vitality.api.spell.Spell;
+import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemWand;
-import com.raphydaphy.vitality.nbt.NBTLib;
-import com.raphydaphy.vitality.network.MessageChangeSpell;
-import com.raphydaphy.vitality.network.PacketManager;
-import com.raphydaphy.vitality.registry.ModItems;
+import com.raphydaphy.vitality.util.NBTHelper;
+import com.raphydaphy.vitality.util.RenderHelper;
 
-import mezz.jei.config.KeyBindings;
-import mezz.jei.gui.GuiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -22,12 +21,9 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GuiSpellSelect extends GuiScreen 
+public class GUISpellSelect extends GuiScreen 
 {
-
-	
-	int[] spellArray;
-	int spellArrayLength;
+	List<Spell> spells = new ArrayList<Spell>();
 	int activeSector = -1;
 	
 	ItemStack wandStack;
@@ -48,29 +44,24 @@ public class GuiSpellSelect extends GuiScreen
 				return;
 			}
 		}
-		
-		try
-		{
-			spellArray = bagStack.getTagCompound().getIntArray("spells");
-		}
-		catch (NullPointerException e)
-		{
-			spellArray = null;
-		}
-		if (spellArray != null)
-		{
-			spellArrayLength = 0;
-			for (int i = 0; i < spellArray.length; i++)
-			{
-				if (spellArray[i] != 0)
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+			// get the currently selected item in the players inventory
+			ItemStack stackAt = player.inventory.getStackInSlot(i);
+			// check that the current stack isnt null to prevent
+			// NullPointerExceptions
+			if (stackAt != null) {
+				if (stackAt.getItem() instanceof ItemSpell)
 				{
-					spellArrayLength++;
+					//spells.add(Spell.)
 				}
 			}
+		}
+		if (spells.size() > 0)
+		{
 	
 			float angle = -90;
 			int radius = 75;
-			int amount = spellArrayLength;
+			int amount = spells.size();
 			
 			int screenWidth = width / 2;
 			int screenHeight = height / 2;
@@ -79,7 +70,7 @@ public class GuiSpellSelect extends GuiScreen
 			if (amount > 0)
 			{
 				float anglePer;
-				if (NBTLib.getInt(bagStack, "selectedSpell", 0) != 0)
+				if (NBTHelper.getInt(bagStack, "selectedSpell", 0) != 0)
 				{
 					anglePer = 360F / (amount - 1);
 				}
@@ -90,9 +81,9 @@ public class GuiSpellSelect extends GuiScreen
 	
 				net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
 				GlStateManager.pushMatrix();
-				GuiHelper.renderCircle(screenWidth, screenHeight);
+				RenderHelper.renderCircle(screenWidth, screenHeight);
 				GlStateManager.popMatrix();
-				activeSector = -1;
+				activeSector = -1;/*
 				for (int curItem = 0; curItem < amount; curItem++)
 				{
 					if (spellArray[curItem] == NBTLib.getInt(bagStack, "selectedSpell", 0))
@@ -140,7 +131,7 @@ public class GuiSpellSelect extends GuiScreen
 						}
 						angle += anglePer;
 					}
-				}
+				}*/
 				net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 			}
 		}
@@ -153,18 +144,18 @@ public class GuiSpellSelect extends GuiScreen
 		
 		if (activeSector != -1)
 		{
-			NBTLib.setInt(Minecraft.getMinecraft().thePlayer.getHeldItemOffhand(), "selectedSpell", spellArray[activeSector]);
-			PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(spellArray[activeSector]));
+			//NBTHelper.setInt(Minecraft.getMinecraft().thePlayer.getHeldItemOffhand(), "selectedSpell", spellArray[activeSector]);
+			//PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(spellArray[activeSector]));
 		}
 	}
 
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
-		if(!isKeyDown(KeyBindings.pickSpell))
-		{
-			mc.displayGuiScreen(null);
-		}
+		//if(!isKeyDown(KeyBindings.pickSpell))
+		//{
+		//	mc.displayGuiScreen(null);
+		//}
 		
 		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
 		for(KeyBinding k : set)

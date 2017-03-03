@@ -193,9 +193,8 @@ public class MiscEssence {
 				if (slotstack.getStack().getItem() instanceof ItemVial) {
 					// try to fill the vial with essence
 					return addEssence(slotstack.getStack(), toAdd, shouldBind, player, type, slotstack.getSlotID());
-				}
-			
-
+				
+			}
 		}
 
 		return false;
