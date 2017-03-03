@@ -2,13 +2,10 @@ package com.raphydaphy.vitality.api.essence;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.item.ItemVial.VialQuality;
-import com.raphydaphy.vitality.registry.ModItems;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -19,7 +16,7 @@ import net.minecraft.util.EnumHand;
 public class MiscEssence {
 	public static Map<String, Essence> locator = new HashMap<String, Essence>();
 	public static Map<VialQuality, Map<Essence, ItemVial>> vialMap = new HashMap<VialQuality, Map<Essence, ItemVial>>();
-
+	
 	/**
 	 * 
 	 * @param te A valid container.
@@ -119,7 +116,7 @@ public class MiscEssence {
 				} else {
 					// create a new itemstack of the vial type needed for the
 					// essence to be contained
-					ItemStack vialStack = new ItemStack(EssenceToItem(type, vial.getQuality()));
+					ItemStack vialStack = new ItemStack(essenceToVial(type, vial.getQuality()));
 					// give the stack a tag compound so that it can store NBT
 					vialStack.setTagCompound(new NBTTagCompound());
 					// set the amount of essence in the vial to the amount
@@ -137,21 +134,11 @@ public class MiscEssence {
 	}
 
 	/**
-	 * Idk the equivelent of tuples in Java so i made two methods one for
-	 * getting the int one for ItemStack. Plz no kill.
-	 * 
 	 * @param entity
-	 *            The player whos inventory you want to search.
-	 * @return Returns the slot number of the first full vial found in the
-	 *         players inventory or an empty vial slot if no full vials are
-	 *         found.
+	 *            The player whose inventory you want to search.
+	 * @return An object that contains data about the SlotID and the ItemStack in that Slot. (SlottedStack)
 	 */
-	public static int findVialSlotInInventory(Entity entity, Essence type) {
-		// Check if the entity is actually a player
-		if (entity instanceof EntityPlayer) {
-			// Cast entity to EntityPlayer so that we can access the players
-			// inventory
-			EntityPlayer player = (EntityPlayer) entity;
+	public static SlottedStack findValidVial(EntityPlayer player, Essence type, int toBeAdded) {
 			// loop through the players inventory
 			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 				// get the currently selected item in the players inventory
@@ -163,79 +150,31 @@ public class MiscEssence {
 					if (stackAt.getItem() instanceof ItemVial) {
 						// check that the vial already has some essence
 						if (((ItemVial) stackAt.getItem()).hasType()
-								&& ((ItemVial) stackAt.getItem()).getVialType() == type) {
-							return i;
+								&& ((ItemVial) stackAt.getItem()).getVialType() == type && canBeAdded(stackAt, toBeAdded)) {
+							return new SlottedStack(i, stackAt);
+						}
+						else if (!((ItemVial) stackAt.getItem()).hasType()){
+							return new SlottedStack(i, stackAt);
 						}
 					}
 				}
 			}
-
-			// if no full vials were found
-			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-				// get the currently selected item in the players inventory
-				ItemStack stackAt = player.inventory.getStackInSlot(i);
-				// check that the current stack isnt null to prevent
-				// NullPointerExceptions
-				if (stackAt != null) {
-					// check if the stack actually is a vial
-					if (stackAt.getItem() instanceof ItemVial && !(((ItemVial)stackAt.getItem()).hasType())){
-						return i;
-					}
-				}
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * Finds the first vial in the players inventory.
-	 * 
-	 * @param entity
-	 *            The player who's inventory you want to search
-	 * @return Returns the first full vial in the players inventory or an empty
-	 *         vial if no full ones are found
-	 */
-	public static ItemStack findVialStackInInventory(Entity entity, Essence type) {
-		// Check if the entity is actually a player
-		if (entity instanceof EntityPlayer) {
-			// Cast entity to EntityPlayer so that we can access the players
-			// inventory
-			EntityPlayer player = (EntityPlayer) entity;
-			// loop through the players inventory
-			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-				// get the currently selected item in the players inventory
-				ItemStack stackAt = player.inventory.getStackInSlot(i);
-				// check that the current stack isnt null to prevent
-				// NullPointerExceptions
-				if (stackAt != null) {
-					// check if the stack actually is a vial
-					if (stackAt.getItem() instanceof ItemVial) {
-						// check that the vial already has some essence
-						if (((ItemVial) stackAt.getItem()).hasType()
-								&& ((ItemVial) stackAt.getItem()).getVialType() == type) {
-							return stackAt;
-						}
-					}
-				}
-			}
-
-			// if no full vials were found
-			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-				// get the currently selected item in the players inventory
-				ItemStack stackAt = player.inventory.getStackInSlot(i);
-				// check that the current stack isnt null to prevent
-				// NullPointerExceptions
-				if (stackAt != null) {
-					// check if the stack actually is a vial
-					if (stackAt.getItem() instanceof ItemVial && !(((ItemVial)stackAt.getItem()).hasType())){
-						return stackAt;
-					}
-				}
-			}
-		}
 		return null;
 	}
+	
 
+	/**
+	 * Checks if adding this number of essence would break the container (Overflow/Underflow)
+	 * @param stack A Non-Empty Vial Stack.
+	 * @param toBeAdded Int value of how much essence to add.  Can be negative.
+	 * @return If adding this much essence would not break the container.
+	 */
+	
+	public static boolean canBeAdded(ItemStack stack, int toBeAdded){
+		int k = ItemVial.getCurrentStored(stack);
+		return (k >= 0 ) && (k <= ((ItemVial) stack.getItem()).getMaxStorage());
+	}
+	
 	/**
 	 * Tries to fill an Essence Vial with an amount of Essence The difference
 	 * betwen this and addEssence is this finds the vial from the players
@@ -251,18 +190,18 @@ public class MiscEssence {
 	 *            The player who the essence should be bound to.
 	 * @return Returns true if the vial was successfully filled with Essence
 	 */
-	public static boolean fillVial(Essence type, int toAdd, boolean shouldBind, Entity entity) {
+	public static boolean fillVial(Essence type, int toAdd, boolean shouldBind, EntityPlayer player) {
 		// Check if the entity is actually a player
-		if (entity instanceof EntityPlayer) {
 			// find a vial from the players inventory
-			ItemStack stack = findVialStackInInventory(entity, type);
+			SlottedStack slotstack = findValidVial(player, type, toAdd);
+			ItemStack stack = slotstack.getStack();
 			if (stack != null) {
 				// check that a vial was actually found
 				if (stack.getItem() instanceof ItemVial) {
 					// try to fill the vial with essence
-					return addEssence(stack, toAdd, shouldBind, entity, type, findVialSlotInInventory(entity, type));
+					return addEssence(stack, toAdd, shouldBind, player, type, slotstack.getSlotID());
 				}
-			}
+			
 
 		}
 
@@ -270,50 +209,16 @@ public class MiscEssence {
 	}
 
 	/**
-	 * Probably shit code and needs redo, but it takes an essence type and a
-	 * wand tier and returns an Item instance of a vial that stores that essence
-	 * type at that tier.
-	 * 
 	 * @param type
 	 *            The type of essence that the vial should be able to hold
 	 * @param vialTier
 	 *            The tier of essence vial you want to get
 	 * @return Returns an Item of the essence type and tier that you specified
 	 */
-	public static Item EssenceToItem(Essence type, VialQuality vialTier) {
-		// TODO: remake this coz its shit
-		switch (type) {
-		case ANGELIC:
-			switch (vialTier) {
-			case BASIC:
-				return ModItems.VIAL_ANGELIC;
-			}
-			break;
-		case ATMOSPHERIC:
-			switch (vialTier) {
-			case BASIC:
-				return ModItems.VIAL_ATMOSPHERIC;
-			}
-			break;
-		case DEMONIC:
-			switch (vialTier) {
-			case BASIC:
-				return ModItems.VIAL_DEMONIC;
-			}
-			break;
-		case ENERGETIC:
-			switch (vialTier) {
-			case BASIC:
-				return ModItems.VIAL_ENERGETIC;
-			}
-			break;
-		case EXOTIC:
-			switch (vialTier) {
-			case BASIC:
-				return ModItems.VIAL_EXOTIC;
-			}
-			break;
-		}
-		return null;
+	public static Item essenceToVial(Essence type, VialQuality vialTier) {
+		return vialMap.get(vialTier).get(type);
 	}
+	
+	
+	
 }

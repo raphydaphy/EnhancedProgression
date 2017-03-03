@@ -11,9 +11,9 @@ public enum Essence implements IStringSerializable {
 			WandTier.BASIC,
 			-1), ENERGETIC("energetic", WandTier.BASIC, -2000), EXOTIC("exotic", WandTier.BASIC, -2000),;
 
-	String name;
-	WandTier accessTier;
-	int empoweredDimensionID;
+	private String name;
+	private WandTier accessTier;
+	private int empoweredDimensionID;
 
 	/**
 	 * Use this for single containers. Use getMultiKey() for multiples. Used to
