@@ -78,6 +78,7 @@ public class ItemWand extends ItemBase {
 					IEssenceContainer container = (IEssenceContainer)tile;
 					if (container.getEssenceStored() > 0 && WandHelper.getCore(stack).acceptedTypes().contains(container.getEssenceType()))
 					{
+						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
 						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
 						player.getEntityData().setInteger("wandBlockPosY", pos.getY());
@@ -97,8 +98,10 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase entity, int count) 
 	{
+		System.out.println("using");
 		if (entity instanceof EntityPlayer)
 		{
+			
 			EntityPlayer player = (EntityPlayer)entity;
 			BlockPos pos = new BlockPos(player.getEntityData().getInteger("wandBlockPosX"),player.getEntityData().getInteger("wandBlockPosY"),player.getEntityData().getInteger("wandBlockPosZ"));
 			
@@ -108,7 +111,6 @@ public class ItemWand extends ItemBase {
 				IEssenceContainer container = (IEssenceContainer)player.getEntityWorld().getTileEntity(pos);
 				if (container.getEssenceStored() > 0)
 				{
-					System.out.println("doing something");
 					container.subtractEssence(1);
 					player.getEntityData().setInteger("wandCurEssenceStored", player.getEntityData().getInteger("wandCurEssenceStored") + 1);
 				}
@@ -121,6 +123,7 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) 
 	{
+		System.out.println("stopped");
 		if (entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)entity;
@@ -139,7 +142,7 @@ public class ItemWand extends ItemBase {
 	{
 		if (!isSelected && entity.getEntityData().getString("wandCurOperation") != "")
 		{
-			this.onPlayerStoppedUsing(stack, world,(EntityLivingBase)entity, 0);
+			//this.onPlayerStoppedUsing(stack, world,(EntityLivingBase)entity, 0);
 		}
 	}
 	
