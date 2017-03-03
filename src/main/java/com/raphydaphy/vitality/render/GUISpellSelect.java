@@ -27,6 +27,7 @@ import net.minecraft.item.ItemStack;
 public class GUISpellSelect extends GuiScreen 
 {
 	private int activeSector = -1;
+	private List<Spell> spells = new ArrayList<Spell>();
 	
 	private ItemStack wandStack;
 
@@ -34,7 +35,7 @@ public class GUISpellSelect extends GuiScreen
 	public void drawScreen(int mx, int my, float partialTicks) 
 	{
 		super.drawScreen(mx, my, partialTicks);
-		List<Spell> spells = new ArrayList<Spell>()
+		
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		wandStack = player.getHeldItemMainhand();
 		if (!(wandStack.getItem() instanceof ItemWand))
@@ -45,19 +46,22 @@ public class GUISpellSelect extends GuiScreen
 				return;
 			}
 		}
-		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			// get the currently selected item in the players inventory
-			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			// check that the current stack isnt null to prevent
-			// NullPointerExceptions
-			if (stackAt != null) {
-				if (stackAt.getItem() instanceof ItemSpell)
-				{
-					if (!(spells.contains(((ItemSpell)stackAt.getItem()).toSpell())))
+		if (Minecraft.getMinecraft().theWorld.getTotalWorldTime() % 50 ==0 || spells.size() == 0)
+		{
+			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+				// get the currently selected item in the players inventory
+				ItemStack stackAt = player.inventory.getStackInSlot(i);
+				// check that the current stack isnt null to prevent
+				// NullPointerExceptions
+				if (stackAt != null) {
+					if (stackAt.getItem() instanceof ItemSpell)
 					{
-						spells.add(((ItemSpell)stackAt.getItem()).toSpell());
+						if (!(spells.contains(((ItemSpell)stackAt.getItem()).toSpell())))
+						{
+							spells.add(((ItemSpell)stackAt.getItem()).toSpell());
+						}
+						
 					}
-					
 				}
 			}
 		}

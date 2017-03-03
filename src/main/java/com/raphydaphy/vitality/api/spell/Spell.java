@@ -29,6 +29,9 @@ public enum Spell implements IStringSerializable{
 		this.name = name;
 		this.id = id;
 		this.item = spellItem;
+		
+		// prints true
+		System.out.println(spellItem == null);
 	}
 	
 	@Override
