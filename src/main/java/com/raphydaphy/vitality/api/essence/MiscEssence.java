@@ -48,7 +48,7 @@ public class MiscEssence {
 		Essence typeVial = vialI.getVialType();
 		int currentInVial = 0;
 		if(vialI.hasType()) currentInVial = ItemVial.getCurrentStored(vial);
-		if(typeContainer == typeVial && currentInVial + toRemove <= vialI.getMaxStorage() && te.subtractEssence(toRemove)){
+		if(typeContainer == typeVial && (currentInVial + toRemove) <= vialI.getMaxStorage() && te.subtractEssence(toRemove)){
 			vial.getTagCompound().setInteger(Essence.KEY, currentInVial + toRemove);
 			return true;
 		}
@@ -89,17 +89,15 @@ public class MiscEssence {
 	 * @return Always returns true unless the essence vial was full or not a
 	 *         valid vial item
 	 */
-	public static boolean addEssence(ItemStack stack, int toAdd, boolean shouldBind, Entity entity, Essence type,
+	public static boolean addEssence(ItemStack stack, int toAdd, boolean shouldBind, EntityPlayer player, Essence type,
 			@Nullable /* set to 0 for null */ int slot) {
 		// if the essence should bind to the players soul
 		if (shouldBind) {
 			// bind the essence to the players soul-bound essence
 			System.out.println(type.getMultiKey());
-			entity.getEntityData().setInteger(type.getMultiKey(),
-					entity.getEntityData().getInteger(type.getMultiKey()) + toAdd);
+			player.getEntityData().setInteger(type.getMultiKey(),
+					player.getEntityData().getInteger(type.getMultiKey()) + toAdd);
 		}
-		if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
 			if (stack.getItem() instanceof ItemVial) {
 				ItemVial vial = (ItemVial) stack.getItem();
 				// if the vial has some essence in it
@@ -129,7 +127,6 @@ public class MiscEssence {
 					return true;
 				}
 			}
-		}
 		return false;
 	}
 
@@ -144,10 +141,8 @@ public class MiscEssence {
 				// get the currently selected item in the players inventory
 				ItemStack stackAt = player.inventory.getStackInSlot(i);
 				// check that the current stack isnt null to prevent
-				// NullPointerExceptions
-				if (stackAt != null) {
 					// check if the stack actually is a vial
-					if (stackAt.getItem() instanceof ItemVial) {
+					if (stackAt != null && stackAt.getItem() instanceof ItemVial) {
 						// check that the vial already has some essence
 						if (((ItemVial) stackAt.getItem()).hasType()
 								&& ((ItemVial) stackAt.getItem()).getVialType() == type && canBeAdded(stackAt, toBeAdded)) {
@@ -157,7 +152,6 @@ public class MiscEssence {
 							return new SlottedStack(i, stackAt);
 						}
 					}
-				}
 			}
 		return null;
 	}
@@ -194,12 +188,11 @@ public class MiscEssence {
 		// Check if the entity is actually a player
 			// find a vial from the players inventory
 			SlottedStack slotstack = findValidVial(player, type, toAdd);
-			ItemStack stack = slotstack.getStack();
-			if (stack != null) {
+			if (slotstack.exists()) {
 				// check that a vial was actually found
-				if (stack.getItem() instanceof ItemVial) {
+				if (slotstack.getStack().getItem() instanceof ItemVial) {
 					// try to fill the vial with essence
-					return addEssence(stack, toAdd, shouldBind, player, type, slotstack.getSlotID());
+					return addEssence(slotstack.getStack(), toAdd, shouldBind, player, type, slotstack.getSlotID());
 				}
 			
 
