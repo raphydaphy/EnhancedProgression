@@ -2,8 +2,9 @@ package com.raphydaphy.vitality.recipe;
 
 import javax.annotation.Nullable;
 
+import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.wand.WandEnums;
 import com.raphydaphy.vitality.registry.ModItems;
-import com.raphydaphy.vitality.util.NBTHelper;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -22,9 +23,9 @@ public class RecipeWand implements IRecipe {
 
 		int cores = 0;
 		int tips = 0;
-		String coreType = "Unknown";
-		String tipType1 = "Unknown";
-		String tipType2 = "Unknown";
+		WandEnums.CoreType coreType = null;
+		WandEnums.TipType tipType1 = null;
+		WandEnums.TipType tipType2 = null;
 
 		for (int k1 = 0; k1 < inv.getSizeInventory(); ++k1) {
 			ItemStack itemstack = inv.getStackInSlot(k1);
@@ -33,27 +34,27 @@ public class RecipeWand implements IRecipe {
 				if (itemstack.getItem() == ModItems.TIP_WOODEN) {
 					tips++;
 					if (tips == 1) {
-						tipType1 = "Wooden";
+						tipType1 = WandEnums.TipType.WOODEN;
 					} else if (tips == 2) {
-						tipType2 = "Wooden";
+						tipType2 = WandEnums.TipType.WOODEN;
 					}
 				}
 
 				if (itemstack.getItem() == ModItems.CORE_ANGELIC) {
 					cores++;
-					coreType = "Angelic";
+					coreType = WandEnums.CoreType.ANGELIC;
 				} else if (itemstack.getItem() == ModItems.CORE_ATMOSPHERIC) {
 					cores++;
-					coreType = "Atmospheric";
+					coreType = WandEnums.CoreType.ATMOSPHERIC;
 				} else if (itemstack.getItem() == ModItems.CORE_DEMONIC) {
 					cores++;
-					coreType = "Demonic";
+					coreType = WandEnums.CoreType.DEMONIC;
 				} else if (itemstack.getItem() == ModItems.CORE_ENERGETIC) {
 					cores++;
-					coreType = "Energetic";
+					coreType = WandEnums.CoreType.ENERGETIC;
 				} else if (itemstack.getItem() == ModItems.CORE_EXOTIC) {
 					cores++;
-					coreType = "Exotic";
+					coreType = WandEnums.CoreType.EXOTIC;
 				}
 			}
 		}
@@ -69,19 +70,19 @@ public class RecipeWand implements IRecipe {
 		resultItem = new ItemStack(ModItems.WAND);
 		resultItem.setStackDisplayName(tipType1 + " Tipped " + coreType + " Wand");
 		resultItem.setTagCompound(new NBTTagCompound());
-		resultItem.getTagCompound().setString("coreType", coreType);
-		resultItem.getTagCompound().setString("tipType", tipType1);
-		resultItem.getTagCompound().setInteger("essenceStored", 0);
+		resultItem.getTagCompound().setString(WandEnums.CoreType.KEY, coreType.toString());
+		resultItem.getTagCompound().setString(WandEnums.TipType.KEY, tipType1.toString());
+		resultItem.getTagCompound().setInteger(Essence.KEY, 0);
 
 		int maxEssence = 0;
 		switch (tipType1) {
-		case "Wooden":
+		case WOODEN:
 			maxEssence = 1000;
 			break;
 		default:
 			return false;
 		}
-		NBTHelper.setInt(resultItem, "maxEssence", maxEssence);
+		resultItem.getTagCompound().setInteger(Essence.MAX_KEY, maxEssence);
 		return true;
 	}
 

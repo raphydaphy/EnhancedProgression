@@ -6,7 +6,6 @@ import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.api.essence.IEssenceContainer;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -30,6 +29,7 @@ public class TileEssenceJar extends TileEntity implements IEssenceContainer {
 		return 1000;
 	}
 	
+	@Override
 	public boolean addEssence(Essence essence, int toAdd){
 		if(getEssenceType() == null) setEssenceType(essence);
 		if(getEssenceStored() + toAdd > getCapacity() || essence != getEssenceType()) return false;
@@ -39,6 +39,7 @@ public class TileEssenceJar extends TileEntity implements IEssenceContainer {
 		}
 	}
 	
+	@Override
 	public boolean subtractEssence(int toRemove){
 		if(getEssenceStored() - toRemove < 0) return false;
 		else{

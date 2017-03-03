@@ -26,6 +26,12 @@ public enum Essence implements IStringSerializable{
 	public static final String KEY = "stored_essence"; 
 	
 	/**
+	 * The maximum amount of essence a single container can store
+	 * Currently only used for wands
+	 */
+	public static final String MAX_KEY = "max_essence"; 
+	
+	/**
 	 * Use this for single containers, Multi-Containers should just rely on checking ints by getMultiKey().  
 	 * Used to get/set the type of essence in an IEssenceContainer.
 	 */

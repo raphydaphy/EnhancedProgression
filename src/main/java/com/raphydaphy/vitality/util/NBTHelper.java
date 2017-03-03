@@ -4,6 +4,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+// rip it died 
+// poor nbt helper
+// he tried
 @Deprecated
 public final class NBTHelper {
 

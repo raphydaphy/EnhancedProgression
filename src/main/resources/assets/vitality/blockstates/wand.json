@@ -7,8 +7,8 @@
 
             "__comment": "this custom data is the individual module translations and scales for each tool type from the same base module textures",
             "custom": {
-                "coreType": "Angelic", 
-                "tipType": "Wooden"
+                "core_type": "Angelic", 
+                "tip_type": "Wooden"
             }
         }
 

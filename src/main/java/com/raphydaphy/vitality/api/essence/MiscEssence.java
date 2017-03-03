@@ -95,9 +95,11 @@ public class MiscEssence {
 	/**
 	 * Idk the equivelent of tuples in Java so i made two methods
 	 * one for getting the int one for ItemStack. Plz no kill.
-	 * @param entity
-	 * @return
-	 */
+	 * @param entity The player whos inventory you want to search.
+	 * @return Returns the slot number of the first full vial found 
+	 * 		   in the players inventory or an empty vial slot if no
+	 * 	 	   full vials are found.
+	 */ 
 	public static int findVialSlotInInventory(Entity entity) {
 		// Check if the entity is actually a player
 		if (entity instanceof EntityPlayer)
@@ -139,6 +141,9 @@ public class MiscEssence {
 	
 	/**
 	 * Finds the first vial in the players inventory.
+	 * @param entity The player who's inventory you want to search
+	 * @return Returns the first full vial in the players inventory
+	 * 		   or an empty vial if no full ones are found
 	 */
 	public static ItemStack findVialStackInInventory(Entity entity) {
 		// Check if the entity is actually a player

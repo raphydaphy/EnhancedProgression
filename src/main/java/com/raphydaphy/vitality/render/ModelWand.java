@@ -15,6 +15,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
+import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
+import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
+import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.init.Reference;
 
 import net.minecraft.block.state.IBlockState;
@@ -43,14 +46,14 @@ import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 public class ModelWand implements IModel, IModelCustomData {
-	public static final IModel MODEL = new ModelWand("Demonic", "Wooden");
+	public static final IModel MODEL = new ModelWand(CoreType.DEMONIC, TipType.WOODEN);
 	private final ResourceLocation resourceCore;
 	private final ResourceLocation resourceTip;
 
-	public ModelWand(String coreType, String tipType) {
+	public ModelWand(CoreType coreType, TipType tipType) {
 		System.out.println(coreType);
-		this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.toLowerCase());
-		this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.toLowerCase());
+		this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.toString().toLowerCase());
+		this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.toString().toLowerCase());
 	}
 
 	@Override
@@ -87,8 +90,25 @@ public class ModelWand implements IModel, IModelCustomData {
 
 		System.out.println(customData.size());
 
-		String core = customData.get("coreType");
-		String tip = customData.get("tipType");
+		CoreType core = CoreType.ANGELIC;
+		TipType tip = TipType.WOODEN;
+		try
+		{
+			core = CoreType.valueOf(customData.get(CoreType.KEY));
+			
+		}
+		catch (Exception e)
+		{
+			
+		}
+		try
+		{
+			tip = TipType.valueOf(customData.get(TipType.KEY));
+		}
+		catch (Exception e)
+		{
+			
+		}
 		System.out.println("Core: " + core + " Tip:" + tip);
 		return new ModelWand(core, tip);
 	}
@@ -131,21 +151,29 @@ public class ModelWand implements IModel, IModelCustomData {
 		@Override
 		public IBakedModel handleItemState(IBakedModel originalModelIn, ItemStack stack, World world,
 				EntityLivingBase entity) {
-			String coreType = "";
-			String tipType = "";
+			CoreType coreType = null;
+			TipType tipType = null;
 			if (stack.hasTagCompound()) {
-				coreType = stack.getTagCompound().getString("coreType");
-				tipType = stack.getTagCompound().getString("tipType");
+				coreType = WandHelper.getCore(stack);
+				tipType = WandHelper.getTip(stack);
+			}
+			if (coreType == null)
+			{
+				coreType = CoreType.ANGELIC;
+			}
+			if (tipType == null)
+			{
+				tipType = TipType.WOODEN;
 			}
 
-			String key = coreType + tipType;
+			String key = coreType.toString() + tipType.toString();
 
 			BakedWand originalModel = (BakedWand) originalModelIn;
 
 			if (originalModel.cache.containsKey(key) == false) {
 				ImmutableMap.Builder<String, String> map = ImmutableMap.builder();
-				map.put("coreType", coreType);
-				map.put("tipType", tipType);
+				map.put(CoreType.KEY, coreType.toString());
+				map.put(TipType.KEY, tipType.toString());
 
 				IModel model = originalModel.parent.process(map.build());
 

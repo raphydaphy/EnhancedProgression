@@ -3,9 +3,11 @@ package com.raphydaphy.vitality.item;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.raphydaphy.vitality.api.essence.EssenceHelper;
 import com.raphydaphy.vitality.api.essence.IEssenceContainer;
 import com.raphydaphy.vitality.api.wand.IWandable;
+import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
+import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
+import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
 import com.raphydaphy.vitality.util.MeshHelper;
@@ -46,12 +48,11 @@ public class ItemWand extends ItemBase {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
-			// i want to remove the [] brackets from the essence name but not sure how rn
 			if (world.isRemote)
 			{
-				ClientProxy.setActionText("Storing " + TextFormatting.BOLD.toString() + EssenceHelper.getEssenceStored(stack) + " / "
-									   				 + EssenceHelper.getMaxEssence(stack) + " " + TextFormatting.RESET.toString() + TextFormatting.GOLD.toString()
-									   				 + EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).get(0)
+				ClientProxy.setActionText("Storing " + TextFormatting.BOLD.toString() + WandHelper.getEssenceStored(stack) + " / "
+									   				 + WandHelper.getMaxEssence(stack) + " " + TextFormatting.RESET.toString() + TextFormatting.GOLD.toString()
+									   				 + WandHelper.getCore(stack).acceptedTypes().get(0)
 									   				 + " Essence", TextFormatting.GOLD);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
@@ -75,14 +76,14 @@ public class ItemWand extends ItemBase {
 				if (tile instanceof IEssenceContainer)
 				{
 					IEssenceContainer container = (IEssenceContainer)tile;
-					if (container.getEssenceStored() > 0 && EssenceHelper.coreToAcceptedEssenceTypesList(EssenceHelper.getWandCore(stack)).contains(container.getEssenceType()))
+					if (container.getEssenceStored() > 0 && WandHelper.getCore(stack).acceptedTypes().contains(container.getEssenceType()))
 					{
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
 						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
 						player.getEntityData().setInteger("wandBlockPosY", pos.getY());
 						player.getEntityData().setInteger("wandBlockPosZ", pos.getZ());
 						player.getEntityData().setString("wandCurEssenceType", container.getEssenceType().getName());
-						player.getEntityData().setInteger("wandCurEssenceStored", EssenceHelper.getEssenceStored(stack));
+						player.getEntityData().setInteger("wandCurEssenceStored", WandHelper.getEssenceStored(stack));
 						player.setActiveHand(hand);
 						return EnumActionResult.SUCCESS;
 					}
@@ -107,7 +108,8 @@ public class ItemWand extends ItemBase {
 				IEssenceContainer container = (IEssenceContainer)player.getEntityWorld().getTileEntity(pos);
 				if (container.getEssenceStored() > 0)
 				{
-					container.setEssenceStored(container.getEssenceStored() - 1);
+					System.out.println("doing something");
+					container.subtractEssence(1);
 					player.getEntityData().setInteger("wandCurEssenceStored", player.getEntityData().getInteger("wandCurEssenceStored") + 1);
 				}
 				break;
@@ -125,7 +127,7 @@ public class ItemWand extends ItemBase {
 			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer")
 			{
 				System.out.println(player.getEntityData().getInteger("wandCurEssenceStored"));
-				EssenceHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
+				WandHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
 			}
 			player.getEntityData().setString("wandCurEssenceType", "");
 			player.getEntityData().setString("wandCurOperation", "");
@@ -156,10 +158,17 @@ public class ItemWand extends ItemBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		if (stack.hasTagCompound()) {
-			String coreType = stack.getTagCompound().getString("coreType");
-			String tipType = stack.getTagCompound().getString("tipType");
-
-			return tipType.toLowerCase() + "_" + coreType.toLowerCase() + "_wand";
+			CoreType coreType = WandHelper.getCore(stack);
+			TipType tipType = WandHelper.getTip(stack);
+			
+			try
+			{
+				return tipType.toString().toLowerCase() + "_" + coreType.toString().toLowerCase() + "_wand";
+			}
+			catch (Exception e)
+			{
+				return "invalid_wand";
+			}
 		} else {
 			return "invalid_wand";
 		}
