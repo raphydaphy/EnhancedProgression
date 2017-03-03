@@ -6,13 +6,13 @@ import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
 
 public enum Spell implements IStringSerializable{
-	ILLUMINATION("angelic",0,ModItems.SPELL_ILLUMINATION),
-	FIREBALL("atmospheric",1,ModItems.SPELL_FIREBALL),
+	ILLUMINATION("Illumination",0,ModItems.SPELL_ILLUMINATION),
+	FIREBALL("Fireball",1,ModItems.SPELL_FIREBALL),
 	;
 
-	String name;
-	int id;
-	Item item;
+	private String name;
+	private int id;
+	private Item item;
 	
 	/**
 	 * Points to the currently selected spell for any wand ItemStack

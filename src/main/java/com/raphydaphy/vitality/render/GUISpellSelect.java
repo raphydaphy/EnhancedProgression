@@ -102,9 +102,9 @@ public class GUISpellSelect extends GuiScreen
 						GlStateManager.scale(2, 2, 2);
 						if (wandStack.getTagCompound().getString(Spell.ACTIVE_KEY) != "")
 						{
-							if (Spell.valueOf(wandStack.getTagCompound().getString(Spell.ACTIVE_KEY)).getAsItem() != null)
+							if (SpellHelper.spellToItem(spells.get(curItem)) != null)
 							{
-								mc.getRenderItem().renderItemIntoGUI(new ItemStack(Spell.valueOf(wandStack.getTagCompound().getString(Spell.ACTIVE_KEY)).getAsItem()), 0, 0);
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(SpellHelper.spellToItem(spells.get(curItem))), 0, 0);
 							}
 						}
 						GlStateManager.translate(-screenWidth, -screenHeight, 0);
@@ -121,11 +121,11 @@ public class GUISpellSelect extends GuiScreen
 							GlStateManager.pushMatrix();
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.7, 1.7, 1.7);
-							System.out.println(spells.get(curItem).getAsItem().getUnlocalizedName());
-							if (spells.get(curItem).getAsItem() != null)
+							
+							if (SpellHelper.spellToItem(spells.get(curItem)) != null)
 							{
 								
-								mc.getRenderItem().renderItemIntoGUI(new ItemStack(spells.get(curItem).getAsItem()), 0, 0);
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(SpellHelper.spellToItem(spells.get(curItem))), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
@@ -137,9 +137,9 @@ public class GUISpellSelect extends GuiScreen
 							GlStateManager.pushMatrix();
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.5, 1.5, 1.5);
-							if (spells.get(curItem).getAsItem() != null)
+							if (SpellHelper.spellToItem(spells.get(curItem)) != null)
 							{
-								mc.getRenderItem().renderItemIntoGUI(new ItemStack(spells.get(curItem).getAsItem()), 0, 0);
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(SpellHelper.spellToItem(spells.get(curItem))), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
