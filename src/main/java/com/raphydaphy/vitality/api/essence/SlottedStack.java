@@ -18,8 +18,4 @@ public class SlottedStack{
 	public int getSlotID(){
 		return slot;
 	}
-	
-	public boolean exists(){
-		return stack != null;
-	}
 }

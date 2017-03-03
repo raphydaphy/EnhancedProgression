@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.item.ItemVial.VialQuality;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,7 +25,7 @@ public class MiscEssence {
 	 */
 	public static boolean fillContainerFromVial(IEssenceContainer te, ItemStack vial, int toAdd) {
 		int currentInVial = ItemVial.getCurrentStored(vial);
-		if(te.addEssence(((ItemVial) vial.getItem()).getVialType(), toAdd)){
+		if(currentInVial - toAdd >= 0 && te.addEssence(((ItemVial) vial.getItem()).getVialType(), toAdd)){
 			vial.getTagCompound().setInteger(Essence.KEY, currentInVial - toAdd);
 			return true;
 		}
@@ -165,7 +164,7 @@ public class MiscEssence {
 	 */
 	
 	public static boolean canBeAdded(ItemStack stack, int toBeAdded){
-		int k = ItemVial.getCurrentStored(stack);
+		int k = ItemVial.getCurrentStored(stack) + toBeAdded;
 		return (k >= 0 ) && (k <= ((ItemVial) stack.getItem()).getMaxStorage());
 	}
 	
@@ -188,7 +187,7 @@ public class MiscEssence {
 		// Check if the entity is actually a player
 			// find a vial from the players inventory
 			SlottedStack slotstack = findValidVial(player, type, toAdd);
-			if (slotstack.exists()) {
+			if (slotstack != null) {
 				// check that a vial was actually found
 				if (slotstack.getStack().getItem() instanceof ItemVial) {
 					// try to fill the vial with essence

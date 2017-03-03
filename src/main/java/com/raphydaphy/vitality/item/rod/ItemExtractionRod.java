@@ -48,13 +48,13 @@ public class ItemExtractionRod extends ItemBase {
 		if (player.isSneaking()) {
 			if (worldIn.isRemote) {
 				ClientProxy.setActionText("Angelic: " + player.getEntityData().getInteger(Essence.ANGELIC.getMultiKey())
-						+ TextFormatting.DARK_PURPLE.toString() + " Atmospheric: "
+						+ TextFormatting.DARK_PURPLE + " Atmospheric: "
 						+ player.getEntityData().getInteger(Essence.ATMOSPHERIC.getMultiKey())
-						+ TextFormatting.RED.toString() + " Demonic: "
+						+ TextFormatting.RED + " Demonic: "
 						+ player.getEntityData().getInteger(Essence.DEMONIC.getMultiKey())
-						+ TextFormatting.DARK_AQUA.toString() + " Energetic: "
+						+ TextFormatting.DARK_AQUA + " Energetic: "
 						+ player.getEntityData().getInteger(Essence.ENERGETIC.getMultiKey())
-						+ TextFormatting.DARK_GREEN.toString() + " Exotic: "
+						+ TextFormatting.DARK_GREEN + " Exotic: "
 						+ player.getEntityData().getInteger(Essence.EXOTIC.getMultiKey()), TextFormatting.AQUA);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
@@ -121,7 +121,7 @@ public class ItemExtractionRod extends ItemBase {
 			stack.setTagInfo("xPos", new NBTTagInt(pos.getX()));
 			stack.setTagInfo("yPos", new NBTTagInt(pos.getY()));
 			stack.setTagInfo("zPos", new NBTTagInt(pos.getZ()));
-			stack.setTagInfo("essenceType", new NBTTagString(Essence.ANGELIC.toString()));
+			stack.setTagInfo(Essence.TYPE_KEY, new NBTTagString(Essence.ANGELIC.getName()));
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 50);
 			return EnumActionResult.SUCCESS;
@@ -133,7 +133,7 @@ public class ItemExtractionRod extends ItemBase {
 			stack.setTagInfo("xPos", new NBTTagInt(pos.getX()));
 			stack.setTagInfo("yPos", new NBTTagInt(pos.getY()));
 			stack.setTagInfo("zPos", new NBTTagInt(pos.getZ()));
-			stack.setTagInfo("essenceType", new NBTTagString(Essence.EXOTIC.toString()));
+			stack.setTagInfo(Essence.TYPE_KEY, new NBTTagString(Essence.EXOTIC.getName()));
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(this, 65);
 			return EnumActionResult.SUCCESS;
@@ -159,9 +159,9 @@ public class ItemExtractionRod extends ItemBase {
 						world.setBlockState(pos, Blocks.STONE.getDefaultState());
 						world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
 					}
-					if (stack.getTagCompound().getString("essenceType") == Essence.ANGELIC.toString()) {
+					if (stack.getTagCompound().getString(Essence.TYPE_KEY).equals(Essence.ANGELIC.getName())) {
 						MiscEssence.fillVial(Essence.ANGELIC, 15, true, (EntityPlayer) entity);
-					} else if (stack.getTagCompound().getString("essenceType") == Essence.EXOTIC.toString()) {
+					} else if (stack.getTagCompound().getString(Essence.TYPE_KEY).equals(Essence.EXOTIC.getName())) {
 						MiscEssence.fillVial(Essence.EXOTIC, 30, true, (EntityPlayer)entity);
 					}
 				} else {

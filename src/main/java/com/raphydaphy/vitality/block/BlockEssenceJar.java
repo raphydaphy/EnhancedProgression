@@ -120,10 +120,11 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
 			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		boolean flag = false;
-		if (heldItem == null) {
-			return false;
-		} else if (heldItem.getItem() instanceof ItemVial) {
-				TileEssenceJar te = getTE(world, pos);
+		TileEssenceJar te = getTE(world, pos);
+		if (heldItem == null && world.isRemote && hand == EnumHand.MAIN_HAND) {
+			ClientProxy.setActionText("Storing " + te.getEssenceStored() + " / " + te.getCapacity() + " " + te.getEssenceType().getName() + " Essence",
+					te.getEssenceType().getColor());
+		} else if (heldItem != null && heldItem.getItem() instanceof ItemVial) {
 				ItemVial theVial = ((ItemVial) heldItem.getItem());
 				Essence vialType = theVial.getVialType();
 				Essence jarType = te.getEssenceType();
@@ -146,8 +147,8 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 				}
 			if (world.isRemote && ((ItemVial) heldItem.getItem()).hasType()) {
 				ClientProxy.setActionText(
-						"Storing " + heldItem.getTagCompound().getInteger(Essence.KEY) + " / " + ((ItemVial) heldItem.getItem()).getMaxStorage() + " Essence",
-						TextFormatting.DARK_PURPLE);
+						"Storing " + heldItem.getTagCompound().getInteger(Essence.KEY) + " / " + ((ItemVial) heldItem.getItem()).getMaxStorage() + " " + ((ItemVial) heldItem.getItem()).getVialType().getName() + " Essence",
+						((ItemVial) heldItem.getItem()).getVialType().getColor());
 			}
 		}
 		return flag;

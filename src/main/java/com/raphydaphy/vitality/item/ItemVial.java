@@ -114,8 +114,8 @@ public class ItemVial extends ItemBase {
 		if (player.isSneaking()) {
 			if (worldIn.isRemote && hasType()) {
 				ClientProxy.setActionText(
-						"Storing " + stack.getTagCompound().getInteger(Essence.KEY) + " / " + maxStored + " Essence",
-						TextFormatting.DARK_PURPLE);
+						"Storing " + stack.getTagCompound().getInteger(Essence.KEY) + " / " + maxStored + " " + type.getName() + " Essence",
+						type.getColor());
 				player.swingArm(hand);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 			}

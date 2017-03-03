@@ -5,15 +5,19 @@ import javax.annotation.Nullable;
 import com.raphydaphy.vitality.api.wand.WandEnums.WandTier;
 
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.text.TextFormatting;
 
 public enum Essence implements IStringSerializable {
-	ANGELIC("angelic", WandTier.BASIC, 1), ATMOSPHERIC("atmospheric", WandTier.BASIC, 0), DEMONIC("demonic",
-			WandTier.BASIC,
-			-1), ENERGETIC("energetic", WandTier.BASIC, -2000), EXOTIC("exotic", WandTier.BASIC, -2000),;
+	ANGELIC("Angelic", WandTier.BASIC, 1, TextFormatting.AQUA), 
+	ATMOSPHERIC("Atmospheric", WandTier.BASIC, 0, TextFormatting.DARK_PURPLE), 
+	DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED), 
+	ENERGETIC("Energetic", WandTier.BASIC, -2000, TextFormatting.DARK_AQUA), 
+	EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN),;
 
 	private String name;
 	private WandTier accessTier;
 	private int empoweredDimensionID;
+	private TextFormatting format;
 
 	/**
 	 * Use this for single containers. Use getMultiKey() for multiples. Used to
@@ -35,9 +39,10 @@ public enum Essence implements IStringSerializable {
 	public static final String TYPE_KEY = "essence_type";
 
 	Essence(String name, WandTier accessTier,
-			@Nullable /* well not really nullable but put -2000 for none */ int empoweredDimensionID) {
+			@Nullable /* well not really nullable but put -2000 for none */ int empoweredDimensionID, TextFormatting format) {
 		this.name = name;
 		this.accessTier = accessTier;
+		this.format = format;
 		if (empoweredDimensionID != -2000)
 			this.empoweredDimensionID = empoweredDimensionID; // this doesnt do
 																// anything rn
@@ -50,6 +55,10 @@ public enum Essence implements IStringSerializable {
 	@Override
 	public String getName() {
 		return name;
+	}
+	
+	public TextFormatting getColor(){
+		return format;
 	}
 
 	public static Essence getByName(String nameIn) {
