@@ -121,6 +121,7 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		boolean flag = false;
 		TileEssenceJar te = getTE(world, pos);
+		System.out.println(te.getEssenceStored() + " <== stored | world ==> " + world.isRemote);
 		if (heldItem == null && world.isRemote && hand == EnumHand.MAIN_HAND) {
 			ClientProxy.setActionText("Storing " + te.getEssenceStored() + " / " + te.getCapacity() + " " + te.getEssenceType().getName() + " Essence",
 					te.getEssenceType().getColor());
