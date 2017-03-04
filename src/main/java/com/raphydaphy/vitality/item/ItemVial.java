@@ -44,9 +44,9 @@ public class ItemVial extends ItemBase {
 	 * @param maxStored
 	 *            - The maximum amount this vial can hold.
 	 */
-	public ItemVial(String name, Essence type, int maxStored, VialQuality quality) {
+	public ItemVial(String name, Essence type, VialQuality quality) {
 		super(name, 1, true);
-		this.maxStored = maxStored;
+		this.maxStored = quality.getMaxStorage();
 		this.type = type;
 		this.quality = quality;
 		Map<Essence, ItemVial> map = MiscEssence.vialMap.get(quality);
@@ -72,9 +72,9 @@ public class ItemVial extends ItemBase {
 	 * @param emptyVial
 	 *            - The item representing the Empty Vial for this group.
 	 */
-	public ItemVial(String name, @Nonnull Essence type, int maxStored, VialQuality quality,
+	public ItemVial(String name, @Nonnull Essence type, VialQuality quality,
 			@Nonnull ItemVial emptyVial) {
-		this(name, type, maxStored, quality);
+		this(name, type, quality);
 		this.emptyVial = emptyVial;
 	}
 
@@ -160,7 +160,16 @@ public class ItemVial extends ItemBase {
 	}
 
 	public enum VialQuality {
-		BASIC, EMPOWERED,
+		BASIC(300), EMPOWERED(600);
+		
+		int max;
+		private VialQuality(int maxStored){
+			max = maxStored;
+		}
+		
+		public int getMaxStorage(){
+			return max;
+		}
 	}
 
 }

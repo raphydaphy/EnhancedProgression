@@ -1,5 +1,6 @@
 package com.raphydaphy.vitality.block;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -21,11 +22,13 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -72,6 +75,44 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB_MAIN;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		return list;
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		if (hasTileEntity(state)) {
+
+			if (!world.isRemote) {
+				TileEssenceJar te = (TileEssenceJar) world.getTileEntity(pos);
+				ItemStack stack = new ItemStack(this);
+				if (te != null && !te.isEmpty()) {
+					NBTTagCompound tag = new NBTTagCompound();
+					tag.setInteger(Essence.KEY, te.getEssenceStored());
+					tag.setString(Essence.TYPE_KEY, te.getEssenceType().getName());
+					stack.setTagCompound(tag);
+				}
+				spawnAsEntity(world, pos, stack);
+			}
+
+			world.removeTileEntity(pos);
+		}
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
+		if (stack.hasTagCompound()) {
+			TileEssenceJar te = getTE(world, pos);
+			NBTTagCompound tag = stack.getTagCompound();
+			te.setEssenceType(Essence.getByName(tag.getString(Essence.TYPE_KEY)));
+			te.setEssenceStored(tag.getInteger(Essence.KEY));
+			te.markDirty();
+		}
 	}
 
 	@Override

@@ -30,16 +30,16 @@ public class ModItems {
 
 	// Ok i will remember
 
-	public static final ItemVial VIAL_EMPTY = new ItemVial("empty_vial", null, 0, VialQuality.BASIC);
-	public static final ItemVial VIAL_ANGELIC = new ItemVial("angelic_vial", Essence.ANGELIC, 1000, VialQuality.BASIC,
+	public static final ItemVial VIAL_EMPTY = new ItemVial("empty_vial", null, VialQuality.BASIC);
+	public static final ItemVial VIAL_ANGELIC = new ItemVial("angelic_vial", Essence.ANGELIC, VialQuality.BASIC,
 			VIAL_EMPTY);
-	public static final ItemVial VIAL_ATMOSPHERIC = new ItemVial("atmospheric_vial", Essence.ATMOSPHERIC, 1500,
+	public static final ItemVial VIAL_ATMOSPHERIC = new ItemVial("atmospheric_vial", Essence.ATMOSPHERIC,
 			VialQuality.BASIC, VIAL_EMPTY);
-	public static final ItemVial VIAL_DEMONIC = new ItemVial("demonic_vial", Essence.DEMONIC, 400, VialQuality.BASIC,
+	public static final ItemVial VIAL_DEMONIC = new ItemVial("demonic_vial", Essence.DEMONIC, VialQuality.BASIC,
 			VIAL_EMPTY);
-	public static final ItemVial VIAL_ENERGETIC = new ItemVial("energetic_vial", Essence.ENERGETIC, 850,
+	public static final ItemVial VIAL_ENERGETIC = new ItemVial("energetic_vial", Essence.ENERGETIC,
 			VialQuality.BASIC, VIAL_EMPTY);
-	public static final ItemVial VIAL_EXOTIC = new ItemVial("exotic_vial", Essence.EXOTIC, 100, VialQuality.BASIC,
+	public static final ItemVial VIAL_EXOTIC = new ItemVial("exotic_vial", Essence.EXOTIC, VialQuality.BASIC,
 			VIAL_EMPTY);
 
 	public static final Item EXTRACTION_ROD = new ItemExtractionRod();
