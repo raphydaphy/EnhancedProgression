@@ -61,7 +61,7 @@ public class SpellHelper {
 		return Item.getItemFromBlock(Blocks.BARRIER);
 	}
 	
-	public boolean lanternSpell(ItemStack wand, EntityPlayer caster, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ, BlockPos pos)
+	public static boolean lanternSpell(ItemStack wand, EntityPlayer caster, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ, BlockPos pos)
 	{
 		int cooldown = WandHelper.getCore(wand).acceptedTypes().get(0).getCooldown();
 		int cost = WandHelper.getCore(wand).acceptedTypes().get(0).getPotency();
@@ -72,7 +72,7 @@ public class SpellHelper {
 			if (caster.getEntityWorld().isRemote)
 			{
 				Random rand = caster.getEntityWorld().rand;
-				for (int i = 0; i < 1000; i++)
+				for (int i = 0; i < 25; i++)
 				{
 					double x = (double)(pos.getX()) + 0.5 + ((rand.nextDouble())-0.5);
 				    double y = (double)pos.getY() + (rand.nextDouble()) + 0.5;

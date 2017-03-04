@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.essence.IEssenceContainer;
 import com.raphydaphy.vitality.api.spell.Spell;
+import com.raphydaphy.vitality.api.spell.SpellHelper;
 import com.raphydaphy.vitality.api.wand.IWandable;
 import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
 import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
@@ -63,13 +64,15 @@ public class ItemWand extends ItemBase {
 	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
-			EnumFacing side, float par8, float par9, float par10) {
+			EnumFacing side, float hitX, float hitY, float hitZ) {
+		System.out.println(world.isRemote + " <== world | essence ==> " + WandHelper.getEssenceStored(stack));
 		if (player.getEntityData().getString("wandCurOperation") == "") {
 			if (world.getBlockState(pos).getBlock() instanceof IWandable) {
 				TileEntity tile = world.getTileEntity(pos);
 
 				if (tile instanceof IEssenceContainer) {
 					IEssenceContainer container = (IEssenceContainer) tile;
+					System.out.println(world.isRemote + " <== world | container essence ==> " + container.getEssenceStored());
 					if (container.getEssenceStored() > 0
 							&& WandHelper.getCore(stack).acceptedTypes().contains(container.getEssenceType())) {
 						System.out.println("started");
@@ -89,6 +92,9 @@ public class ItemWand extends ItemBase {
 				switch(Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY)))
 				{
 				case ILLUMINATION:
+					
+					if (SpellHelper.lanternSpell(stack, player, hand, side, hitX, hitY, hitZ, pos))
+						return EnumActionResult.SUCCESS;
 					break;
 				case FIREBALL:
 					break;
