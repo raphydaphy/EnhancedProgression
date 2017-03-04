@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.essence.IEssenceContainer;
+import com.raphydaphy.vitality.api.spell.Spell;
 import com.raphydaphy.vitality.api.wand.IWandable;
 import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
 import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
@@ -54,7 +55,7 @@ public class ItemWand extends ItemBase {
 						+ TextFormatting.RESET + TextFormatting.GOLD
 						+ WandHelper.getCore(stack).acceptedTypes().get(0).name() + " Essence", TextFormatting.GOLD);
 			}
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
@@ -81,6 +82,16 @@ public class ItemWand extends ItemBase {
 						player.setActiveHand(hand);
 						return EnumActionResult.SUCCESS;
 					}
+				}
+			}
+			else if(stack.getTagCompound().getString(Spell.ACTIVE_KEY) != "")
+			{
+				switch(Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY)))
+				{
+				case ILLUMINATION:
+					break;
+				case FIREBALL:
+					break;
 				}
 			}
 

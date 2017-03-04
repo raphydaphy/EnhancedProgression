@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.api.spell;
 
 import com.raphydaphy.vitality.registry.ModItems;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
 
@@ -44,7 +45,7 @@ public enum Spell implements IStringSerializable{
 		{
 			return item;
 		}
-		return ModItems.SPELL_FIREBALL;
+		return Item.getItemFromBlock(Blocks.BARRIER);
 	}
 
 }

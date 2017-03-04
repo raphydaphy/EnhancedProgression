@@ -19,8 +19,11 @@ public class ParticleHelper {
 	public static void spawnParticlesServer(EnumParticleTypes particleType, World world, boolean forceSpawn, double x,
 			double y, double z, int count, double radius) {
 		// spawns some particles through the server instance
-		FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension())
+		if (!world.isRemote)
+		{
+			FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension())
 				.spawnParticle(particleType, forceSpawn, x, y, z, count, radius, radius, radius, 0.000D);
+		}
 	}
 
 	/*

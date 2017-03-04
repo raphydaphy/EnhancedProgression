@@ -21,6 +21,8 @@ tile.vitality.essence_demonic.name=Demonic Essence
 tile.vitality.essence_energetic.name=Energetic Essence
 tile.vitality.essence_exotic.name=Exotic Essence
 
+tile.vitality.light_orb.name=Light Orb
+
 #Items
 item.vitality.ingot_copper.name=Copper Ingot
 item.vitality.ingot_tin.name=Tin Ingot
@@ -62,5 +64,6 @@ item.vitality.spell_illumination.name=Spell: Omnipresent Illumination
 item.vitality.spell_fireball.name=Spell: Radiant Fireball
 
 #Action Bar Messages
+vitality.wand.notenoughessence.name=Not Enough Essence!
 
 #Achievements

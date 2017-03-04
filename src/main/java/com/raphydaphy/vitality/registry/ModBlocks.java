@@ -6,6 +6,7 @@ import java.util.List;
 import com.raphydaphy.vitality.block.BlockEssence;
 import com.raphydaphy.vitality.block.BlockEssenceJar;
 import com.raphydaphy.vitality.block.BlockExtractionCrucible;
+import com.raphydaphy.vitality.block.BlockLightOrb;
 import com.raphydaphy.vitality.block.BlockModOre;
 
 import net.minecraft.block.Block;
@@ -27,6 +28,8 @@ public class ModBlocks {
 	public static final Block ESSENCE_DEMONIC = new BlockEssence("essence_demonic");
 	public static final Block ESSENCE_ENERGETIC = new BlockEssence("essence_energetic");
 	public static final Block ESSENCE_EXOTIC = new BlockEssence("essence_exotic");
+	
+	public static final Block LIGHT_ORB = new BlockLightOrb();
 
 	public static final List<Block> BLOCK_LIST = getList();
 
@@ -43,6 +46,7 @@ public class ModBlocks {
 		list.add(ESSENCE_DEMONIC);
 		list.add(ESSENCE_ENERGETIC);
 		list.add(ESSENCE_EXOTIC);
+		list.add(LIGHT_ORB);
 		return list;
 	}
 

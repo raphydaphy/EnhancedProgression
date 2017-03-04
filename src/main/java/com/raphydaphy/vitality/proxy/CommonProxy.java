@@ -1,12 +1,10 @@
 package com.raphydaphy.vitality.proxy;
 
-import com.raphydaphy.vitality.init.Events;
 import com.raphydaphy.vitality.init.WorldGenHandler;
 import com.raphydaphy.vitality.network.MessageChangeSpell;
 import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.ModRecipies;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
