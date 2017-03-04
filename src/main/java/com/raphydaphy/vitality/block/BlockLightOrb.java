@@ -87,9 +87,17 @@ public class BlockLightOrb extends BlockBase {
 			worldIn.spawnParticle(EnumParticleTypes.FALLING_DUST, x, y, z, 0.0D, 0.0D, 0.0D, pars);
 		}
 	}
+	
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+		return new AxisAlignedBB(0, 0, 0, 0,0,0);
+    }
+
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		super.breakBlock(worldIn, pos, state);
 		Random rand = worldIn.rand;
 		for (int i = 0; i < 1000; i++) {
 			double x = (double) (pos.getX()) + 0.5 + ((rand.nextDouble() / 2) - 0.25);
