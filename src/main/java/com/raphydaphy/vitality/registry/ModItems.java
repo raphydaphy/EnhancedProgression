@@ -54,7 +54,7 @@ public class ModItems {
 	public static final Item CORE_ENERGETIC = new ItemBase("wand_core_energetic", 1);
 	public static final Item CORE_EXOTIC = new ItemBase("wand_core_exotic", 1);
 
-	public static final Item TIP_WOODEN = new ItemBase("wand_tip_wooden", 1);
+	public static final Item TIP_WOODEN = new ItemBase("wand_tip_wooden", 2);
 
 	public static final Item WAND = new ItemWand("wand");
 

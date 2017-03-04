@@ -32,10 +32,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -123,8 +125,8 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 		TileEssenceJar te = getTE(world, pos);
 		System.out.println(te.getEssenceStored() + " <== stored | world ==> " + world.isRemote);
 		if (heldItem == null && world.isRemote && hand == EnumHand.MAIN_HAND) {
-			ClientProxy.setActionText("Storing " + te.getEssenceStored() + " / " + te.getCapacity() + " " + te.getEssenceType().getName() + " Essence",
-					te.getEssenceType().getColor());
+			//ClientProxy.setActionText("Storing " + te.getEssenceStored() + " / " + te.getCapacity() + " " + te.getEssenceType().getName() + " Essence",
+				//	te.getEssenceType().getColor());
 		} else if (heldItem != null && heldItem.getItem() instanceof ItemVial) {
 				ItemVial theVial = ((ItemVial) heldItem.getItem());
 				Essence vialType = theVial.getVialType();
@@ -147,11 +149,12 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 							flag = true;
 				}
 			if (world.isRemote && ((ItemVial) heldItem.getItem()).hasType()) {
-				ClientProxy.setActionText(
-						"Storing " + heldItem.getTagCompound().getInteger(Essence.KEY) + " / " + ((ItemVial) heldItem.getItem()).getMaxStorage() + " " + ((ItemVial) heldItem.getItem()).getVialType().getName() + " Essence",
-						((ItemVial) heldItem.getItem()).getVialType().getColor());
+				//ClientProxy.setActionText(
+						//"Storing " + heldItem.getTagCompound().getInteger(Essence.KEY) + " / " + ((ItemVial) heldItem.getItem()).getMaxStorage() + " " + ((ItemVial) heldItem.getItem()).getVialType().getName() + " Essence",
+						//((ItemVial) heldItem.getItem()).getVialType().getColor());
 			}
 		}
+		player.addChatMessage(new TextComponentString("At side " + FMLCommonHandler.instance().getEffectiveSide().toString() + " this jar at pos " + pos.toString() + " has " + te.getEssenceStored() + " essence stored"));
 		return flag;
 	}
 
