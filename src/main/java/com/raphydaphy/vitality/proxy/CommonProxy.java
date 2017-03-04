@@ -1,6 +1,7 @@
 package com.raphydaphy.vitality.proxy;
 
 import com.raphydaphy.vitality.init.WorldGenHandler;
+import com.raphydaphy.vitality.network.MessageActionText;
 import com.raphydaphy.vitality.network.MessageChangeSpell;
 import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.ModRecipies;
@@ -19,7 +20,11 @@ public class CommonProxy {
 	 */
 	public void preInit(FMLPreInitializationEvent e) {
 		GameRegistry.registerWorldGenerator(new WorldGenHandler(), 2);
-		PacketManager.INSTANCE.registerMessage(new MessageChangeSpell.ChangeSpellHandler(), MessageChangeSpell.class, 80, Side.SERVER);
+		int disc = 0;
+		PacketManager.INSTANCE.registerMessage(new MessageChangeSpell.ChangeSpellHandler(), MessageChangeSpell.class,
+				++disc, Side.SERVER);
+		PacketManager.INSTANCE.registerMessage(new MessageActionText.MessageHandler(), MessageActionText.class, ++disc,
+				Side.CLIENT);
 	}
 
 	/*

@@ -20,13 +20,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 
 public class SpellHelper {
-	// TODO: this class is shit but maps are too hard so rip 
-	
+	// TODO: this class is shit but maps are too hard so rip
+
 	// maps are too hard 4 me
-	public static Spell getSpellFromID(int id)
-	{
-		switch(id) 
-		{
+	public static Spell getSpellFromID(int id) {
+		switch (id) {
 		case 0:
 			return Spell.ILLUMINATION;
 		case 1:
@@ -34,12 +32,10 @@ public class SpellHelper {
 		}
 		return null;
 	}
-	
+
 	// maps are still too hard
-	public static int getIDFromSpell(Spell spell)
-	{
-		switch(spell)
-		{
+	public static int getIDFromSpell(Spell spell) {
+		switch (spell) {
 		case ILLUMINATION:
 			return 0;
 		case FIREBALL:
@@ -47,12 +43,11 @@ public class SpellHelper {
 		}
 		return 0;
 	}
-	
-	// pleb version coz i cant figure out how to make `item` not null in Spell enum
-	public static Item spellToItem(Spell spell)
-	{
-		switch(spell)
-		{
+
+	// pleb version coz i cant figure out how to make `item` not null in Spell
+	// enum
+	public static Item spellToItem(Spell spell) {
+		switch (spell) {
 		case ILLUMINATION:
 			return ModItems.SPELL_ILLUMINATION;
 		case FIREBALL:
@@ -60,38 +55,31 @@ public class SpellHelper {
 		}
 		return Item.getItemFromBlock(Blocks.BARRIER);
 	}
-	
-	public static boolean lanternSpell(ItemStack wand, EntityPlayer caster, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ, BlockPos pos)
-	{
-		int cooldown = WandHelper.getCore(wand).acceptedTypes().get(0).getCooldown();
-		int cost = WandHelper.getCore(wand).acceptedTypes().get(0).getPotency();
-		int potency = WandHelper.getCore(wand).acceptedTypes().get(0).getCost();
-		
-		if (WandHelper.canUseEssence(wand, cost, WandHelper.getCore(wand).acceptedTypes().get(0)))
-		{
-			if (caster.getEntityWorld().isRemote)
-			{
+
+	public static boolean lanternSpell(ItemStack wand, EntityPlayer caster, EnumHand hand, EnumFacing facing,
+			float hitX, float hitY, float hitZ, BlockPos pos) {
+		int cooldown = WandHelper.getCore(wand).getCoreType().getCooldown();
+		int cost = WandHelper.getCore(wand).getCoreType().getPotency();
+		int potency = WandHelper.getCore(wand).getCoreType().getCost();
+
+		if (WandHelper.canUseEssence(wand, cost, WandHelper.getCore(wand).getCoreType())) {
+			if (caster.getEntityWorld().isRemote) {
 				Random rand = caster.getEntityWorld().rand;
-				for (int i = 0; i < 25; i++)
-				{
-					double x = (double)(pos.getX()) + 0.5 + ((rand.nextDouble())-0.5);
-				    double y = (double)pos.getY() + (rand.nextDouble()) + 0.5;
-				    double z = (double)pos.getZ() + 0.5 +((rand.nextDouble())-0.5);
-				    int[] pars = new int[1];
-				    if (rand.nextInt(2) == 1)
-				    {
-				    	pars[0] = 165;
-				    }
-				    else
-				    {
-				    	pars[0] = 133;
-				    }
-				    caster.getEntityWorld().spawnParticle(EnumParticleTypes.FALLING_DUST, x, y, z, 0.0D, 0.0D, 0.0D,pars);
+				for (int i = 0; i < 25; i++) {
+					double x = (double) (pos.getX()) + 0.5 + ((rand.nextDouble()) - 0.5);
+					double y = (double) pos.getY() + (rand.nextDouble()) + 0.5;
+					double z = (double) pos.getZ() + 0.5 + ((rand.nextDouble()) - 0.5);
+					int[] pars = new int[1];
+					if (rand.nextInt(2) == 1) {
+						pars[0] = 165;
+					} else {
+						pars[0] = 133;
+					}
+					caster.getEntityWorld().spawnParticle(EnumParticleTypes.FALLING_DUST, x, y, z, 0.0D, 0.0D, 0.0D,
+							pars);
 				}
-			}
-			else
-			{
-				WandHelper.useEssence(wand, cost, WandHelper.getCore(wand).acceptedTypes().get(0));
+			} else {
+				WandHelper.useEssence(wand, cost, WandHelper.getCore(wand).getCoreType());
 				caster.getEntityWorld().playSound(null, pos, SoundEvents.BLOCK_GLASS_PLACE, SoundCategory.BLOCKS, 1, 1);
 				ItemStack stackToPlace = new ItemStack(ModBlocks.LIGHT_ORB);
 				stackToPlace.onItemUse(caster, caster.getEntityWorld(), pos, hand, facing, hitX, hitY, hitZ);
@@ -99,10 +87,9 @@ public class SpellHelper {
 				caster.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 			}
 			return true;
-		}
-		else
-		{
-			ClientProxy.setActionText(TextHelper.getFormattedText("vitality.wand.notenoughessence.name"), WandHelper.getCore(wand).acceptedTypes().get(0).getColor());
+		} else {
+			ClientProxy.setActionText(TextHelper.getFormattedText("vitality.wand.notenoughessence.name"),
+					WandHelper.getCore(wand).getCoreType().getColor());
 			return false;
 		}
 	}

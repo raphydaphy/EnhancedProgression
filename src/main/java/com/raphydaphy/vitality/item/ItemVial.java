@@ -23,7 +23,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -113,9 +112,8 @@ public class ItemVial extends ItemBase {
 			EnumHand hand) {
 		if (player.isSneaking()) {
 			if (worldIn.isRemote && hasType()) {
-				ClientProxy.setActionText(
-						"Storing " + stack.getTagCompound().getInteger(Essence.KEY) + " / " + maxStored + " " + type.getName() + " Essence",
-						type.getColor());
+				ClientProxy.setActionText("Storing " + stack.getTagCompound().getInteger(Essence.KEY) + " / "
+						+ maxStored + " " + type.getName() + " Essence", type.getColor());
 				player.swingArm(hand);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 			}
@@ -141,8 +139,8 @@ public class ItemVial extends ItemBase {
 			if (block instanceof BlockEssenceJar) {
 				((BlockEssenceJar) block).onBlockActivated(world, pos, world.getBlockState(pos), player, hand, stack,
 						side, pos.getX(), pos.getY(), pos.getZ());
-			
-		}
+
+			}
 		}
 		return EnumActionResult.PASS;
 	}

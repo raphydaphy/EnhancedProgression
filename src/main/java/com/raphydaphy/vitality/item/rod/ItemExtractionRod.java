@@ -49,13 +49,12 @@ public class ItemExtractionRod extends ItemBase {
 			if (worldIn.isRemote) {
 				ClientProxy.setActionText("Angelic: " + player.getEntityData().getInteger(Essence.ANGELIC.getMultiKey())
 						+ TextFormatting.DARK_PURPLE + " Atmospheric: "
-						+ player.getEntityData().getInteger(Essence.ATMOSPHERIC.getMultiKey())
-						+ TextFormatting.RED + " Demonic: "
-						+ player.getEntityData().getInteger(Essence.DEMONIC.getMultiKey())
+						+ player.getEntityData().getInteger(Essence.ATMOSPHERIC.getMultiKey()) + TextFormatting.RED
+						+ " Demonic: " + player.getEntityData().getInteger(Essence.DEMONIC.getMultiKey())
 						+ TextFormatting.DARK_AQUA + " Energetic: "
-						+ player.getEntityData().getInteger(Essence.ENERGETIC.getMultiKey())
-						+ TextFormatting.DARK_GREEN + " Exotic: "
-						+ player.getEntityData().getInteger(Essence.EXOTIC.getMultiKey()), TextFormatting.AQUA);
+						+ player.getEntityData().getInteger(Essence.ENERGETIC.getMultiKey()) + TextFormatting.DARK_GREEN
+						+ " Exotic: " + player.getEntityData().getInteger(Essence.EXOTIC.getMultiKey()),
+						TextFormatting.AQUA);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
@@ -162,7 +161,7 @@ public class ItemExtractionRod extends ItemBase {
 					if (stack.getTagCompound().getString(Essence.TYPE_KEY).equals(Essence.ANGELIC.getName())) {
 						MiscEssence.fillVial(Essence.ANGELIC, 15, true, (EntityPlayer) entity);
 					} else if (stack.getTagCompound().getString(Essence.TYPE_KEY).equals(Essence.EXOTIC.getName())) {
-						MiscEssence.fillVial(Essence.EXOTIC, 30, true, (EntityPlayer)entity);
+						MiscEssence.fillVial(Essence.EXOTIC, 30, true, (EntityPlayer) entity);
 					}
 				} else {
 					if (world.isRemote) {

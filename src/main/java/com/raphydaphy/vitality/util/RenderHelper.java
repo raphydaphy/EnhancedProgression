@@ -12,8 +12,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public final class RenderHelper 
-{
+public final class RenderHelper {
 	public static void renderCircle(int x, int y) {
 		Minecraft mc = Minecraft.getMinecraft();
 
@@ -49,8 +48,7 @@ public final class RenderHelper
 		buf.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
 		buf.pos(centerX, centerY, 0).color(red, green, blue, a).endVertex();
 
-		for(int i = degs; i > 0; i--) 
-		{
+		for (int i = degs; i > 0; i--) {
 			double rad = (i - 90) / 180F * Math.PI;
 			buf.pos(centerX + Math.cos(rad) * r, centerY + Math.sin(rad) * r, 0).color(red, green, blue, a).endVertex();
 		}

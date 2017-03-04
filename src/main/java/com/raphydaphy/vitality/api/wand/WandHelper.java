@@ -23,38 +23,29 @@ public class WandHelper {
 
 	public static boolean setEssenceStored(ItemStack stack, int essence) {
 		if (stack.hasTagCompound()) {
-			if (essence >= 0 && essence <= getMaxEssence(stack))
-			{
+			if (essence >= 0 && essence <= getMaxEssence(stack)) {
 				stack.getTagCompound().setInteger(Essence.KEY, essence);
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public static boolean canUseEssence(ItemStack wand, int toUse, Essence type)
-	{
-		if (wand.hasTagCompound())
-		{
-			if (getCore(wand).acceptedTypes().contains(type))
-			{
-				if (getEssenceStored(wand) >= toUse)
-				{
+
+	public static boolean canUseEssence(ItemStack wand, int toUse, Essence type) {
+		if (wand.hasTagCompound()) {
+			if (getCore(wand).getCoreType().equals(type)) {
+				if (getEssenceStored(wand) >= toUse) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
-	public static boolean useEssence(ItemStack wand, int toUse, Essence type)
-	{
-		if (wand.hasTagCompound())
-		{
-			if (getCore(wand).acceptedTypes().contains(type))
-			{
-				if (getEssenceStored(wand) >= toUse)
-				{
+
+	public static boolean useEssence(ItemStack wand, int toUse, Essence type) {
+		if (wand.hasTagCompound()) {
+			if (getCore(wand).getCoreType().equals(type)) {
+				if (getEssenceStored(wand) >= toUse) {
 					return setEssenceStored(wand, getEssenceStored(wand) - toUse);
 				}
 			}

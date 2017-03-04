@@ -6,15 +6,15 @@ import com.raphydaphy.vitality.api.wand.WandEnums.WandTier;
 
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.TextFormatting;
+
 // constructor end: cooldown, potency, cost
 // all the base numbers are the cost needed for the illumination spell
 // every other spell's stats are a multiple of the base costs
 public enum Essence implements IStringSerializable {
-	ANGELIC("Angelic", WandTier.BASIC, 1, TextFormatting.AQUA, 1, 1, 1), 
-	ATMOSPHERIC("Atmospheric", WandTier.BASIC, 0, TextFormatting.DARK_PURPLE, 15, 2, 2), 
-	DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED, 20, 5, 5), 
-	ENERGETIC("Energetic", WandTier.BASIC, -2000, TextFormatting.DARK_AQUA, 18, 3, 3), 
-	EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN, 30, 1, 1),;
+	ANGELIC("Angelic", WandTier.BASIC, 1, TextFormatting.AQUA, 1, 1, 1), ATMOSPHERIC("Atmospheric", WandTier.BASIC, 0,
+			TextFormatting.DARK_PURPLE, 15, 2, 2), DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED, 20, 5,
+					5), ENERGETIC("Energetic", WandTier.BASIC, -2000, TextFormatting.DARK_AQUA, 18, 3,
+							3), EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN, 30, 1, 1),;
 
 	private String name;
 	private WandTier accessTier;
@@ -44,8 +44,8 @@ public enum Essence implements IStringSerializable {
 	public static final String TYPE_KEY = "essence_type";
 
 	Essence(String name, WandTier accessTier,
-			@Nullable /* well not really nullable but put -2000 for none */ int empoweredDimensionID, TextFormatting format,
-			int baseCooldown, int basePotency, int baseCost) {
+			@Nullable /* well not really nullable but put -2000 for none */ int empoweredDimensionID,
+			TextFormatting format, int baseCooldown, int basePotency, int baseCost) {
 		this.name = name;
 		this.accessTier = accessTier;
 		this.format = format;
@@ -65,8 +65,8 @@ public enum Essence implements IStringSerializable {
 	public String getName() {
 		return name;
 	}
-	
-	public TextFormatting getColor(){
+
+	public TextFormatting getColor() {
 		return format;
 	}
 
@@ -77,15 +77,15 @@ public enum Essence implements IStringSerializable {
 	public String getMultiKey() {
 		return KEY + "_" + name;
 	}
-	
+
 	public int getCooldown() {
-		return baseCooldown;	
+		return baseCooldown;
 	}
-	
+
 	public int getPotency() {
 		return basePotency;
 	}
-	
+
 	public int getCost() {
 		return baseCost;
 	}

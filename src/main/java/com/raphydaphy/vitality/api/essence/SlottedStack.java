@@ -2,20 +2,20 @@ package com.raphydaphy.vitality.api.essence;
 
 import net.minecraft.item.ItemStack;
 
-public class SlottedStack{
+public class SlottedStack {
 	private final int slot;
 	private final ItemStack stack;
-	
-	public SlottedStack(int slot, ItemStack stack){
+
+	public SlottedStack(int slot, ItemStack stack) {
 		this.slot = slot;
 		this.stack = stack;
 	}
-	
-	public ItemStack getStack(){
+
+	public ItemStack getStack() {
 		return stack;
 	}
-	
-	public int getSlotID(){
+
+	public int getSlotID() {
 		return slot;
 	}
 }

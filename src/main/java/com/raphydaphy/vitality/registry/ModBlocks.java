@@ -28,7 +28,7 @@ public class ModBlocks {
 	public static final Block ESSENCE_DEMONIC = new BlockEssence("essence_demonic");
 	public static final Block ESSENCE_ENERGETIC = new BlockEssence("essence_energetic");
 	public static final Block ESSENCE_EXOTIC = new BlockEssence("essence_exotic");
-	
+
 	public static final Block LIGHT_ORB = new BlockLightOrb();
 
 	public static final List<Block> BLOCK_LIST = getList();

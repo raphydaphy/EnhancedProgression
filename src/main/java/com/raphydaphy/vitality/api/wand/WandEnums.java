@@ -1,8 +1,5 @@
 package com.raphydaphy.vitality.api.wand;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.raphydaphy.vitality.api.essence.Essence;
 
 import net.minecraft.util.IStringSerializable;
@@ -15,11 +12,13 @@ public class WandEnums {
 	}
 
 	public enum CoreType implements IStringSerializable {
-		ANGELIC("Angelic", WandTier.BASIC), ATMOSPHERIC("Atmospheric", WandTier.BASIC), DEMONIC("Demonic",
-				WandTier.BASIC), ENERGETIC("Energetic", WandTier.BASIC), EXOTIC("Exotic", WandTier.BASIC),;
+		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC), ATMOSPHERIC("Atmospheric", WandTier.BASIC,
+				Essence.ATMOSPHERIC), DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC), ENERGETIC("Energetic",
+						WandTier.BASIC, Essence.ENERGETIC), EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC),;
 
-		String name;
-		WandTier accessTier;
+		private String name;
+		private WandTier accessTier;
+		private Essence essence;
 
 		public static final String KEY = "core_type";
 
@@ -29,31 +28,14 @@ public class WandEnums {
 			return name;
 		}
 
-		public List<Essence> acceptedTypes() {
-			List<Essence> acceptedTypes = new ArrayList<Essence>();
-			switch (this) {
-			case ANGELIC:
-				acceptedTypes.add(Essence.ANGELIC);
-				break;
-			case ATMOSPHERIC:
-				acceptedTypes.add(Essence.ATMOSPHERIC);
-				break;
-			case DEMONIC:
-				acceptedTypes.add(Essence.DEMONIC);
-				break;
-			case ENERGETIC:
-				acceptedTypes.add(Essence.ENERGETIC);
-				break;
-			case EXOTIC:
-				acceptedTypes.add(Essence.EXOTIC);
-				break;
-			}
-			return acceptedTypes;
+		public Essence getCoreType() {
+			return this.essence;
 		}
 
-		CoreType(String name, WandTier accessTier) {
+		CoreType(String name, WandTier accessTier, Essence type) {
 			this.name = name;
 			this.accessTier = accessTier;
+			this.essence = type;
 		}
 	}
 

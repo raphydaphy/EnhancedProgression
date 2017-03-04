@@ -26,7 +26,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -51,10 +50,10 @@ public class ItemWand extends ItemBase {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
 			if (world.isRemote) {
-				ClientProxy.setActionText("Storing " + TextFormatting.BOLD
-						+ WandHelper.getEssenceStored(stack) + " / " + WandHelper.getMaxEssence(stack) + " "
-						+ TextFormatting.RESET + TextFormatting.GOLD
-						+ WandHelper.getCore(stack).acceptedTypes().get(0).name() + " Essence", TextFormatting.GOLD);
+				ClientProxy.setActionText(
+						"Storing " + +WandHelper.getEssenceStored(stack) + " / " + WandHelper.getMaxEssence(stack) + " "
+								+ WandHelper.getCore(stack).getCoreType().getName() + " Essence",
+						WandHelper.getCore(stack).getCoreType().getColor());
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
@@ -65,16 +64,18 @@ public class ItemWand extends ItemBase {
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		System.out.println(world.isRemote + " <== world | essence ==> " + WandHelper.getEssenceStored(stack));
+		// System.out.println(world.isRemote + " <== world | essence ==> " +
+		// WandHelper.getEssenceStored(stack));
 		if (player.getEntityData().getString("wandCurOperation") == "") {
 			if (world.getBlockState(pos).getBlock() instanceof IWandable) {
 				TileEntity tile = world.getTileEntity(pos);
 
 				if (tile instanceof IEssenceContainer) {
 					IEssenceContainer container = (IEssenceContainer) tile;
-					System.out.println(world.isRemote + " <== world | container essence ==> " + container.getEssenceStored());
+					// System.out.println(world.isRemote + " <== world |
+					// container essence ==> " + container.getEssenceStored());
 					if (container.getEssenceStored() > 0
-							&& WandHelper.getCore(stack).acceptedTypes().contains(container.getEssenceType())) {
+							&& WandHelper.getCore(stack).getCoreType() == container.getEssenceType()) {
 						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
 						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
@@ -86,13 +87,10 @@ public class ItemWand extends ItemBase {
 						return EnumActionResult.SUCCESS;
 					}
 				}
-			}
-			else if(stack.getTagCompound().getString(Spell.ACTIVE_KEY) != "")
-			{
-				switch(Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY)))
-				{
+			} else if (stack.getTagCompound().getString(Spell.ACTIVE_KEY) != "") {
+				switch (Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
 				case ILLUMINATION:
-					
+
 					if (SpellHelper.lanternSpell(stack, player, hand, side, hitX, hitY, hitZ, pos))
 						return EnumActionResult.SUCCESS;
 					break;
@@ -144,7 +142,8 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
 		if (!isSelected && entity.getEntityData().getString("wandCurOperation") != "") {
-			//this.onPlayerStoppedUsing(stack, world, (EntityLivingBase) entity, 0);
+			// this.onPlayerStoppedUsing(stack, world, (EntityLivingBase)
+			// entity, 0);
 		}
 	}
 

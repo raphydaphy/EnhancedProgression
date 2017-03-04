@@ -20,32 +20,26 @@ public class Events {
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-    public static void onKeyInput(InputEvent.KeyInputEvent event) 
-	{
+	public static void onKeyInput(InputEvent.KeyInputEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
-        if (KeyBindings.pickSpell.isPressed() && mc.inGameHasFocus) 
-        {	
-        	
-        	boolean did = false;
-        	if (mc.thePlayer.getHeldItemMainhand() != null)
-        	{
-	        	if (mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand)
-	        	{
-	        		did = true;
-	        		mc.displayGuiScreen(new GUISpellSelect());
-	        	}
-        	}
-        	if (!did && mc.thePlayer.getHeldItemOffhand() != null)
-        	{
-        		if (mc.thePlayer.getHeldItemOffhand().getItem() instanceof ItemWand)
-	        	{
-	        		did = true;
-	        		mc.displayGuiScreen(new GUISpellSelect());
-	        	}
-        	}
-        }
-    }
-	
+		if (KeyBindings.pickSpell.isPressed() && mc.inGameHasFocus) {
+
+			boolean did = false;
+			if (mc.thePlayer.getHeldItemMainhand() != null) {
+				if (mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand) {
+					did = true;
+					mc.displayGuiScreen(new GUISpellSelect());
+				}
+			}
+			if (!did && mc.thePlayer.getHeldItemOffhand() != null) {
+				if (mc.thePlayer.getHeldItemOffhand().getItem() instanceof ItemWand) {
+					did = true;
+					mc.displayGuiScreen(new GUISpellSelect());
+				}
+			}
+		}
+	}
+
 	@SubscribeEvent
 	public static void onDeath(PlayerEvent.Clone event) {
 		int storedAngelic = event.getOriginal().getEntityData().getInteger(Essence.ANGELIC.getMultiKey());

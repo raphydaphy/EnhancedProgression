@@ -11,6 +11,8 @@ import com.raphydaphy.vitality.api.wand.WandEnums.WandResult;
 import com.raphydaphy.vitality.api.wand.WandEnums.WandTier;
 import com.raphydaphy.vitality.block.tile.TileEssenceJar;
 import com.raphydaphy.vitality.item.ItemVial;
+import com.raphydaphy.vitality.network.MessageActionText;
+import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.render.EssenceJarTESR;
 
@@ -24,7 +26,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -32,12 +33,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -123,38 +121,44 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		boolean flag = false;
 		TileEssenceJar te = getTE(world, pos);
-		System.out.println(te.getEssenceStored() + " <== stored | world ==> " + world.isRemote);
-		if (heldItem == null && world.isRemote && hand == EnumHand.MAIN_HAND) {
-			//ClientProxy.setActionText("Storing " + te.getEssenceStored() + " / " + te.getCapacity() + " " + te.getEssenceType().getName() + " Essence",
-				//	te.getEssenceType().getColor());
+		if (heldItem == null && !world.isRemote && hand == EnumHand.MAIN_HAND && !te.isEmpty()) {
+			PacketManager.INSTANCE.sendTo(
+					new MessageActionText("Storing " + te.getEssenceStored() + " / " + te.getCapacity() + " "
+							+ te.getEssenceType().getName() + " Essence", te.getEssenceType()),
+					world.getMinecraftServer().getPlayerList().getPlayerByUUID(player.getUniqueID()));
 		} else if (heldItem != null && heldItem.getItem() instanceof ItemVial) {
-				ItemVial theVial = ((ItemVial) heldItem.getItem());
-				Essence vialType = theVial.getVialType();
-				Essence jarType = te.getEssenceType();
-				int essenceStoredJar = te.getEssenceStored();
-				if (!player.isSneaking()) {
-					if (vialType == jarType || te.isEmpty()) {
-						if (essenceStoredJar <= te.getCapacity()) {
-							if (MiscEssence.fillContainerFromVial(te, heldItem, 10)) {
-								world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
-								player.swingArm(hand);
-								flag = true;
-							}
-
-						}
-					}
-				} else if (player.isSneaking() && MiscEssence.fillVialFromContainer(player, hand, te, heldItem, 10)){
-							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
+			ItemVial theVial = ((ItemVial) heldItem.getItem());
+			Essence vialType = theVial.getVialType();
+			Essence jarType = te.getEssenceType();
+			int essenceStoredJar = te.getEssenceStored();
+			if (!player.isSneaking()) {
+				if (vialType == jarType || te.isEmpty()) {
+					if (essenceStoredJar <= te.getCapacity()) {
+						if (MiscEssence.fillContainerFromVial(te, heldItem, 10)) {
+							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
 							player.swingArm(hand);
 							flag = true;
+						}
+
+					}
 				}
+			} else if (player.isSneaking() && MiscEssence.fillVialFromContainer(player, hand, te, heldItem, 10)) {
+				world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
+				player.swingArm(hand);
+				flag = true;
+			}
 			if (world.isRemote && ((ItemVial) heldItem.getItem()).hasType()) {
-				//ClientProxy.setActionText(
-						//"Storing " + heldItem.getTagCompound().getInteger(Essence.KEY) + " / " + ((ItemVial) heldItem.getItem()).getMaxStorage() + " " + ((ItemVial) heldItem.getItem()).getVialType().getName() + " Essence",
-						//((ItemVial) heldItem.getItem()).getVialType().getColor());
+				ClientProxy.setActionText(
+						"Storing " + heldItem.getTagCompound().getInteger(Essence.KEY) + " / "
+								+ ((ItemVial) heldItem.getItem()).getMaxStorage() + " "
+								+ ((ItemVial) heldItem.getItem()).getVialType().getName() + " Essence",
+						((ItemVial) heldItem.getItem()).getVialType().getColor());
 			}
 		}
-		player.addChatMessage(new TextComponentString("At side " + FMLCommonHandler.instance().getEffectiveSide().toString() + " this jar at pos " + pos.toString() + " has " + te.getEssenceStored() + " essence stored"));
+		// player.addChatMessage(new TextComponentString("At side " +
+		// FMLCommonHandler.instance().getEffectiveSide().toString() + " this
+		// jar at pos " + pos.toString() + " has " + te.getEssenceStored() + "
+		// essence stored"));
 		return flag;
 	}
 
