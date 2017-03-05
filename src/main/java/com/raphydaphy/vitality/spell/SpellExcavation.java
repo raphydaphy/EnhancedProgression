@@ -38,8 +38,9 @@ public class SpellExcavation extends Spell {
 
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 
-			WandHelper.useEssence(wand, cost, pair.getKey().getCoreType());
-			world.setBlockToAir(pos);
+			//WandHelper.useEssence(wand, cost, pair.getKey().getCoreType());
+			
+			//world.setBlockToAir(pos);
 			world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
@@ -56,6 +57,8 @@ public class SpellExcavation extends Spell {
 	@Override
 	public boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
+		System.out.println("magix");
+		world.sendBlockBreakProgress(0, pos, 50);
 		return true;
 	}
 
