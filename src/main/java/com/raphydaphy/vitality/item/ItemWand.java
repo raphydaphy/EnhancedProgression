@@ -57,6 +57,17 @@ public class ItemWand extends ItemBase {
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
+		else if (player.getEntityData().getString("wandCurOperation") == "")
+		{
+			if (stack.getTagCompound().getString(Spell.ACTIVE_KEY) != "" && !player.isSneaking()) {
+				switch (Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
+				case FIREBALL:
+					player.getEntityData().setString("wandCurOperation", "useSpell");
+					player.setActiveHand(hand);
+					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+				}
+			}
+		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
 
@@ -87,7 +98,7 @@ public class ItemWand extends ItemBase {
 						return EnumActionResult.SUCCESS;
 					}
 				}
-			} else if (stack.getTagCompound().getString(Spell.ACTIVE_KEY) != "") {
+			} else if (stack.getTagCompound().getString(Spell.ACTIVE_KEY) != "" && !player.isSneaking()) {
 				switch (Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
 				case ILLUMINATION:
 
@@ -95,7 +106,9 @@ public class ItemWand extends ItemBase {
 						return EnumActionResult.SUCCESS;
 					break;
 				case FIREBALL:
-					break;
+					player.getEntityData().setString("wandCurOperation", "useSpell");
+					player.setActiveHand(hand);
+					return EnumActionResult.SUCCESS;
 				}
 			}
 
@@ -126,6 +139,7 @@ public class ItemWand extends ItemBase {
 
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) {
 		if (entity instanceof EntityPlayer) {
@@ -133,6 +147,13 @@ public class ItemWand extends ItemBase {
 			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer") {
 				System.out.println(player.getEntityData().getInteger("wandCurEssenceStored"));
 				WandHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
+			}
+			else if (player.getEntityData().getString("wandCurOperation") == "useSpell")
+			{
+				switch (Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
+				case FIREBALL:
+					SpellHelper.fireballSpell(stack, (EntityPlayer)entity);
+				}
 			}
 			player.getEntityData().setString("wandCurEssenceType", "");
 			player.getEntityData().setString("wandCurOperation", "");

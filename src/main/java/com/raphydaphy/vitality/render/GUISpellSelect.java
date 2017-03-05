@@ -36,9 +36,26 @@ public class GUISpellSelect extends GuiScreen {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		wandStack = player.getHeldItemMainhand();
-		if (!(wandStack.getItem() instanceof ItemWand)) {
-			wandStack = player.getHeldItemOffhand();
+		if (!(wandStack == null))
+		{
 			if (!(wandStack.getItem() instanceof ItemWand)) {
+				wandStack = player.getHeldItemOffhand();
+				if (!(wandStack == null))
+				{
+					if (!(wandStack.getItem() instanceof ItemWand)) {
+						return;
+					}
+				}
+			}
+		}
+		else
+		{
+			wandStack = player.getHeldItemOffhand();
+			if (wandStack == null)
+			{
+				return;
+			}
+			else if (!(wandStack.getItem() instanceof ItemWand)) {
 				return;
 			}
 		}
