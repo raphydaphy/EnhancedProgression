@@ -57,8 +57,11 @@ public class ModItems {
 
 	public static final Item WAND = new ItemWand("wand");
 
-	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", 1);
 	public static final Item SPELL_FIREBALL = new ItemSpell("fireball", 0);
+	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", 1);
+	public static final Item SPELL_EXPLOSION = new ItemSpell("explosion", 2);
+	public static final Item SPELL_EXCAVATION = new ItemSpell("excavation", 3);
+	public static final Item SPELL_TRANSMUTATION = new ItemSpell("transmutation", 4);
 
 	public static final List<Item> ITEM_LIST = getList();
 
@@ -88,6 +91,9 @@ public class ModItems {
 		list.add(WAND);
 		list.add(SPELL_ILLUMINATION);
 		list.add(SPELL_FIREBALL);
+		list.add(SPELL_EXPLOSION);
+		list.add(SPELL_EXCAVATION);
+		list.add(SPELL_TRANSMUTATION);
 		return list;
 	}
 
