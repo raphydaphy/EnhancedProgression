@@ -10,6 +10,7 @@ import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.item.ItemVial.VialQuality;
 import com.raphydaphy.vitality.item.ItemWand;
+import com.raphydaphy.vitality.item.ItemWandPiece;
 import com.raphydaphy.vitality.item.rod.ItemExtractionRod;
 import com.raphydaphy.vitality.item.rod.ItemTechniciansRod;
 import com.raphydaphy.vitality.item.rod.ItemTransmutationRod;
@@ -47,13 +48,13 @@ public class ModItems {
 
 	public static final Item EXTRACTION_SWORD = new ItemExtractionSword();
 
-	public static final Item CORE_ANGELIC = new ItemBase("wand_core_angelic", 1);
-	public static final Item CORE_ATMOSPHERIC = new ItemBase("wand_core_atmospheric", 1);
-	public static final Item CORE_DEMONIC = new ItemBase("wand_core_demonic", 1);
-	public static final Item CORE_ENERGETIC = new ItemBase("wand_core_energetic", 1);
-	public static final Item CORE_EXOTIC = new ItemBase("wand_core_exotic", 1);
+	public static final Item CORE_ANGELIC = new ItemWandPiece("core_angelic", 1);
+	public static final Item CORE_ATMOSPHERIC = new ItemWandPiece("core_atmospheric", 1);
+	public static final Item CORE_DEMONIC = new ItemWandPiece("core_demonic", 1);
+	public static final Item CORE_ENERGETIC = new ItemWandPiece("core_energetic", 1);
+	public static final Item CORE_EXOTIC = new ItemWandPiece("core_exotic", 1);
 
-	public static final Item TIP_WOODEN = new ItemBase("wand_tip_wooden", 2);
+	public static final Item TIP_WOODEN = new ItemWandPiece("tip_wooden", 2);
 
 	public static final Item WAND = new ItemWand("wand");
 

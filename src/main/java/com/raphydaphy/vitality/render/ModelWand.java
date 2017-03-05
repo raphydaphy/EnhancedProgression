@@ -20,6 +20,8 @@ import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
 import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
 import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.init.Reference;
+import com.raphydaphy.vitality.item.ItemWandPiece;
+import com.raphydaphy.vitality.registry.ModItems;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -33,6 +35,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -52,13 +55,18 @@ public class ModelWand implements IModel, IModelCustomData {
 	private final ResourceLocation resourceTip;
 
 	public ModelWand(CoreType coreType, TipType tipType) {
+		if(coreType != null && tipType != null){
 		System.out.println(coreType);
-		System.out.println(
-				new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase()).toString());
+		System.out.println(new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase()).toString());
 		this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase());
 		this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.getName().toLowerCase());
+		}
+		else {
+			resourceCore = ModItems.CORE_ANGELIC.getRegistryName();
+			resourceTip = ModItems.TIP_WOODEN.getRegistryName();
+		}
 	}
-
+	
 	@Override
 	public IModelState getDefaultState() {
 		return TRSRTransformation.identity();
@@ -72,14 +80,12 @@ public class ModelWand implements IModel, IModelCustomData {
 	@Override
 	public Collection<ResourceLocation> getTextures() {
 		ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
-
-		builder.add(new ResourceLocation("vitality", "items/wand/tip_wooden"));
-
-		builder.add(new ResourceLocation("vitality", "items/wand/core_angelic"));
-		builder.add(new ResourceLocation("vitality", "items/wand/core_atmospheric"));
-		builder.add(new ResourceLocation("vitality", "items/wand/core_demonic"));
-		builder.add(new ResourceLocation("vitality", "items/wand/core_energetic"));
-		builder.add(new ResourceLocation("vitality", "items/wand/core_exotic"));
+		for(Item item : ModItems.ITEM_LIST){
+			if(item instanceof ItemWandPiece) {
+				System.out.println(item.getRegistryName().getResourceDomain() + ":" + "items/wand/" + item.getRegistryName().getResourcePath());
+				builder.add(new ResourceLocation(item.getRegistryName().getResourceDomain(), "items/wand/" + item.getRegistryName().getResourcePath()));
+			}
+		}
 
 		return builder.build();
 	}
@@ -96,13 +102,12 @@ public class ModelWand implements IModel, IModelCustomData {
 		CoreType core = CoreType.ANGELIC;
 		TipType tip = TipType.WOODEN;
 		try {
-			core = CoreType.valueOf(customData.get(WandHelper.CORE_TYPE));
-
+			core = CoreType.getByName(customData.get(WandHelper.CORE_TYPE));
 		} catch (Exception e) {
 
 		}
 		try {
-			tip = TipType.valueOf(customData.get(WandHelper.TIP_TYPE));
+			tip = TipType.getByName(customData.get(WandHelper.TIP_TYPE));
 		} catch (Exception e) {
 
 		}
