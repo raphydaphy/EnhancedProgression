@@ -72,8 +72,8 @@ public class RecipeWand implements IRecipe {
 		resultItem = new ItemStack(ModItems.WAND);
 		resultItem.setStackDisplayName(tipType1 + " Tipped " + coreType + " Wand");
 		resultItem.setTagCompound(new NBTTagCompound());
-		resultItem.getTagCompound().setString(WandHelper.CORE_TYPE, coreType.toString());
-		resultItem.getTagCompound().setString(WandHelper.TIP_TYPE, tipType1.toString());
+		resultItem.getTagCompound().setString(WandHelper.CORE_TYPE, coreType.getName());
+		resultItem.getTagCompound().setString(WandHelper.TIP_TYPE, tipType1.getName());
 		resultItem.getTagCompound().setInteger(Essence.KEY, 0);
 		resultItem.getTagCompound().setInteger(Spell.ACTIVE_KEY, -1);
 
