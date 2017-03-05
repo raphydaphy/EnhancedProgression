@@ -83,7 +83,8 @@ public class ItemVial extends ItemBase {
 	}
 
 	public static int getCurrentStored(ItemStack stack) {
-		return stack.getTagCompound().getInteger(Essence.KEY);
+		if(stack.hasTagCompound()) return stack.getTagCompound().getInteger(Essence.KEY);
+		else return 0;
 	}
 
 	public Essence getVialType() {
