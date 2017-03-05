@@ -88,8 +88,6 @@ public class ItemWand extends ItemBase {
 
 				if (tile instanceof IEssenceContainer) {
 					IEssenceContainer container = (IEssenceContainer) tile;
-					System.out.println(
-							world.isRemote + " <== world | container essence ==> " + container.getEssenceStored());
 					if (container.getEssenceStored() > 0 && pair.getKey().getCoreType() == container.getEssenceType()) {
 						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
@@ -122,15 +120,14 @@ public class ItemWand extends ItemBase {
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase entity, int count) {
+	public void onUsingTick(ItemStack wand, EntityLivingBase entity, int count) {
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 			BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
 					player.getEntityData().getInteger(VitalData.POS_Y),
 					player.getEntityData().getInteger(VitalData.POS_Z));
 
-			switch (player.getEntityData().getString("wandCurOperation")) {
-			case "extractFromContainer":
+			if(player.getEntityData().getString("wandCurOperation").equals("extractFromContainer")){
 				IEssenceContainer container = (IEssenceContainer) player.getEntityWorld().getTileEntity(pos);
 				if (container.getEssenceStored() > 0) {
 					System.out.println("doing something");
@@ -138,7 +135,12 @@ public class ItemWand extends ItemBase {
 					player.getEntityData().setInteger("wandCurEssenceStored",
 							player.getEntityData().getInteger("wandCurEssenceStored") + 1);
 				}
-				break;
+			}
+			else if(player.getEntityData().getString("wandCurOperation").equals("useSpell")){
+				Spell spell = Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY));
+				if (spell.canBeCast(wand) && spell.onCastTick(wand, player, count)){
+					
+				}
 			}
 		}
 
