@@ -80,7 +80,7 @@ public class BlockExtractionCrucible extends BlockBase {
 		if (heldItem == null) {
 			return true;
 		} else {
-			int i = ((Integer) state.getValue(LEVEL)).intValue();
+			int i = ((Integer) state.getValue(LEVEL));
 			Item item = heldItem.getItem();
 
 			if (item == ModItems.VIAL_ATMOSPHERIC) {

@@ -3,6 +3,7 @@ package com.raphydaphy.vitality.api.spell;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.registry.ModItems;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +16,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class Spell implements IStringSerializable {
+public abstract class Spell {
 	//ILLUMINATION("Illumination", 0, ModItems.SPELL_ILLUMINATION), FIREBALL("Fireball", 1, ModItems.SPELL_FIREBALL),;
 
 	/**
@@ -39,22 +40,25 @@ public abstract class Spell implements IStringSerializable {
 	private final int cost;
 	private final int potency;
 	private final int cooldown;
+	private final Essence[] reqEssence;
 	
-	public Spell(Item icon, int id, int cost, int potency, int cooldown){
+	public Spell(Essence[] reqEssence, Item icon, int id, int cost, int potency, int cooldown){
 		this.icon = icon;
 		this.id = id;
 		this.cost = cost;
 		this.potency = potency;
 		this.cooldown = cooldown;
+		this.reqEssence = reqEssence;
+		spellMap.put(id, this);
 	}
 	
-	public abstract boolean onCastPre(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+	public abstract boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ);
 	
-	public abstract boolean onCast(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+	public abstract boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ);
 	
-	public abstract boolean onCastPost(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+	public abstract boolean onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ);
 	
 	public Item getIcon(){
@@ -75,6 +79,17 @@ public abstract class Spell implements IStringSerializable {
 	
 	public int getCooldown(){
 		return cooldown;
+	}
+	
+	public Essence[] getReqEssence(){
+		return reqEssence;
+	}
+	
+	public boolean isEssenceValid(Essence essence){
+		for(Essence essence2 : reqEssence){
+			return essence2 == essence;
+		}
+		return false;
 	}
 	
 

@@ -9,7 +9,6 @@ import org.lwjgl.input.Mouse;
 
 import com.google.common.collect.ImmutableSet;
 import com.raphydaphy.vitality.api.spell.Spell;
-import com.raphydaphy.vitality.api.spell.SpellHelper;
 import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.network.MessageChangeSpell;
@@ -104,9 +103,9 @@ public class GUISpellSelect extends GuiScreen {
 						GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
 						GlStateManager.scale(2, 2, 2);
 						if (wandStack.getTagCompound().getString(Spell.ACTIVE_KEY) != "") {
-							if (SpellHelper.spellToItem(spells.get(curItem)) != null) {
+							if (spells.get(curItem).getIcon() != null) {
 								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(SpellHelper.spellToItem(spells.get(curItem))), 0, 0);
+										new ItemStack(spells.get(curItem).getIcon()), 0, 0);
 							}
 						}
 						GlStateManager.translate(-screenWidth, -screenHeight, 0);
@@ -122,10 +121,10 @@ public class GUISpellSelect extends GuiScreen {
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.7, 1.7, 1.7);
 
-							if (SpellHelper.spellToItem(spells.get(curItem)) != null) {
+							if (spells.get(curItem).getIcon() != null) {
 
 								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(SpellHelper.spellToItem(spells.get(curItem))), 0, 0);
+										new ItemStack(spells.get(curItem).getIcon()), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
@@ -135,9 +134,9 @@ public class GUISpellSelect extends GuiScreen {
 							GlStateManager.pushMatrix();
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.5, 1.5, 1.5);
-							if (SpellHelper.spellToItem(spells.get(curItem)) != null) {
+							if (spells.get(curItem).getIcon() != null) {
 								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(SpellHelper.spellToItem(spells.get(curItem))), 0, 0);
+										new ItemStack(spells.get(curItem).getIcon()), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
@@ -163,7 +162,7 @@ public class GUISpellSelect extends GuiScreen {
 			}
 
 			PacketManager.INSTANCE
-					.sendToServer(new MessageChangeSpell(SpellHelper.getIDFromSpell(spells.get(activeSector))));
+					.sendToServer(new MessageChangeSpell(spells.get(activeSector).getId()));
 		}
 	}
 

@@ -12,13 +12,18 @@ public class WandEnums {
 	}
 
 	public enum CoreType implements IStringSerializable {
-		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC), ATMOSPHERIC("Atmospheric", WandTier.BASIC,
-				Essence.ATMOSPHERIC), DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC), ENERGETIC("Energetic",
-						WandTier.BASIC, Essence.ENERGETIC), EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC),;
+		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC), 
+		ATMOSPHERIC("Atmospheric", WandTier.BASIC, Essence.ATMOSPHERIC), 
+		DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC), 
+		ENERGETIC("Energetic", WandTier.BASIC, Essence.ENERGETIC), 
+		EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC),;
 
 		private String name;
 		private WandTier accessTier;
 		private Essence essence;
+		private int cdmp;
+		private int cmp;
+		private int pmp;
 
 		public static final String KEY = "core_type";
 
@@ -31,11 +36,25 @@ public class WandEnums {
 		public Essence getCoreType() {
 			return this.essence;
 		}
+		
+		public int getCooldownMultiplier(){
+			return cdmp;
+		}
+		
+		public int getPotencyMultiplier(){
+			return pmp;
+		}
+		public int getCostMultiplier(){
+			return cmp;
+		}
 
-		CoreType(String name, WandTier accessTier, Essence type) {
+		CoreType(String name, WandTier accessTier, Essence type, int cdMP, int cMP, int pMP) {
 			this.name = name;
 			this.accessTier = accessTier;
 			this.essence = type;
+			cdmp = cdMP;
+			cmp = cMP;
+			pmp = pMP;
 		}
 	}
 

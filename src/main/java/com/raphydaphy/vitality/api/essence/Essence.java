@@ -11,18 +11,14 @@ import net.minecraft.util.text.TextFormatting;
 // all the base numbers are the cost needed for the illumination spell
 // every other spell's stats are a multiple of the base costs
 public enum Essence implements IStringSerializable {
-	ANGELIC("Angelic", WandTier.BASIC, 1, TextFormatting.AQUA, 2, 1, 1), ATMOSPHERIC("Atmospheric", WandTier.BASIC, 0,
-			TextFormatting.DARK_PURPLE, 15, 2, 2), DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED, 20, 5,
-					5), ENERGETIC("Energetic", WandTier.BASIC, -2000, TextFormatting.DARK_AQUA, 18, 3,
-							3), EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN, 30, 1, 1),;
+	ANGELIC("Angelic", WandTier.BASIC, 1, TextFormatting.AQUA), ATMOSPHERIC("Atmospheric", WandTier.BASIC, 0,
+			TextFormatting.DARK_PURPLE), DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED), 
+	ENERGETIC("Energetic", WandTier.BASIC, -2000, TextFormatting.DARK_AQUA), EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN),;
 
 	private String name;
 	private WandTier accessTier;
 	private int empoweredDimensionID;
 	private TextFormatting format;
-	private int baseCooldown;
-	private int basePotency;
-	private int baseCost;
 
 	/**
 	 * Use this for single containers. Use getMultiKey() for multiples. Used to
@@ -45,19 +41,12 @@ public enum Essence implements IStringSerializable {
 
 	Essence(String name, WandTier accessTier,
 			@Nullable /* well not really nullable but put -2000 for none */ int empoweredDimensionID,
-			TextFormatting format, int baseCooldown, int basePotency, int baseCost) {
+			TextFormatting format) {
 		this.name = name;
 		this.accessTier = accessTier;
 		this.format = format;
 		if (empoweredDimensionID != -2000)
-			this.empoweredDimensionID = empoweredDimensionID; // this doesnt do
-																// anything rn
-																// maybe neato
-																// idea for
-																// later
-		this.baseCooldown = baseCooldown;
-		this.basePotency = basePotency;
-		this.baseCost = baseCost;
+			this.empoweredDimensionID = empoweredDimensionID; // this doesnt do anything rn
 		MiscEssence.locator.put(name, this);
 	}
 
@@ -76,18 +65,6 @@ public enum Essence implements IStringSerializable {
 
 	public String getMultiKey() {
 		return KEY + "_" + name;
-	}
-
-	public int getCooldown() {
-		return baseCooldown;
-	}
-
-	public int getPotency() {
-		return basePotency;
-	}
-
-	public int getCost() {
-		return baseCost;
 	}
 
 }
