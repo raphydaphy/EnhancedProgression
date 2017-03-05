@@ -33,9 +33,10 @@ public class SpellExplosion extends Spell {
 		int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency);
 
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
-			
+
 			WandHelper.useEssence(wand, cost, pair.getKey().getCoreType());
-			world.createExplosion(player, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), potency, false);
+			world.createExplosion(player, player.getPosition().getX(), player.getPosition().getY(),
+					player.getPosition().getZ(), potency, false);
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 

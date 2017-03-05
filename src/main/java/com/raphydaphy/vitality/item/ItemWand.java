@@ -67,8 +67,7 @@ public class ItemWand extends ItemBase {
 				player.getEntityData().setString("wandCurOperation", "useSpell");
 				player.setActiveHand(hand);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, wand);
-			}
-			else if (world.isRemote) {
+			} else if (world.isRemote) {
 				ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 						pair.getKey().getCoreType().getColor());
 			}
@@ -154,17 +153,20 @@ public class ItemWand extends ItemBase {
 				WandHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
 			} else if (player.getEntityData().getString("wandCurOperation") == "useSpell") {
 				BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
-						player.getEntityData().getInteger(VitalData.POS_Y), player.getEntityData().getInteger(VitalData.POS_Z));
-				
+						player.getEntityData().getInteger(VitalData.POS_Y),
+						player.getEntityData().getInteger(VitalData.POS_Z));
+
 				NBTTagCompound tag = player.getEntityData();
 				if (Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCast(stack, player, world,
-						pos, player.getActiveHand(), EnumFacing.byName(tag.getString(VitalData.FACING)), tag.getFloat(VitalData.HIT_X), tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z)))
-					Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, player,
-							world, pos, player.getActiveHand(), player.getHorizontalFacing(), tag.getFloat(VitalData.HIT_X), tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z));
-			
+						pos, player.getActiveHand(), EnumFacing.byName(tag.getString(VitalData.FACING)),
+						tag.getFloat(VitalData.HIT_X), tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z)))
+					Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, player, world, pos,
+							player.getActiveHand(), player.getHorizontalFacing(), tag.getFloat(VitalData.HIT_X),
+							tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z));
+
 			}
 			player.getEntityData().removeTag("wandCurEssenceType");
-			player.getEntityData().removeTag("wandCurOperation");						
+			player.getEntityData().removeTag("wandCurOperation");
 			player.getEntityData().removeTag(VitalData.HIT_X);
 			player.getEntityData().removeTag(VitalData.HIT_Y);
 			player.getEntityData().removeTag(VitalData.HIT_Z);

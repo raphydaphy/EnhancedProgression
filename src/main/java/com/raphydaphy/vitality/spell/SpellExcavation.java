@@ -12,7 +12,6 @@ import com.raphydaphy.vitality.registry.ModItems;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -38,7 +37,7 @@ public class SpellExcavation extends Spell {
 		int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency);
 
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
-			
+
 			WandHelper.useEssence(wand, cost, pair.getKey().getCoreType());
 			world.setBlockToAir(pos);
 			world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1);

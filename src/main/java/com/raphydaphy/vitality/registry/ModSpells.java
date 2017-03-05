@@ -14,12 +14,12 @@ public class ModSpells {
 	public static Spell ILLUMINATION;
 	public static Spell EXPLOSION;
 	public static Spell EXCAVATION;
-	
-	public static void init(FMLInitializationEvent e){
+
+	public static void init(FMLInitializationEvent e) {
 		FIREBALL = new SpellFireball();
 		ILLUMINATION = new SpellIllumination();
 		EXPLOSION = new SpellExplosion();
 		EXCAVATION = new SpellExcavation();
 	}
-	
+
 }

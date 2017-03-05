@@ -41,9 +41,9 @@ public class BlockLightOrb extends BlockBase {
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	 public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return null;
 	}
 
@@ -98,12 +98,12 @@ public class BlockLightOrb extends BlockBase {
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 	}
-	
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
-    	
-	return new AxisAlignedBB(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
-    }
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+
+		return new AxisAlignedBB(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
+	}
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {

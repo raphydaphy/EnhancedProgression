@@ -55,18 +55,18 @@ public class ModelWand implements IModel, IModelCustomData {
 	private final ResourceLocation resourceTip;
 
 	public ModelWand(CoreType coreType, TipType tipType) {
-		if(coreType != null && tipType != null){
-		System.out.println(coreType);
-		System.out.println(new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase()).toString());
-		this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase());
-		this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.getName().toLowerCase());
-		}
-		else {
+		if (coreType != null && tipType != null) {
+			System.out.println(coreType);
+			System.out.println(
+					new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase()).toString());
+			this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase());
+			this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.getName().toLowerCase());
+		} else {
 			resourceCore = ModItems.CORE_ANGELIC.getRegistryName();
 			resourceTip = ModItems.TIP_WOODEN.getRegistryName();
 		}
 	}
-	
+
 	@Override
 	public IModelState getDefaultState() {
 		return TRSRTransformation.identity();
@@ -80,10 +80,12 @@ public class ModelWand implements IModel, IModelCustomData {
 	@Override
 	public Collection<ResourceLocation> getTextures() {
 		ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
-		for(Item item : ModItems.ITEM_LIST){
-			if(item instanceof ItemWandPiece) {
-				System.out.println(item.getRegistryName().getResourceDomain() + ":" + "items/wand/" + item.getRegistryName().getResourcePath());
-				builder.add(new ResourceLocation(item.getRegistryName().getResourceDomain(), "items/wand/" + item.getRegistryName().getResourcePath()));
+		for (Item item : ModItems.ITEM_LIST) {
+			if (item instanceof ItemWandPiece) {
+				System.out.println(item.getRegistryName().getResourceDomain() + ":" + "items/wand/"
+						+ item.getRegistryName().getResourcePath());
+				builder.add(new ResourceLocation(item.getRegistryName().getResourceDomain(),
+						"items/wand/" + item.getRegistryName().getResourcePath()));
 			}
 		}
 
