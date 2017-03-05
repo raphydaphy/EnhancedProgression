@@ -53,26 +53,26 @@ public class SpellIllumination extends Spell {
 			stackToPlace.onItemUse(player, world, pos, hand, side, hitX, hitY, hitZ);
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
-
 			return true;
 
 		} else if (world.isRemote) {
 			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 					pair.getKey().getCoreType().getColor());
 		}
+
 		return false;
 	}
 
 	@Override
 	public boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
+
 		return true;
 	}
 
 	@Override
-	public boolean onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+	public void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		return true;
 	}
 
 	@Override

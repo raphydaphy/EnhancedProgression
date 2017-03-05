@@ -24,8 +24,6 @@ public class SpellExplosion extends Spell {
 		super("explosion", new Essence[] {}, ModItems.SPELL_EXPLOSION, 2, 10, 1, 10);
 	}
 
-	public static final Spell INSTANCE = new SpellExplosion();
-
 	@Override
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -57,7 +55,7 @@ public class SpellExplosion extends Spell {
 	}
 
 	@Override
-	public boolean onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+	public void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		return true;
 	}

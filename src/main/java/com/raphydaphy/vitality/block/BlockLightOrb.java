@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -39,6 +40,11 @@ public class BlockLightOrb extends BlockBase {
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
+	}
+	
+	@Override
+	 public Item getItemDropped(IBlockState state, Random rand, int fortune){
+		return null;
 	}
 
 	@Override
@@ -92,6 +98,12 @@ public class BlockLightOrb extends BlockBase {
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 	}
+	
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
+    	
+	return new AxisAlignedBB(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
+    }
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {

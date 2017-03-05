@@ -1,11 +1,15 @@
 package com.raphydaphy.vitality.api.spell;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
+import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
+import com.raphydaphy.vitality.api.wand.WandHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -54,14 +58,57 @@ public abstract class Spell {
 		System.out.println(id);
 		spellMap.put(id, this);
 	}
+	
+	public boolean canBeCast(ItemStack wand){
+		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
+		return isEssenceValid(pair.getKey().getCoreType()) && pair.getValue().getCostMultiplier() * cost <= WandHelper.getEssenceStored(wand);
+	}
 
+	/**
+	 * This is the pre-cast spell event.  This is fired automatically as part of the spell handlers.  This is ONLY fired when a block is right clicked with the wand.  Using a wand in the air bypasses this.
+	 * @param wand The Wand ItemStack
+	 * @param player The player holding the Wand
+	 * @param world The World
+	 * @param pos The Pos of the Block being clicked
+	 * @param hand The current active player hand
+	 * @param side The current EnumFacing of the block being clicked
+	 * @param hitX The hitX of the Block (0.0-1.0) similar to AABB's
+	 * @param hitY hitX but a Y coord
+	 * @param hitZ hitX but a Z coord
+	 * @return If onCastPre was successful.  Always return false to NEVER allow casting when clicked on a block.
+	 */
 	public abstract boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ);
-
+	
+	/**
+	 * This is the cast spell event.  This is fired after onCastPre returns true or onPlayerStoppedUsing is called.  onPlayerStoppedUsing is always called once the wand is released from beind held after clicking the air, provided the necessary essence is there.
+	 * @param wand The Wand ItemStack
+	 * @param player The player holding the Wand
+	 * @param world The World
+	 * @param pos The Pos of the Block being clicked
+	 * @param hand The current active player hand
+	 * @param side The current EnumFacing of the block being clicked (null if onItemRightClick)
+	 * @param hitX The hitX of the Block (0.0-1.0) similar to AABB's (0 if onItemRightClick)
+	 * @param hitY hitX but a Y coord (0 if onItemRightClick)
+	 * @param hitZ hitX but a Z coord (0 if onItemRightClick)
+	 * @return If onCast was successful.  Returning false will disable onCastPost
+	 */
 	public abstract boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ);
 
-	public abstract boolean onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+	/**
+	 * This is the post-cast spell event.  Do your essence removal here!  This is always called immediately after onCast returns true, otherwise it is never called.
+	 * @param wand The Wand ItemStack
+	 * @param player The player holding the Wand
+	 * @param world The World
+	 * @param pos The Pos of the Block being clicked
+	 * @param hand The current active player hand
+	 * @param side The current EnumFacing of the block being clicked (null if onItemRightClick)
+	 * @param hitX The hitX of the Block (0.0-1.0) similar to AABB's (0 if onItemRightClick)
+	 * @param hitY hitX but a Y coord (0 if onItemRightClick)
+	 * @param hitZ hitX but a Z coord (0 if onItemRightClick)
+	 */
+	public abstract void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ);
 
 	public Item getIcon() {

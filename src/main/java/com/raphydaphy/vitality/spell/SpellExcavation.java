@@ -61,7 +61,7 @@ public class SpellExcavation extends Spell {
 	}
 
 	@Override
-	public boolean onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+	public void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		return true;
 	}
