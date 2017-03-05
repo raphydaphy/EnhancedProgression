@@ -14,6 +14,8 @@ import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.item.rod.ItemExtractionRod;
 import com.raphydaphy.vitality.item.rod.ItemTechniciansRod;
 import com.raphydaphy.vitality.item.rod.ItemTransmutationRod;
+import com.raphydaphy.vitality.spell.SpellFireball;
+import com.raphydaphy.vitality.spell.SpellIllumination;
 
 import net.minecraft.item.Item;
 
@@ -58,8 +60,8 @@ public class ModItems {
 
 	public static final Item WAND = new ItemWand("wand");
 
-	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", Spell.ILLUMINATION);
-	public static final Item SPELL_FIREBALL = new ItemSpell("fireball", Spell.FIREBALL);
+	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", SpellIllumination.INSTANCE.getId());
+	public static final Item SPELL_FIREBALL = new ItemSpell("fireball", SpellFireball.INSTANCE.getId());
 
 	public static final List<Item> ITEM_LIST = getList();
 

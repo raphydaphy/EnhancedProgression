@@ -50,15 +50,15 @@ public class MessageChangeSpell implements IMessage {
 			if (serverPlayer.getHeldItemMainhand() != null)
 			{
 				if (serverPlayer.getHeldItemMainhand().getItem() instanceof ItemWand) {
-					serverPlayer.getHeldItemMainhand().getTagCompound().setString(Spell.ACTIVE_KEY,
-							Spell.spellMap.get(id));
+					serverPlayer.getHeldItemMainhand().getTagCompound().setInteger(Spell.ACTIVE_KEY,
+							id);
 				} 
 			}
 			if (serverPlayer.getHeldItemOffhand() != null)
 			{
 				if (serverPlayer.getHeldItemOffhand().getItem() instanceof ItemWand) {
-				serverPlayer.getHeldItemOffhand().getTagCompound().setString(Spell.ACTIVE_KEY,
-						Spell.spellMap.get(id));
+				serverPlayer.getHeldItemOffhand().getTagCompound().setInteger(Spell.ACTIVE_KEY,
+						id);
 				}
 			}
 

@@ -15,7 +15,6 @@ import com.raphydaphy.vitality.registry.ModItems;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -30,13 +29,14 @@ public class SpellIllumination extends Spell{
 		super(null, ModItems.SPELL_ILLUMINATION, 1, 5, 0, 0);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public static final Spell INSTANCE = new SpellIllumination();
 
 	@Override
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 	int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
-	int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency);
 	int cost = (int) (pair.getValue().getCostMultiplier() * this.cost);
 
 	if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
@@ -69,13 +69,13 @@ public class SpellIllumination extends Spell{
 	@Override
 	public boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		return false;
+		return true;
 	}
 	
 	@Override

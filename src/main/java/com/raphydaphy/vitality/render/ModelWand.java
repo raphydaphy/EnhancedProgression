@@ -1,6 +1,7 @@
 package com.raphydaphy.vitality.render;
 
 import java.io.IOException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,8 @@ public class ModelWand implements IModel, IModelCustomData {
 
 	public ModelWand(CoreType coreType, TipType tipType) {
 		System.out.println(coreType);
-		this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.toString().toLowerCase());
-		this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.toString().toLowerCase());
+		this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase());
+		this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.getName().toLowerCase());
 	}
 
 	@Override
@@ -93,13 +94,13 @@ public class ModelWand implements IModel, IModelCustomData {
 		CoreType core = CoreType.ANGELIC;
 		TipType tip = TipType.WOODEN;
 		try {
-			core = CoreType.valueOf(customData.get(CoreType.KEY));
+			core = CoreType.valueOf(customData.get(WandHelper.CORE_TYPE));
 
 		} catch (Exception e) {
 
 		}
 		try {
-			tip = TipType.valueOf(customData.get(TipType.KEY));
+			tip = TipType.valueOf(customData.get(WandHelper.TIP_TYPE));
 		} catch (Exception e) {
 
 		}
@@ -148,8 +149,9 @@ public class ModelWand implements IModel, IModelCustomData {
 			CoreType coreType = null;
 			TipType tipType = null;
 			if (stack.hasTagCompound()) {
-				coreType = WandHelper.getCore(stack);
-				tipType = WandHelper.getTip(stack);
+				SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(stack);
+				coreType = pair.getKey();
+				tipType = pair.getValue();
 			}
 			if (coreType == null) {
 				coreType = CoreType.ANGELIC;
@@ -158,14 +160,14 @@ public class ModelWand implements IModel, IModelCustomData {
 				tipType = TipType.WOODEN;
 			}
 
-			String key = coreType.toString() + tipType.toString();
+			String key = coreType.getName() + tipType.getName();
 
 			BakedWand originalModel = (BakedWand) originalModelIn;
 
 			if (originalModel.cache.containsKey(key) == false) {
 				ImmutableMap.Builder<String, String> map = ImmutableMap.builder();
-				map.put(CoreType.KEY, coreType.toString());
-				map.put(TipType.KEY, tipType.toString());
+				map.put(WandHelper.CORE_TYPE, coreType.getName());
+				map.put(WandHelper.TIP_TYPE, tipType.getName());
 
 				IModel model = originalModel.parent.process(map.build());
 

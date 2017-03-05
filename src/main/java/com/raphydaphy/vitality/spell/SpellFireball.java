@@ -15,7 +15,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -30,6 +29,8 @@ public class SpellFireball extends Spell{
 		super(null, ModItems.SPELL_FIREBALL, 0, 5, 1, 5);
 	
 	}
+	
+	public static final SpellFireball INSTANCE = new SpellFireball();
 
 	@Override
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
@@ -75,9 +76,7 @@ public class SpellFireball extends Spell{
 		 				ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),		
 		 					pair.getKey().getCoreType().getColor());		
 		 			}		
-		 			return false;		
-		 	
-		return true;
+		 			return false;
 	}
 
 	@Override

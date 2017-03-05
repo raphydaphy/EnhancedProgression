@@ -20,11 +20,11 @@ public class WandEnums {
 	}
 
 	public enum CoreType implements IStringSerializable {
-		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC), 
-		ATMOSPHERIC("Atmospheric", WandTier.BASIC, Essence.ATMOSPHERIC), 
-		DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC), 
-		ENERGETIC("Energetic", WandTier.BASIC, Essence.ENERGETIC), 
-		EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC),;
+		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC, 0.5F, 0.5F), 
+		ATMOSPHERIC("Atmospheric", WandTier.BASIC, Essence.ATMOSPHERIC, 0.75F, 0.8F), 
+		DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC, 3.0F, 2.0F), 
+		ENERGETIC("Energetic", WandTier.BASIC, Essence.ENERGETIC, 0.25F, 1.0F), 
+		EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC, 1.0F, 1.5F);
 
 		private String name;
 		private WandTier accessTier;

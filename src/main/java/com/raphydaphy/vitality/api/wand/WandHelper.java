@@ -44,4 +44,26 @@ public class WandHelper {
 		String t = tag.getString(WandHelper.TIP_TYPE);
 		return new SimpleEntry<CoreType, TipType>(CoreType.getByName(c), TipType.getByName(t));
 	}
+	
+	public static boolean canUseEssence(ItemStack wand, int toUse, Essence type) {
+		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
+			if (pair.getKey().getCoreType().equals(type)) {
+				if (getEssenceStored(wand) >= toUse) {
+					return true;
+				}
+			}
+		
+		return false;
+	}
+
+	public static boolean useEssence(ItemStack wand, int toUse, Essence type) {
+		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
+			if (pair.getKey().getCoreType().equals(type)) {
+				if (getEssenceStored(wand) >= toUse) {
+					return setEssenceStored(wand, getEssenceStored(wand) - toUse);
+				}
+			}
+		
+		return false;
+	}
 }
