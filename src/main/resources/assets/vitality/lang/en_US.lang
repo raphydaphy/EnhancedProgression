@@ -60,8 +60,11 @@ wooden_exotic_wand.name=Wooden Tipped Exotic Wand
 
 invalid_wand.name=Invalid Wand!
 
-item.vitality.spell_illumination.name=Spell: Omnipresent Illumination
-item.vitality.spell_fireball.name=Spell: Radiant Fireball
+item.vitality.illumination.name=Spell: Omnipresent Illumination
+item.vitality.fireball.name=Spell: Radiant Fireball
+item.vitality.explosion.name=Spell: Contained Explosion
+item.vitality.excavation.name=Spell: Retroactive Excavation
+item.vitality.transmutation.name=Spell: Cryptic Transmutation
 
 #Action Bar Messages
 vitality.wand.notenoughessence.name=Not Enough Essence!
