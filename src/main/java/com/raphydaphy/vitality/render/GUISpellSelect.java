@@ -81,7 +81,7 @@ public class GUISpellSelect extends GuiScreen {
 			// if any spells are held in the bag
 			if (amount > 0) {
 				float anglePer;
-				if (wandStack.getTagCompound().getString(Spell.ACTIVE_KEY) != "") {
+				if (wandStack.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1) {
 					anglePer = 360F / (amount - 1);
 				} else {
 					anglePer = 360F / amount;
@@ -93,17 +93,12 @@ public class GUISpellSelect extends GuiScreen {
 				GlStateManager.popMatrix();
 				activeSector = -1;
 				for (int curItem = 0; curItem < spells.size(); curItem++) {
-					System.out.println(
-							spells.get(curItem) + " <== current spell id | current loop numberr ==> " + curItem);
-					System.out.println(Spell.spellMap.get(spells.get(curItem)) + " <== Current Spell Loopy Thing");
 					Item icon = Spell.spellMap.get(spells.get(curItem)).getIcon();
-					System.out.println(icon == null);
-					System.out.println("if that is true then shadows did bad");
-					if (spells.get(curItem).toString().equals(wandStack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
+					if (spells.get(curItem) == wandStack.getTagCompound().getInteger(Spell.ACTIVE_KEY)) {
 						GlStateManager.pushMatrix();
 						GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
 						GlStateManager.scale(2, 2, 2);
-						if (wandStack.getTagCompound().getString(Spell.ACTIVE_KEY) != "") {
+						if (wandStack.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1) {
 							if (icon != null) {
 								mc.getRenderItem().renderItemIntoGUI(new ItemStack(icon), 0, 0);
 							}
@@ -158,7 +153,7 @@ public class GUISpellSelect extends GuiScreen {
 							.setInteger(Spell.ACTIVE_KEY, spells.get(activeSector));
 				}
 			}
-
+			System.out.println(spells.get(activeSector) + " <== selected spell to send");
 			PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(spells.get(activeSector)));
 		}
 	}

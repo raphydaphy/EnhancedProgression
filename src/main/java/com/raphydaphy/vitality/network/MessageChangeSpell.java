@@ -39,13 +39,13 @@ public class MessageChangeSpell implements IMessage {
 	// second is the packet you are returning.
 	// The returned packet can be used as a "response" from a sent packet.
 	public static class ChangeSpellHandler implements IMessageHandler<MessageChangeSpell, IMessage> {
-
 		@Override
 		public IMessage onMessage(MessageChangeSpell message, MessageContext ctx) {
 			// This is the player the packet was sent to the server from
 			EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
 			// The value that was sent
 			int id = message.spell;
+			System.out.println(id + " <== on message what they got");
 			if (serverPlayer.getHeldItemMainhand() != null) {
 				if (serverPlayer.getHeldItemMainhand().getItem() instanceof ItemWand) {
 					serverPlayer.getHeldItemMainhand().getTagCompound().setInteger(Spell.ACTIVE_KEY, id);
