@@ -99,11 +99,11 @@ public class ItemWand extends ItemBase {
 				}
 			} else if (wand.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1 && !player.isSneaking()) {
 				if (Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPre(wand, player,
-						world, pos, hand, side, hitX, hitY, hitZ))
-					;
+						world, pos, hand, side, hitX, hitY, hitZ)){
 				player.getEntityData().setString("wandCurOperation", "useSpell");
 				player.setActiveHand(hand);
 				return EnumActionResult.SUCCESS;
+				}
 			}
 
 		}
