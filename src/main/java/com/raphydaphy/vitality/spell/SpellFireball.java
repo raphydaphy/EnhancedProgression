@@ -42,7 +42,7 @@ public class SpellFireball extends Spell {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 
 		int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
-		int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency);
+		int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency) + 1;
 		int cost = (int) (pair.getValue().getCostMultiplier() * this.cost);
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 			Random rand = world.rand;
