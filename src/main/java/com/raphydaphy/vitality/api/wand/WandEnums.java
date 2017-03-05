@@ -31,6 +31,10 @@ public class WandEnums {
 		private float cdmp;
 		private float pmp;
 
+		public WandTier getTier() {
+			return accessTier;
+		}
+
 		@Override
 		public String getName() {
 			// TODO Auto-generated method stub
@@ -65,9 +69,8 @@ public class WandEnums {
 	}
 
 	public enum TipType implements IStringSerializable {
-		WOODEN("Wooden", WandTier.BASIC, 1.5f),;
+		WOODEN("Wooden", 1.5f),;
 		String name;
-		WandTier accessTier;
 
 		private float cmp;
 
@@ -77,9 +80,8 @@ public class WandEnums {
 			return name;
 		}
 
-		TipType(String name, WandTier accessTier, float cMP) {
+		TipType(String name, float cMP) {
 			this.name = name;
-			this.accessTier = accessTier;
 			cmp = cMP;
 			tipMap.put(name, this);
 		}
@@ -102,10 +104,26 @@ public class WandEnums {
 	// - EMPOWERED
 	// - ETHEREAL (whatever tf that is it sounds cool)
 	// - ETERNAL
-	public enum WandTier {
-		BASIC, EMPOWERED, ETHEREAL, ETERNAL;
+	public enum WandTier implements IStringSerializable {
+		BASIC("Basic", 1000), EMPOWERED("Empowered", 2400), ETHEREAL("Ethereal", 6500), ETERNAL("Eternal", 15000);
 
-		// WandTier(String name, Item core, int maxCapacity?){}
+		private String name;
+		private int maxcap;
+
+		private WandTier(String name, int maxCapacity) {
+			this.name = name;
+			this.maxcap = maxCapacity;
+
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		public int getMaxCap() {
+			return maxcap;
+		}
 	}
 
 }

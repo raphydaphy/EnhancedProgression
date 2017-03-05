@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 public class SpellIllumination extends Spell {
 
 	public SpellIllumination() {
-		super("light", new Essence[] {}, ModItems.SPELL_ILLUMINATION, 1, 1, 0, 2);
+		super("light", new Essence[] {}, ModItems.SPELL_ILLUMINATION, 1, 1, 0, 2, true);
 	}
 
 	@Override

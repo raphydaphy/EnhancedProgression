@@ -77,14 +77,7 @@ public class RecipeWand implements IRecipe {
 		resultItem.getTagCompound().setInteger(Essence.KEY, 0);
 		resultItem.getTagCompound().setInteger(Spell.ACTIVE_KEY, -1);
 
-		int maxEssence = 0;
-		switch (tipType1) {
-		case WOODEN:
-			maxEssence = 1000;
-			break;
-		default:
-			return false;
-		}
+		int maxEssence = coreType.getTier().getMaxCap();
 		resultItem.getTagCompound().setInteger(Essence.MAX_KEY, maxEssence);
 		return true;
 	}

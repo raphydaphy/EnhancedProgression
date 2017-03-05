@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 public class SpellFireball extends Spell {
 
 	public SpellFireball() {
-		super("fireball", new Essence[] {}, ModItems.SPELL_FIREBALL, 0, 5, 1, 5);
+		super("fireball", new Essence[] {}, ModItems.SPELL_FIREBALL, 0, 5, 1, 5, false);
 	}
 
 	@Override

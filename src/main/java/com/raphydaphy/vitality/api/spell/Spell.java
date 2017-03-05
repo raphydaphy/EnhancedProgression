@@ -44,10 +44,12 @@ public abstract class Spell {
 	protected final int cooldown;
 	protected final Essence[] reqEssence;
 	protected final String name;
+	protected final boolean needsBlock;
 
-	public Spell(String name, Essence[] reqEssence, Item icon, int id, int cost, int potency, int cooldown) {
+	public Spell(String name, Essence[] reqEssence, Item icon, int id, int cost, int potency, int cooldown,
+			boolean needsBlock) {
 		System.out.println("CONSTRUCTING SPELL " + name + " WITH ITEM " + new ItemStack(icon).toString() + "; ID " + id
-				+ "; COST " + cost + "; POTENCY " + potency + "; COOLDOWN" + cooldown);
+				+ "; COST " + cost + "; POTENCY " + potency + "; COOLDOWN" + cooldown + "; NEEDS BLOCK " + needsBlock);
 		this.name = name;
 		this.icon = icon;
 		this.id = id;
@@ -55,6 +57,7 @@ public abstract class Spell {
 		this.potency = potency;
 		this.cooldown = cooldown;
 		this.reqEssence = reqEssence;
+		this.needsBlock = needsBlock;
 		System.out.println(new ItemStack(icon).toString());
 		System.out.println(id);
 		spellMap.put(id, this);
@@ -62,7 +65,7 @@ public abstract class Spell {
 
 	public boolean canBeCast(ItemStack wand) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
-		return isEssenceValid(pair.getKey().getCoreType())
+		return !needsBlock && isEssenceValid(pair.getKey().getCoreType())
 				&& pair.getValue().getCostMultiplier() * cost <= WandHelper.getEssenceStored(wand);
 	}
 
@@ -182,6 +185,10 @@ public abstract class Spell {
 	@Nullable
 	public Essence[] getReqEssence() {
 		return reqEssence;
+	}
+
+	public boolean getNeedsBlock() {
+		return needsBlock;
 	}
 
 	public boolean isEssenceValid(Essence essence) {

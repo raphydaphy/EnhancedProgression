@@ -7,7 +7,6 @@ import com.raphydaphy.vitality.api.essence.MiscEssence;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.registry.ModBlocks;
-import com.raphydaphy.vitality.util.NBTHelper;
 import com.raphydaphy.vitality.util.ParticleHelper;
 
 import net.minecraft.block.Block;
@@ -142,16 +141,17 @@ public class ItemExtractionRod extends ItemBase {
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-		if (NBTHelper.getInt(stack, "counter", -1) != -1) {
-			if (NBTHelper.getInt(stack, "counter", -1) == 20) {
+		if (stack.getTagCompound().getInteger("counter") != -1) {
+			if (stack.getTagCompound().getInteger("counter") == 20) {
 				if (!world.isRemote) {
 					ParticleHelper.spawnParticlesServer(EnumParticleTypes.PORTAL, world, true,
-							NBTHelper.getInt(stack, "xPos", -1) + 0.5, NBTHelper.getInt(stack, "yPos", -1) - 0.5,
-							NBTHelper.getInt(stack, "zPos", -1) + 0.5, 1000, 0.5);
+							stack.getTagCompound().getInteger("xPos") + 0.5,
+							stack.getTagCompound().getInteger("yPos") - 0.5,
+							stack.getTagCompound().getInteger("zPos") + 0.5, 1000, 0.5);
 				}
-			} else if (NBTHelper.getInt(stack, "counter", -1) == 0) {
-				BlockPos pos = new BlockPos(NBTHelper.getInt(stack, "xPos", -1), NBTHelper.getInt(stack, "yPos", -1),
-						NBTHelper.getInt(stack, "zPos", -1));
+			} else if (stack.getTagCompound().getInteger("counter") == 0) {
+				BlockPos pos = new BlockPos(stack.getTagCompound().getInteger("xPos"),
+						stack.getTagCompound().getInteger("yPos"), stack.getTagCompound().getInteger("zPos"));
 				if (world.getBlockState(pos).getBlock() == ModBlocks.ORE_ANGELIC_CRYSTAL
 						|| world.getBlockState(pos).getBlock() == ModBlocks.ORE_EXOTIC_CRYSTAL) {
 					if (!world.isRemote) {
@@ -170,7 +170,7 @@ public class ItemExtractionRod extends ItemBase {
 					System.out.println(entity.getName() + " tried to cheat!");
 				}
 			}
-			stack.setTagInfo("counter", new NBTTagInt(NBTHelper.getInt(stack, "counter", -1) - 1));
+			stack.getTagCompound().setInteger("counter", stack.getTagCompound().getInteger("counter") - 1);
 		}
 	}
 

@@ -67,7 +67,7 @@ public class ItemWand extends ItemBase {
 				player.getEntityData().setString("wandCurOperation", "useSpell");
 				player.setActiveHand(hand);
 				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, wand);
-			} else if (world.isRemote) {
+			} else if (k != -1 && world.isRemote && !Spell.spellMap.get(k).getNeedsBlock()) {
 				ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 						pair.getKey().getCoreType().getColor());
 			}
@@ -98,10 +98,6 @@ public class ItemWand extends ItemBase {
 						player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
 						player.getEntityData().setString("wandCurEssenceType", container.getEssenceType().getName());
 						player.getEntityData().setInteger("wandCurEssenceStored", WandHelper.getEssenceStored(wand));
-						player.getEntityData().setString(VitalData.FACING, side.getName());
-						player.getEntityData().setFloat(VitalData.HIT_X, hitX);
-						player.getEntityData().setFloat(VitalData.HIT_Y, hitY);
-						player.getEntityData().setFloat(VitalData.HIT_Z, hitZ);
 						player.setActiveHand(hand);
 						return EnumActionResult.SUCCESS;
 					}
@@ -110,6 +106,10 @@ public class ItemWand extends ItemBase {
 				Spell spell = Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY));
 				if (spell.isEssenceValid(pair.getKey().getCoreType())
 						&& spell.onCastPre(wand, player, world, pos, hand, side, hitX, hitY, hitZ)) {
+					player.getEntityData().setString(VitalData.FACING, side.getName());
+					player.getEntityData().setFloat(VitalData.HIT_X, hitX);
+					player.getEntityData().setFloat(VitalData.HIT_Y, hitY);
+					player.getEntityData().setFloat(VitalData.HIT_Z, hitZ);
 					player.getEntityData().setString("wandCurOperation", "useSpell");
 					player.setActiveHand(hand);
 					onPlayerStoppedUsing(wand, world, player, 0);
@@ -178,10 +178,8 @@ public class ItemWand extends ItemBase {
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-		if (!isSelected && entity.getEntityData().getString("wandCurOperation") != "") {
-			// this.onPlayerStoppedUsing(stack, world, (EntityLivingBase)
-			// entity, 0);
-		}
+		// if(!isSelected) stack.getTagCompound().setInteger(Spell.ACTIVE_KEY,
+		// -1);;
 	}
 
 	public int getMaxItemUseDuration(ItemStack stack) {
@@ -200,7 +198,8 @@ public class ItemWand extends ItemBase {
 			SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(stack);
 
 			try {
-				return pair.getValue().getName().toLowerCase() + "_" + pair.getKey().getName().toLowerCase() + "_wand";
+				return pair.getKey().getTier().getName().toLowerCase() + "_" + pair.getValue().getName().toLowerCase()
+						+ "_" + pair.getKey().getName().toLowerCase() + "_wand";
 			} catch (Exception e) {
 				return "invalid_wand";
 			}

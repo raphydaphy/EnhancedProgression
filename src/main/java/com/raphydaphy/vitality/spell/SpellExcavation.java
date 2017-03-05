@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 public class SpellExcavation extends Spell {
 
 	public SpellExcavation() {
-		super("excavation", new Essence[] {}, ModItems.SPELL_EXCAVATION, 3, 3, 1, 10);
+		super("excavation", new Essence[] {}, ModItems.SPELL_EXCAVATION, 3, 3, 1, 10, true);
 	}
 
 	public static final Spell INSTANCE = new SpellExcavation();
