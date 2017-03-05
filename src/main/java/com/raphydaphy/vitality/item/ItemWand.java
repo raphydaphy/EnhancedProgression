@@ -83,8 +83,7 @@ public class ItemWand extends ItemBase {
 
 				if (tile instanceof IEssenceContainer) {
 					IEssenceContainer container = (IEssenceContainer) tile;
-					// System.out.println(world.isRemote + " <== world |
-					// container essence ==> " + container.getEssenceStored());
+					System.out.println(world.isRemote + " <== world | container essence ==> " + container.getEssenceStored());
 					if (container.getEssenceStored() > 0
 							&& WandHelper.getCore(stack).getCoreType() == container.getEssenceType()) {
 						System.out.println("started");
