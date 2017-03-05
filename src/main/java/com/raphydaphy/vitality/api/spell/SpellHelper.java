@@ -8,6 +8,7 @@ import com.raphydaphy.vitality.registry.ModBlocks;
 import com.raphydaphy.vitality.registry.ModItems;
 import com.raphydaphy.vitality.util.TextHelper;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.Blocks;
@@ -89,7 +90,7 @@ public class SpellHelper {
 			}
 			return true;
 		} else {
-			ClientProxy.setActionText(TextHelper.getFormattedText("vitality.wand.notenoughessence.name"),
+			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 					WandHelper.getCore(wand).getCoreType().getColor());
 			return false;
 		}
@@ -132,8 +133,11 @@ public class SpellHelper {
 			}
 			return true;
 		} else {
-			ClientProxy.setActionText(TextHelper.getFormattedText("vitality.wand.notenoughessence.name"),
+			if (caster.getEntityWorld().isRemote)
+			{
+				ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 					WandHelper.getCore(wand).getCoreType().getColor());
+			}
 			return false;
 		}
 	}
