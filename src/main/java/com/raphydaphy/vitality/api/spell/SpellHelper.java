@@ -131,10 +131,11 @@ public class SpellHelper {
 				caster.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 			}
 			return true;
-		} else {
-			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
+		} else if (caster.getEntityWorld().isRemote){
+			
+				ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 					WandHelper.getCore(wand).getCoreType().getColor());
+			}
 			return false;
-		}
 	}
 }
