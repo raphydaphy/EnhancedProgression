@@ -81,7 +81,10 @@ public class SpellHelper {
 				}
 			}
 			WandHelper.useEssence(wand, cost, WandHelper.getCore(wand).getCoreType());
-			caster.getEntityWorld().playSound(null, pos, SoundEvents.BLOCK_GLASS_PLACE, SoundCategory.BLOCKS, 1, 1);
+			if (!caster.getEntityWorld().isRemote)
+			{
+				caster.getEntityWorld().playSound(null, pos, SoundEvents.BLOCK_GLASS_PLACE, SoundCategory.BLOCKS, 1, 1);
+			}
 			ItemStack stackToPlace = new ItemStack(ModBlocks.LIGHT_ORB);
 			stackToPlace.onItemUse(caster, caster.getEntityWorld(), pos, hand, facing, hitX, hitY, hitZ);
 			caster.swingArm(hand);
