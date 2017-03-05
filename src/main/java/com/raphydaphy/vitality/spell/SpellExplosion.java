@@ -65,4 +65,16 @@ public class SpellExplosion extends Spell {
 		return true;
 	}
 
+	@Override
+	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onCastTickSuccess(ItemStack wand, EntityPlayer player, int count) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

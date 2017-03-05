@@ -130,7 +130,6 @@ public class ItemWand extends ItemBase {
 			if(player.getEntityData().getString("wandCurOperation").equals("extractFromContainer")){
 				IEssenceContainer container = (IEssenceContainer) player.getEntityWorld().getTileEntity(pos);
 				if (container.getEssenceStored() > 0) {
-					System.out.println("doing something");
 					container.subtractEssence(1);
 					player.getEntityData().setInteger("wandCurEssenceStored",
 							player.getEntityData().getInteger("wandCurEssenceStored") + 1);
