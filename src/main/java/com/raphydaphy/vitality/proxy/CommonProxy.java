@@ -5,6 +5,7 @@ import com.raphydaphy.vitality.network.MessageActionText;
 import com.raphydaphy.vitality.network.MessageChangeSpell;
 import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.ModRecipies;
+import com.raphydaphy.vitality.registry.ModSpells;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -34,6 +35,7 @@ public class CommonProxy {
 		ModRecipies.registerOreDict();
 		ModRecipies.registerCrafting();
 		ModRecipies.registerSmelting();
+		ModSpells.init(e);
 	}
 
 	/*
