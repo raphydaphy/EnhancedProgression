@@ -29,8 +29,6 @@ public class SpellIllumination extends Spell {
 		super("light", new Essence[] {}, ModItems.SPELL_ILLUMINATION, 1, 5, 0, 0);
 	}
 
-	public static final Spell INSTANCE = new SpellIllumination();
-
 	@Override
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
