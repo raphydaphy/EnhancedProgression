@@ -15,6 +15,7 @@ import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
 import com.raphydaphy.vitality.util.MeshHelper;
+import com.raphydaphy.vitality.util.VitalData;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
@@ -90,9 +91,9 @@ public class ItemWand extends ItemBase {
 							&& pair.getKey().getCoreType() == container.getEssenceType()) {
 						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
-						player.getEntityData().setInteger("V_x", pos.getX());
-						player.getEntityData().setInteger("V_y", pos.getY());
-						player.getEntityData().setInteger("V_z", pos.getZ());
+						player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
+						player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
+						player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
 						player.getEntityData().setString("wandCurEssenceType", container.getEssenceType().getName());
 						player.getEntityData().setInteger("wandCurEssenceStored", WandHelper.getEssenceStored(wand));
 						player.setActiveHand(hand);
@@ -114,9 +115,9 @@ public class ItemWand extends ItemBase {
 	public void onUsingTick(ItemStack stack, EntityLivingBase entity, int count) {
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
-			BlockPos pos = new BlockPos(player.getEntityData().getInteger("wandBlockPosX"),
-					player.getEntityData().getInteger("wandBlockPosY"),
-					player.getEntityData().getInteger("wandBlockPosZ"));
+			BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
+					player.getEntityData().getInteger(VitalData.POS_Y),
+					player.getEntityData().getInteger(VitalData.POS_Z));
 
 			switch (player.getEntityData().getString("wandCurOperation")) {
 			case "extractFromContainer":
