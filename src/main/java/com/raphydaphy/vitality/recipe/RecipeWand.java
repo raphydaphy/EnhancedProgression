@@ -3,6 +3,7 @@ package com.raphydaphy.vitality.recipe;
 import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.essence.Essence;
+import com.raphydaphy.vitality.api.spell.Spell;
 import com.raphydaphy.vitality.api.wand.WandEnums;
 import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.registry.ModItems;
@@ -74,6 +75,7 @@ public class RecipeWand implements IRecipe {
 		resultItem.getTagCompound().setString(WandHelper.CORE_TYPE, coreType.toString());
 		resultItem.getTagCompound().setString(WandHelper.TIP_TYPE, tipType1.toString());
 		resultItem.getTagCompound().setInteger(Essence.KEY, 0);
+		resultItem.getTagCompound().setInteger(Spell.ACTIVE_KEY, -1);
 
 		int maxEssence = 0;
 		switch (tipType1) {

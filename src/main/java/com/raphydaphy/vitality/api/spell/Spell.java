@@ -3,6 +3,8 @@ package com.raphydaphy.vitality.api.spell;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.registry.ModItems;
 
@@ -35,12 +37,12 @@ public abstract class Spell {
 	 */
 	public static final String ARRAY_KEY = "stored_spells";
 
-	private final Item icon;
-	private final int id;
-	private final int cost;
-	private final int potency;
-	private final int cooldown;
-	private final Essence[] reqEssence;
+	protected final Item icon;
+	protected final int id;
+	protected final int cost;
+	protected final int potency;
+	protected final int cooldown;
+	protected final Essence[] reqEssence;
 	
 	public Spell(Essence[] reqEssence, Item icon, int id, int cost, int potency, int cooldown){
 		this.icon = icon;
@@ -81,6 +83,7 @@ public abstract class Spell {
 		return cooldown;
 	}
 	
+	@Nullable
 	public Essence[] getReqEssence(){
 		return reqEssence;
 	}

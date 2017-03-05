@@ -29,9 +29,8 @@ public class WandEnums {
 		private String name;
 		private WandTier accessTier;
 		private Essence essence;
-		private int cdmp;
-		private int cmp;
-		private int pmp;
+		private float cdmp;
+		private float pmp;
 
 		@Override
 		public String getName() {
@@ -43,16 +42,12 @@ public class WandEnums {
 			return this.essence;
 		}
 		
-		public int getCooldownMultiplier(){
+		public float getCooldownMultiplier(){
 			return cdmp;
 		}
 		
-		public int getPotencyMultiplier(){
+		public float getPotencyMultiplier(){
 			return pmp;
-		}
-		
-		public int getCostMultiplier(){
-			return cmp;
 		}
 		
 		@Nullable
@@ -60,32 +55,38 @@ public class WandEnums {
 			return coreMap.get(name);
 		}
 		
-		CoreType(String name, WandTier accessTier, Essence type, int cdMP, int cMP, int pMP) {
+		CoreType(String name, WandTier accessTier, Essence type, float cdMP, float pMP) {
 			this.name = name;
 			this.accessTier = accessTier;
 			this.essence = type;
 			cdmp = cdMP;
-			cmp = cMP;
 			pmp = pMP;
 			coreMap.put(name, this);
 		}
 	}
 
 	public enum TipType implements IStringSerializable {
-		WOODEN("Wooden", WandTier.BASIC),;
+		WOODEN("Wooden", WandTier.BASIC, 1.5f),;
 		String name;
 		WandTier accessTier;
 
+		private float cmp;
+		
 		@Override
 		public String getName() {
 			// TODO Auto-generated method stub
 			return name;
 		}
 
-		TipType(String name, WandTier accessTier) {
+		TipType(String name, WandTier accessTier, float cMP) {
 			this.name = name;
 			this.accessTier = accessTier;
+			cmp = cMP;
 			tipMap.put(name, this);
+		}
+		
+		public float getCostMultiplier(){
+			return cmp;
 		}
 		
 		@Nullable

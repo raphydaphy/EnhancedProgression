@@ -126,7 +126,7 @@ public class GUISpellSelect extends GuiScreen {
 							if (icon != null) {
 
 								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(spells.get(curItem).getIcon()), 0, 0);
+										new ItemStack(icon), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
@@ -159,7 +159,7 @@ public class GUISpellSelect extends GuiScreen {
 			if (Minecraft.getMinecraft().thePlayer.getHeldItemMainhand() != null) {
 				if (Minecraft.getMinecraft().thePlayer.getHeldItemMainhand().getItem() instanceof ItemWand) {
 					Minecraft.getMinecraft().thePlayer.getHeldItemMainhand().getTagCompound()
-							.setString(Spell.ACTIVE_KEY, spells.get(activeSector).toString());
+							.setInteger(Spell.ACTIVE_KEY, spells.get(activeSector));
 				}
 			}
 

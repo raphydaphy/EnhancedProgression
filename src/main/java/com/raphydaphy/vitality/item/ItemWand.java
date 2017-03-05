@@ -22,6 +22,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -63,10 +64,9 @@ public class ItemWand extends ItemBase {
 		else if (player.getEntityData().getString("wandCurOperation") == "")
 		{
 			if (wand.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1 && !player.isSneaking()) {
-				ADWAWOFLBKSD
-				ASGFPAKEWF
-				SET THE SPELL HERE
-				yeah throw some errors u stupid af compiler
+				player.getEntityData().setString("wandCurOperation", "useSpell");
+				player.setActiveHand(hand);
+				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, wand);
 			}
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, wand);
@@ -90,9 +90,9 @@ public class ItemWand extends ItemBase {
 							&& pair.getKey().getCoreType() == container.getEssenceType()) {
 						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
-						player.getEntityData().setInteger("x", pos.getX());
-						player.getEntityData().setInteger("y", pos.getY());
-						player.getEntityData().setInteger("z", pos.getZ());
+						player.getEntityData().setInteger("V_x", pos.getX());
+						player.getEntityData().setInteger("V_y", pos.getY());
+						player.getEntityData().setInteger("V_z", pos.getZ());
 						player.getEntityData().setString("wandCurEssenceType", container.getEssenceType().getName());
 						player.getEntityData().setInteger("wandCurEssenceStored", WandHelper.getEssenceStored(wand));
 						player.setActiveHand(hand);
@@ -100,7 +100,10 @@ public class ItemWand extends ItemBase {
 					}
 				}
 			} else if (wand.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1 && !player.isSneaking()) {
-
+				if(Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPre(wand, player, world, pos, hand, side, hitX, hitY, hitZ));
+				player.getEntityData().setString("wandCurOperation", "useSpell");
+				player.setActiveHand(hand);
+				return EnumActionResult.SUCCESS;
 			}
 
 		}
@@ -133,16 +136,18 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
 		if (entity instanceof EntityPlayer) {
+			NBTTagCompound tag = stack.getTagCompound();
 			EntityPlayer player = (EntityPlayer) entity;
-			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer") {
-				System.out.println(player.getEntityData().getInteger("wandCurEssenceStored"));
-				WandHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
+			NBTTagCompound playertag = player.getEntityData();
+			if (playertag.getString("wandCurOperation") == "extractFromContainer") {
+				System.out.println(playertag.getInteger("wandCurEssenceStored"));
+				WandHelper.setEssenceStored(stack, playertag.getInteger("wandCurEssenceStored"));
 			}
-			else if (player.getEntityData().getString("wandCurOperation") == "useSpell")
+			else if (playertag.getString("wandCurOperation") == "useSpell")
 			{
-				Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPre(stack, (EntityPlayer) entity, world, entity.getPosition(), null, null, 0, 0, 0);
-				Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCast(stack, (EntityPlayer) entity, world, entity.getPosition(), null, null, 0, 0, 0);
-				Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, (EntityPlayer) entity, world, entity.getPosition(), null, null, 0, 0, 0);
+				BlockPos pos = new BlockPos(playertag.getInteger("V_x"), playertag.getInteger("V_y"), playertag.getInteger("V_z"));
+				if(Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCast(stack, player, world, pos, player.getActiveHand(), player.getHorizontalFacing(), 0, 0, 0))
+				Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, player, world, pos, player.getActiveHand(), player.getHorizontalFacing(), 0, 0, 0);
 			}
 			player.getEntityData().setString("wandCurEssenceType", "");
 			player.getEntityData().setString("wandCurOperation", "");
