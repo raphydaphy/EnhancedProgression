@@ -60,8 +60,8 @@ public class ModItems {
 
 	public static final Item WAND = new ItemWand("wand");
 
-	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", SpellIllumination.INSTANCE.getId());
-	public static final Item SPELL_FIREBALL = new ItemSpell("fireball", SpellFireball.INSTANCE.getId());
+	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", 1);
+	public static final Item SPELL_FIREBALL = new ItemSpell("fireball", 0);
 
 	public static final List<Item> ITEM_LIST = getList();
 

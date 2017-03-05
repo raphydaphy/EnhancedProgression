@@ -99,6 +99,8 @@ public class GUISpellSelect extends GuiScreen {
 				GlStateManager.popMatrix();
 				activeSector = -1;
 				for (int curItem = 0; curItem < spells.size(); curItem++) {
+					System.out.println(spells.get(curItem) + " <== current spell id | current loop numberr ==> " + curItem);
+					System.out.println(Spell.spellMap.get(spells.get(curItem)) + " <== Current Spell Loopy Thing");
 					Item icon = Spell.spellMap.get(spells.get(curItem)).getIcon();
 					System.out.println(icon == null);
 					System.out.println("if that is true then shadows did bad");
