@@ -1,5 +1,7 @@
 package com.raphydaphy.vitality.item;
 
+import java.util.AbstractMap.SimpleEntry;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -47,34 +49,34 @@ public class ItemWand extends ItemBase {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack wand, World world, EntityPlayer player, EnumHand hand) {
+		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 		if (player.isSneaking()) {
 			if (world.isRemote) {
 				ClientProxy.setActionText(
-						"Storing " + +WandHelper.getEssenceStored(stack) + " / " + WandHelper.getMaxEssence(stack) + " "
-								+ WandHelper.getCore(stack).getCoreType().getName() + " Essence",
-						WandHelper.getCore(stack).getCoreType().getColor());
+						"Storing " + WandHelper.getEssenceStored(wand) + " / " + WandHelper.getMaxEssence(wand) + " "
+								+ pair.getKey().getCoreType().getName() + " Essence",
+						pair.getKey().getCoreType().getColor());
 			}
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, wand);
 		}
 		else if (player.getEntityData().getString("wandCurOperation") == "")
 		{
-			if (stack.getTagCompound().getString(Spell.ACTIVE_KEY) != "" && !player.isSneaking()) {
-				switch (Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
-				case FIREBALL:
-					player.getEntityData().setString("wandCurOperation", "useSpell");
-					player.setActiveHand(hand);
-					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
-				}
+			if (wand.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1 && !player.isSneaking()) {
+				ADWAWOFLBKSD
+				ASGFPAKEWF
+				SET THE SPELL HERE
+				yeah throw some errors u stupid af compiler
 			}
 		}
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, wand);
 	}
 
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+	public EnumActionResult onItemUse(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
+		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 		// System.out.println(world.isRemote + " <== world | essence ==> " +
 		// WandHelper.getEssenceStored(stack));
 		if (player.getEntityData().getString("wandCurOperation") == "") {
@@ -85,30 +87,20 @@ public class ItemWand extends ItemBase {
 					IEssenceContainer container = (IEssenceContainer) tile;
 					System.out.println(world.isRemote + " <== world | container essence ==> " + container.getEssenceStored());
 					if (container.getEssenceStored() > 0
-							&& WandHelper.getCore(stack).getCoreType() == container.getEssenceType()) {
+							&& pair.getKey().getCoreType() == container.getEssenceType()) {
 						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
-						player.getEntityData().setInteger("wandBlockPosX", pos.getX());
-						player.getEntityData().setInteger("wandBlockPosY", pos.getY());
-						player.getEntityData().setInteger("wandBlockPosZ", pos.getZ());
+						player.getEntityData().setInteger("x", pos.getX());
+						player.getEntityData().setInteger("y", pos.getY());
+						player.getEntityData().setInteger("z", pos.getZ());
 						player.getEntityData().setString("wandCurEssenceType", container.getEssenceType().getName());
-						player.getEntityData().setInteger("wandCurEssenceStored", WandHelper.getEssenceStored(stack));
+						player.getEntityData().setInteger("wandCurEssenceStored", WandHelper.getEssenceStored(wand));
 						player.setActiveHand(hand);
 						return EnumActionResult.SUCCESS;
 					}
 				}
-			} else if (stack.getTagCompound().getString(Spell.ACTIVE_KEY) != "" && !player.isSneaking()) {
-				switch (Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
-				case ILLUMINATION:
+			} else if (wand.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1 && !player.isSneaking()) {
 
-					if (SpellHelper.lanternSpell(stack, player, hand, side, hitX, hitY, hitZ, pos))
-						return EnumActionResult.SUCCESS;
-					break;
-				case FIREBALL:
-					player.getEntityData().setString("wandCurOperation", "useSpell");
-					player.setActiveHand(hand);
-					return EnumActionResult.SUCCESS;
-				}
 			}
 
 		}
@@ -138,9 +130,8 @@ public class ItemWand extends ItemBase {
 
 	}
 
-	@SuppressWarnings("incomplete-switch")
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer") {
@@ -149,10 +140,9 @@ public class ItemWand extends ItemBase {
 			}
 			else if (player.getEntityData().getString("wandCurOperation") == "useSpell")
 			{
-				switch (Spell.valueOf(stack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
-				case FIREBALL:
-					SpellHelper.fireballSpell(stack, (EntityPlayer)entity);
-				}
+				Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPre(stack, (EntityPlayer) entity, world, entity.getPosition(), null, null, 0, 0, 0);
+				Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCast(stack, (EntityPlayer) entity, world, entity.getPosition(), null, null, 0, 0, 0);
+				Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, (EntityPlayer) entity, world, entity.getPosition(), null, null, 0, 0, 0);
 			}
 			player.getEntityData().setString("wandCurEssenceType", "");
 			player.getEntityData().setString("wandCurOperation", "");
@@ -180,11 +170,10 @@ public class ItemWand extends ItemBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		if (stack.hasTagCompound()) {
-			CoreType coreType = WandHelper.getCore(stack);
-			TipType tipType = WandHelper.getTip(stack);
+			SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(stack);
 
 			try {
-				return tipType.toString().toLowerCase() + "_" + coreType.toString().toLowerCase() + "_wand";
+				return pair.getValue().getName().toLowerCase() + "_" + pair.getKey().getName().toLowerCase() + "_wand";
 			} catch (Exception e) {
 				return "invalid_wand";
 			}

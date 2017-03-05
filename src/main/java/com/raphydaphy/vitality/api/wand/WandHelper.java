@@ -38,8 +38,10 @@ public class WandHelper {
 		return false;
 	}
 	
-	public SimpleEntry<CoreType, TipType> deserializeWandNBT(ItemStack wand){
+	public static SimpleEntry<CoreType, TipType> getUsefulInfo(ItemStack wand){
 		NBTTagCompound tag = wand.getTagCompound();
-		String c = tag.getString()
+		String c = tag.getString(WandHelper.CORE_TYPE);
+		String t = tag.getString(WandHelper.TIP_TYPE);
+		return new SimpleEntry<CoreType, TipType>(CoreType.getByName(c), TipType.getByName(t));
 	}
 }

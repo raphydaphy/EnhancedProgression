@@ -3,15 +3,15 @@ package com.raphydaphy.vitality.item;
 import com.raphydaphy.vitality.api.spell.Spell;
 
 public class ItemSpell extends ItemBase {
-	private final Spell spell;
+	private final int spellId;
 
-	public ItemSpell(String name, Spell spell) {
-		super("spell_" + name, 1);
-		this.spell = spell;
+	public ItemSpell(String name, int spellId) {
+		super(name, 1);
+		this.spellId = spellId;
 	}
 
-	public Spell toSpell() {
-		return spell;
+	public int getSpellId() {
+		return spellId;
 	}
 
 }

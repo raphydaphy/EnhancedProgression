@@ -1,11 +1,19 @@
 package com.raphydaphy.vitality.api.wand;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
 import com.raphydaphy.vitality.api.essence.Essence;
 
 import net.minecraft.util.IStringSerializable;
 
 public class WandEnums {
 
+	private static Map<String, CoreType> coreMap = new HashMap<String, CoreType>();
+	private static Map<String, TipType> tipMap = new HashMap<String, TipType>();
+	
 	public enum WandResult {
 		SUCCESS, FAIL, BREAK, DRAIN,
 		// do stuff
@@ -25,8 +33,6 @@ public class WandEnums {
 		private int cmp;
 		private int pmp;
 
-		public static final String KEY = "core_type";
-
 		@Override
 		public String getName() {
 			// TODO Auto-generated method stub
@@ -44,10 +50,16 @@ public class WandEnums {
 		public int getPotencyMultiplier(){
 			return pmp;
 		}
+		
 		public int getCostMultiplier(){
 			return cmp;
 		}
-
+		
+		@Nullable
+		public static CoreType getByName(String name){
+			return coreMap.get(name);
+		}
+		
 		CoreType(String name, WandTier accessTier, Essence type, int cdMP, int cMP, int pMP) {
 			this.name = name;
 			this.accessTier = accessTier;
@@ -55,6 +67,7 @@ public class WandEnums {
 			cdmp = cdMP;
 			cmp = cMP;
 			pmp = pMP;
+			coreMap.put(name, this);
 		}
 	}
 
@@ -62,8 +75,6 @@ public class WandEnums {
 		WOODEN("Wooden", WandTier.BASIC),;
 		String name;
 		WandTier accessTier;
-
-		public static final String KEY = "tip_type";
 
 		@Override
 		public String getName() {
@@ -74,6 +85,12 @@ public class WandEnums {
 		TipType(String name, WandTier accessTier) {
 			this.name = name;
 			this.accessTier = accessTier;
+			tipMap.put(name, this);
+		}
+		
+		@Nullable
+		public static TipType getByName(String name){
+			return tipMap.get(name);
 		}
 	}
 

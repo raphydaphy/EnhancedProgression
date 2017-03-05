@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.api.wand.WandEnums;
+import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.registry.ModItems;
 
 import net.minecraft.inventory.InventoryCrafting;
@@ -70,8 +71,8 @@ public class RecipeWand implements IRecipe {
 		resultItem = new ItemStack(ModItems.WAND);
 		resultItem.setStackDisplayName(tipType1 + " Tipped " + coreType + " Wand");
 		resultItem.setTagCompound(new NBTTagCompound());
-		resultItem.getTagCompound().setString(WandEnums.CoreType.KEY, coreType.toString());
-		resultItem.getTagCompound().setString(WandEnums.TipType.KEY, tipType1.toString());
+		resultItem.getTagCompound().setString(WandHelper.CORE_TYPE, coreType.toString());
+		resultItem.getTagCompound().setString(WandHelper.TIP_TYPE, tipType1.toString());
 		resultItem.getTagCompound().setInteger(Essence.KEY, 0);
 
 		int maxEssence = 0;

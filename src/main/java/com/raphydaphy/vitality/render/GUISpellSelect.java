@@ -22,10 +22,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 
 public class GUISpellSelect extends GuiScreen {
 	private int activeSector = -1;
-	private List<Spell> spells = new ArrayList<Spell>();
+	private List<Integer> spells = new ArrayList<Integer>();
 
 	private ItemStack wandStack;
 
@@ -66,8 +67,8 @@ public class GUISpellSelect extends GuiScreen {
 				// NullPointerExceptions
 				if (stackAt != null) {
 					if (stackAt.getItem() instanceof ItemSpell) {
-						if (!(spells.contains(((ItemSpell) stackAt.getItem()).toSpell()))) {
-							spells.add(((ItemSpell) stackAt.getItem()).toSpell());
+						if (!(spells.contains(((ItemSpell) stackAt.getItem()).getSpellId()))) {
+							spells.add(((ItemSpell) stackAt.getItem()).getSpellId());
 						}
 
 					}
@@ -98,14 +99,15 @@ public class GUISpellSelect extends GuiScreen {
 				GlStateManager.popMatrix();
 				activeSector = -1;
 				for (int curItem = 0; curItem < spells.size(); curItem++) {
+					Item icon = Spell.spellMap.get(spells.get(curItem)).getIcon();
 					if (spells.get(curItem).toString().equals(wandStack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
 						GlStateManager.pushMatrix();
 						GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
 						GlStateManager.scale(2, 2, 2);
 						if (wandStack.getTagCompound().getString(Spell.ACTIVE_KEY) != "") {
-							if (spells.get(curItem).getIcon() != null) {
+							if (icon != null) {
 								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(spells.get(curItem).getIcon()), 0, 0);
+										new ItemStack(icon), 0, 0);
 							}
 						}
 						GlStateManager.translate(-screenWidth, -screenHeight, 0);
@@ -121,7 +123,7 @@ public class GUISpellSelect extends GuiScreen {
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.7, 1.7, 1.7);
 
-							if (spells.get(curItem).getIcon() != null) {
+							if (icon != null) {
 
 								mc.getRenderItem().renderItemIntoGUI(
 										new ItemStack(spells.get(curItem).getIcon()), 0, 0);
@@ -134,9 +136,9 @@ public class GUISpellSelect extends GuiScreen {
 							GlStateManager.pushMatrix();
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.5, 1.5, 1.5);
-							if (spells.get(curItem).getIcon() != null) {
+							if (icon != null) {
 								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(spells.get(curItem).getIcon()), 0, 0);
+										new ItemStack(icon), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
@@ -162,7 +164,7 @@ public class GUISpellSelect extends GuiScreen {
 			}
 
 			PacketManager.INSTANCE
-					.sendToServer(new MessageChangeSpell(spells.get(activeSector).getId()));
+					.sendToServer(new MessageChangeSpell(spells.get(activeSector)));
 		}
 	}
 
