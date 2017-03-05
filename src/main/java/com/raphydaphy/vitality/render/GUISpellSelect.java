@@ -21,8 +21,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class GUISpellSelect extends GuiScreen {
 	private int activeSector = -1;
@@ -36,26 +36,20 @@ public class GUISpellSelect extends GuiScreen {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		wandStack = player.getHeldItemMainhand();
-		if (!(wandStack == null))
-		{
+		if (!(wandStack == null)) {
 			if (!(wandStack.getItem() instanceof ItemWand)) {
 				wandStack = player.getHeldItemOffhand();
-				if (!(wandStack == null))
-				{
+				if (!(wandStack == null)) {
 					if (!(wandStack.getItem() instanceof ItemWand)) {
 						return;
 					}
 				}
 			}
-		}
-		else
-		{
+		} else {
 			wandStack = player.getHeldItemOffhand();
-			if (wandStack == null)
-			{
+			if (wandStack == null) {
 				return;
-			}
-			else if (!(wandStack.getItem() instanceof ItemWand)) {
+			} else if (!(wandStack.getItem() instanceof ItemWand)) {
 				return;
 			}
 		}
@@ -99,7 +93,8 @@ public class GUISpellSelect extends GuiScreen {
 				GlStateManager.popMatrix();
 				activeSector = -1;
 				for (int curItem = 0; curItem < spells.size(); curItem++) {
-					System.out.println(spells.get(curItem) + " <== current spell id | current loop numberr ==> " + curItem);
+					System.out.println(
+							spells.get(curItem) + " <== current spell id | current loop numberr ==> " + curItem);
 					System.out.println(Spell.spellMap.get(spells.get(curItem)) + " <== Current Spell Loopy Thing");
 					Item icon = Spell.spellMap.get(spells.get(curItem)).getIcon();
 					System.out.println(icon == null);
@@ -110,8 +105,7 @@ public class GUISpellSelect extends GuiScreen {
 						GlStateManager.scale(2, 2, 2);
 						if (wandStack.getTagCompound().getString(Spell.ACTIVE_KEY) != "") {
 							if (icon != null) {
-								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(icon), 0, 0);
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(icon), 0, 0);
 							}
 						}
 						GlStateManager.translate(-screenWidth, -screenHeight, 0);
@@ -129,8 +123,7 @@ public class GUISpellSelect extends GuiScreen {
 
 							if (icon != null) {
 
-								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(icon), 0, 0);
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(icon), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
@@ -141,8 +134,7 @@ public class GUISpellSelect extends GuiScreen {
 							GlStateManager.translate(xPos, yPos, 0);
 							GlStateManager.scale(1.5, 1.5, 1.5);
 							if (icon != null) {
-								mc.getRenderItem().renderItemIntoGUI(
-										new ItemStack(icon), 0, 0);
+								mc.getRenderItem().renderItemIntoGUI(new ItemStack(icon), 0, 0);
 							}
 							GlStateManager.translate(-xPos, -yPos, 0);
 							GlStateManager.popMatrix();
@@ -167,8 +159,7 @@ public class GUISpellSelect extends GuiScreen {
 				}
 			}
 
-			PacketManager.INSTANCE
-					.sendToServer(new MessageChangeSpell(spells.get(activeSector)));
+			PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(spells.get(activeSector)));
 		}
 	}
 

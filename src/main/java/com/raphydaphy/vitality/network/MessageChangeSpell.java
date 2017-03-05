@@ -1,7 +1,6 @@
 package com.raphydaphy.vitality.network;
 
 import com.raphydaphy.vitality.api.spell.Spell;
-import com.raphydaphy.vitality.api.spell.SpellHelper;
 import com.raphydaphy.vitality.item.ItemWand;
 
 import io.netty.buffer.ByteBuf;
@@ -47,18 +46,14 @@ public class MessageChangeSpell implements IMessage {
 			EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
 			// The value that was sent
 			int id = message.spell;
-			if (serverPlayer.getHeldItemMainhand() != null)
-			{
+			if (serverPlayer.getHeldItemMainhand() != null) {
 				if (serverPlayer.getHeldItemMainhand().getItem() instanceof ItemWand) {
-					serverPlayer.getHeldItemMainhand().getTagCompound().setInteger(Spell.ACTIVE_KEY,
-							id);
-				} 
+					serverPlayer.getHeldItemMainhand().getTagCompound().setInteger(Spell.ACTIVE_KEY, id);
+				}
 			}
-			if (serverPlayer.getHeldItemOffhand() != null)
-			{
+			if (serverPlayer.getHeldItemOffhand() != null) {
 				if (serverPlayer.getHeldItemOffhand().getItem() instanceof ItemWand) {
-				serverPlayer.getHeldItemOffhand().getTagCompound().setInteger(Spell.ACTIVE_KEY,
-						id);
+					serverPlayer.getHeldItemOffhand().getTagCompound().setInteger(Spell.ACTIVE_KEY, id);
 				}
 			}
 

@@ -13,18 +13,17 @@ public class WandEnums {
 
 	private static Map<String, CoreType> coreMap = new HashMap<String, CoreType>();
 	private static Map<String, TipType> tipMap = new HashMap<String, TipType>();
-	
+
 	public enum WandResult {
 		SUCCESS, FAIL, BREAK, DRAIN,
 		// do stuff
 	}
 
 	public enum CoreType implements IStringSerializable {
-		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC, 0.5F, 0.5F), 
-		ATMOSPHERIC("Atmospheric", WandTier.BASIC, Essence.ATMOSPHERIC, 0.75F, 0.8F), 
-		DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC, 3.0F, 2.0F), 
-		ENERGETIC("Energetic", WandTier.BASIC, Essence.ENERGETIC, 0.25F, 1.0F), 
-		EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC, 1.0F, 1.5F);
+		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC, 0.5F, 0.5F), ATMOSPHERIC("Atmospheric", WandTier.BASIC,
+				Essence.ATMOSPHERIC, 0.75F, 0.8F), DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC, 3.0F,
+						2.0F), ENERGETIC("Energetic", WandTier.BASIC, Essence.ENERGETIC, 0.25F,
+								1.0F), EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC, 1.0F, 1.5F);
 
 		private String name;
 		private WandTier accessTier;
@@ -41,20 +40,20 @@ public class WandEnums {
 		public Essence getCoreType() {
 			return this.essence;
 		}
-		
-		public float getCooldownMultiplier(){
+
+		public float getCooldownMultiplier() {
 			return cdmp;
 		}
-		
-		public float getPotencyMultiplier(){
+
+		public float getPotencyMultiplier() {
 			return pmp;
 		}
-		
+
 		@Nullable
-		public static CoreType getByName(String name){
+		public static CoreType getByName(String name) {
 			return coreMap.get(name);
 		}
-		
+
 		CoreType(String name, WandTier accessTier, Essence type, float cdMP, float pMP) {
 			this.name = name;
 			this.accessTier = accessTier;
@@ -71,7 +70,7 @@ public class WandEnums {
 		WandTier accessTier;
 
 		private float cmp;
-		
+
 		@Override
 		public String getName() {
 			// TODO Auto-generated method stub
@@ -84,13 +83,13 @@ public class WandEnums {
 			cmp = cMP;
 			tipMap.put(name, this);
 		}
-		
-		public float getCostMultiplier(){
+
+		public float getCostMultiplier() {
 			return cmp;
 		}
-		
+
 		@Nullable
-		public static TipType getByName(String name){
+		public static TipType getByName(String name) {
 			return tipMap.get(name);
 		}
 	}

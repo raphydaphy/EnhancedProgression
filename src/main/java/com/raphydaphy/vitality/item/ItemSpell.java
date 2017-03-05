@@ -1,7 +1,5 @@
 package com.raphydaphy.vitality.item;
 
-import com.raphydaphy.vitality.api.spell.Spell;
-
 public class ItemSpell extends ItemBase {
 	private final int spellId;
 

@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.essence.IEssenceContainer;
 import com.raphydaphy.vitality.api.spell.Spell;
-import com.raphydaphy.vitality.api.spell.SpellHelper;
 import com.raphydaphy.vitality.api.wand.IWandable;
 import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
 import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
@@ -61,9 +60,7 @@ public class ItemWand extends ItemBase {
 						pair.getKey().getCoreType().getColor());
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, wand);
-		}
-		else if (player.getEntityData().getString("wandCurOperation") == "")
-		{
+		} else if (player.getEntityData().getString("wandCurOperation") == "") {
 			if (wand.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1 && !player.isSneaking()) {
 				player.getEntityData().setString("wandCurOperation", "useSpell");
 				player.setActiveHand(hand);
@@ -86,9 +83,9 @@ public class ItemWand extends ItemBase {
 
 				if (tile instanceof IEssenceContainer) {
 					IEssenceContainer container = (IEssenceContainer) tile;
-					System.out.println(world.isRemote + " <== world | container essence ==> " + container.getEssenceStored());
-					if (container.getEssenceStored() > 0
-							&& pair.getKey().getCoreType() == container.getEssenceType()) {
+					System.out.println(
+							world.isRemote + " <== world | container essence ==> " + container.getEssenceStored());
+					if (container.getEssenceStored() > 0 && pair.getKey().getCoreType() == container.getEssenceType()) {
 						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
 						player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
@@ -101,7 +98,9 @@ public class ItemWand extends ItemBase {
 					}
 				}
 			} else if (wand.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1 && !player.isSneaking()) {
-				if(Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPre(wand, player, world, pos, hand, side, hitX, hitY, hitZ));
+				if (Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPre(wand, player,
+						world, pos, hand, side, hitX, hitY, hitZ))
+					;
 				player.getEntityData().setString("wandCurOperation", "useSpell");
 				player.setActiveHand(hand);
 				return EnumActionResult.SUCCESS;
@@ -143,12 +142,13 @@ public class ItemWand extends ItemBase {
 			if (playertag.getString("wandCurOperation") == "extractFromContainer") {
 				System.out.println(playertag.getInteger("wandCurEssenceStored"));
 				WandHelper.setEssenceStored(stack, playertag.getInteger("wandCurEssenceStored"));
-			}
-			else if (playertag.getString("wandCurOperation") == "useSpell")
-			{
-				BlockPos pos = new BlockPos(playertag.getInteger("V_x"), playertag.getInteger("V_y"), playertag.getInteger("V_z"));
-				if(Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCast(stack, player, world, pos, player.getActiveHand(), player.getHorizontalFacing(), 0, 0, 0))
-				Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, player, world, pos, player.getActiveHand(), player.getHorizontalFacing(), 0, 0, 0);
+			} else if (playertag.getString("wandCurOperation") == "useSpell") {
+				BlockPos pos = new BlockPos(playertag.getInteger("V_x"), playertag.getInteger("V_y"),
+						playertag.getInteger("V_z"));
+				if (Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCast(stack, player, world, pos,
+						player.getActiveHand(), player.getHorizontalFacing(), 0, 0, 0))
+					Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, player, world, pos,
+							player.getActiveHand(), player.getHorizontalFacing(), 0, 0, 0);
 			}
 			player.getEntityData().setString("wandCurEssenceType", "");
 			player.getEntityData().setString("wandCurOperation", "");

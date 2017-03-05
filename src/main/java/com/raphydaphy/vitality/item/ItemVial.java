@@ -72,8 +72,7 @@ public class ItemVial extends ItemBase {
 	 * @param emptyVial
 	 *            - The item representing the Empty Vial for this group.
 	 */
-	public ItemVial(String name, @Nonnull Essence type, VialQuality quality,
-			@Nonnull ItemVial emptyVial) {
+	public ItemVial(String name, @Nonnull Essence type, VialQuality quality, @Nonnull ItemVial emptyVial) {
 		this(name, type, quality);
 		this.emptyVial = emptyVial;
 	}
@@ -83,8 +82,10 @@ public class ItemVial extends ItemBase {
 	}
 
 	public static int getCurrentStored(ItemStack stack) {
-		if(stack.hasTagCompound()) return stack.getTagCompound().getInteger(Essence.KEY);
-		else return 0;
+		if (stack.hasTagCompound())
+			return stack.getTagCompound().getInteger(Essence.KEY);
+		else
+			return 0;
 	}
 
 	public Essence getVialType() {
@@ -162,13 +163,14 @@ public class ItemVial extends ItemBase {
 
 	public enum VialQuality {
 		BASIC(300), EMPOWERED(600);
-		
+
 		int max;
-		private VialQuality(int maxStored){
+
+		private VialQuality(int maxStored) {
 			max = maxStored;
 		}
-		
-		public int getMaxStorage(){
+
+		public int getMaxStorage() {
 			return max;
 		}
 	}

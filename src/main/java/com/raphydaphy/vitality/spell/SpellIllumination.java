@@ -23,32 +23,31 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class SpellIllumination extends Spell{
+public class SpellIllumination extends Spell {
 
 	public SpellIllumination() {
-		super(null, ModItems.SPELL_ILLUMINATION, 1, 5, 0, 0);
-		// TODO Auto-generated constructor stub
+		super("light", new Essence[] {}, ModItems.SPELL_ILLUMINATION, 1, 5, 0, 0);
 	}
-	
+
 	public static final Spell INSTANCE = new SpellIllumination();
 
 	@Override
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
-	int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
-	int cost = (int) (pair.getValue().getCostMultiplier() * this.cost);
+		int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
+		int cost = (int) (pair.getValue().getCostMultiplier() * this.cost);
 
-	if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
+		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 			Random rand = world.rand;
 			for (int i = 0; i < 25; i++) {
 				double x = (double) (pos.getX()) + 0.5 + ((rand.nextDouble()) - 0.5);
 				double y = (double) pos.getY() + (rand.nextDouble()) + 0.75;
 				double z = (double) pos.getZ() + 0.5 + ((rand.nextDouble()) - 0.5);
 				int pars = 133;
-				if (rand.nextInt(2) == 1) pars = 165;
-				world.spawnParticle(EnumParticleTypes.FALLING_DUST, x, y, z, 0.0D, 0.0D, 0.0D,
-						pars);
+				if (rand.nextInt(2) == 1)
+					pars = 165;
+				world.spawnParticle(EnumParticleTypes.FALLING_DUST, x, y, z, 0.0D, 0.0D, 0.0D, pars);
 			}
 			WandHelper.useEssence(wand, cost, pair.getKey().getCoreType());
 			world.playSound(null, pos, SoundEvents.BLOCK_GLASS_PLACE, SoundCategory.BLOCKS, 1, 1);
@@ -56,14 +55,14 @@ public class SpellIllumination extends Spell{
 			stackToPlace.onItemUse(player, world, pos, hand, side, hitX, hitY, hitZ);
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
-		
-		return true;
-			
-	} else if (world.isRemote){
-		ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
-				pair.getKey().getCoreType().getColor());
-	}
-	return false;
+
+			return true;
+
+		} else if (world.isRemote) {
+			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
+					pair.getKey().getCoreType().getColor());
+		}
+		return false;
 	}
 
 	@Override
@@ -77,11 +76,10 @@ public class SpellIllumination extends Spell{
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		return true;
 	}
-	
+
 	@Override
-	public boolean isEssenceValid(Essence essence){
+	public boolean isEssenceValid(Essence essence) {
 		return true;
 	}
-
 
 }

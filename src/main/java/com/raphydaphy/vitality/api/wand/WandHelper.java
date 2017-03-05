@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class WandHelper {
-	
+
 	public static final String CORE_TYPE = "core";
 	public static final String TIP_TYPE = "tip";
-	
+
 	public static int getEssenceStored(ItemStack stack) {
 		if (stack.hasTagCompound()) {
 			return stack.getTagCompound().getInteger(Essence.KEY);
@@ -37,33 +37,33 @@ public class WandHelper {
 		}
 		return false;
 	}
-	
-	public static SimpleEntry<CoreType, TipType> getUsefulInfo(ItemStack wand){
+
+	public static SimpleEntry<CoreType, TipType> getUsefulInfo(ItemStack wand) {
 		NBTTagCompound tag = wand.getTagCompound();
 		String c = tag.getString(WandHelper.CORE_TYPE);
 		String t = tag.getString(WandHelper.TIP_TYPE);
 		return new SimpleEntry<CoreType, TipType>(CoreType.getByName(c), TipType.getByName(t));
 	}
-	
+
 	public static boolean canUseEssence(ItemStack wand, int toUse, Essence type) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
-			if (pair.getKey().getCoreType().equals(type)) {
-				if (getEssenceStored(wand) >= toUse) {
-					return true;
-				}
+		if (pair.getKey().getCoreType().equals(type)) {
+			if (getEssenceStored(wand) >= toUse) {
+				return true;
 			}
-		
+		}
+
 		return false;
 	}
 
 	public static boolean useEssence(ItemStack wand, int toUse, Essence type) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
-			if (pair.getKey().getCoreType().equals(type)) {
-				if (getEssenceStored(wand) >= toUse) {
-					return setEssenceStored(wand, getEssenceStored(wand) - toUse);
-				}
+		if (pair.getKey().getCoreType().equals(type)) {
+			if (getEssenceStored(wand) >= toUse) {
+				return setEssenceStored(wand, getEssenceStored(wand) - toUse);
 			}
-		
+		}
+
 		return false;
 	}
 }

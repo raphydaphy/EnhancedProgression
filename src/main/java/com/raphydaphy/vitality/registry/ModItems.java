@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.raphydaphy.vitality.api.essence.Essence;
-import com.raphydaphy.vitality.api.spell.Spell;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemExtractionSword;
 import com.raphydaphy.vitality.item.ItemSpell;
@@ -14,8 +13,6 @@ import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.item.rod.ItemExtractionRod;
 import com.raphydaphy.vitality.item.rod.ItemTechniciansRod;
 import com.raphydaphy.vitality.item.rod.ItemTransmutationRod;
-import com.raphydaphy.vitality.spell.SpellFireball;
-import com.raphydaphy.vitality.spell.SpellIllumination;
 
 import net.minecraft.item.Item;
 
@@ -39,8 +36,8 @@ public class ModItems {
 			VialQuality.BASIC, VIAL_EMPTY);
 	public static final ItemVial VIAL_DEMONIC = new ItemVial("demonic_vial", Essence.DEMONIC, VialQuality.BASIC,
 			VIAL_EMPTY);
-	public static final ItemVial VIAL_ENERGETIC = new ItemVial("energetic_vial", Essence.ENERGETIC,
-			VialQuality.BASIC, VIAL_EMPTY);
+	public static final ItemVial VIAL_ENERGETIC = new ItemVial("energetic_vial", Essence.ENERGETIC, VialQuality.BASIC,
+			VIAL_EMPTY);
 	public static final ItemVial VIAL_EXOTIC = new ItemVial("exotic_vial", Essence.EXOTIC, VialQuality.BASIC,
 			VIAL_EMPTY);
 

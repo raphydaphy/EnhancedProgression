@@ -12,8 +12,9 @@ import net.minecraft.util.text.TextFormatting;
 // every other spell's stats are a multiple of the base costs
 public enum Essence implements IStringSerializable {
 	ANGELIC("Angelic", WandTier.BASIC, 1, TextFormatting.AQUA), ATMOSPHERIC("Atmospheric", WandTier.BASIC, 0,
-			TextFormatting.DARK_PURPLE), DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED), 
-	ENERGETIC("Energetic", WandTier.BASIC, -2000, TextFormatting.DARK_AQUA), EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN),;
+			TextFormatting.DARK_PURPLE), DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED), ENERGETIC(
+					"Energetic", WandTier.BASIC, -2000,
+					TextFormatting.DARK_AQUA), EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN),;
 
 	private String name;
 	private WandTier accessTier;
@@ -46,7 +47,8 @@ public enum Essence implements IStringSerializable {
 		this.accessTier = accessTier;
 		this.format = format;
 		if (empoweredDimensionID != -2000)
-			this.empoweredDimensionID = empoweredDimensionID; // this doesnt do anything rn
+			this.empoweredDimensionID = empoweredDimensionID; // this doesnt do
+																// anything rn
 		MiscEssence.locator.put(name, this);
 	}
 
