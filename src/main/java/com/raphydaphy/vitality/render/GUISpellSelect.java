@@ -100,6 +100,8 @@ public class GUISpellSelect extends GuiScreen {
 				activeSector = -1;
 				for (int curItem = 0; curItem < spells.size(); curItem++) {
 					Item icon = Spell.spellMap.get(spells.get(curItem)).getIcon();
+					System.out.println(icon == null);
+					System.out.println("if that is true then shadows did bad");
 					if (spells.get(curItem).toString().equals(wandStack.getTagCompound().getString(Spell.ACTIVE_KEY))) {
 						GlStateManager.pushMatrix();
 						GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);
