@@ -136,18 +136,16 @@ public class ItemWand extends ItemBase {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
 		if (entity instanceof EntityPlayer) {
-			NBTTagCompound tag = stack.getTagCompound();
 			EntityPlayer player = (EntityPlayer) entity;
-			NBTTagCompound playertag = player.getEntityData();
-			if (playertag.getString("wandCurOperation") == "extractFromContainer") {
-				System.out.println(playertag.getInteger("wandCurEssenceStored"));
-				WandHelper.setEssenceStored(stack, playertag.getInteger("wandCurEssenceStored"));
-			} else if (playertag.getString("wandCurOperation") == "useSpell") {
-				BlockPos pos = new BlockPos(playertag.getInteger("V_x"), playertag.getInteger("V_y"),
-						playertag.getInteger("V_z"));
-				if (Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCast(stack, player, world, pos,
+			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer") {
+				System.out.println(player.getEntityData().getInteger("wandCurEssenceStored"));
+				WandHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
+			} else if (player.getEntityData().getString("wandCurOperation") == "useSpell") {
+				BlockPos pos = new BlockPos(player.getEntityData().getInteger("V_x"), player.getEntityData().getInteger("V_y"),
+						player.getEntityData().getInteger("V_z"));
+				if (Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCast(stack, player, world, pos,
 						player.getActiveHand(), player.getHorizontalFacing(), 0, 0, 0))
-					Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, player, world, pos,
+					Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, player, world, pos,
 							player.getActiveHand(), player.getHorizontalFacing(), 0, 0, 0);
 			}
 			player.getEntityData().setString("wandCurEssenceType", "");
