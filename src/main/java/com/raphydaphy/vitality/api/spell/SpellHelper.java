@@ -6,7 +6,6 @@ import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.registry.ModBlocks;
 import com.raphydaphy.vitality.registry.ModItems;
-import com.raphydaphy.vitality.util.TextHelper;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
