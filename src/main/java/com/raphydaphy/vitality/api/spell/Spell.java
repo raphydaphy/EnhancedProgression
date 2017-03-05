@@ -1,17 +1,27 @@
 package com.raphydaphy.vitality.api.spell;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.raphydaphy.vitality.registry.ModItems;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public enum Spell implements IStringSerializable {
-	ILLUMINATION("Illumination", 0, ModItems.SPELL_ILLUMINATION), FIREBALL("Fireball", 1, ModItems.SPELL_FIREBALL),;
+public abstract class Spell implements IStringSerializable {
+	//ILLUMINATION("Illumination", 0, ModItems.SPELL_ILLUMINATION), FIREBALL("Fireball", 1, ModItems.SPELL_FIREBALL),;
 
-	private String name;
-	private int id;
-	private Item item;
+	/**
+	 * The big ol' list of spells.
+	 */
+	public static Map<Integer, Spell> spellMap = new HashMap<Integer, Spell>();
 
 	/**
 	 * Points to the currently selected spell for any wand ItemStack
@@ -24,25 +34,48 @@ public enum Spell implements IStringSerializable {
 	 */
 	public static final String ARRAY_KEY = "stored_spells";
 
-	Spell(String name, int id, Item spellItem) {
-		this.name = name;
+	private final Item icon;
+	private final int id;
+	private final int cost;
+	private final int potency;
+	private final int cooldown;
+	
+	public Spell(Item icon, int id, int cost, int potency, int cooldown){
+		this.icon = icon;
 		this.id = id;
-		this.item = spellItem;
-
-		// prints true
-		System.out.println(spellItem == null);
+		this.cost = cost;
+		this.potency = potency;
+		this.cooldown = cooldown;
 	}
-
-	@Override
-	public String getName() {
-		return name;
+	
+	public abstract boolean onCastPre(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+			EnumFacing side, float hitX, float hitY, float hitZ);
+	
+	public abstract boolean onCast(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+			EnumFacing side, float hitX, float hitY, float hitZ);
+	
+	public abstract boolean onCastPost(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+			EnumFacing side, float hitX, float hitY, float hitZ);
+	
+	public Item getIcon(){
+		return icon;
 	}
-
-	public Item getAsItem() {
-		if (item != null) {
-			return item;
-		}
-		return Item.getItemFromBlock(Blocks.BARRIER);
+	
+	public int getId(){
+		return id;
 	}
+	
+	public int getCost(){
+		return cost;
+	}
+	
+	public int getPotency(){
+		return potency;
+	}
+	
+	public int getCooldown(){
+		return cooldown;
+	}
+	
 
 }

@@ -46,19 +46,19 @@ public class MessageChangeSpell implements IMessage {
 			// This is the player the packet was sent to the server from
 			EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
 			// The value that was sent
-			int newID = message.spell;
+			int id = message.spell;
 			if (serverPlayer.getHeldItemMainhand() != null)
 			{
 				if (serverPlayer.getHeldItemMainhand().getItem() instanceof ItemWand) {
 					serverPlayer.getHeldItemMainhand().getTagCompound().setString(Spell.ACTIVE_KEY,
-							SpellHelper.getSpellFromID(newID).toString());
+							Spell.spellMap.get(id));
 				} 
 			}
 			if (serverPlayer.getHeldItemOffhand() != null)
 			{
 				if (serverPlayer.getHeldItemOffhand().getItem() instanceof ItemWand) {
 				serverPlayer.getHeldItemOffhand().getTagCompound().setString(Spell.ACTIVE_KEY,
-						SpellHelper.getSpellFromID(newID).toString());
+						Spell.spellMap.get(id));
 				}
 			}
 
