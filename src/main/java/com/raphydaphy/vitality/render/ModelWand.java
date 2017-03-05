@@ -51,8 +51,10 @@ public class ModelWand implements IModel, IModelCustomData {
 	private final ResourceLocation resourceCore;
 	private final ResourceLocation resourceTip;
 
-	public ModelWand(CoreType coreType, TipType tipType) {
+	public ModelWand(CoreType coreType, TipType tipType) 
+	{
 		System.out.println(coreType);
+		System.out.println(new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase()).toString());
 		this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase());
 		this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.getName().toLowerCase());
 	}
