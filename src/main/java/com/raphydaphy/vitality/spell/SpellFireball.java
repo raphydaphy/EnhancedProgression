@@ -43,7 +43,6 @@ public class SpellFireball extends Spell {
 
 		int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
 		int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency) + 1;
-		int cost = (int) (pair.getValue().getCostMultiplier() * this.cost);
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 			Random rand = world.rand;
 			for (int i = 0; i < 25; i++) {

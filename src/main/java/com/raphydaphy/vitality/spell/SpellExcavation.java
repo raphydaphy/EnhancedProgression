@@ -35,12 +35,11 @@ public class SpellExcavation extends Spell {
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 		int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
-		int cost = (int) (pair.getValue().getCostMultiplier() * this.cost);
 		int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency);
 
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 			player.setActiveHand(hand);
-			return true;
+			return false;
 
 		} else if (world.isRemote) {
 			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
@@ -72,7 +71,6 @@ public class SpellExcavation extends Spell {
 		EntityPlayerMP realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
 		BlockPos pos = player.rayTrace(6, 8).getBlockPos();
 		System.out.println("ticky");
-		realPlayer.interactionManager.updateBlockRemoving();
 		realPlayer.interactionManager.tryHarvestBlock(pos);
 		return true;
 	}

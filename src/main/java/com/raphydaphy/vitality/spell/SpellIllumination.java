@@ -34,7 +34,6 @@ public class SpellIllumination extends Spell {
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 		int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
-		int cost = (int) (pair.getValue().getCostMultiplier() * this.cost);
 
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 			Random rand = world.rand;

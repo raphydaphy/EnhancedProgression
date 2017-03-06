@@ -48,7 +48,7 @@ public class WandHelper {
 	public static boolean canUseEssence(ItemStack wand, int toUse, Essence type) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 		if (pair.getKey().getCoreType().equals(type)) {
-			if (getEssenceStored(wand) >= toUse) {
+			if (getEssenceStored(wand) >= toUse * pair.getValue().getCostMultiplier()) {
 				return true;
 			}
 		}

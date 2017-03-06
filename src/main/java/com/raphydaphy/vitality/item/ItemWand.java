@@ -111,6 +111,11 @@ public class ItemWand extends ItemBase {
 					player.getEntityData().setString("wandCurOperation", "useSpell");
 					player.setActiveHand(hand);
 					onPlayerStoppedUsing(wand, world, player, 0);
+					return EnumActionResult.SUCCESS;}
+				else if (spell.isEssenceValid(pair.getKey().getCoreType())
+						&& spell.onCastTick(wand, player, 0)) {
+					player.getEntityData().setString("wandCurOperation", "useSpell");
+					player.setActiveHand(hand);
 					return EnumActionResult.SUCCESS;
 				}
 			}
