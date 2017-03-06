@@ -80,8 +80,6 @@ public class ItemWand extends ItemBase {
 	public EnumActionResult onItemUse(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
-		// System.out.println(world.isRemote + " <== world | essence ==> " +
-		// WandHelper.getEssenceStored(stack));
 		if (player.getEntityData().getString("wandCurOperation") == "") {
 			if (world.getBlockState(pos).getBlock() instanceof IWandable) {
 				TileEntity tile = world.getTileEntity(pos);
@@ -89,7 +87,6 @@ public class ItemWand extends ItemBase {
 				if (tile instanceof IEssenceContainer) {
 					IEssenceContainer container = (IEssenceContainer) tile;
 					if (container.getEssenceStored() > 0 && pair.getKey().getCoreType() == container.getEssenceType()) {
-						System.out.println("started");
 						player.getEntityData().setString("wandCurOperation", "extractFromContainer");
 						player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
 						player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
