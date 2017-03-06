@@ -76,51 +76,77 @@ public class SpellExcavation extends Spell {
 	@Override
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) 
 		{
+		
+		BlockPos pos = null;
 		EntityPlayerMP realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
-		BlockPos pos;
 		if (player.worldObj.isRemote)
 		{
-			pos = player.rayTrace(8, 8).getBlockPos();
+			pos = player.rayTrace(realPlayer.interactionManager.getBlockReachDistance(), 8).getBlockPos();
 			PacketManager.INSTANCE.sendToServer(new MessageBlockPos(pos.getX(), pos.getY(), pos.getZ()));
+			player.getEntityData().setInteger(VitalData.POS_X2, pos.getX());
+			player.getEntityData().setInteger(VitalData.POS_Y2, pos.getY());
+			player.getEntityData().setInteger(VitalData.POS_Z2, pos.getZ());
 		}
-		else
+		else if(!player.worldObj.isRemote)
 		{
-			pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
-							   player.getEntityData().getInteger(VitalData.POS_Y),
-							   player.getEntityData().getInteger(VitalData.POS_Z));
+			pos = new BlockPos(realPlayer.getEntityData().getInteger(VitalData.POS_X2),
+					realPlayer.getEntityData().getInteger(VitalData.POS_Y2),
+					realPlayer.getEntityData().getInteger(VitalData.POS_Z2));
 		}
-		IBlockState state = player.worldObj.getBlockState(pos);
-		int k =  player.getEntityData().getInteger(KEY) + 1;
+		int k =  (int) (player.getEntityData().getInteger(KEY) + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * potency / 5));
 		if(k > 10 || k <= 0)
 		{ 
 			k = 1;
 			player.getEntityData().setInteger(KEY, k);
 		}
-		if(pos != null && player.worldObj.getBlockState(pos) == state)
-		{
-			doTheThingIStoleFromVanilla(wand, player, realPlayer, player.worldObj, pos, k);
-			state = player.worldObj.getBlockState(pos);
+		
+		if(!areBlockPosEqual(new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
+				player.getEntityData().getInteger(VitalData.POS_Y2),
+				player.getEntityData().getInteger(VitalData.POS_Z2)), new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
+						player.getEntityData().getInteger(VitalData.POS_Y),
+						player.getEntityData().getInteger(VitalData.POS_Z)))){
+			
+			player.getEntityData().setInteger(KEY, 1);
+			k = 1;
 		}
+		
+		if(pos != null && areBlockPosEqual(pos, new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
+				player.getEntityData().getInteger(VitalData.POS_Y2),
+				player.getEntityData().getInteger(VitalData.POS_Z2))))
+		{
+			tryBreakBlockWithCast(wand, player, realPlayer, player.worldObj, pos, k);
+		}
+		player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
+		player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
+		player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
 		return true;
+	}
+	
+	private boolean areBlockPosEqual(BlockPos pos1, BlockPos pos2){
+		boolean[] flags = {false, false, false};
+		if(pos1.getX() == pos2.getX()) flags[0] = true;
+		if(pos1.getY() == pos2.getY()) flags[1] = true;
+		if(pos1.getZ() == pos2.getZ()) flags[2] = true;
+		
+		return flags[0] && flags[1] && flags[2];
+		
 	}
 		
 		
-	private void doTheThingIStoleFromVanilla(ItemStack wand, EntityPlayer player, EntityPlayerMP realPlayer, World world, BlockPos pos, int k){
-		System.out.println("K === " + k);
-        float f = 1.0F;
+	private void tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, EntityPlayerMP realPlayer, World world, BlockPos pos, int k){
         IBlockState state = world.getBlockState(pos);
         if (!state.getBlock().isAir(state, world, pos))
         {
-            f = state.getPlayerRelativeBlockHardness(realPlayer, realPlayer.worldObj, pos);
-        }
+    		System.out.println("K === " + k);
+            float f = state.getPlayerRelativeBlockHardness(realPlayer, realPlayer.worldObj, pos);
+        
         if(f <= 0) f = 1;
-        int i = (int)(f * 10.0F) + k;
+        int i = f + k;
         if(i <= 0) i = 10;
         if (!state.getBlock().isAir(state, world, pos) && i >= 10)
         {
         	System.out.println(state.getBlockHardness(world, pos) + ":::::" + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2));
-            if (state.getBlockHardness(world, pos) <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2)
-            	&& state.getBlock() != Blocks.BEDROCK && state.getBlock() != Blocks.COMMAND_BLOCK && state.getBlock() != Blocks.CHAIN_COMMAND_BLOCK && state.getBlock() != Blocks.REPEATING_COMMAND_BLOCK)
+            if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2))
             {
 	            if(!world.isRemote)	
 	            {
@@ -130,8 +156,8 @@ public class SpellExcavation extends Spell {
             }
             else 
             {
-            	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 30, 1);
-            	if(world.isRemote) world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1.0F);
+            	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 15, 0.202D);
+            	if(world.isRemote) world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 1.0F);
             }
         }
         else
@@ -140,8 +166,12 @@ public class SpellExcavation extends Spell {
             realPlayer.worldObj.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
             k = i;
         }
+        System.out.println("F === " + f);
+        System.out.println("I === " + i);
         System.out.println("K2 === " + k);
         player.getEntityData().setInteger(KEY, k);
+        }
+        
 	}
 
 	@Override

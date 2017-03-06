@@ -25,23 +25,16 @@ public class MessageBlockPos implements IMessage {
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		// Writes the int into the buf
-		System.out.println("In da buff!");
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
-		System.out.println("Truly in da buf!");
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		System.out.println("outa the buff!");
-		// Reads the int back from the buf. Note that if you have multiple
-		// values, you must read in the same order you wrote.
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		System.out.println("out of buff completely!");
 	}
 
 	// The params of the IMessageHandler are <REQ, REPLY>
@@ -51,17 +44,15 @@ public class MessageBlockPos implements IMessage {
 	public static class BlockPosHandler implements IMessageHandler<MessageBlockPos, IMessage> {
 		@Override
 		public IMessage onMessage(MessageBlockPos message, MessageContext ctx) {
-			System.out.println("into the playea");
 			// This is the player the packet was sent to the server from
 			EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
 			// The values that were sent
 			
-			serverPlayer.getEntityData().setInteger(VitalData.POS_X, message.x);
-			serverPlayer.getEntityData().setInteger(VitalData.POS_Y, message.y);
-			serverPlayer.getEntityData().setInteger(VitalData.POS_Z, message.z);
+			serverPlayer.getEntityData().setInteger(VitalData.POS_X2, message.x);
+			serverPlayer.getEntityData().setInteger(VitalData.POS_Y2, message.y);
+			serverPlayer.getEntityData().setInteger(VitalData.POS_Z2, message.z);
 
 			// No response packet
-			System.out.println("Truly in the playa");
 			return null;
 		}
 	}
