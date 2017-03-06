@@ -71,8 +71,9 @@ public class SpellExcavation extends Spell {
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) {
 		EntityPlayerMP realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
 		BlockPos pos = player.rayTrace(6, 8).getBlockPos();
-		realPlayer.interactionManager.updateBlockRemoving();
-		realPlayer.interactionManager.tryHarvestBlock(pos);
+		player.worldObj.sendBlockBreakProgress(realPlayer.getEntityId(), pos, 25);
+		//realPlayer.interactionManager.updateBlockRemoving();
+		//realPlayer.interactionManager.tryHarvestBlock(pos);
 		return true;
 	}
 
