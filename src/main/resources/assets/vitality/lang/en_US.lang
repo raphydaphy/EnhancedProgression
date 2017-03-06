@@ -44,18 +44,19 @@ item.vitality.transmutation_rod.name=Transmutation Rod
 
 item.vitality.life_extraction_sword.name=Life Extraction Sword
 
-item.vitality.wand_core_angelic.name=Angelic Wand Core
-item.vitality.wand_core_atmospheric.name=Atmospheric Wand Core
-item.vitality.wand_core_demonic.name=Demonic Wand Core
-item.vitality.wand_core_energetic.name=Energetic Wand Core
-item.vitality.wand_core_exotic.name=Exotic Wand Core
+item.vitality.core_angelic.name=Angelic Wand Core
+item.vitality.core_atmospheric.name=Atmospheric Wand Core
+item.vitality.core_demonic.name=Demonic Wand Core
+item.vitality.core_energetic.name=Energetic Wand Core
+item.vitality.core_exotic.name=Exotic Wand Core
 
-item.vitality.wand_tip_wooden.name=Wooden Wand Tip
+item.vitality.tip_wooden.name=Wooden Wand Tip
 
-basic_="Basic "
-wooden_="Wooden "
-demonic_="Demonic "
-wand_="Wand"
+basic_wooden_angelic_wand.name=Basic Wooden Angelic Wand
+basic_wooden_atmospheric_wand.name=Basic Wooden Atmospheric Wand
+basic_wooden_demonic_wand.name=Basic Wooden Demonic Wand
+basic_wooden_energetic_wand.name=Basic Wooden Energetic Wand
+basic_wooden_exotic_wand.name=Basic Wooden Exotic Wand
 
 invalid_wand.name=Invalid Wand!
 
