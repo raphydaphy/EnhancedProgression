@@ -13,11 +13,14 @@ import com.raphydaphy.vitality.util.VitalData;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class SpellExcavation extends Spell {
 
@@ -66,10 +69,12 @@ public class SpellExcavation extends Spell {
 
 	@Override
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) {
+		EntityPlayerMP realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
+		BlockPos pos = player.rayTrace(6, 8).getBlockPos();
 		System.out.println("ticky");
-		BlockPos pos = new BlockPos(1,1,1);
-		player.getEntityWorld().sendBlockBreakProgress(50, pos, 10);
-		return false;
+		realPlayer.interactionManager.updateBlockRemoving();
+		realPlayer.interactionManager.tryHarvestBlock(pos);
+		return true;
 	}
 
 	@Override
