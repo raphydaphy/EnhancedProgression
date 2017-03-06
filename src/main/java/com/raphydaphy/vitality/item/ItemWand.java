@@ -104,13 +104,19 @@ public class ItemWand extends ItemBase {
 				Spell spell = Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY));
 				if (spell.isEssenceValid(pair.getKey().getCoreType())
 						&& spell.onCastPre(wand, player, world, pos, hand, side, hitX, hitY, hitZ)) {
-					player.getEntityData().setString(VitalData.FACING, side.getName());
-					player.getEntityData().setFloat(VitalData.HIT_X, hitX);
-					player.getEntityData().setFloat(VitalData.HIT_Y, hitY);
-					player.getEntityData().setFloat(VitalData.HIT_Z, hitZ);
-					player.getEntityData().setString("wandCurOperation", "useSpell");
-					player.setActiveHand(hand);
-					onPlayerStoppedUsing(wand, world, player, 0);
+					if (spell.getHasUseAnimation())
+					{
+						player.getEntityData().setString(VitalData.FACING, side.getName());
+						player.getEntityData().setFloat(VitalData.HIT_X, hitX);
+						player.getEntityData().setFloat(VitalData.HIT_Y, hitY);
+						player.getEntityData().setFloat(VitalData.HIT_Z, hitZ);
+						player.getEntityData().setString("wandCurOperation", "useSpell");
+						player.setActiveHand(hand);
+					}
+					else
+					{
+						onPlayerStoppedUsing(wand, world, player, 0);
+					}
 					return EnumActionResult.SUCCESS;
 				}
 			}

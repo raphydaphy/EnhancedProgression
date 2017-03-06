@@ -45,9 +45,10 @@ public abstract class Spell {
 	protected final Essence[] reqEssence;
 	protected final String name;
 	protected final boolean needsBlock;
+	protected final boolean hasUseAnimation;
 
 	public Spell(String name, Essence[] reqEssence, Item icon, int id, int cost, int potency, int cooldown,
-			boolean needsBlock) {
+			boolean needsBlock, boolean hasUseAnimation) {
 		System.out.println("CONSTRUCTING SPELL " + name + " WITH ITEM " + new ItemStack(icon).toString() + "; ID " + id
 				+ "; COST " + cost + "; POTENCY " + potency + "; COOLDOWN" + cooldown + "; NEEDS BLOCK " + needsBlock);
 		this.name = name;
@@ -58,6 +59,7 @@ public abstract class Spell {
 		this.cooldown = cooldown;
 		this.reqEssence = reqEssence;
 		this.needsBlock = needsBlock;
+		this.hasUseAnimation = hasUseAnimation;
 		System.out.println(new ItemStack(icon).toString());
 		System.out.println(id);
 		spellMap.put(id, this);
@@ -193,6 +195,10 @@ public abstract class Spell {
 
 	public boolean getNeedsBlock() {
 		return needsBlock;
+	}
+	
+	public boolean getHasUseAnimation() {
+		return hasUseAnimation;
 	}
 
 	public boolean isEssenceValid(Essence essence) {

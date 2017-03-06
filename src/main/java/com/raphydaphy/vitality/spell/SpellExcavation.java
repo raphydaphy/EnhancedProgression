@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class SpellExcavation extends Spell {
 
 	public SpellExcavation() {
-		super("excavation", new Essence[] {}, ModItems.SPELL_EXCAVATION, 3, 3, 1, 10, false);
+		super("excavation", new Essence[] {}, ModItems.SPELL_EXCAVATION, 3, 3, 1, 10, false, true);
 	}
 
 	public static final Spell INSTANCE = new SpellExcavation();
@@ -52,7 +52,7 @@ public class SpellExcavation extends Spell {
 	@Override
 	public boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		
+		player.setActiveHand(hand);
 		return true;
 	}
 

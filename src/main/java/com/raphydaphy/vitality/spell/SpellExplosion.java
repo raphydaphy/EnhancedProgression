@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 public class SpellExplosion extends Spell {
 
 	public SpellExplosion() {
-		super("explosion", new Essence[] {}, ModItems.SPELL_EXPLOSION, 2, 10, 1, 10, false);
+		super("explosion", new Essence[] {}, ModItems.SPELL_EXPLOSION, 2, 10, 1, 10, false, false);
 	}
 
 	@Override
