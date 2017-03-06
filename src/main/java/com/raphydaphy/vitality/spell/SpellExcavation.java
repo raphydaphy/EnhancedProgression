@@ -15,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -22,6 +23,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -31,7 +33,7 @@ public class SpellExcavation extends Spell {
 		super("excavation", new Essence[] {}, ModItems.SPELL_EXCAVATION, 3, 3, 1, 10, false);
 	}
 
-	public static final String KEY = "THE_REAL_PASTA";
+	public static final String KEY = "DIG_PROGRESS";
 
 	@Override
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
@@ -46,14 +48,12 @@ public class SpellExcavation extends Spell {
 			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 					pair.getKey().getCoreType().getColor());
 		}
-		System.out.println("CAST PRE ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
 		return false;
 	}
 
 	@Override
 	public boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		System.out.println("CAST ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
 		player.setActiveHand(hand);
 		return true;
 	}
@@ -61,7 +61,6 @@ public class SpellExcavation extends Spell {
 	@Override
 	public void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		System.out.println("CAST POST ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
 		player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 		world.sendBlockBreakProgress(player.getEntityId(), pos, -1);
 		player.getEntityData().setInteger(KEY, 0);
@@ -75,7 +74,7 @@ public class SpellExcavation extends Spell {
 	@Override
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) {
 		EntityPlayerMP realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
-		BlockPos pos = player.rayTrace(6, 8).getBlockPos();
+		BlockPos pos = player.rayTrace(8, 8).getBlockPos();
 		IBlockState state = player.worldObj.getBlockState(pos);
 		int k =  player.getEntityData().getInteger(KEY) + 1;
 		if(k > 10 || k <= 0){ k = 1;
@@ -104,13 +103,18 @@ public class SpellExcavation extends Spell {
         if (!state.getBlock().isAir(state, world, pos) && i >= 10)
         {
         	System.out.println(state.getBlockHardness(world, pos) + ":::::" + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2));
-            if (state.getBlockHardness(world, pos) <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2)){
-            if(!world.isRemote)	world.destroyBlock(pos, true);
-            	player.getEntityData().setInteger(KEY, 0);
+            if (state.getBlockHardness(world, pos) <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2)
+            	&& state.getBlock() != Blocks.BEDROCK && state.getBlock() != Blocks.COMMAND_BLOCK && state.getBlock() != Blocks.CHAIN_COMMAND_BLOCK && state.getBlock() != Blocks.REPEATING_COMMAND_BLOCK){
+	            if(!world.isRemote)	
+	            {
+	            	world.destroyBlock(pos, true);
+	            	world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 1.0F);
+	            }
+	            player.getEntityData().setInteger(KEY, 0);
             }
             else {
             	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 30, 1);
-            	if(world.isRemote) world.playSound(player, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1.0F);
+            	if(world.isRemote) world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1.0F);
             }
         }
         else
@@ -126,7 +130,6 @@ public class SpellExcavation extends Spell {
 	@Override
 	public void onCastTickSuccess(ItemStack wand, EntityPlayer player, int count) {
 		// TODO Auto-generated method stub
-		System.out.println("CAST TICK POST ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
 		
 	}
 	
