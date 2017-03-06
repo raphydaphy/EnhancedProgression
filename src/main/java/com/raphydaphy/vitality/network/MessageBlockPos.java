@@ -1,7 +1,5 @@
 package com.raphydaphy.vitality.network;
 
-import com.raphydaphy.vitality.api.spell.Spell;
-import com.raphydaphy.vitality.item.ItemWand;
 import com.raphydaphy.vitality.util.VitalData;
 
 import io.netty.buffer.ByteBuf;

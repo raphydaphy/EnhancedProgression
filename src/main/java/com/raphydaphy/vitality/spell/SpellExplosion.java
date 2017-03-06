@@ -1,6 +1,7 @@
 package com.raphydaphy.vitality.spell;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
 
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.api.spell.Spell;
@@ -9,12 +10,20 @@ import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
 import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.registry.ModItems;
+import com.raphydaphy.vitality.util.ParticleHelper;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -30,12 +39,25 @@ public class SpellExplosion extends Spell {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 		int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
 		int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency);
+		int cost = (int) (pair.getValue().getCostMultiplier() * this.cost);
 
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 
 			WandHelper.useEssence(wand, cost, pair.getKey().getCoreType());
-			world.createExplosion(player, player.getPosition().getX(), player.getPosition().getY(),
-					player.getPosition().getZ(), potency, false);
+			BlockPos bombPos = pos;
+			world.playSound(null, bombPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
+			if (!world.isRemote)
+			{
+				ParticleHelper.spawnParticles(EnumParticleTypes.EXPLOSION_HUGE, world, true, bombPos, potency*10, potency);
+			}
+			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(bombPos.add(-potency, -potency, -potency), bombPos.add(potency,potency,potency)));
+			for (EntityLivingBase living : entities)
+			{
+				if (living != player)
+				{
+					living.attackEntityFrom(DamageSource.magic, potency);
+				}
+			}
 			player.swingArm(hand);
 			player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 
