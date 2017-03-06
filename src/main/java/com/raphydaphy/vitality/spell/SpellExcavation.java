@@ -51,7 +51,7 @@ public class SpellExcavation extends Spell {
 	@Override
 	public boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		
+		player.setActiveHand(hand);
 		return true;
 	}
 
@@ -70,7 +70,7 @@ public class SpellExcavation extends Spell {
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) {
 		EntityPlayerMP realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
 		BlockPos pos = player.rayTrace(6, 8).getBlockPos();
-		System.out.println("ticky");
+		realPlayer.interactionManager.updateBlockRemoving();
 		realPlayer.interactionManager.tryHarvestBlock(pos);
 		return true;
 	}
