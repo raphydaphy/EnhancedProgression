@@ -9,13 +9,18 @@ import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
 import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.registry.ModItems;
+import com.raphydaphy.vitality.util.ParticleHelper;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -32,8 +37,6 @@ public class SpellExcavation extends Spell {
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
-		int cooldown = (int) (pair.getKey().getCooldownMultiplier() * this.cooldown);
-		int potency = (int) (pair.getKey().getPotencyMultiplier() * this.potency);
 
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 			player.setActiveHand(hand);
@@ -43,12 +46,14 @@ public class SpellExcavation extends Spell {
 			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 					pair.getKey().getCoreType().getColor());
 		}
+		System.out.println("CAST PRE ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
 		return false;
 	}
 
 	@Override
 	public boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
+		System.out.println("CAST ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
 		player.setActiveHand(hand);
 		return true;
 	}
@@ -56,9 +61,10 @@ public class SpellExcavation extends Spell {
 	@Override
 	public void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		System.out.println("ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
+		System.out.println("CAST POST ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
 		player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 		world.sendBlockBreakProgress(player.getEntityId(), pos, -1);
+		player.getEntityData().setInteger(KEY, 0);
 	}
 
 	@Override
@@ -92,14 +98,19 @@ public class SpellExcavation extends Spell {
         if (!state.getBlock().isAir(state, world, pos)){
             f = state.getPlayerRelativeBlockHardness(realPlayer, realPlayer.worldObj, pos);
         }
-
+        if(f <= 0) f = 1;
         int i = (int)(f * 10.0F) + k;
+        if(i <= 0) i = 10;
         if (!state.getBlock().isAir(state, world, pos) && i >= 10)
         {
-            if (state.getBlockHardness(world, pos) <= potency){
+        	System.out.println(state.getBlockHardness(world, pos) + ":::::" + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2));
+            if (state.getBlockHardness(world, pos) <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2)){
             if(!world.isRemote)	world.destroyBlock(pos, true);
-            	//state.getBlock().dropBlockAsItem(world, pos, state, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, wand));
             	player.getEntityData().setInteger(KEY, 0);
+            }
+            else {
+            	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 30, 1);
+            	if(world.isRemote) world.playSound(player, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1, 1.0F);
             }
         }
         else
@@ -115,7 +126,7 @@ public class SpellExcavation extends Spell {
 	@Override
 	public void onCastTickSuccess(ItemStack wand, EntityPlayer player, int count) {
 		// TODO Auto-generated method stub
-		System.out.println("ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
+		System.out.println("CAST TICK POST ARJIOAEJR AIWJ APIDWKAWDPOAKW PAKWD PAWKDPAOWDKPAOWDKOAWD");
 		
 	}
 	

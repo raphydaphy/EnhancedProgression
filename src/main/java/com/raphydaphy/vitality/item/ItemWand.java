@@ -169,12 +169,15 @@ public class ItemWand extends ItemBase {
 						player.getEntityData().getInteger(VitalData.POS_Z));
 
 				NBTTagCompound tag = player.getEntityData();
-				if (Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY)).onCast(stack, player, world,
+				Spell spell = Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY));
+				if (spell.onCast(stack, player, world,
 						pos, player.getActiveHand(), EnumFacing.byName(tag.getString(VitalData.FACING)),
-						tag.getFloat(VitalData.HIT_X), tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z)))
-					Spell.spellMap.get(tag.getInteger(Spell.ACTIVE_KEY)).onCastPost(stack, player, world, pos,
+						tag.getFloat(VitalData.HIT_X), tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z))){
+					
+					spell.onCastPost(stack, player, world, pos,
 							player.getActiveHand(), player.getHorizontalFacing(), tag.getFloat(VitalData.HIT_X),
 							tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z));
+				}
 
 			}
 			player.getEntityData().removeTag("wandCurEssenceType");
