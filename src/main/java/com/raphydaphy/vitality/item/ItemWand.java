@@ -140,6 +140,7 @@ public class ItemWand extends ItemBase {
 			}
 			else if(player.getEntityData().getString("wandCurOperation").equals("useSpell")){
 				Spell spell = Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY));
+				player.setActiveHand(player.getActiveHand());
 				if (spell.canBeCast(wand) && spell.onCastTick(wand, player, count)){
 					spell.onCastTickSuccess(wand, player, count);
 				}
@@ -148,6 +149,13 @@ public class ItemWand extends ItemBase {
 
 	}
 
+	@Override
+    @Nullable
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
+    {
+        return stack;
+    }
+	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
 		if (entity instanceof EntityPlayer) {
