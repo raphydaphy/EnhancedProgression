@@ -138,17 +138,22 @@ public class SpellExcavation extends Spell {
 		
 	private void tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, EntityPlayerMP realPlayer, World world, BlockPos pos, float k){
         IBlockState state = world.getBlockState(pos);
-        if (!state.getBlock().isAir(state, world, pos))
+        if (!state.getBlock().isAir(state, world, pos) && player.canPlayerEdit(pos, player.getHorizontalFacing(), wand));
         {
     		System.out.println("K === " + k);
-            float f = state.getBlockHardness(realPlayer.worldObj, pos);
-        
-        if(f <= 0) f = 1;
+			float f = state.getBlockHardness(world, pos);
+            
         int i = (int) ((1/(2*f)) + k);
-        if(i < 0) i = 10;
+        k += (1/f);
+        if(i < 0 || k >= 9.6F) i = 10;
+        System.out.println("EVAL FOR BREAK CHANCE " + (!state.getBlock().isAir(state, world, pos) && i >= 10));
         if (!state.getBlock().isAir(state, world, pos) && i >= 10)
         {
-        	System.out.println(f + ":::::" + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2));
+        	
+        	System.out.println("EVAL FOR BREAK CHANCE 2" + (f != -1 && f <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2)));
+        	
+        	System.out.println(f + " <= " + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2));
+        	
             if (f != -1 && f <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2))
             {
 	            if(!world.isRemote)	
@@ -156,10 +161,12 @@ public class SpellExcavation extends Spell {
 	            	world.destroyBlock(pos, true);
 	            }
 	            player.getEntityData().setFloat(KEY, 0);
+	            k = 0;
             }
             else 
             {
-            	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 15, 0.202D);
+            	System.out.println("EVAL FOR BREAK CHANCE 3 SPAWN PARTICLE");
+            	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 20, 1D);
             	if(world.isRemote) world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 1.0F);
             }
         }
@@ -167,7 +174,6 @@ public class SpellExcavation extends Spell {
         {
             world.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
             realPlayer.worldObj.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
-            k += (1/f);
         }
         System.out.println("F === " + f);
         System.out.println("I === " + i);
