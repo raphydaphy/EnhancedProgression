@@ -84,7 +84,9 @@ public class SpellExcavation extends Spell {
 		{
 		
 		BlockPos pos = null; 
-		EntityPlayerMP realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
+		EntityPlayerMP realPlayer = null;
+		if(!player.worldObj.isRemote) realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
+		
 		
 		/*
 		pos = SpellHelper.rayTraceFancy(player, 8, 8, player.worldObj).getBlockPos();
@@ -94,7 +96,7 @@ public class SpellExcavation extends Spell {
 		*/
 		if (player.worldObj.isRemote)
 		{
-			pos = player.rayTrace(realPlayer.interactionManager.getBlockReachDistance(), 8).getBlockPos();
+			pos = player.rayTrace(6, 8).getBlockPos();
 			PacketManager.INSTANCE.sendToServer(new MessageBlockPos(pos.getX(), pos.getY(), pos.getZ()));
 			player.getEntityData().setInteger(VitalData.POS_X2, pos.getX());
 			player.getEntityData().setInteger(VitalData.POS_Y2, pos.getY());
@@ -130,7 +132,7 @@ public class SpellExcavation extends Spell {
 			player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
 			player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
 			player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
-			return tryBreakBlockWithCast(wand, player, realPlayer, player.worldObj, pos, k);
+			return tryBreakBlockWithCast(wand, player, player.worldObj, pos, k);
 
 		}
 		else if(player.worldObj.isRemote)
@@ -154,7 +156,7 @@ public class SpellExcavation extends Spell {
 	}
 		
 		
-	private boolean tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, EntityPlayerMP realPlayer, World world, BlockPos pos, float k){
+	private boolean tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, float k){
         IBlockState state = world.getBlockState(pos);
         if (!state.getBlock().isAir(state, world, pos) && player.canPlayerEdit(pos, player.getHorizontalFacing(), wand));
         {
@@ -186,8 +188,8 @@ public class SpellExcavation extends Spell {
         }
         else
         {
-            world.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
-            realPlayer.worldObj.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
+            world.sendBlockBreakProgress(player.getEntityId(), pos, i);
+            player.worldObj.sendBlockBreakProgress(player.getEntityId(), pos, i);
         }
         player.getEntityData().setFloat(KEY, k);
         return false;
