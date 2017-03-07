@@ -19,6 +19,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -28,10 +29,14 @@ public class SpellSwapping extends Spell {
 
 	public SpellSwapping() {
 		// ints: id, cost, potency, cooldown
-		super("swapping", new Essence[] {}, ModItems.SPELL_SWAPPING, 5, 8, 0, 25, false);
+		super("swapping", new Essence[] {}, ModItems.SPELL_SWAPPING, 5, 8, 10, 25, false);
 	}
-
-	public static final String KEY = "SWAP_WAIT";
+	
+	// the block to be swapped
+	private static final String KEY_TARGET = "BLOCK_TARGET";
+	
+	// if dey be swapping
+	private static final String KEY_SWAPPING = "SWAPPING";
 	
 	@Override
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
@@ -41,37 +46,54 @@ public class SpellSwapping extends Spell {
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
 			player.getEntityData().setString("wandCurEssenceType", pair.getKey().getCoreType().toString());
 			player.getEntityData().setInteger("wandCurEssenceStored", WandHelper.getEssenceStored(wand));
-			player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
-			player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
-			player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
-			player.getEntityData().setInteger(KEY, 0);
-			player.setActiveHand(hand);
-			return false;
+			
+			if (player.isSneaking())
+			{
+				// set the block to swap here
+				// one day..
+			}
+			else if(canSwap(wand) && wand.getTagCompound().getBoolean(KEY_SWAPPING) != true) {
+				// will be the block they are swapping
+				Block block = Blocks.DIRT;
+				// will be swapping block metadata
+				int meta = 0;
+				List<BlockPos> swap = getBlocksToSwap(world, wand, block.getStateFromMeta(meta), pos, null);
+				if(swap.size() > 0) 
+				{
+					player.getEntityData().setBoolean(KEY_SWAPPING, true);
+					player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
+					player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
+					player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
+					player.getEntityData().setString(KEY_TARGET, world.getBlockState(pos).toString());
+					player.setActiveHand(hand);
+					return false;
+				}
+			}
+			return true;
 
 		} else if (world.isRemote) {
 			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
 					pair.getKey().getCoreType().getColor());
 		}
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean onCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		player.setActiveHand(hand);
 		return true;
 	}
 
 	@Override
 	public void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		System.out.println("i is dissapioint");
 		player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 		//WandHelper.setEssenceStored(wand, player.getEntityData().getInteger("wandCurEssenceStored"));
-		player.getEntityData().removeTag(KEY);
 		player.getEntityData().removeTag(VitalData.POS_X);
 		player.getEntityData().removeTag(VitalData.POS_Y);
 		player.getEntityData().removeTag(VitalData.POS_Z);
+		player.getEntityData().removeTag(KEY_SWAPPING);
+		player.getEntityData().removeTag(KEY_TARGET);
 	}
 
 	@Override
@@ -82,97 +104,138 @@ public class SpellSwapping extends Spell {
 	@Override
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) 
 	{
-		if (player.worldObj.getTotalWorldTime() % 10 == 0)
+		
+		if(!canSwap(wand))
 		{
-			List<BlockPos> blocksToSwap = new ArrayList<BlockPos>();
-			BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X), 
-										player.getEntityData().getInteger(VitalData.POS_Y), 
-										player.getEntityData().getInteger(VitalData.POS_Z));
-			IBlockState state = player.worldObj.getBlockState(pos);
-			Block toReplace = state.getBlock();
-			Block toUse = Blocks.DIRT;
-			int curBlock = player.getEntityData().getInteger(KEY);
-			System.out.println(curBlock);
-			if (toReplace != Blocks.AIR)
-			{
-				if (toReplace != toUse)
-				{
-					replaceBlock(pos, toUse, player);
-				}
-				
-				blocksToSwap = findNearbyBlocks(pos, toReplace, toUse, player, blocksToSwap);
-				System.out.println(blocksToSwap.toString());
-				if (blocksToSwap.size() > curBlock)
-				{
-					replaceBlock(blocksToSwap.get(curBlock),toUse, player);
-					player.getEntityData().setInteger(KEY, curBlock + 1);
-				}
-			}
+			return false;
 		}
-		return true;
-	}
-	
-	// very inneficient
-	// hope that shadowwolf guy dosen't find this
-	// he might kill ;-;
-	public List<BlockPos> findNearbyBlocks(BlockPos startPos, Block toReplace, Block toUse, EntityPlayer player, List<BlockPos> storage)
-	{
-		World world = player.getEntityWorld();
-		// check each side of the block
-		for (int i = 0; i < 6; i++)
+		
+		Block block = Blocks.DIRT;
+		if(player.getEntityData().getBoolean(KEY_SWAPPING)) 
 		{
-			EnumFacing side;
-			// yay i get to use a switch
-			// hopefully shadows dosent find this
-			// that would be scary ;-;
-			switch(i)
+			if(!WandHelper.canUseEssence(wand, this.cost * (int)WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier(), WandHelper.getUsefulInfo(wand).getKey().getCoreType())) 
 			{
-			case 0:
-				side = EnumFacing.DOWN;
-				break;
-			case 1:
-				side = EnumFacing.UP;
-				break;
-			case 2:
-				side = EnumFacing.NORTH;
-				break;
-			case 3:
-				side = EnumFacing.EAST;
-				break;
-			case 4:
-				side = EnumFacing.SOUTH;
-				break;
-			case 5:
-				side = EnumFacing.WEST;
-				break;
-			default:
-				// just to make eclipse happy
-				side = EnumFacing.WEST;
-				break;
+				player.getEntityData().removeTag(KEY_SWAPPING);
+				return false;
 			}
-			BlockPos offset = startPos.offset(side);
-			if (world.getBlockState(offset).getBlock() == toReplace)
+			System.out.println("swapping");
+			int x = player.getEntityData().getInteger(VitalData.POS_X);
+			int y = player.getEntityData().getInteger(VitalData.POS_Y);
+			int z = player.getEntityData().getInteger(VitalData.POS_Z);
+			Block targetBlock = Block.getBlockFromName(player.getEntityData().getString(KEY_TARGET));
+			if (targetBlock == null)
 			{
-				if (!(storage.contains(offset)))
-				{
-					System.out.println(offset.toString());
-					storage.add(offset);
-					storage = findNearbyBlocks(offset, toReplace, toUse, player, storage);
-				}
+				targetBlock = Blocks.STONE;
 			}
-		}
-		return storage;
-	}
+			System.out.println((block.getDefaultState() == null) + " <== block is null | target is null ==> " + (targetBlock.getDefaultState() == null));
+			List<BlockPos> swap = getBlocksToSwap(player.worldObj, wand, block.getDefaultState(), new BlockPos(x, y, z), targetBlock.getDefaultState());
+			if(swap.size() == 0) {
+				player.getEntityData().removeTag(KEY_SWAPPING);
+				return false;
+			}
 
-	public boolean replaceBlock(BlockPos pos, Block toUse, EntityPlayer player)
-	{
-		player.worldObj.destroyBlock(pos, true);
-		player.worldObj.setBlockState(pos, Blocks.DIRT.getDefaultState());
+			BlockPos coords = swap.get(player.worldObj.rand.nextInt(swap.size()));
+			boolean exchange = swap(player.worldObj, player, coords, wand, block.getDefaultState());
+			if(exchange)
+			{
+				// use essence
+				
+			}
+			else
+			{
+				player.getEntityData().removeTag(KEY_SWAPPING);
+			}
+		}
 		return true;
 	}
 	
 	@Override
 	public void onCastTickSuccess(ItemStack wand, EntityPlayer player, int count) {
 		
+	}
+	
+	private boolean swap(World world, EntityPlayer player, BlockPos pos, ItemStack stack, IBlockState state) {
+		TileEntity tile = world.getTileEntity(pos);
+		if(tile != null)
+		{
+			return false;
+		}
+
+		ItemStack placeStack = new ItemStack(Blocks.DIRT, 64);
+		if(placeStack != null) {
+			IBlockState stateAt = world.getBlockState(pos);
+			Block blockAt = stateAt.getBlock();
+			if(!blockAt.isAir(world.getBlockState(pos), world, pos) && stateAt.getPlayerRelativeBlockHardness(player, world, pos) > 0 && stateAt != state) {
+				if(!world.isRemote) {
+					if(!player.capabilities.isCreativeMode) {
+						blockAt.dropBlockAsItem(world, pos, stateAt, 0);
+						// here we need to remove the block from the players inventory
+						// atm it just creates blocks out of thin air
+					}
+					world.playEvent(2001, pos, Block.getStateId(state));
+					world.setBlockState(pos, state, 1 | 2);
+					state.getBlock().onBlockPlacedBy(world, pos, state, player, placeStack);
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public List<BlockPos> getBlocksToSwap(World world, ItemStack wand, IBlockState swapState, BlockPos pos, IBlockState toReplace) {
+		// For now adding this so that it always swaps using the block ur looking at
+		if(toReplace == null) 
+		{
+			toReplace = world.getBlockState(pos);
+		}
+
+		// All da blocks
+		List<BlockPos> swapMePlz = new ArrayList<>();
+
+		// Range is set using potency modifiers
+		int range = this.potency * (int)WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier();
+
+		// Loop through three dimensions in the range set above
+		for(int offsetX = -range; offsetX <= range; offsetX++)
+			for(int offsetY = -range; offsetY <= range; offsetY++)
+				for(int offsetZ = -range; offsetZ <= range; offsetZ++) {
+					BlockPos curBlock = pos.add(offsetX, offsetY, offsetZ);
+
+					IBlockState currentState = world.getBlockState(curBlock);
+
+					// IF the block isnt the type of block that is being replaced
+					if(currentState != toReplace)
+					{
+						continue;
+					}
+
+					// We dont need to swap blocks that are already swapped!
+					if(currentState == swapState)
+					{
+						continue;
+					}
+
+					// Check to see if the block is visible on any side
+					// Used so that blocks underground arent swapped
+					for(EnumFacing dir : EnumFacing.VALUES) {
+						BlockPos adjPos = curBlock.offset(dir);
+						IBlockState adjState = world.getBlockState(adjPos);
+
+						// If the block is visible ;D
+						if(!adjState.isSideSolid(world, adjPos, dir.getOpposite())) 
+						{
+							swapMePlz.add(curBlock);
+							break;
+						}
+					}
+				}
+
+		return swapMePlz;
+	}
+	
+	public boolean canSwap(ItemStack stack) {
+		// will be the block they are swapping
+		Block block = Blocks.DIRT;
+		return block != null && block != Blocks.AIR;
 	}
 }

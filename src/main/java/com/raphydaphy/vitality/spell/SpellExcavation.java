@@ -201,7 +201,5 @@ public class SpellExcavation extends Spell {
 		PacketManager.INSTANCE.sendToServer(new MessageEssenceUpdate(player.getEntityId(), cost));
 		
 		}
-		System.out.println(FMLCommonHandler.instance().getEffectiveSide() + " IS LOOKING FOR DATA " + player.getEntityData().getInteger("wandCurEssenceStored") + " AT POS " + pos.toString());
-		
 		}
 }

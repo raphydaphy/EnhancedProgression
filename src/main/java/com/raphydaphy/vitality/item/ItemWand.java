@@ -163,7 +163,6 @@ public class ItemWand extends ItemBase {
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer") {
-				System.out.println(player.getEntityData().getInteger("wandCurEssenceStored"));
 				WandHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
 			} else if (player.getEntityData().getString("wandCurOperation") == "useSpell") {
 				BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
