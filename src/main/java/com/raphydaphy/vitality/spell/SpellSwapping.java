@@ -129,12 +129,19 @@ public class SpellSwapping extends Spell {
 				return false;
 			}
 
-			BlockPos coords = swap.get(player.getEntityData().getInteger(KEY_CURID));
-			boolean exchange = swap(player.worldObj, player, coords, wand, block.getDefaultState());
-			if(exchange)
+			if (swap.size() > player.getEntityData().getInteger(KEY_CURID))
 			{
-				// use essence
-				player.getEntityData().setInteger(KEY_CURID, player.getEntityData().getInteger(KEY_CURID) + 1);
+				BlockPos coords = swap.get(player.getEntityData().getInteger(KEY_CURID));
+				boolean exchange = swap(player.worldObj, player, coords, wand, block.getDefaultState());
+				if(exchange)
+				{
+					// use essence
+					player.getEntityData().setInteger(KEY_CURID, player.getEntityData().getInteger(KEY_CURID) + 1);
+				}
+				else
+				{
+					player.getEntityData().removeTag(KEY_SWAPPING);
+				}
 			}
 			else
 			{
