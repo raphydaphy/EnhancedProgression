@@ -140,7 +140,8 @@ public class ItemWand extends ItemBase {
 			}
 			else if(player.getEntityData().getString("wandCurOperation").equals("useSpell")){
 				Spell spell = Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY));
-				player.setActiveHand(player.getActiveHand());
+				//player.setActiveHand(player.getActiveHand());
+				
 				if (spell.canBeCast(wand) && spell.onCastTick(wand, player, count)){
 					spell.onCastTickSuccess(wand, player, count);
 				}

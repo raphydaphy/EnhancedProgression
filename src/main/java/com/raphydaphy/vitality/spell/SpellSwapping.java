@@ -1,6 +1,8 @@
 package com.raphydaphy.vitality.spell;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.api.spell.Spell;
@@ -30,7 +32,7 @@ public class SpellSwapping extends Spell {
 	}
 
 	public static final String KEY = "SWAP_WAIT";
-
+	
 	@Override
 	public boolean onCastPre(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -42,6 +44,7 @@ public class SpellSwapping extends Spell {
 			player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
 			player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
 			player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
+			player.getEntityData().setInteger(KEY, 0);
 			player.setActiveHand(hand);
 			return false;
 
@@ -62,6 +65,7 @@ public class SpellSwapping extends Spell {
 	@Override
 	public void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
+		System.out.println("i is dissapioint");
 		player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 		//WandHelper.setEssenceStored(wand, player.getEntityData().getInteger("wandCurEssenceStored"));
 		player.getEntityData().removeTag(KEY);
@@ -78,26 +82,41 @@ public class SpellSwapping extends Spell {
 	@Override
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) 
 	{
-		// position data is set in ItemWand -> onItemUse
-		BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X), 
-									player.getEntityData().getInteger(VitalData.POS_Y), 
-									player.getEntityData().getInteger(VitalData.POS_Z));
-		IBlockState state = player.worldObj.getBlockState(pos);
-		Block toReplace = state.getBlock();
-		System.out.println(toReplace.toString());
-		Block toUse = Blocks.DIRT;
-		if (toReplace != Blocks.AIR)
+		System.out.println("hi?");
+		if (player.worldObj.getTotalWorldTime() % 10 == 0)
 		{
-			if (toReplace != toUse)
+			List<BlockPos> blocksToSwap = new ArrayList<BlockPos>();
+			BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X), 
+										player.getEntityData().getInteger(VitalData.POS_Y), 
+										player.getEntityData().getInteger(VitalData.POS_Z));
+			IBlockState state = player.worldObj.getBlockState(pos);
+			Block toReplace = state.getBlock();
+			Block toUse = Blocks.DIRT;
+			int curBlock = player.getEntityData().getInteger(KEY);
+			System.out.println(curBlock);
+			if (toReplace != Blocks.AIR)
 			{
-				replaceBlock(pos, toUse, player);
+				if (toReplace != toUse)
+				{
+					replaceBlock(pos, toUse, player);
+				}
+				
+				blocksToSwap = findNearbyBlocks(pos, toReplace, toUse, player, blocksToSwap);
+				System.out.println(blocksToSwap.toString());
+				if (blocksToSwap.size() >= curBlock)
+				{
+					replaceBlock(blocksToSwap.get(curBlock),toUse, player);
+					player.getEntityData().setInteger(KEY, curBlock + 1);
+				}
 			}
-			replaceBlocksNearby(pos, toReplace, toUse, player);
 		}
 		return true;
 	}
 	
-	public void replaceBlocksNearby(BlockPos startPos, Block toReplace, Block toUse, EntityPlayer player)
+	// very inneficient
+	// hope that shadowwolf guy dosen't find this
+	// he might kill ;-;
+	public List<BlockPos> findNearbyBlocks(BlockPos startPos, Block toReplace, Block toUse, EntityPlayer player, List<BlockPos> storage)
 	{
 		World world = player.getEntityWorld();
 		// check each side of the block
@@ -135,12 +154,14 @@ public class SpellSwapping extends Spell {
 			BlockPos offset = startPos.offset(side);
 			if (world.getBlockState(offset).getBlock() == toReplace)
 			{
-				if (replaceBlock(startPos.offset(side), toUse, player))
+				if (!(storage.contains(offset)))
 				{
-					replaceBlocksNearby(offset, toReplace, toUse, player);
+					storage.add(offset);
+					storage = findNearbyBlocks(offset, toReplace, toUse, player, storage);
 				}
 			}
 		}
+		return storage;
 	}
 
 	public boolean replaceBlock(BlockPos pos, Block toUse, EntityPlayer player)
