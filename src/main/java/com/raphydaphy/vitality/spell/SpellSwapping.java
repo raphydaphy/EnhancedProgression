@@ -82,7 +82,6 @@ public class SpellSwapping extends Spell {
 	@Override
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) 
 	{
-		System.out.println("hi?");
 		if (player.worldObj.getTotalWorldTime() % 10 == 0)
 		{
 			List<BlockPos> blocksToSwap = new ArrayList<BlockPos>();
@@ -156,6 +155,7 @@ public class SpellSwapping extends Spell {
 			{
 				if (!(storage.contains(offset)))
 				{
+					System.out.println(offset.toString());
 					storage.add(offset);
 					storage = findNearbyBlocks(offset, toReplace, toUse, player, storage);
 				}

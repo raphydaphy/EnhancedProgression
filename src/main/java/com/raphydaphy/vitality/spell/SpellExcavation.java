@@ -87,13 +87,6 @@ public class SpellExcavation extends Spell {
 		EntityPlayerMP realPlayer = null;
 		if(!player.worldObj.isRemote) realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
 		
-		
-		/*
-		pos = SpellHelper.rayTraceFancy(player, 8, 8, player.worldObj).getBlockPos();
-		realPlayer.getEntityData().setInteger(VitalData.POS_X2, pos.getX());
-		realPlayer.getEntityData().setInteger(VitalData.POS_Y2, pos.getY());
-		realPlayer.getEntityData().setInteger(VitalData.POS_Z2, pos.getZ());
-		*/
 		if (player.worldObj.isRemote)
 		{
 			pos = player.rayTrace(6, 8).getBlockPos();
