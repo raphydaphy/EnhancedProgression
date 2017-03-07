@@ -4,6 +4,7 @@ import com.raphydaphy.vitality.init.WorldGenHandler;
 import com.raphydaphy.vitality.network.MessageActionText;
 import com.raphydaphy.vitality.network.MessageBlockPos;
 import com.raphydaphy.vitality.network.MessageChangeSpell;
+import com.raphydaphy.vitality.network.MessageEssenceUpdate;
 import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.recipe.ModRecipies;
 import com.raphydaphy.vitality.registry.ModSpells;
@@ -29,6 +30,8 @@ public class CommonProxy {
 				++disc, Side.SERVER);
 		PacketManager.INSTANCE.registerMessage(new MessageActionText.MessageHandler(), MessageActionText.class, ++disc,
 				Side.CLIENT);
+		PacketManager.INSTANCE.registerMessage(new MessageEssenceUpdate.Handler(), MessageEssenceUpdate.class, ++disc,
+				Side.SERVER);
 	}
 
 	/*

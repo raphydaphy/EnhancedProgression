@@ -8,6 +8,7 @@ import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
 import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
 import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.network.MessageBlockPos;
+import com.raphydaphy.vitality.network.MessageEssenceUpdate;
 import com.raphydaphy.vitality.network.PacketManager;
 import com.raphydaphy.vitality.proxy.ClientProxy;
 import com.raphydaphy.vitality.registry.ModItems;
@@ -191,6 +192,16 @@ public class SpellExcavation extends Spell {
 
 	@Override
 	public void onCastTickSuccess(ItemStack wand, EntityPlayer player, int count) {
-		player.getEntityData().setInteger("wandCurEssenceStored", (int)(player.getEntityData().getInteger("wandCurEssenceStored") - (WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier()) * this.cost));
-	}
+		BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
+				player.getEntityData().getInteger(VitalData.POS_Y2),
+				player.getEntityData().getInteger(VitalData.POS_Z2));
+		if(player.worldObj.isRemote){
+		int cost = (int)(player.getEntityData().getInteger("wandCurEssenceStored") - (WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier()) * this.cost * player.worldObj.getBlockState(new BlockPos(pos)).getBlockHardness(player.worldObj, pos));
+		player.getEntityData().setInteger("wandCurEssenceStored", cost);
+		PacketManager.INSTANCE.sendToServer(new MessageEssenceUpdate(player.getEntityId(), cost));
+		
+		}
+		System.out.println(FMLCommonHandler.instance().getEffectiveSide() + " IS LOOKING FOR DATA " + player.getEntityData().getInteger("wandCurEssenceStored") + " AT POS " + pos.toString());
+		
+		}
 }
