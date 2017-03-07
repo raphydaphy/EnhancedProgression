@@ -28,7 +28,7 @@ public class SpellSwapping extends Spell {
 
 	public SpellSwapping() {
 		// ints: id, cost, potency, cooldown
-		super("swapping", new Essence[] {}, ModItems.SPELL_SWAPPING, 5, 8, 0, 25, true);
+		super("swapping", new Essence[] {}, ModItems.SPELL_SWAPPING, 5, 8, 0, 25, false);
 	}
 
 	public static final String KEY = "SWAP_WAIT";
@@ -103,7 +103,7 @@ public class SpellSwapping extends Spell {
 				
 				blocksToSwap = findNearbyBlocks(pos, toReplace, toUse, player, blocksToSwap);
 				System.out.println(blocksToSwap.toString());
-				if (blocksToSwap.size() >= curBlock)
+				if (blocksToSwap.size() > curBlock)
 				{
 					replaceBlock(blocksToSwap.get(curBlock),toUse, player);
 					player.getEntityData().setInteger(KEY, curBlock + 1);
