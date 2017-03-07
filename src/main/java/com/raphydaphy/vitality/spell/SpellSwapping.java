@@ -33,7 +33,7 @@ public class SpellSwapping extends Spell {
 	}
 	
 	// the block to be swapped
-	private static final String KEY_TARGET = "BLOCK_TARGET";
+	private static final String KEY_CURID = "CUR_BLOCK";
 	
 	// if dey be swapping
 	private static final String KEY_SWAPPING = "SWAPPING";
@@ -61,10 +61,11 @@ public class SpellSwapping extends Spell {
 				if(swap.size() > 0) 
 				{
 					player.getEntityData().setBoolean(KEY_SWAPPING, true);
+					player.getEntityData().setInteger(KEY_CURID, 0);
 					player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
 					player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
 					player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
-					player.getEntityData().setString(KEY_TARGET, world.getBlockState(pos).toString());
+					player.getEntityData().setInteger(KEY_CURID, 0);
 					player.setActiveHand(hand);
 					return false;
 				}
@@ -93,7 +94,7 @@ public class SpellSwapping extends Spell {
 		player.getEntityData().removeTag(VitalData.POS_Y);
 		player.getEntityData().removeTag(VitalData.POS_Z);
 		player.getEntityData().removeTag(KEY_SWAPPING);
-		player.getEntityData().removeTag(KEY_TARGET);
+		player.getEntityData().removeTag(KEY_CURID);
 	}
 
 	@Override
@@ -118,28 +119,22 @@ public class SpellSwapping extends Spell {
 				player.getEntityData().removeTag(KEY_SWAPPING);
 				return false;
 			}
-			System.out.println("swapping");
 			int x = player.getEntityData().getInteger(VitalData.POS_X);
 			int y = player.getEntityData().getInteger(VitalData.POS_Y);
 			int z = player.getEntityData().getInteger(VitalData.POS_Z);
-			Block targetBlock = Block.getBlockFromName(player.getEntityData().getString(KEY_TARGET));
-			if (targetBlock == null)
-			{
-				targetBlock = Blocks.STONE;
-			}
-			System.out.println((block.getDefaultState() == null) + " <== block is null | target is null ==> " + (targetBlock.getDefaultState() == null));
+			Block targetBlock = player.worldObj.getBlockState(new BlockPos(x,y,z)).getBlock();
 			List<BlockPos> swap = getBlocksToSwap(player.worldObj, wand, block.getDefaultState(), new BlockPos(x, y, z), targetBlock.getDefaultState());
 			if(swap.size() == 0) {
 				player.getEntityData().removeTag(KEY_SWAPPING);
 				return false;
 			}
 
-			BlockPos coords = swap.get(player.worldObj.rand.nextInt(swap.size()));
+			BlockPos coords = swap.get(player.getEntityData().getInteger(KEY_CURID));
 			boolean exchange = swap(player.worldObj, player, coords, wand, block.getDefaultState());
 			if(exchange)
 			{
 				// use essence
-				
+				player.getEntityData().setInteger(KEY_CURID, player.getEntityData().getInteger(KEY_CURID) + 1);
 			}
 			else
 			{
