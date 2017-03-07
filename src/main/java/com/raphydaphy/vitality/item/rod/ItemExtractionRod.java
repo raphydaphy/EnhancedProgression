@@ -141,6 +141,7 @@ public class ItemExtractionRod extends ItemBase {
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+		if(stack.hasTagCompound()){
 		if (stack.getTagCompound().getInteger("counter") != -1) {
 			if (stack.getTagCompound().getInteger("counter") == 20) {
 				if (!world.isRemote) {
@@ -171,6 +172,7 @@ public class ItemExtractionRod extends ItemBase {
 				}
 			}
 			stack.getTagCompound().setInteger("counter", stack.getTagCompound().getInteger("counter") - 1);
+		}
 		}
 	}
 

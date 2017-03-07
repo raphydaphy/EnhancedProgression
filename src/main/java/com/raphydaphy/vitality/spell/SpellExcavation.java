@@ -65,7 +65,10 @@ public class SpellExcavation extends Spell {
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 		world.sendBlockBreakProgress(player.getEntityId(), pos, -1);
-		player.getEntityData().setInteger(KEY, 0);
+		player.getEntityData().removeTag(KEY);
+		player.getEntityData().removeTag(VitalData.POS_X2);
+		player.getEntityData().removeTag(VitalData.POS_Y2);
+		player.getEntityData().removeTag(VitalData.POS_Z2);
 	}
 
 	@Override
@@ -93,11 +96,11 @@ public class SpellExcavation extends Spell {
 					realPlayer.getEntityData().getInteger(VitalData.POS_Y2),
 					realPlayer.getEntityData().getInteger(VitalData.POS_Z2));
 		}
-		int k =  (int) (player.getEntityData().getInteger(KEY) + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * potency / 5));
+		float k = (player.getEntityData().getFloat(KEY) + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * potency / 5));
 		if(k > 10 || k <= 0)
 		{ 
-			k = 1;
-			player.getEntityData().setInteger(KEY, k);
+			k = 0.1F;
+			player.getEntityData().setFloat(KEY, k);
 		}
 		
 		if(!areBlockPosEqual(new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
@@ -106,8 +109,8 @@ public class SpellExcavation extends Spell {
 						player.getEntityData().getInteger(VitalData.POS_Y),
 						player.getEntityData().getInteger(VitalData.POS_Z)))){
 			
-			player.getEntityData().setInteger(KEY, 1);
-			k = 1;
+			k = 0.1F;
+			player.getEntityData().setFloat(KEY, k);
 		}
 		
 		if(pos != null && areBlockPosEqual(pos, new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
@@ -133,26 +136,26 @@ public class SpellExcavation extends Spell {
 	}
 		
 		
-	private void tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, EntityPlayerMP realPlayer, World world, BlockPos pos, int k){
+	private void tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, EntityPlayerMP realPlayer, World world, BlockPos pos, float k){
         IBlockState state = world.getBlockState(pos);
         if (!state.getBlock().isAir(state, world, pos))
         {
     		System.out.println("K === " + k);
-            float f = state.getPlayerRelativeBlockHardness(realPlayer, realPlayer.worldObj, pos);
+            float f = state.getBlockHardness(realPlayer.worldObj, pos);
         
         if(f <= 0) f = 1;
-        int i = f + k;
-        if(i <= 0) i = 10;
+        int i = (int) ((1/(2*f)) + k);
+        if(i < 0) i = 10;
         if (!state.getBlock().isAir(state, world, pos) && i >= 10)
         {
-        	System.out.println(state.getBlockHardness(world, pos) + ":::::" + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2));
-            if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2))
+        	System.out.println(f + ":::::" + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2));
+            if (f != -1 && f <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2))
             {
 	            if(!world.isRemote)	
 	            {
 	            	world.destroyBlock(pos, true);
 	            }
-	            player.getEntityData().setInteger(KEY, 0);
+	            player.getEntityData().setFloat(KEY, 0);
             }
             else 
             {
@@ -164,12 +167,12 @@ public class SpellExcavation extends Spell {
         {
             world.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
             realPlayer.worldObj.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
-            k = i;
+            k += (1/f);
         }
         System.out.println("F === " + f);
         System.out.println("I === " + i);
         System.out.println("K2 === " + k);
-        player.getEntityData().setInteger(KEY, k);
+        player.getEntityData().setFloat(KEY, k);
         }
         
 	}
