@@ -113,16 +113,14 @@ public class SpellExcavation extends Spell {
 			player.getEntityData().setFloat(KEY, k);
 		}
 		
-		if(pos != null && areBlockPosEqual(pos, new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
-				player.getEntityData().getInteger(VitalData.POS_Y2),
-				player.getEntityData().getInteger(VitalData.POS_Z2))))
+		if(pos != null)
 		{
-			tryBreakBlockWithCast(wand, player, realPlayer, player.worldObj, pos, k);
+			player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
+			player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
+			player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
+			return tryBreakBlockWithCast(wand, player, realPlayer, player.worldObj, pos, k);
 		}
-		player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
-		player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
-		player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
-		return true;
+		return false;
 	}
 	
 	private boolean areBlockPosEqual(BlockPos pos1, BlockPos pos2){
@@ -136,7 +134,7 @@ public class SpellExcavation extends Spell {
 	}
 		
 		
-	private void tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, EntityPlayerMP realPlayer, World world, BlockPos pos, float k){
+	private boolean tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, EntityPlayerMP realPlayer, World world, BlockPos pos, float k){
         IBlockState state = world.getBlockState(pos);
         if (!state.getBlock().isAir(state, world, pos) && player.canPlayerEdit(pos, player.getHorizontalFacing(), wand));
         {
@@ -162,12 +160,15 @@ public class SpellExcavation extends Spell {
 	            }
 	            player.getEntityData().setFloat(KEY, 0);
 	            k = 0;
+	            return true;
             }
             else 
             {
             	System.out.println("EVAL FOR BREAK CHANCE 3 SPAWN PARTICLE");
             	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 20, 1D);
             	if(world.isRemote) world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 1.0F);
+	            player.getEntityData().setFloat(KEY, 0);
+	            k = 0;
             }
         }
         else
@@ -179,6 +180,7 @@ public class SpellExcavation extends Spell {
         System.out.println("I === " + i);
         System.out.println("K2 === " + k);
         player.getEntityData().setFloat(KEY, k);
+        return false;
         }
         
 	}
