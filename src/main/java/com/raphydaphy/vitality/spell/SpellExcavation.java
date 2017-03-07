@@ -18,7 +18,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -43,6 +42,8 @@ public class SpellExcavation extends Spell {
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 
 		if (WandHelper.canUseEssence(wand, cost, pair.getKey().getCoreType())) {
+			player.getEntityData().setString("wandCurEssenceType", pair.getKey().getCoreType().toString());
+			player.getEntityData().setInteger("wandCurEssenceStored", WandHelper.getEssenceStored(wand));
 			player.setActiveHand(hand);
 			return false;
 
@@ -65,6 +66,7 @@ public class SpellExcavation extends Spell {
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		player.getCooldownTracker().setCooldown(wand.getItem(), cooldown);
 		world.sendBlockBreakProgress(player.getEntityId(), pos, -1);
+		WandHelper.setEssenceStored(wand, player.getEntityData().getInteger("wandCurEssenceStored"));
 		player.getEntityData().removeTag(KEY);
 		player.getEntityData().removeTag(VitalData.POS_X2);
 		player.getEntityData().removeTag(VitalData.POS_Y2);
@@ -80,8 +82,11 @@ public class SpellExcavation extends Spell {
 	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) 
 		{
 		
-		BlockPos pos = null;
+		BlockPos pos = null; 
 		EntityPlayerMP realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
+		
+		
+		
 		if (player.worldObj.isRemote)
 		{
 			pos = player.rayTrace(realPlayer.interactionManager.getBlockReachDistance(), 8).getBlockPos();
@@ -117,7 +122,14 @@ public class SpellExcavation extends Spell {
 				player.getEntityData().getInteger(VitalData.POS_Y2),
 				player.getEntityData().getInteger(VitalData.POS_Z2))))
 		{
-			tryBreakBlockWithCast(wand, player, realPlayer, player.worldObj, pos, k);
+			if (player.getEntityData().getInteger("wandCurEssenceStored") > (WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier()) * this.cost)
+			{
+				tryBreakBlockWithCast(wand, player, realPlayer, player.worldObj, pos, k);
+			}
+			else if(player.worldObj.isRemote)
+			{
+				ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),(WandHelper.getUsefulInfo(wand).getKey().getCoreType().getColor()));
+			}
 		}
 		player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
 		player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
@@ -140,22 +152,18 @@ public class SpellExcavation extends Spell {
         IBlockState state = world.getBlockState(pos);
         if (!state.getBlock().isAir(state, world, pos) && player.canPlayerEdit(pos, player.getHorizontalFacing(), wand));
         {
-    		System.out.println("K === " + k);
 			float f = state.getBlockHardness(world, pos);
             
         int i = (int) ((1/(2*f)) + k);
         k += (1/f);
         if(i < 0 || k >= 9.6F) i = 10;
-        System.out.println("EVAL FOR BREAK CHANCE " + (!state.getBlock().isAir(state, world, pos) && i >= 10));
         if (!state.getBlock().isAir(state, world, pos) && i >= 10)
         {
         	
-        	System.out.println("EVAL FOR BREAK CHANCE 2" + (f != -1 && f <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2)));
-        	
-        	System.out.println(f + " <= " + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2));
-        	
             if (f != -1 && f <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2))
             {
+            	System.out.println("hi");
+				player.getEntityData().setInteger("wandCurEssenceStored", (int)(player.getEntityData().getInteger("wandCurEssenceStored") - (WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier()) * this.cost));
 	            if(!world.isRemote)	
 	            {
 	            	world.destroyBlock(pos, true);
@@ -165,7 +173,6 @@ public class SpellExcavation extends Spell {
             }
             else 
             {
-            	System.out.println("EVAL FOR BREAK CHANCE 3 SPAWN PARTICLE");
             	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 20, 1D);
             	if(world.isRemote) world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 1.0F);
             }
@@ -175,9 +182,6 @@ public class SpellExcavation extends Spell {
             world.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
             realPlayer.worldObj.sendBlockBreakProgress(realPlayer.getEntityId(), pos, i);
         }
-        System.out.println("F === " + f);
-        System.out.println("I === " + i);
-        System.out.println("K2 === " + k);
         player.getEntityData().setFloat(KEY, k);
         }
         

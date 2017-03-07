@@ -25,7 +25,7 @@ public final class RenderHelper {
 		GL11.glStencilMask(0xFF);
 		mc.getRenderItem().renderItemAndEffectIntoGUI(new ItemStack(ModItems.WAND), x, y);
 
-		mc.renderEngine.bindTexture(new ResourceLocation("blocks/hardened_clay_stained_magenta"));
+		mc.renderEngine.bindTexture(new ResourceLocation("blocks/hardened_clay_stained_purple"));
 		int r = 90;
 		int centerX = x + 0;
 		int centerY = y + 0;
