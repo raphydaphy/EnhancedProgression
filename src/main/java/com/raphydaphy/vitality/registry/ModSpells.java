@@ -5,6 +5,7 @@ import com.raphydaphy.vitality.spell.SpellExcavation;
 import com.raphydaphy.vitality.spell.SpellExplosion;
 import com.raphydaphy.vitality.spell.SpellFireball;
 import com.raphydaphy.vitality.spell.SpellIllumination;
+import com.raphydaphy.vitality.spell.SpellSwapping;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
@@ -14,12 +15,14 @@ public class ModSpells {
 	public static Spell ILLUMINATION;
 	public static Spell EXPLOSION;
 	public static Spell EXCAVATION;
+	public static Spell SWAPPING;
 
 	public static void init(FMLInitializationEvent e) {
 		FIREBALL = new SpellFireball();
 		ILLUMINATION = new SpellIllumination();
 		EXPLOSION = new SpellExplosion();
 		EXCAVATION = new SpellExcavation();
+		SWAPPING = new SpellSwapping();
 	}
 
 }

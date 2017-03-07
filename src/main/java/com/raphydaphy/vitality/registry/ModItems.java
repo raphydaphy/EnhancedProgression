@@ -63,6 +63,7 @@ public class ModItems {
 	public static final Item SPELL_EXPLOSION = new ItemSpell("explosion", 2);
 	public static final Item SPELL_EXCAVATION = new ItemSpell("excavation", 3);
 	public static final Item SPELL_TRANSMUTATION = new ItemSpell("transmutation", 4);
+	public static final Item SPELL_SWAPPING = new ItemSpell("swapping", 5);
 
 	public static final List<Item> ITEM_LIST = getList();
 
@@ -95,6 +96,7 @@ public class ModItems {
 		list.add(SPELL_EXPLOSION);
 		list.add(SPELL_EXCAVATION);
 		list.add(SPELL_TRANSMUTATION);
+		list.add(SPELL_SWAPPING);
 		return list;
 	}
 

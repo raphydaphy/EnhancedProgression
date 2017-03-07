@@ -65,6 +65,7 @@ item.vitality.fireball.name=Spell: Radiant Fireball
 item.vitality.explosion.name=Spell: Contained Explosion
 item.vitality.excavation.name=Spell: Retroactive Excavation
 item.vitality.transmutation.name=Spell: Cryptic Transmutation
+item.vitality.swapping.name=Spell: Unequal Trade
 
 #Action Bar Messages
 vitality.wand.notenoughessence.name=Not Enough Essence!
