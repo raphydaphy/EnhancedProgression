@@ -80,114 +80,113 @@ public class SpellExcavation extends Spell {
 	}
 
 	@Override
-	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) 
-		{
-		
-		BlockPos pos = null; 
+	public boolean onCastTick(ItemStack wand, EntityPlayer player, int count) {
+
+		BlockPos pos = null;
 		EntityPlayerMP realPlayer = null;
-		if(!player.worldObj.isRemote) realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player.getUniqueID());
-		
-		if (player.worldObj.isRemote)
-		{
+		if (!player.worldObj.isRemote)
+			realPlayer = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+					.getPlayerByUUID(player.getUniqueID());
+
+		if (player.worldObj.isRemote) {
 			pos = player.rayTrace(6, 8).getBlockPos();
 			PacketManager.INSTANCE.sendToServer(new MessageBlockPos(pos.getX(), pos.getY(), pos.getZ()));
 			player.getEntityData().setInteger(VitalData.POS_X2, pos.getX());
 			player.getEntityData().setInteger(VitalData.POS_Y2, pos.getY());
 			player.getEntityData().setInteger(VitalData.POS_Z2, pos.getZ());
-		}
-		else if(!player.worldObj.isRemote)
-		{
+		} else if (!player.worldObj.isRemote) {
 			pos = new BlockPos(realPlayer.getEntityData().getInteger(VitalData.POS_X2),
 					realPlayer.getEntityData().getInteger(VitalData.POS_Y2),
 					realPlayer.getEntityData().getInteger(VitalData.POS_Z2));
 		}
-		
-		float k = (player.getEntityData().getFloat(KEY) + (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * potency / 5));
-		if(k > 10 || k <= 0)
-		{ 
+
+		float k = (player.getEntityData().getFloat(KEY)
+				+ (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * potency / 5));
+		if (k > 10 || k <= 0) {
 			k = 0.1F;
 			player.getEntityData().setFloat(KEY, k);
 		}
-		
-		if(!areBlockPosEqual(new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
-				player.getEntityData().getInteger(VitalData.POS_Y2),
-				player.getEntityData().getInteger(VitalData.POS_Z2)), new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
+
+		if (!areBlockPosEqual(
+				new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
+						player.getEntityData().getInteger(VitalData.POS_Y2),
+						player.getEntityData().getInteger(VitalData.POS_Z2)),
+				new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
 						player.getEntityData().getInteger(VitalData.POS_Y),
-						player.getEntityData().getInteger(VitalData.POS_Z)))){
-			
+						player.getEntityData().getInteger(VitalData.POS_Z)))) {
+
 			k = 0.1F;
 			player.getEntityData().setFloat(KEY, k);
 		}
-		
-		if(pos != null && player.getEntityData().getInteger("wandCurEssenceStored") > (WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier()) * this.cost)
-		{
+
+		if (pos != null && player.getEntityData().getInteger(
+				"wandCurEssenceStored") > (WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier()) * this.cost) {
 
 			player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
 			player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
 			player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
 			return tryBreakBlockWithCast(wand, player, player.worldObj, pos, k);
 
-		}
-		else if(player.worldObj.isRemote)
-		{
-			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),(WandHelper.getUsefulInfo(wand).getKey().getCoreType().getColor()));
+		} else if (player.worldObj.isRemote) {
+			ClientProxy.setActionText(I18n.format("vitality.wand.notenoughessence.name"),
+					(WandHelper.getUsefulInfo(wand).getKey().getCoreType().getColor()));
 		}
 		player.getEntityData().setInteger(VitalData.POS_X, pos.getX());
 		player.getEntityData().setInteger(VitalData.POS_Y, pos.getY());
 		player.getEntityData().setInteger(VitalData.POS_Z, pos.getZ());
 		return false;
 	}
-	
-	private boolean areBlockPosEqual(BlockPos pos1, BlockPos pos2){
-		boolean[] flags = {false, false, false};
-		if(pos1.getX() == pos2.getX()) flags[0] = true;
-		if(pos1.getY() == pos2.getY()) flags[1] = true;
-		if(pos1.getZ() == pos2.getZ()) flags[2] = true;
-		
+
+	private boolean areBlockPosEqual(BlockPos pos1, BlockPos pos2) {
+		boolean[] flags = { false, false, false };
+		if (pos1.getX() == pos2.getX())
+			flags[0] = true;
+		if (pos1.getY() == pos2.getY())
+			flags[1] = true;
+		if (pos1.getZ() == pos2.getZ())
+			flags[2] = true;
+
 		return flags[0] && flags[1] && flags[2];
-		
+
 	}
-		
-		
-	private boolean tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, float k){
-        IBlockState state = world.getBlockState(pos);
-        if (!state.getBlock().isAir(state, world, pos) && player.canPlayerEdit(pos, player.getHorizontalFacing(), wand));
-        {
+
+	private boolean tryBreakBlockWithCast(ItemStack wand, EntityPlayer player, World world, BlockPos pos, float k) {
+		IBlockState state = world.getBlockState(pos);
+		if (!state.getBlock().isAir(state, world, pos) && player.canPlayerEdit(pos, player.getHorizontalFacing(), wand))
+			;
+		{
 			float f = state.getBlockHardness(world, pos);
-            
-        int i = (int) ((1/(2*f)) + k);
-        k += (1/f);
-        if(i < 0 || k >= 9.6F) i = 10;
-        if (!state.getBlock().isAir(state, world, pos) && i >= 10)
-        {
-        	
-            if (f != -1 && f <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2))
-            {
-	            if(!world.isRemote)	
-	            {
-	            	world.destroyBlock(pos, true);
-	            }
-	            player.getEntityData().setFloat(KEY, 0);
-	            k = 0;
-	            return true;
-            }
-            else 
-            {
-            	ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 20, 1D);
-            	if(world.isRemote) world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 1.0F);
-	            player.getEntityData().setFloat(KEY, 0);
-	            k = 0;
-            }
-        }
-        else
-        {
-            world.sendBlockBreakProgress(player.getEntityId(), pos, i);
-            player.worldObj.sendBlockBreakProgress(player.getEntityId(), pos, i);
-        }
-        player.getEntityData().setFloat(KEY, k);
-        return false;
-        }
-        
+
+			int i = (int) ((1 / (2 * f)) + k);
+			k += (1 / f);
+			if (i < 0 || k >= 9.6F)
+				i = 10;
+			if (!state.getBlock().isAir(state, world, pos) && i >= 10) {
+
+				if (f != -1
+						&& f <= (WandHelper.getUsefulInfo(wand).getKey().getPotencyMultiplier() * this.potency * 2)) {
+					if (!world.isRemote) {
+						world.destroyBlock(pos, true);
+					}
+					player.getEntityData().setFloat(KEY, 0);
+					k = 0;
+					return true;
+				} else {
+					ParticleHelper.spawnParticles(EnumParticleTypes.SMOKE_LARGE, world, true, pos, 20, 1D);
+					if (world.isRemote)
+						world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
+								1.0F);
+					player.getEntityData().setFloat(KEY, 0);
+					k = 0;
+				}
+			} else {
+				world.sendBlockBreakProgress(player.getEntityId(), pos, i);
+				player.worldObj.sendBlockBreakProgress(player.getEntityId(), pos, i);
+			}
+			player.getEntityData().setFloat(KEY, k);
+			return false;
+		}
+
 	}
 
 	@Override
@@ -195,11 +194,13 @@ public class SpellExcavation extends Spell {
 		BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X2),
 				player.getEntityData().getInteger(VitalData.POS_Y2),
 				player.getEntityData().getInteger(VitalData.POS_Z2));
-		if(player.worldObj.isRemote){
-		int cost = (int)(player.getEntityData().getInteger("wandCurEssenceStored") - (WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier()) * this.cost * player.worldObj.getBlockState(new BlockPos(pos)).getBlockHardness(player.worldObj, pos));
-		player.getEntityData().setInteger("wandCurEssenceStored", cost);
-		PacketManager.INSTANCE.sendToServer(new MessageEssenceUpdate(player.getEntityId(), cost));
-		
+		if (player.worldObj.isRemote) {
+			int cost = (int) (player.getEntityData().getInteger("wandCurEssenceStored")
+					- (WandHelper.getUsefulInfo(wand).getValue().getCostMultiplier()) * this.cost
+							* player.worldObj.getBlockState(new BlockPos(pos)).getBlockHardness(player.worldObj, pos));
+			player.getEntityData().setInteger("wandCurEssenceStored", cost);
+			PacketManager.INSTANCE.sendToServer(new MessageEssenceUpdate(player.getEntityId(), cost));
+
 		}
-		}
+	}
 }

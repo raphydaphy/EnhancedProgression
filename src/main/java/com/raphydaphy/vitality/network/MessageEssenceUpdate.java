@@ -40,7 +40,8 @@ public class MessageEssenceUpdate implements IMessage {
 		public IMessage onMessage(MessageEssenceUpdate message, MessageContext ctx) {
 			// This is the player the packet was sent to the server from
 			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-			if(message.id == player.getEntityId()) player.getEntityData().setInteger("wandCurEssenceStored", message.cost);
+			if (message.id == player.getEntityId())
+				player.getEntityData().setInteger("wandCurEssenceStored", message.cost);
 
 			// No response packet
 			return null;

@@ -157,9 +157,9 @@ public abstract class Spell {
 	 */
 	public abstract void onCastPost(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ);
-	
+
 	public abstract boolean onCastTick(ItemStack wand, EntityPlayer player, int count);
-	
+
 	public abstract void onCastTickSuccess(ItemStack wand, EntityPlayer player, int count);
 
 	public Item getIcon() {

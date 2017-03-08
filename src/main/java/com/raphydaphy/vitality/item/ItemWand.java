@@ -16,7 +16,6 @@ import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
 import com.raphydaphy.vitality.util.MeshHelper;
 import com.raphydaphy.vitality.util.VitalData;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -53,6 +52,8 @@ public class ItemWand extends ItemBase {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack wand, World world, EntityPlayer player, EnumHand hand) {
+		if (!wand.hasTagCompound())
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, wand);
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 		if (player.isSneaking()) {
 			if (world.isRemote) {
@@ -80,6 +81,8 @@ public class ItemWand extends ItemBase {
 	@Override
 	public EnumActionResult onItemUse(ItemStack wand, EntityPlayer player, World world, BlockPos pos, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (!wand.hasTagCompound())
+			return EnumActionResult.FAIL;
 		SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(wand);
 		if (player.getEntityData().getString("wandCurOperation") == "") {
 			if (world.getBlockState(pos).getBlock() instanceof IWandable) {
@@ -110,9 +113,7 @@ public class ItemWand extends ItemBase {
 					player.setActiveHand(hand);
 					onPlayerStoppedUsing(wand, world, player, 0);
 					return EnumActionResult.SUCCESS;
-					}
-				else if (spell.isEssenceValid(pair.getKey().getCoreType())
-						&& spell.onCastTick(wand, player, 0)) {
+				} else if (spell.isEssenceValid(pair.getKey().getCoreType()) && spell.onCastTick(wand, player, 0)) {
 					player.getEntityData().setString("wandCurOperation", "useSpell");
 					player.setActiveHand(hand);
 					return EnumActionResult.SUCCESS;
@@ -124,32 +125,25 @@ public class ItemWand extends ItemBase {
 	}
 
 	@Override
-	public void onUsingTick(ItemStack wand, EntityLivingBase entity, int count) 
-	{
-		if (entity instanceof EntityPlayer) 
-		{
-			
+	public void onUsingTick(ItemStack wand, EntityLivingBase entity, int count) {
+		if (entity instanceof EntityPlayer) {
+
 			EntityPlayer player = (EntityPlayer) entity;
 			BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
 					player.getEntityData().getInteger(VitalData.POS_Y),
 					player.getEntityData().getInteger(VitalData.POS_Z));
 
-			if(player.getEntityData().getString("wandCurOperation").equals("extractFromContainer"))
-			{
+			if (player.getEntityData().getString("wandCurOperation").equals("extractFromContainer")) {
 				IEssenceContainer container = (IEssenceContainer) player.getEntityWorld().getTileEntity(pos);
-				if (container.getEssenceStored() > 0) 
-				{
+				if (container.getEssenceStored() > 0) {
 					container.subtractEssence(1);
 					player.getEntityData().setInteger("wandCurEssenceStored",
 							player.getEntityData().getInteger("wandCurEssenceStored") + 1);
 				}
-			}
-			else if(player.getEntityData().getString("wandCurOperation").equals("useSpell"))
-			{
+			} else if (player.getEntityData().getString("wandCurOperation").equals("useSpell")) {
 				Spell spell = Spell.spellMap.get(wand.getTagCompound().getInteger(Spell.ACTIVE_KEY));
-				//player.setActiveHand(player.getActiveHand());
-				if (spell.canBeCast(wand) && spell.onCastTick(wand, player, count))
-				{
+				// player.setActiveHand(player.getActiveHand());
+				if (spell.canBeCast(wand) && spell.onCastTick(wand, player, count)) {
 					spell.onCastTickSuccess(wand, player, count);
 				}
 			}
@@ -158,38 +152,31 @@ public class ItemWand extends ItemBase {
 	}
 
 	@Override
-    @Nullable
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
-    {
-        return stack;
-    }
-	
+	@Nullable
+	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+		return stack;
+	}
+
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) 
-	{
-		if (entity instanceof EntityPlayer) 
-		{
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
+		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
-			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer") 
-			{
+			if (player.getEntityData().getString("wandCurOperation") == "extractFromContainer") {
 				WandHelper.setEssenceStored(stack, player.getEntityData().getInteger("wandCurEssenceStored"));
-			} 
-			else if (player.getEntityData().getString("wandCurOperation") == "useSpell") 
-			{
+			} else if (player.getEntityData().getString("wandCurOperation") == "useSpell") {
 				BlockPos pos = new BlockPos(player.getEntityData().getInteger(VitalData.POS_X),
 						player.getEntityData().getInteger(VitalData.POS_Y),
 						player.getEntityData().getInteger(VitalData.POS_Z));
 
 				NBTTagCompound tag = player.getEntityData();
 				Spell spell = Spell.spellMap.get(stack.getTagCompound().getInteger(Spell.ACTIVE_KEY));
-				if (spell.onCast(stack, player, world,
-						pos, player.getActiveHand(), EnumFacing.byName(tag.getString(VitalData.FACING)),
-						tag.getFloat(VitalData.HIT_X), tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z)))
-				{
-					
-					spell.onCastPost(stack, player, world, pos,
-							player.getActiveHand(), player.getHorizontalFacing(), tag.getFloat(VitalData.HIT_X),
-							tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z));
+				if (spell.onCast(stack, player, world, pos, player.getActiveHand(),
+						EnumFacing.byName(tag.getString(VitalData.FACING)), tag.getFloat(VitalData.HIT_X),
+						tag.getFloat(VitalData.HIT_Y), tag.getFloat(VitalData.HIT_Z))) {
+
+					spell.onCastPost(stack, player, world, pos, player.getActiveHand(), player.getHorizontalFacing(),
+							tag.getFloat(VitalData.HIT_X), tag.getFloat(VitalData.HIT_Y),
+							tag.getFloat(VitalData.HIT_Z));
 				}
 
 			}
@@ -205,44 +192,34 @@ public class ItemWand extends ItemBase {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) 
-	{
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
 		// if(!isSelected) stack.getTagCompound().setInteger(Spell.ACTIVE_KEY,
 		// -1);;
 	}
 
-	public int getMaxItemUseDuration(ItemStack stack) 
-	{
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
 	@Override
 	@Nullable
-	public EnumAction getItemUseAction(ItemStack stack) 
-	{
-		
+	public EnumAction getItemUseAction(ItemStack stack) {
+
 		return EnumAction.BOW;
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack) 
-	{
-		if (stack.hasTagCompound()) 
-		{
+	public String getUnlocalizedName(ItemStack stack) {
+		if (stack.hasTagCompound()) {
 			SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(stack);
 
-			try 
-			{
+			try {
 				return pair.getKey().getTier().getName().toLowerCase() + "_" + pair.getValue().getName().toLowerCase()
 						+ "_" + pair.getKey().getName().toLowerCase() + "_wand";
-			} 
-			catch (Exception e) 
-			{
+			} catch (Exception e) {
 				return "invalid_wand";
 			}
-		} 
-		else 
-		{
+		} else {
 			return "invalid_wand";
 		}
 
@@ -250,8 +227,7 @@ public class ItemWand extends ItemBase {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack stack) 
-	{
+	public boolean hasEffect(ItemStack stack) {
 		return true;
 	}
 }

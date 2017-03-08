@@ -21,7 +21,7 @@ public class ModBlocks {
 	public static final Block ORE_EXOTIC_CRYSTAL = new BlockModOre("exotic_crystal_ore");
 
 	public static final Block EXTRACTION_CRUCIBLE = new BlockExtractionCrucible();
-	public static final Block ELEMENTAL_CRAFTING = new BlockElementalCrafting("elemental_crafting",false);
+	public static final Block ELEMENTAL_CRAFTING = new BlockElementalCrafting("elemental_crafting", false);
 
 	public static final Block JAR = new BlockEssenceJar();
 
