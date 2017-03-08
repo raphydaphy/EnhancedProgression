@@ -1,10 +1,11 @@
 package com.raphydaphy.vitality.gui;
 
+import com.raphydaphy.vitality.block.container.ContainerElementalCrafting;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,7 +24,7 @@ public class GUIElementalCrafting extends GuiContainer
 
     public GUIElementalCrafting(InventoryPlayer playerInv, World worldIn, BlockPos blockPosition)
     {
-        super(new ContainerWorkbench(playerInv, worldIn, blockPosition));
+        super(new ContainerElementalCrafting(playerInv, worldIn, blockPosition));
     }
 
     /**
