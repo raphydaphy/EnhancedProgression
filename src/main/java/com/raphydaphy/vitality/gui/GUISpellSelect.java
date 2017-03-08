@@ -1,4 +1,4 @@
-package com.raphydaphy.vitality.render;
+package com.raphydaphy.vitality.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
