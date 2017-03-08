@@ -124,6 +124,7 @@ public class SpellSwapping extends Spell {
 			int z = player.getEntityData().getInteger(VitalData.POS_Z);
 			Block targetBlock = player.worldObj.getBlockState(new BlockPos(x,y,z)).getBlock();
 			List<BlockPos> swap = getBlocksToSwap(player.worldObj, wand, block.getDefaultState(), new BlockPos(x, y, z), targetBlock.getDefaultState());
+			System.out.println(swap.size() + " <== size | is client => " + player.worldObj.isRemote);
 			if(swap.size() == 0) {
 				player.getEntityData().removeTag(KEY_SWAPPING);
 				return false;
@@ -168,8 +169,10 @@ public class SpellSwapping extends Spell {
 			IBlockState stateAt = world.getBlockState(pos);
 			Block blockAt = stateAt.getBlock();
 			if(!blockAt.isAir(world.getBlockState(pos), world, pos) && stateAt.getPlayerRelativeBlockHardness(player, world, pos) > 0 && stateAt != state) {
-				if(!world.isRemote) {
-					if(!player.capabilities.isCreativeMode) {
+				if(!world.isRemote) 
+				{
+					if(!player.capabilities.isCreativeMode) 
+					{
 						blockAt.dropBlockAsItem(world, pos, stateAt, 0);
 						// here we need to remove the block from the players inventory
 						// atm it just creates blocks out of thin air
@@ -199,8 +202,11 @@ public class SpellSwapping extends Spell {
 
 		// Loop through three dimensions in the range set above
 		for(int offsetX = -range; offsetX <= range; offsetX++)
+		{
 			for(int offsetY = -range; offsetY <= range; offsetY++)
-				for(int offsetZ = -range; offsetZ <= range; offsetZ++) {
+			{
+				for(int offsetZ = -range; offsetZ <= range; offsetZ++) 
+				{
 					BlockPos curBlock = pos.add(offsetX, offsetY, offsetZ);
 
 					IBlockState currentState = world.getBlockState(curBlock);
@@ -231,6 +237,8 @@ public class SpellSwapping extends Spell {
 						}
 					}
 				}
+			}
+		}
 
 		return swapMePlz;
 	}
