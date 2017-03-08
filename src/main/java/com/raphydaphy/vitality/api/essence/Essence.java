@@ -61,8 +61,7 @@ public enum Essence implements IStringSerializable {
 		return format;
 	}
 
-	public static Essence getByName(String nameIn) 
-	{
+	public static Essence getByName(String nameIn) {
 		return MiscEssence.locator.get(nameIn);
 	}
 

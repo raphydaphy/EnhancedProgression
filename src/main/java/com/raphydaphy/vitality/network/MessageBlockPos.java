@@ -17,7 +17,7 @@ public class MessageBlockPos implements IMessage {
 	private int y;
 	private int z;
 
-	public MessageBlockPos(int x,int y, int z) {
+	public MessageBlockPos(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -47,7 +47,7 @@ public class MessageBlockPos implements IMessage {
 			// This is the player the packet was sent to the server from
 			EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
 			// The values that were sent
-			
+
 			serverPlayer.getEntityData().setInteger(VitalData.POS_X2, message.x);
 			serverPlayer.getEntityData().setInteger(VitalData.POS_Y2, message.y);
 			serverPlayer.getEntityData().setInteger(VitalData.POS_Z2, message.z);

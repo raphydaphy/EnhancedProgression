@@ -141,38 +141,39 @@ public class ItemExtractionRod extends ItemBase {
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-		if(stack.hasTagCompound()){
-		if (stack.getTagCompound().getInteger("counter") != -1) {
-			if (stack.getTagCompound().getInteger("counter") == 20) {
-				if (!world.isRemote) {
-					ParticleHelper.spawnParticlesServer(EnumParticleTypes.PORTAL, world, true,
-							stack.getTagCompound().getInteger("xPos") + 0.5,
-							stack.getTagCompound().getInteger("yPos") - 0.5,
-							stack.getTagCompound().getInteger("zPos") + 0.5, 1000, 0.5);
-				}
-			} else if (stack.getTagCompound().getInteger("counter") == 0) {
-				BlockPos pos = new BlockPos(stack.getTagCompound().getInteger("xPos"),
-						stack.getTagCompound().getInteger("yPos"), stack.getTagCompound().getInteger("zPos"));
-				if (world.getBlockState(pos).getBlock() == ModBlocks.ORE_ANGELIC_CRYSTAL
-						|| world.getBlockState(pos).getBlock() == ModBlocks.ORE_EXOTIC_CRYSTAL) {
+		if (stack.hasTagCompound()) {
+			if (stack.getTagCompound().getInteger("counter") != -1) {
+				if (stack.getTagCompound().getInteger("counter") == 20) {
 					if (!world.isRemote) {
-						world.setBlockState(pos, Blocks.STONE.getDefaultState());
-						world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
+						ParticleHelper.spawnParticlesServer(EnumParticleTypes.PORTAL, world, true,
+								stack.getTagCompound().getInteger("xPos") + 0.5,
+								stack.getTagCompound().getInteger("yPos") - 0.5,
+								stack.getTagCompound().getInteger("zPos") + 0.5, 1000, 0.5);
 					}
-					if (stack.getTagCompound().getString(Essence.TYPE_KEY).equals(Essence.ANGELIC.getName())) {
-						MiscEssence.fillVial(Essence.ANGELIC, 15, true, (EntityPlayer) entity);
-					} else if (stack.getTagCompound().getString(Essence.TYPE_KEY).equals(Essence.EXOTIC.getName())) {
-						MiscEssence.fillVial(Essence.EXOTIC, 30, true, (EntityPlayer) entity);
+				} else if (stack.getTagCompound().getInteger("counter") == 0) {
+					BlockPos pos = new BlockPos(stack.getTagCompound().getInteger("xPos"),
+							stack.getTagCompound().getInteger("yPos"), stack.getTagCompound().getInteger("zPos"));
+					if (world.getBlockState(pos).getBlock() == ModBlocks.ORE_ANGELIC_CRYSTAL
+							|| world.getBlockState(pos).getBlock() == ModBlocks.ORE_EXOTIC_CRYSTAL) {
+						if (!world.isRemote) {
+							world.setBlockState(pos, Blocks.STONE.getDefaultState());
+							world.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 1, 1);
+						}
+						if (stack.getTagCompound().getString(Essence.TYPE_KEY).equals(Essence.ANGELIC.getName())) {
+							MiscEssence.fillVial(Essence.ANGELIC, 15, true, (EntityPlayer) entity);
+						} else if (stack.getTagCompound().getString(Essence.TYPE_KEY)
+								.equals(Essence.EXOTIC.getName())) {
+							MiscEssence.fillVial(Essence.EXOTIC, 30, true, (EntityPlayer) entity);
+						}
+					} else {
+						if (world.isRemote) {
+							ClientProxy.setActionText("Dont cheat!", TextFormatting.GOLD);
+						}
+						System.out.println(entity.getName() + " tried to cheat!");
 					}
-				} else {
-					if (world.isRemote) {
-						ClientProxy.setActionText("Dont cheat!", TextFormatting.GOLD);
-					}
-					System.out.println(entity.getName() + " tried to cheat!");
 				}
+				stack.getTagCompound().setInteger("counter", stack.getTagCompound().getInteger("counter") - 1);
 			}
-			stack.getTagCompound().setInteger("counter", stack.getTagCompound().getInteger("counter") - 1);
-		}
 		}
 	}
 

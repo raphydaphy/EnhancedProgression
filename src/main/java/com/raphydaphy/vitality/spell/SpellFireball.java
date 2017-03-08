@@ -97,7 +97,7 @@ public class SpellFireball extends Spell {
 	@Override
 	public void onCastTickSuccess(ItemStack wand, EntityPlayer player, int count) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

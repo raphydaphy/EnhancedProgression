@@ -1,6 +1,5 @@
 package com.raphydaphy.vitality.proxy;
 
-import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.init.WorldGenHandler;
 import com.raphydaphy.vitality.network.MessageActionText;
 import com.raphydaphy.vitality.network.MessageBlockPos;
@@ -13,7 +12,6 @@ import com.raphydaphy.vitality.registry.ModSpells;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -28,8 +26,8 @@ public class CommonProxy {
 		int disc = 0;
 		PacketManager.INSTANCE.registerMessage(new MessageChangeSpell.ChangeSpellHandler(), MessageChangeSpell.class,
 				++disc, Side.SERVER);
-		PacketManager.INSTANCE.registerMessage(new MessageBlockPos.BlockPosHandler(), MessageBlockPos.class,
-				++disc, Side.SERVER);
+		PacketManager.INSTANCE.registerMessage(new MessageBlockPos.BlockPosHandler(), MessageBlockPos.class, ++disc,
+				Side.SERVER);
 		PacketManager.INSTANCE.registerMessage(new MessageActionText.MessageHandler(), MessageActionText.class, ++disc,
 				Side.CLIENT);
 		PacketManager.INSTANCE.registerMessage(new MessageEssenceUpdate.Handler(), MessageEssenceUpdate.class, ++disc,
@@ -44,7 +42,6 @@ public class CommonProxy {
 		ModRecipies.registerCrafting();
 		ModRecipies.registerSmelting();
 		ModSpells.init(e);
-		
 
 	}
 

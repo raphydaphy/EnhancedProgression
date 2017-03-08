@@ -47,7 +47,7 @@ public class GUISpellSelect extends GuiScreen {
 			}
 		} else {
 			wandStack = player.getHeldItemOffhand();
-			if (wandStack == null) {
+			if (wandStack == null || !wandStack.hasTagCompound()) {
 				return;
 			} else if (!(wandStack.getItem() instanceof ItemWand)) {
 				return;

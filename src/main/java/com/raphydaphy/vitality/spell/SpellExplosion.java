@@ -46,15 +46,14 @@ public class SpellExplosion extends Spell {
 			WandHelper.useEssence(wand, cost, pair.getKey().getCoreType());
 			BlockPos bombPos = pos;
 			world.playSound(null, bombPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
-			if (!world.isRemote)
-			{
-				ParticleHelper.spawnParticles(EnumParticleTypes.EXPLOSION_HUGE, world, true, bombPos, potency*10, potency);
+			if (!world.isRemote) {
+				ParticleHelper.spawnParticles(EnumParticleTypes.EXPLOSION_HUGE, world, true, bombPos, potency * 10,
+						potency);
 			}
-			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(bombPos.add(-potency, -potency, -potency), bombPos.add(potency,potency,potency)));
-			for (EntityLivingBase living : entities)
-			{
-				if (living != player)
-				{
+			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(
+					bombPos.add(-potency, -potency, -potency), bombPos.add(potency, potency, potency)));
+			for (EntityLivingBase living : entities) {
+				if (living != player) {
 					living.attackEntityFrom(DamageSource.magic, potency);
 				}
 			}
@@ -95,7 +94,7 @@ public class SpellExplosion extends Spell {
 	@Override
 	public void onCastTickSuccess(ItemStack wand, EntityPlayer player, int count) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
