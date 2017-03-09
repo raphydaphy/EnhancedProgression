@@ -39,7 +39,7 @@ public final class ModOverlays
 		}
 		if (wandStack == null)
 		{
-			return;
+			return;	
 		}
 		if (!(wandStack.hasTagCompound()))
 		{
@@ -56,7 +56,7 @@ public final class ModOverlays
 			return;
 		}
 		int screenWidth = 0 + (res.getScaledHeight() / 15);
-		int screenHeight = 0 + (res.getScaledHeight() / 10);
+		int screenHeight = 0 + (res.getScaledHeight() / 12);
 		net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(screenWidth - 16, screenHeight - 16, 0);

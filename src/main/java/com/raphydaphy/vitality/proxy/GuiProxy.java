@@ -19,6 +19,12 @@ public class GuiProxy implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
-		return new GUIElementalCrafting(player.inventory, world, pos);
+		// switch <3
+		switch(ID)
+		{
+		case 0:
+			return new GUIElementalCrafting(player.inventory, world, pos);
+		}
+		return null;
 	}
 }

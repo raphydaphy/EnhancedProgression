@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.block;
 
 import javax.annotation.Nullable;
 
+import com.raphydaphy.vitality.Vitality;
 import com.raphydaphy.vitality.block.container.ContainerElementalCrafting;
 import com.raphydaphy.vitality.registry.ModBlocks;
 
@@ -31,7 +32,7 @@ public class BlockElementalCrafting extends BlockBase {
 		if (worldIn.isRemote) {
 			return true;
 		} else {
-			playerIn.displayGui(new BlockElementalCrafting.InterfaceElementalCrafting(worldIn, pos));
+			playerIn.openGui(Vitality.instance, 0, worldIn, (int)playerIn.posX,(int)playerIn.posY, (int)playerIn.posX);
 			return true;
 		}
 	}

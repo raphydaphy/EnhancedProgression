@@ -81,6 +81,10 @@ public class GUISpellSelect extends GuiScreen {
 			// if any spells are held in the bag
 			if (amount > 0) {
 				float anglePer;
+				if (!wandStack.hasTagCompound())
+				{
+					return;
+				}
 				if (wandStack.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1) {
 					anglePer = 360F / (amount - 1);
 				} else {
