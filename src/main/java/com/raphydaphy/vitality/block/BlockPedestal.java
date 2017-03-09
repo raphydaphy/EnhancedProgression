@@ -1,68 +1,21 @@
 package com.raphydaphy.vitality.block;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import com.raphydaphy.vitality.api.essence.Essence;
-import com.raphydaphy.vitality.api.essence.MiscEssence;
-import com.raphydaphy.vitality.api.wand.IWandable;
-import com.raphydaphy.vitality.api.wand.WandEnums.WandResult;
-import com.raphydaphy.vitality.api.wand.WandEnums.WandTier;
-import com.raphydaphy.vitality.block.tile.TileEssenceJar;
-import com.raphydaphy.vitality.item.ItemVial;
-import com.raphydaphy.vitality.network.MessageActionText;
-import com.raphydaphy.vitality.network.PacketManager;
-import com.raphydaphy.vitality.proxy.ClientProxy;
-import com.raphydaphy.vitality.render.EssenceJarTESR;
-
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, IWandable {
-	protected static final AxisAlignedBB AABB_MAIN = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.875D,
-			0.8125D);
-	protected static final AxisAlignedBB AABB_KNOB = new AxisAlignedBB(0.3125D, 0.875D, 0.3125D, 0.5625D, 1.0D,
-			0.5625D);
+public class BlockPedestal extends BlockBase /*implements ITileEntityProvider, IWandable*/ {
+	//protected static final AxisAlignedBB AABB_MAIN = new AxisAlignedBB(0.1D, 0.0D, 0.1875D, 0.8125D, 0.875D,
+	//		0.8125D);
 
-	public BlockEssenceJar() {
-		super(Material.GLASS, "essence_jar", true, true);
-		this.setSoundType(SoundType.GLASS);
+	public BlockPedestal() {
+		super(Material.ROCK, "pedestal", true, true);
+		this.setSoundType(SoundType.STONE);
 		this.setHardness(1F);
 		this.setResistance(2F);
-		GameRegistry.registerTileEntity(TileEssenceJar.class, getRegistryName().getResourcePath());
-		GameRegistry.register(new ItemBlock(this) {
-			@Override
-			public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
-				return armorType == EntityEquipmentSlot.HEAD && !stack.hasTagCompound();
-			}
-		}, getRegistryName());
+		//GameRegistry.registerTileEntity(TileEssenceJar.class, getRegistryName().getResourcePath());
 	}
 
+	/*
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
 			List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
@@ -73,33 +26,8 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB_MAIN;
 	}
-
-	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		List<ItemStack> list = new ArrayList<ItemStack>();
-		return list;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		if (hasTileEntity(state)) {
-
-			if (!world.isRemote) {
-				TileEssenceJar te = (TileEssenceJar) world.getTileEntity(pos);
-				ItemStack stack = new ItemStack(this);
-				if (te != null && !te.isEmpty()) {
-					NBTTagCompound tag = new NBTTagCompound();
-					tag.setInteger(Essence.KEY, te.getEssenceStored());
-					tag.setString(Essence.TYPE_KEY, te.getEssenceType().getName());
-					stack.setTagCompound(tag);
-				}
-				spawnAsEntity(world, pos, stack);
-			}
-
-			world.removeTileEntity(pos);
-		}
-	}
-
+	*/
+	/*
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
@@ -204,5 +132,6 @@ public class BlockEssenceJar extends BlockBase implements ITileEntityProvider, I
 	public WandResult onWandUse(Essence[] reqEssences, int[] costs, WandTier minTier) {
 		return WandResult.FAIL;
 	}
+	*/
 
 }
