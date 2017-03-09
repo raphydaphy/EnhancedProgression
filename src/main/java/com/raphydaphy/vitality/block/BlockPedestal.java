@@ -8,7 +8,7 @@ public class BlockPedestal extends BlockBase /*implements ITileEntityProvider, I
 	//		0.8125D);
 
 	public BlockPedestal() {
-		super(Material.ROCK, "pedestal", true, true);
+		super(Material.ROCK, "pedestal", true, false);
 		this.setSoundType(SoundType.STONE);
 		this.setHardness(1F);
 		this.setResistance(2F);
