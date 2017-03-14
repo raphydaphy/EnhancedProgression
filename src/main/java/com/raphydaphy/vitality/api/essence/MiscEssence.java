@@ -112,7 +112,7 @@ public class MiscEssence {
 		if (stack.getItem() instanceof ItemVial) {
 			ItemVial vial = (ItemVial) stack.getItem();
 			// if the vial has some essence in it
-			if (vial.hasType() && vial.getVialType() == type) {
+			if (vial.hasType() && vial.getVialType() == type && stack.hasTagCompound()) {
 				// if the vial isnt already full
 				if (stack.getTagCompound().getInteger(Essence.KEY) <= vial.getMaxStorage()) {
 					// add the amount of essence specified as toAdd to the
