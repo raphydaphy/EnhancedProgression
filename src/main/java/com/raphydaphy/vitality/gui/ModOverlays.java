@@ -50,6 +50,10 @@ public final class ModOverlays
 			return;
 		}
 		Spell active = Spell.spellMap.get(wandStack.getTagCompound().getInteger(Spell.ACTIVE_KEY));
+		if (active == null)
+		{
+			return;
+		}
 		Item icon = active.getIcon();
 		if (icon == null)
 		{

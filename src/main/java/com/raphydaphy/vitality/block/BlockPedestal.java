@@ -2,6 +2,7 @@ package com.raphydaphy.vitality.block;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 
 public class BlockPedestal extends BlockBase /*implements ITileEntityProvider, IWandable*/ {
 	//protected static final AxisAlignedBB AABB_MAIN = new AxisAlignedBB(0.1D, 0.0D, 0.1875D, 0.8125D, 0.875D,
@@ -14,7 +15,22 @@ public class BlockPedestal extends BlockBase /*implements ITileEntityProvider, I
 		this.setResistance(2F);
 		//GameRegistry.registerTileEntity(TileEssenceJar.class, getRegistryName().getResourcePath());
 	}
+	
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
+	@Override
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+	
 	/*
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
