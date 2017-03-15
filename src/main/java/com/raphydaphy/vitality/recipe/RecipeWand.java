@@ -6,6 +6,7 @@ import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.api.spell.Spell;
 import com.raphydaphy.vitality.api.wand.WandEnums;
 import com.raphydaphy.vitality.api.wand.WandHelper;
+import com.raphydaphy.vitality.item.ItemWandPiece;
 import com.raphydaphy.vitality.registry.ModItems;
 
 import net.minecraft.inventory.InventoryCrafting;
@@ -33,6 +34,10 @@ public class RecipeWand implements IRecipe {
 			ItemStack itemstack = inv.getStackInSlot(k1);
 
 			if (itemstack != null) {
+				if (!(itemstack.getItem() instanceof ItemWandPiece))
+				{
+					return false;
+				}
 				if (itemstack.getItem() == ModItems.TIP_WOODEN) {
 					tips++;
 					if (tips == 1) {
