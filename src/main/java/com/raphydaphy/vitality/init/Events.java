@@ -40,6 +40,7 @@ public class Events {
 			}
 		}
 	}
+
 	@SubscribeEvent
 	public static void onDeath(PlayerEvent.Clone event) {
 		int storedAngelic = event.getOriginal().getEntityData().getInteger(Essence.ANGELIC.getMultiKey());
@@ -54,17 +55,16 @@ public class Events {
 		event.getEntityPlayer().getEntityData().setInteger(Essence.ENERGETIC.getMultiKey(), storedEnergetic);
 		event.getEntityPlayer().getEntityData().setInteger(Essence.EXOTIC.getMultiKey(), storedExotic);
 	}
-	
+
 	@SubscribeEvent
-	public static void onDrawScreenPost(RenderGameOverlayEvent.Post event)
-	{
+	public static void onDrawScreenPost(RenderGameOverlayEvent.Post event) {
 		Minecraft mc = Minecraft.getMinecraft();
 		ModOverlays.drawSelectedSpell(mc, event.getResolution());
 	}
 
 	@SubscribeEvent
 	public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		
+
 		if (event.player.worldObj.rand.nextInt(100) == 1 && ConfigHandler.balance.enabledBoundEssence) {
 			int storedAngelic = event.player.getEntityData().getInteger(Essence.ANGELIC.getMultiKey());
 			int storedAtmospheric = event.player.getEntityData().getInteger(Essence.ATMOSPHERIC.getMultiKey());

@@ -184,8 +184,8 @@ public class MiscEssence {
 	}
 
 	/**
-	 * Tries to fill an Essence Vial with an amount of Essence The difference
-	 * betwen this and addEssence is this finds the vial from the players
+	 * Tries to fill an Essence Vial with an amount of Essence. The difference
+	 * between this and addEssence is this finds the vial from the players
 	 * inventory, and addEssence takes an ItemStack argument.
 	 * 
 	 * @param type

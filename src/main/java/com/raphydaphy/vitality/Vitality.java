@@ -17,8 +17,8 @@ public class Vitality {
 	public static CommonProxy proxy;
 
 	@Instance(Reference.MOD_ID)
-    public static Vitality instance;
-	
+	public static Vitality instance;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		proxy.preInit(event);
