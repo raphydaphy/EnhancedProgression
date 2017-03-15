@@ -39,6 +39,7 @@ public class RecipeWand implements IRecipe {
 					return false;
 				}
 				if (itemstack.getItem() == ModItems.TIP_WOODEN) {
+					if (!(k1 == 2 || k1 == 6)) { return false; }
 					tips++;
 					if (tips == 1) {
 						tipType1 = WandEnums.TipType.WOODEN;
@@ -48,18 +49,23 @@ public class RecipeWand implements IRecipe {
 				}
 
 				if (itemstack.getItem() == ModItems.CORE_ANGELIC) {
+					if (k1 != 4) { return false; }
 					cores++;
 					coreType = WandEnums.CoreType.ANGELIC;
 				} else if (itemstack.getItem() == ModItems.CORE_ATMOSPHERIC) {
+					if (k1 != 4) { return false; }
 					cores++;
 					coreType = WandEnums.CoreType.ATMOSPHERIC;
 				} else if (itemstack.getItem() == ModItems.CORE_DEMONIC) {
+					if (k1 != 4) { return false; }
 					cores++;
 					coreType = WandEnums.CoreType.DEMONIC;
 				} else if (itemstack.getItem() == ModItems.CORE_ENERGETIC) {
+					if (k1 != 4) { return false; }
 					cores++;
 					coreType = WandEnums.CoreType.ENERGETIC;
 				} else if (itemstack.getItem() == ModItems.CORE_EXOTIC) {
+					if (k1 != 4) { return false; }
 					cores++;
 					coreType = WandEnums.CoreType.EXOTIC;
 				}

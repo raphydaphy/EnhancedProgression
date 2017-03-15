@@ -56,9 +56,7 @@ public class ModelWand implements IModel, IModelCustomData {
 
 	public ModelWand(CoreType coreType, TipType tipType) {
 		if (coreType != null && tipType != null) {
-			System.out.println(coreType);
-			System.out.println(
-					new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase()).toString());
+			
 			this.resourceCore = new ResourceLocation("vitality", "items/wand/core_" + coreType.getName().toLowerCase());
 			this.resourceTip = new ResourceLocation("vitality", "items/wand/tip_" + tipType.getName().toLowerCase());
 		} else {
@@ -82,8 +80,7 @@ public class ModelWand implements IModel, IModelCustomData {
 		ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
 		for (Item item : ModItems.ITEM_LIST) {
 			if (item instanceof ItemWandPiece) {
-				System.out.println(item.getRegistryName().getResourceDomain() + ":" + "items/wand/"
-						+ item.getRegistryName().getResourcePath());
+				
 				builder.add(new ResourceLocation(item.getRegistryName().getResourceDomain(),
 						"items/wand/" + item.getRegistryName().getResourcePath()));
 			}
@@ -94,12 +91,6 @@ public class ModelWand implements IModel, IModelCustomData {
 
 	@Override
 	public IModel process(ImmutableMap<String, String> customData) {
-		for (Map.Entry<String, String> entry : customData.entrySet()) {
-			String key = entry.getKey();
-			System.out.printf("customData: %s => %s\n", key, entry.getValue());
-		}
-
-		System.out.println(customData.size());
 
 		CoreType core = CoreType.ANGELIC;
 		TipType tip = TipType.WOODEN;
@@ -113,7 +104,6 @@ public class ModelWand implements IModel, IModelCustomData {
 		} catch (Exception e) {
 
 		}
-		System.out.println("Core: " + core + " Tip:" + tip);
 		return new ModelWand(core, tip);
 	}
 
