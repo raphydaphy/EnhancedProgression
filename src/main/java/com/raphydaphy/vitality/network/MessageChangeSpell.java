@@ -45,7 +45,6 @@ public class MessageChangeSpell implements IMessage {
 			EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
 			// The value that was sent
 			int id = message.spell;
-			System.out.println(id + " <== on message what they got");
 			if (serverPlayer.getHeldItemMainhand() != null) {
 				if (serverPlayer.getHeldItemMainhand().getItem() instanceof ItemWand) {
 					serverPlayer.getHeldItemMainhand().getTagCompound().setInteger(Spell.ACTIVE_KEY, id);

@@ -121,7 +121,6 @@ public class SpellSwapping extends Spell {
 			Block targetBlock = player.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
 			List<BlockPos> swap = getBlocksToSwap(player.worldObj, wand, block.getDefaultState(), new BlockPos(x, y, z),
 					targetBlock.getDefaultState());
-			System.out.println(swap.size() + " <== size | is client => " + player.worldObj.isRemote);
 			if (swap.size() == 0) {
 				player.getEntityData().removeTag(KEY_SWAPPING);
 				return false;

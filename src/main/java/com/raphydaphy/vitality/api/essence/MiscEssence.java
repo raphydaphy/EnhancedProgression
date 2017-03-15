@@ -105,7 +105,6 @@ public class MiscEssence {
 		// if the essence should bind to the players soul
 		if (shouldBind) {
 			// bind the essence to the players soul-bound essence
-			System.out.println(type.getMultiKey());
 			player.getEntityData().setInteger(type.getMultiKey(),
 					player.getEntityData().getInteger(type.getMultiKey()) + toAdd);
 		}

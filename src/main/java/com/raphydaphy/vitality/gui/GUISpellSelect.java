@@ -144,7 +144,6 @@ public class GUISpellSelect extends GuiScreen {
 							.setInteger(Spell.ACTIVE_KEY, spells.get(activeSector));
 				}
 			}
-			System.out.println(spells.get(activeSector) + " <== selected spell to send");
 			PacketManager.INSTANCE.sendToServer(new MessageChangeSpell(spells.get(activeSector)));
 		}
 	}

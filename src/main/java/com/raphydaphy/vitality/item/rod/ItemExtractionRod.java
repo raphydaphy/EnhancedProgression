@@ -169,7 +169,6 @@ public class ItemExtractionRod extends ItemBase {
 						if (world.isRemote) {
 							ClientProxy.setActionText("Dont cheat!", TextFormatting.GOLD);
 						}
-						System.out.println(entity.getName() + " tried to cheat!");
 					}
 				}
 				stack.getTagCompound().setInteger("counter", stack.getTagCompound().getInteger("counter") - 1);
