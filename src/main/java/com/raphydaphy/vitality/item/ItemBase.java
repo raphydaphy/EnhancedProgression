@@ -39,7 +39,7 @@ public class ItemBase extends Item implements IRegisterable {
 	}
 
 	public ModelResourceLocation getModelLocation() {
-		return new ModelResourceLocation(getRegistryName(), "inventory");
+		return RegistryHelper.defaultLoc(this);
 	}
 
 }

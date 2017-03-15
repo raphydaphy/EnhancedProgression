@@ -1,5 +1,6 @@
 package com.raphydaphy.vitality.registry;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -17,5 +18,8 @@ public interface IRegisterable {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void registerModels();
+
+	@SideOnly(Side.CLIENT)
+	public ModelResourceLocation getModelLocation();
 
 }

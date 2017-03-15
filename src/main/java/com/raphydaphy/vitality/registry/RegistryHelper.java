@@ -17,4 +17,8 @@ public class RegistryHelper {
 				new ModelResourceLocation(item.getRegistryName(), "inventory"));
 	}
 
+	public static ModelResourceLocation defaultLoc(Item item) {
+		return new ModelResourceLocation(item.getRegistryName(), "inventory");
+	}
+
 }

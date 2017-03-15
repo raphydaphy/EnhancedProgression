@@ -1,7 +1,7 @@
 package com.raphydaphy.vitality.util;
 
-import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.registry.IMeta;
+import com.raphydaphy.vitality.registry.IRegisterable;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -27,8 +27,8 @@ public class MeshHelper implements ItemMeshDefinition {
 		Item item = stack.getItem();
 		if (item instanceof IMeta)
 			return ((IMeta) item).getMetaModelLocations().get(stack.getMetadata());
-		else if (item instanceof ItemBase)
-			return ((ItemBase) item).getModelLocation();
+		else if (item instanceof IRegisterable)
+			return ((IRegisterable) item).getModelLocation();
 
 		return null;
 	}

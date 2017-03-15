@@ -108,4 +108,13 @@ public class ParticleHelper {
 			z += 0.1;
 		}
 	}
+
+	public static BlockPos multipleNoZero(BlockPos pos1, BlockPos pos2) {
+		double[] posNums = { pos1.getX(), pos1.getY(), pos1.getZ(), pos2.getX(), pos2.getY(), pos2.getZ() };
+		for (int i = 0; i < 6; i++) {
+			if (posNums[i] == 0D)
+				posNums[i] = 1;
+		}
+		return new BlockPos(posNums[0] * posNums[3], posNums[1] * posNums[4], posNums[2] * posNums[5]);
+	}
 }

@@ -6,6 +6,8 @@ import com.raphydaphy.vitality.registry.RegistryHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -38,6 +40,11 @@ public class BlockBase extends Block implements IRegisterable {
 	@Override
 	public void registerModels() {
 		RegistryHelper.setModelLoc(this);
+	}
+
+	@Override
+	public ModelResourceLocation getModelLocation() {
+		return RegistryHelper.defaultLoc(Item.getItemFromBlock(this));
 	}
 
 }
