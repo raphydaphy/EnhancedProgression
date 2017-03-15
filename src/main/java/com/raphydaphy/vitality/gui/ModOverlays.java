@@ -9,54 +9,41 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public final class ModOverlays
-{
-	public static void drawSelectedSpell(Minecraft mc, net.minecraft.client.gui.ScaledResolution res){
+public final class ModOverlays {
+	public static void drawSelectedSpell(Minecraft mc, net.minecraft.client.gui.ScaledResolution res) {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-		
+
 		ItemStack wandStack = player.getHeldItemMainhand();
 		boolean tryOtherHand = false;
-		
-		if (wandStack == null)
-		{
+
+		if (wandStack == null) {
+			tryOtherHand = true;
+		} else if (!(wandStack.getItem() instanceof ItemWand)) {
 			tryOtherHand = true;
 		}
-		else if (!(wandStack.getItem() instanceof ItemWand))
-		{
-			tryOtherHand = true;
-		}
-		
-		if (tryOtherHand)
-		{
-			if (player.getHeldItemOffhand() != null)
-			{
+
+		if (tryOtherHand) {
+			if (player.getHeldItemOffhand() != null) {
 				wandStack = player.getHeldItemOffhand();
-				if (!(wandStack.getItem() instanceof ItemWand))
-				{
+				if (!(wandStack.getItem() instanceof ItemWand)) {
 					return;
 				}
 			}
 		}
-		if (wandStack == null)
-		{
-			return;	
-		}
-		if (!(wandStack.hasTagCompound()))
-		{
+		if (wandStack == null) {
 			return;
 		}
-		else if (!(wandStack.getTagCompound().hasKey(Spell.ACTIVE_KEY)))
-		{
+		if (!(wandStack.hasTagCompound())) {
+			return;
+		} else if (!(wandStack.getTagCompound().hasKey(Spell.ACTIVE_KEY))) {
 			return;
 		}
 		Spell active = Spell.spellMap.get(wandStack.getTagCompound().getInteger(Spell.ACTIVE_KEY));
-		if (active == null)
-		{
+		if (active == null) {
 			return;
 		}
 		Item icon = active.getIcon();
-		if (icon == null)
-		{
+		if (icon == null) {
 			return;
 		}
 		int screenWidth = 0 + (res.getScaledHeight() / 15);
@@ -68,7 +55,7 @@ public final class ModOverlays
 		mc.getRenderItem().renderItemIntoGUI(new ItemStack(icon), 0, 0);
 		GlStateManager.translate(-screenWidth, -screenHeight, 0);
 		GlStateManager.popMatrix();
-					
+
 		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 	}
 }

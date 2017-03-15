@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.api.essence.MiscEssence;
-import com.raphydaphy.vitality.registry.ModItems;
+import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.util.ParticleHelper;
 
 import net.minecraft.block.material.Material;
@@ -71,42 +71,23 @@ public class BlockExtractionCrucible extends BlockBase {
 	}
 
 	public void setWaterLevel(World worldIn, BlockPos pos, IBlockState state, int level) {
-		worldIn.setBlockState(pos, state.withProperty(LEVEL, Integer.valueOf(MathHelper.clamp_int(level, 0, 3))), 2);
+		worldIn.setBlockState(pos, state.withProperty(LEVEL, MathHelper.clamp_int(level, 0, 3)), 2);
 		worldIn.updateComparatorOutputLevel(pos, this);
 	}
 
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (heldItem == null) {
-			return true;
-		} else {
-			int i = ((Integer) state.getValue(LEVEL));
-			Item item = heldItem.getItem();
-
-			if (item == ModItems.VIAL_ATMOSPHERIC) {
-				if (i > 0) {
-					MiscEssence.addEssence(heldItem, 25, true, playerIn, Essence.ATMOSPHERIC, 0);
-					playerIn.swingArm(hand);
-					if (!worldIn.isRemote) {
-						this.setWaterLevel(worldIn, pos, state, i - 1);
-						ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, pos, 5, 1);
-						worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-					}
-				}
-
-				return true;
-			} else if (item == ModItems.VIAL_EMPTY) {
-				if (i > 0) {
-					MiscEssence.addEssence(heldItem, 25, true, playerIn, Essence.ATMOSPHERIC, 0);
-					playerIn.swingArm(hand);
-					if (!worldIn.isRemote) {
-						//playerIn.setHeldItem(hand, vialStack);
-						this.setWaterLevel(worldIn, pos, state, i - 1);
-						ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, worldIn, true, pos, 5, 1);
-						worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-					}
-				}
-
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+			@Nullable ItemStack stack, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (stack == null)
+			return false;
+		else if (stack.getItem() instanceof ItemVial) {
+			int level = state.getValue(LEVEL);
+			ItemVial vial = (ItemVial) stack.getItem();
+			if (vial.getVialType() == null
+					|| vial.getVialType() == Essence.ATMOSPHERIC && level > 0 && MiscEssence.canBeAdded(stack, 25)) {
+				MiscEssence.addEssence(stack, 25, false, player, Essence.ATMOSPHERIC, player.inventory.currentItem);
+				this.setWaterLevel(world, pos, state, level - 1);
+				ParticleHelper.spawnParticles(EnumParticleTypes.DAMAGE_INDICATOR, world, true, pos, 5, 1);
+				world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
 				return true;
 			}
 		}

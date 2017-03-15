@@ -36,10 +36,11 @@ public class GUISpellSelect extends GuiScreen {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		wandStack = player.getHeldItemMainhand();
-		if(wandStack == null || !wandStack.hasTagCompound() || !(wandStack.getItem() instanceof ItemWand)) wandStack = player.getHeldItemOffhand();
-		if(wandStack == null || !wandStack.hasTagCompound() || !(wandStack.getItem() instanceof ItemWand)) return;
-		
-		
+		if (wandStack == null || !wandStack.hasTagCompound() || !(wandStack.getItem() instanceof ItemWand))
+			wandStack = player.getHeldItemOffhand();
+		if (wandStack == null || !wandStack.hasTagCompound() || !(wandStack.getItem() instanceof ItemWand))
+			return;
+
 		if (Minecraft.getMinecraft().theWorld.getTotalWorldTime() % 50 == 0 || spells.size() == 0) {
 			for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 				// get the currently selected item in the players inventory
@@ -68,8 +69,7 @@ public class GUISpellSelect extends GuiScreen {
 			// if any spells are held in the bag
 			if (amount > 0) {
 				float anglePer;
-				if (!wandStack.hasTagCompound())
-				{
+				if (!wandStack.hasTagCompound()) {
 					return;
 				}
 				if (wandStack.getTagCompound().getInteger(Spell.ACTIVE_KEY) != -1) {
