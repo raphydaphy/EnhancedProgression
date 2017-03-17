@@ -59,11 +59,11 @@ item.vitality.guidebook.name=Le Guide
 
 # Wand Variants
 
-basic_wooden_angelic_wand.name=Basic Wooden Angelic Wand
-basic_wooden_atmospheric_wand.name=Basic Wooden Atmospheric Wand
-basic_wooden_demonic_wand.name=Basic Wooden Demonic Wand
-basic_wooden_energetic_wand.name=Basic Wooden Energetic Wand
-basic_wooden_exotic_wand.name=Basic Wooden Exotic Wand
+item.vitality.wand_angelic.name=Basic Wooden Angelic Wand
+item.vitality.wand_atmospheric.name=Basic Wooden Atmospheric Wand
+item.vitality.wand_demonic.name=Basic Wooden Demonic Wand
+item.vitality.wand_energetic.name=Basic Wooden Energetic Wand
+item.vitality.wand_exotic.name=Basic Wooden Exotic Wand
 
 invalid_wand.name=Invalid Wand!
 

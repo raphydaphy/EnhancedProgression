@@ -12,11 +12,8 @@ import com.raphydaphy.vitality.api.wand.WandEnums.CoreType;
 import com.raphydaphy.vitality.api.wand.WandEnums.TipType;
 import com.raphydaphy.vitality.api.wand.WandHelper;
 import com.raphydaphy.vitality.proxy.ClientProxy;
-import com.raphydaphy.vitality.render.ModelWand.LoaderWand;
-import com.raphydaphy.vitality.util.MeshHelper;
 import com.raphydaphy.vitality.util.VitalData;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,17 +28,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemWand extends ItemBase {
 	public ItemWand(String parName) {
-		super(parName, 1, false);
-		this.setHasSubtypes(true);
+		super(parName, 1, true);
+		//this.setHasSubtypes(true);
 	}
-
+/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModels() {
@@ -49,7 +44,7 @@ public class ItemWand extends ItemBase {
 		ModelLoader.setCustomMeshDefinition(this, MeshHelper.instance());
 		ModelLoaderRegistry.registerLoader(LoaderWand.instance);
 	}
-
+*/
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack wand, World world, EntityPlayer player, EnumHand hand) {
 		if (!wand.hasTagCompound())
@@ -206,23 +201,6 @@ public class ItemWand extends ItemBase {
 	public EnumAction getItemUseAction(ItemStack stack) {
 
 		return EnumAction.BOW;
-	}
-
-	@Override
-	public String getUnlocalizedName(ItemStack stack) {
-		if (stack.hasTagCompound()) {
-			SimpleEntry<CoreType, TipType> pair = WandHelper.getUsefulInfo(stack);
-
-			try {
-				return pair.getKey().getTier().getName().toLowerCase() + "_" + pair.getValue().getName().toLowerCase()
-						+ "_" + pair.getKey().getName().toLowerCase() + "_wand";
-			} catch (Exception e) {
-				return "invalid_wand";
-			}
-		} else {
-			return "invalid_wand";
-		}
-
 	}
 
 	@Override

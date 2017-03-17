@@ -79,9 +79,30 @@ public class RecipeWand implements IRecipe {
 		} else if (tipType1 != tipType2) {
 			return false;
 		}
-
-		resultItem = new ItemStack(ModItems.WAND);
-		resultItem.setStackDisplayName(tipType1 + " Tipped " + coreType + " Wand");
+		
+		// aandddd this is why we need a new oven
+		switch(tipType1)
+		{
+		case WOODEN:
+		switch (coreType)
+		{
+		case ANGELIC:
+			resultItem = new ItemStack(ModItems.WAND_ANGELIC);
+			break;
+		case ATMOSPHERIC:
+			resultItem = new ItemStack(ModItems.WAND_ATMOSPHERIC);
+			break;
+		case DEMONIC:
+			resultItem = new ItemStack(ModItems.WAND_DEMONIC);
+			break;
+		case ENERGETIC:
+			resultItem = new ItemStack(ModItems.WAND_ENERGETIC);
+			break;
+		case EXOTIC:
+			resultItem = new ItemStack(ModItems.WAND_EXOTIC);
+			break;
+		}
+		}
 		resultItem.setTagCompound(new NBTTagCompound());
 		resultItem.getTagCompound().setString(WandHelper.CORE_TYPE, coreType.getName());
 		resultItem.getTagCompound().setString(WandHelper.TIP_TYPE, tipType1.getName());

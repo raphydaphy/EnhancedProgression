@@ -57,8 +57,11 @@ public class ModItems {
 
 	public static final Item TIP_WOODEN = new ItemWandPiece("tip_wooden", 2);
 
-	public static final Item WAND = new ItemWand("wand");
-	public static final Item WAND3D = new ItemBase("wand_3d", 1);
+	public static final Item WAND_ANGELIC = new ItemWand("wand_angelic");
+	public static final Item WAND_ATMOSPHERIC = new ItemWand("wand_atmospheric");
+	public static final Item WAND_DEMONIC = new ItemWand("wand_demonic");
+	public static final Item WAND_ENERGETIC = new ItemWand("wand_energetic");
+	public static final Item WAND_EXOTIC = new ItemWand("wand_exotic");
 
 	public static final Item SPELL_FIREBALL = new ItemSpell("fireball", 0);
 	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", 1);
@@ -95,8 +98,11 @@ public class ModItems {
 		list.add(CORE_EXOTIC);
 		list.add(TIP_WOODEN);
 		
-		list.add(WAND);
-		list.add(WAND3D);
+		list.add(WAND_ANGELIC);
+		list.add(WAND_ATMOSPHERIC);
+		list.add(WAND_DEMONIC);
+		list.add(WAND_ENERGETIC);
+		list.add(WAND_EXOTIC);
 		
 		list.add(SPELL_ILLUMINATION);
 		list.add(SPELL_FIREBALL);

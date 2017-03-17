@@ -23,7 +23,7 @@ public final class RenderHelper {
 		GL11.glStencilFunc(GL11.GL_NEVER, 1, 0xFF);
 		GL11.glStencilOp(GL11.GL_REPLACE, GL11.GL_KEEP, GL11.GL_KEEP);
 		GL11.glStencilMask(0xFF);
-		mc.getRenderItem().renderItemAndEffectIntoGUI(new ItemStack(ModItems.WAND), x, y);
+		mc.getRenderItem().renderItemAndEffectIntoGUI(new ItemStack(ModItems.WAND_ANGELIC), x, y);
 
 		mc.renderEngine.bindTexture(new ResourceLocation("blocks/hardened_clay_stained_purple"));
 		int r = 90;
