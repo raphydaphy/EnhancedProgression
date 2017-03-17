@@ -55,6 +55,10 @@ item.vitality.core_exotic.name=Exotic Wand Core
 
 item.vitality.tip_wooden.name=Wooden Wand Tip
 
+item.vitality.guidebook.name=Le Guide
+
+# Wand Variants
+
 basic_wooden_angelic_wand.name=Basic Wooden Angelic Wand
 basic_wooden_atmospheric_wand.name=Basic Wooden Atmospheric Wand
 basic_wooden_demonic_wand.name=Basic Wooden Demonic Wand
@@ -63,6 +67,7 @@ basic_wooden_exotic_wand.name=Basic Wooden Exotic Wand
 
 invalid_wand.name=Invalid Wand!
 
+# Spells
 item.vitality.illumination.name=Spell: Omnipresent Illumination
 item.vitality.fireball.name=Spell: Radiant Fireball
 item.vitality.explosion.name=Spell: Contained Explosion

@@ -6,6 +6,7 @@ import java.util.List;
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemExtractionSword;
+import com.raphydaphy.vitality.item.ItemGuidebook;
 import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.item.ItemVial.VialQuality;
@@ -57,6 +58,7 @@ public class ModItems {
 	public static final Item TIP_WOODEN = new ItemWandPiece("tip_wooden", 2);
 
 	public static final Item WAND = new ItemWand("wand");
+	public static final Item WAND3D = new ItemBase("wand_3d", 1);
 
 	public static final Item SPELL_FIREBALL = new ItemSpell("fireball", 0);
 	public static final Item SPELL_ILLUMINATION = new ItemSpell("illumination", 1);
@@ -64,6 +66,8 @@ public class ModItems {
 	public static final Item SPELL_EXCAVATION = new ItemSpell("excavation", 3);
 	public static final Item SPELL_TRANSMUTATION = new ItemSpell("transmutation", 4);
 	public static final Item SPELL_SWAPPING = new ItemSpell("swapping", 5);
+	
+	public static final Item GUIDEBOOK = new ItemGuidebook();
 
 	public static final List<Item> ITEM_LIST = getList();
 
@@ -90,13 +94,17 @@ public class ModItems {
 		list.add(CORE_ENERGETIC);
 		list.add(CORE_EXOTIC);
 		list.add(TIP_WOODEN);
+		
 		list.add(WAND);
+		list.add(WAND3D);
+		
 		list.add(SPELL_ILLUMINATION);
 		list.add(SPELL_FIREBALL);
 		list.add(SPELL_EXPLOSION);
 		list.add(SPELL_EXCAVATION);
 		list.add(SPELL_TRANSMUTATION);
 		list.add(SPELL_SWAPPING);
+		list.add(GUIDEBOOK);
 		return list;
 	}
 
