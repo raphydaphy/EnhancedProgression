@@ -1,8 +1,8 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "0": "blocks/planks_spruce",
-        "1": "vitality:blocks/essence_demonic"
+        "0": "vitality:blocks/wand_cap_iron",
+        "1": "vitality:blocks/wand_rod_wood"
     },
     "display": {
         "thirdperson_righthand": {
