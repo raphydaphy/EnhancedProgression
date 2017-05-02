@@ -15,15 +15,19 @@ public class WandEnums {
 	private static Map<String, TipType> tipMap = new HashMap<String, TipType>();
 
 	public enum WandResult {
-		SUCCESS, FAIL, BREAK, DRAIN,
+		SUCCESS,
+		FAIL,
+		BREAK,
+		DRAIN,
 		// do stuff
 	}
 
 	public enum CoreType implements IStringSerializable {
-		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC, 0.5F, 0.5F), ATMOSPHERIC("Atmospheric", WandTier.BASIC,
-				Essence.ATMOSPHERIC, 0.75F, 0.8F), DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC, 3.0F,
-						2.0F), ENERGETIC("Energetic", WandTier.BASIC, Essence.ENERGETIC, 0.25F,
-								1.0F), EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC, 1.0F, 1.5F);
+		ANGELIC("Angelic", WandTier.BASIC, Essence.ANGELIC, 0.5F, 0.5F),
+		ATMOSPHERIC("Atmospheric", WandTier.BASIC, Essence.ATMOSPHERIC, 0.75F, 0.8F),
+		DEMONIC("Demonic", WandTier.BASIC, Essence.DEMONIC, 3.0F, 2.0F),
+		ENERGETIC("Energetic", WandTier.BASIC, Essence.ENERGETIC, 0.25F, 1.0F),
+		EXOTIC("Exotic", WandTier.BASIC, Essence.EXOTIC, 1.0F, 1.5F);
 
 		private String name;
 		private WandTier accessTier;
@@ -105,7 +109,10 @@ public class WandEnums {
 	// - ETHEREAL (whatever tf that is it sounds cool)
 	// - ETERNAL
 	public enum WandTier implements IStringSerializable {
-		BASIC("Basic", 1000), EMPOWERED("Empowered", 2400), ETHEREAL("Ethereal", 6500), ETERNAL("Eternal", 15000);
+		BASIC("Basic", 1000),
+		EMPOWERED("Empowered", 2400),
+		ETHEREAL("Ethereal", 6500),
+		ETERNAL("Eternal", 15000);
 
 		private String name;
 		private int maxcap;

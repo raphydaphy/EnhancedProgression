@@ -11,14 +11,15 @@ import net.minecraft.util.text.TextFormatting;
 // all the base numbers are the cost needed for the illumination spell
 // every other spell's stats are a multiple of the base costs
 public enum Essence implements IStringSerializable {
-	ANGELIC("Angelic", WandTier.BASIC, 1, TextFormatting.AQUA), ATMOSPHERIC("Atmospheric", WandTier.BASIC, 0,
-			TextFormatting.DARK_PURPLE), DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED), ENERGETIC(
-					"Energetic", WandTier.BASIC, -2000,
-					TextFormatting.DARK_AQUA), EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN),;
+	ANGELIC("Angelic", WandTier.BASIC, 1, TextFormatting.AQUA),
+	ATMOSPHERIC("Atmospheric", WandTier.BASIC, 0, TextFormatting.DARK_PURPLE),
+	DEMONIC("Demonic", WandTier.BASIC, -1, TextFormatting.RED),
+	ENERGETIC("Energetic", WandTier.BASIC, -2000, TextFormatting.DARK_AQUA),
+	EXOTIC("Exotic", WandTier.BASIC, -2000, TextFormatting.DARK_GREEN),;
 
 	private String name;
-	private WandTier accessTier;
-	private int empoweredDimensionID;
+	// private WandTier accessTier;
+	// private int empoweredDimensionID;
 	private TextFormatting format;
 
 	/**
@@ -44,11 +45,11 @@ public enum Essence implements IStringSerializable {
 			@Nullable /* well not really nullable but put -2000 for none */ int empoweredDimensionID,
 			TextFormatting format) {
 		this.name = name;
-		this.accessTier = accessTier;
+		// this.accessTier = accessTier;
 		this.format = format;
-		if (empoweredDimensionID != -2000)
-			this.empoweredDimensionID = empoweredDimensionID; // this doesnt do
-																// anything rn
+		// if (empoweredDimensionID != -2000)
+		// this.empoweredDimensionID = empoweredDimensionID; // this doesnt do
+		// anything rn
 		MiscEssence.locator.put(name, this);
 	}
 

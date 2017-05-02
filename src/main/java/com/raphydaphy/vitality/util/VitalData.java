@@ -12,4 +12,5 @@ public class VitalData {
 	public static final String POS_X2 = "V_xx";
 	public static final String POS_Y2 = "V_yy";
 	public static final String POS_Z2 = "V_zz";
+	public static final String BSTATE = "state_swap";
 }

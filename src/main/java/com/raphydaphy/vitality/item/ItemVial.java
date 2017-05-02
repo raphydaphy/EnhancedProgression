@@ -162,7 +162,8 @@ public class ItemVial extends ItemBase {
 	}
 
 	public enum VialQuality {
-		BASIC(300), EMPOWERED(600);
+		BASIC(300),
+		EMPOWERED(600);
 
 		int max;
 
