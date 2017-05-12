@@ -6,7 +6,6 @@ import java.util.List;
 import com.raphydaphy.vitality.api.essence.Essence;
 import com.raphydaphy.vitality.item.ItemBase;
 import com.raphydaphy.vitality.item.ItemExtractionSword;
-import com.raphydaphy.vitality.item.ItemGuidebook;
 import com.raphydaphy.vitality.item.ItemSpell;
 import com.raphydaphy.vitality.item.ItemVial;
 import com.raphydaphy.vitality.item.ItemVial.VialQuality;
@@ -70,7 +69,6 @@ public class ModItems {
 	public static final Item SPELL_TRANSMUTATION = new ItemSpell("transmutation", 4);
 	public static final Item SPELL_SWAPPING = new ItemSpell("swapping", 5);
 	
-	public static final Item GUIDEBOOK = new ItemGuidebook();
 
 	public static final List<Item> ITEM_LIST = getList();
 
