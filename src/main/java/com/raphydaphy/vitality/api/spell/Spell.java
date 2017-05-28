@@ -193,7 +193,7 @@ public abstract class Spell {
 
 	public boolean isEssenceValid(Essence essence) {
 		for (Essence essence2 : reqEssence) {
-			return essence2 == essence;
+			 if(essence2 == essence) return true;
 		}
 		return false;
 	}

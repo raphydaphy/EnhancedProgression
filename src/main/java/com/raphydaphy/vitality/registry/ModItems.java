@@ -108,7 +108,7 @@ public class ModItems {
 		list.add(SPELL_EXCAVATION);
 		list.add(SPELL_TRANSMUTATION);
 		list.add(SPELL_SWAPPING);
-		list.add(GUIDEBOOK);
+		//list.add(GUIDEBOOK);
 		return list;
 	}
 
